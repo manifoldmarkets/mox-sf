@@ -21,11 +21,11 @@ function Link({
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-[#f9f6f0] text-gray-800 font-serif">
+    <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       {/* Hero section with dictionary definition */}
       <div className="max-w-3xl mx-auto pt-16 px-6">
         <div className="border-l-4 border-amber-800 pl-8 py-2">
-          <h1 className="text-3xl font-bold mb-2">
+          <h1 className="text-3xl font-bold mb-2 font-playfair">
             Mox <span className="italic font-normal">/mäks/</span>
           </h1>
           <div className="italic text-lg mb-1">noun</div>
@@ -83,7 +83,7 @@ export default function Component() {
           {/* Left column */}
           <div className="space-y-8">
             <section>
-              <h2 className="text-2xl font-bold mb-4 font-sans text-amber-900">
+              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
                 <strong>A gathering place for</strong>
               </h2>
               <div className="prose prose-slate">
@@ -97,7 +97,7 @@ export default function Component() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4 font-sans text-amber-900">
+              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
                 <strong>About the space</strong>
               </h2>
               <div className="prose prose-slate">
@@ -130,7 +130,7 @@ export default function Component() {
             <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
             <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
-            <h2 className="text-2xl font-bold mb-6 font-sans text-amber-900">
+            <h2 className="text-2xl font-bold mb-6 text-amber-900 font-playfair">
               <strong>Join our waitlist</strong>
             </h2>
             <p className="mb-8 text-gray-600">
@@ -144,7 +144,7 @@ export default function Component() {
               rel="noopener noreferrer"
               className="
                 inline-block px-8 py-4 
-                bg-amber-800 text-white font-sans font-semibold
+                bg-amber-800 text-white font-semibold
                 hover:bg-amber-900  
                 transition-all duration-200
               "
