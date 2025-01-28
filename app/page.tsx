@@ -33,36 +33,36 @@ export default function Component() {
           <div className="space-y-3 mt-6">
             <div>
               1. Abbreviation for <span className="italic">moxie</span>
-              <Link
+              {/* <Link
                 href="https://en.wiktionary.org/wiki/moxie"
                 className="align-top text-xs ml-0.5"
               >
                 [1]
-              </Link>
+              </Link> */}
               : energy and pep, or courage and determination
             </div>
 
             <div>
               2. Rare artifacts in{" "}
               <span className="italic">Magic: the Gathering</span>
-              <Link
+              {/* <Link
                 href="https://mtg.fandom.com/wiki/Mox"
                 className="align-top text-xs ml-0.5"
               >
                 [2]
-              </Link>
+              </Link> */}
               , among the most powerful in the game
             </div>
 
             <div>
               3. Nonstandard acronym for{" "}
               <span className="italic">Mixture Of eXperts</span>
-              <Link
+              {/* <Link
                 href="https://en.wikipedia.org/wiki/Mixture_of_experts"
                 className="align-top text-xs ml-0.5"
               >
                 [3]
-              </Link>
+              </Link> */}
               , an ML technique which divides a problem between smaller "expert"
               models
               {/* <span className="text-gray-600 text-sm ml-2"> (nonstandard)</span> */}
