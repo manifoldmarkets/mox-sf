@@ -25,7 +25,7 @@ export default function GalleryPage() {
     "/images/009.jpg": [2016, 1512],
     "/images/008.jpg": [1943, 1458],
     "/images/005.jpg": [2016, 1134],
-  };
+  } as Record<string, [number, number]>;
 
   return <Masonry images={images} sizes={sizes} />;
 }
