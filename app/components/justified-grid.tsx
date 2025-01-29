@@ -14,6 +14,7 @@ export default function Masonry({
   sizes,
   targetRowHeight = 300,
 }: MasonryProps) {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const initRatios = Object.values(sizes).map(
     ([width, height]) => width / height
   );
@@ -97,6 +98,22 @@ export default function Masonry({
       {getRows().map((row, i) => (
         <div key={i} className="flex gap-2">
           {row.map(({ src, width, height }, j) => {
+            const isSelected = src === selectedImage;
+            const [origWidth, origHeight] = sizes?.[src] || [0, 0];
+            if (isSelected) {
+              return (
+                <NextImage
+                  key={j}
+                  src={src}
+                  alt=""
+                  width={origWidth}
+                  height={origHeight}
+                  className="cursor-pointer fixed inset-0 z-50 w-full h-full object-contain bg-black/90"
+                  onClick={() => setSelectedImage(null)}
+                />
+              );
+            }
+
             return (
               <NextImage
                 key={j}
@@ -104,8 +121,9 @@ export default function Masonry({
                 alt=""
                 width={Math.round(width)}
                 height={Math.round(height)}
-                className="object-cover"
+                className={`object-cover cursor-pointer hover:opacity-80`}
                 loading="lazy"
+                onClick={() => setSelectedImage(isSelected ? null : src)}
               />
             );
           })}
