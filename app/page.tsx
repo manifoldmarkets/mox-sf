@@ -14,7 +14,7 @@ function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-amber-800 hover:text-amber-600 decoration-dotted underline-offset-2 ${className}`}
+      className={`text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2 ${className}`}
     >
       {children}
     </a>
@@ -74,9 +74,9 @@ export default function Component() {
               </h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
-                  <li>Startups on the leading edge</li>
+                  <li>Startups on the cutting edge</li>
+                  <li>EAs and others seeking to improve the world</li>
                   <li>AI and AI safety labs</li>
-                  <li>EAs and others aiming to improve the world</li>
                   <li>Indie researchers and builders</li>
                 </ul>
               </div>
@@ -117,7 +117,7 @@ export default function Component() {
             <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
             <h2 className="text-2xl font-bold mb-6 text-amber-900 font-playfair">
-              <strong>Join our waitlist</strong>
+              <strong>Opening Feb 2025</strong>
             </h2>
             <p className="mb-8 text-gray-600">
               Looking for a mission-driven space to work from? We offer
@@ -135,7 +135,7 @@ export default function Component() {
                 transition-all duration-200
               "
             >
-              Get notified
+              Join the waitlist
             </a>
 
             <div className="mt-8 text-sm text-gray-500 italic">
@@ -150,7 +150,8 @@ export default function Component() {
       <footer className="mt-24 border-t border-amber-200 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           {/* © 2025 Mox SF. All rights reserved. */}
-          Opening February 15th, 2025
+          {/* Opening February 15th, 2025 */}A project of{" "}
+          <Link href="https://manifund.org">Manifund</Link>
         </div>
       </footer>
     </div>
