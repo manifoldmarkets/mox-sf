@@ -11,6 +11,11 @@ const lora = Lora({
   variable: "--font-lora",
 });
 
+export const metadata = {
+  title: "Mox",
+  description: "Coworking & events in SF",
+};
+
 export default function RootLayout({
   children,
 }: {
