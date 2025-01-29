@@ -125,7 +125,7 @@ export default function Component() {
             </p>
 
             <a
-              href="https://airtable.com/your-form-link"
+              href="https://airtable.com/appkHZ2UvU6SouT5y/pagGp5iw06B9Fc57g/form"
               target="_blank"
               rel="noopener noreferrer"
               className="
