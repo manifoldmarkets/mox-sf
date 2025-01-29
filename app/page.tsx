@@ -152,6 +152,9 @@ export default function Component() {
           {/* © 2025 Mox SF. All rights reserved. */}
           {/* Opening February 15th, 2025 */}A project of{" "}
           <Link href="https://manifund.org">Manifund</Link>
+          <br />
+          Questions? Contact{" "}
+          <Link href="mailto:austin@manifund.org">austin@manifund.org</Link>
         </div>
       </footer>
     </div>
