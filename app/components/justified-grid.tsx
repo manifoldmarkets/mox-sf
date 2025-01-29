@@ -57,18 +57,19 @@ export default function Masonry({
 
   const getRows = () => {
     const rows: { src: string; width: number; height: number }[][] = [];
+    const imagesPerRow = containerWidth < 640 ? 2 : 3; // Use 2 images per row on small screens
 
-    // Process images in groups of 3
-    for (let i = 0; i < images.length; i += 3) {
-      const rowImages = images.slice(i, i + 3);
-      const rowRatios = imageRatios.slice(i, i + 3);
+    // Process images in groups
+    for (let i = 0; i < images.length; i += imagesPerRow) {
+      const rowImages = images.slice(i, i + imagesPerRow);
+      const rowRatios = imageRatios.slice(i, i + imagesPerRow);
 
       // Skip if we don't have ratio data yet
       if (rowRatios.some((r) => !r)) continue;
 
       // Calculate row layout
       const spacing = 16; // 4 units of gap (4 * 4px = 16px)
-      const availableWidth = containerWidth - spacing * 2; // Account for gaps
+      const availableWidth = containerWidth - spacing * (imagesPerRow - 1); // Account for gaps
 
       // Initial widths at target height
       const initialWidths = rowRatios.map((ratio) => targetRowHeight * ratio);
@@ -87,9 +88,6 @@ export default function Masonry({
         }))
       );
     }
-
-    console.log("rows measured at", rows);
-
     return rows;
   };
 
