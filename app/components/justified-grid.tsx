@@ -1,18 +1,24 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import NextImage from "next/image";
 
 interface MasonryProps {
   images: string[];
   targetRowHeight?: number;
+  sizes?: Record<string, [number, number]>;
 }
 
 export default function Masonry({
   images,
+  sizes,
   targetRowHeight = 300,
 }: MasonryProps) {
-  const [imageRatios, setImageRatios] = useState<number[]>([]);
-  const [containerWidth, setContainerWidth] = useState(1000);
+  const initRatios = Object.values(sizes).map(
+    ([width, height]) => width / height
+  );
+  const [imageRatios, setImageRatios] = useState<number[]>(initRatios);
+  const [containerWidth, setContainerWidth] = useState(900);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,6 +33,7 @@ export default function Masonry({
     return () => window.removeEventListener("resize", updateContainerWidth);
   }, []);
 
+  // Fancy code to calculate image dimensions, if not provided
   useEffect(() => {
     const loadImages = async () => {
       const ratios = await Promise.all(
@@ -42,7 +49,9 @@ export default function Masonry({
       setImageRatios(ratios);
     };
 
-    loadImages();
+    if (!sizes) {
+      loadImages();
+    }
   }, [images]);
 
   const getRows = () => {
@@ -87,16 +96,19 @@ export default function Masonry({
     <div ref={containerRef} className="flex flex-col gap-2">
       {getRows().map((row, i) => (
         <div key={i} className="flex gap-2">
-          {row.map(({ src, width, height }, j) => (
-            <img
-              key={j}
-              src={src}
-              alt=""
-              style={{ width: `${width}px`, height: `${height}px` }}
-              className="object-cover"
-              loading="lazy"
-            />
-          ))}
+          {row.map(({ src, width, height }, j) => {
+            return (
+              <NextImage
+                key={j}
+                src={src}
+                alt=""
+                width={Math.round(width)}
+                height={Math.round(height)}
+                className="object-cover"
+                loading="lazy"
+              />
+            );
+          })}
         </div>
       ))}
     </div>
