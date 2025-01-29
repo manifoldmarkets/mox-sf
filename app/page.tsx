@@ -1,3 +1,5 @@
+import Gallery from "./gallery";
+
 function Link({
   href,
   children,
@@ -79,6 +81,10 @@ export default function Component() {
 
       {/* Main content */}
       <div className="max-w-4xl mx-auto mt-20 px-6">
+        <section className="mb-16">
+          <Gallery />
+        </section>
+
         <div className="grid md:grid-cols-2 gap-12">
           {/* Left column */}
           <div className="space-y-8">
