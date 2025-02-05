@@ -194,7 +194,7 @@ export default function Masonry({
           {selectedImageIndex > 0 && (
             <button
               onClick={() => setSelectedImageIndex(selectedImageIndex - 1)}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl w-12 h-12 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
+              className="absolute left-4 top-1/2 -translate-y-1/2 transform text-white text-4xl w-12 h-12 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
               aria-label="Previous image"
             >
               ‹
@@ -205,7 +205,7 @@ export default function Masonry({
           {selectedImageIndex < images.length - 1 && (
             <button
               onClick={() => setSelectedImageIndex(selectedImageIndex + 1)}
-              className="absolute right-4 top-1/2 transform text-white text-4xl w-12 h-12 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
+              className="absolute right-4 top-1/2 -translate-y-1/2 transform text-white text-4xl w-12 h-12 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
               aria-label="Next image"
             >
               ›
