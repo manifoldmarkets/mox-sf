@@ -24,6 +24,16 @@ function Link({
 export default function Component() {
   return (
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
+      {/* Open house banner */}
+      <a
+        href="https://partiful.com/e/nmydyDFnwjMEbyMjq1HF"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
+      >
+        Open house this Saturday, 10-4!
+      </a>
+
       {/* Hero section with dictionary definition */}
       <div className="max-w-3xl mx-auto pt-16 px-6">
         <div className="border-l-4 border-amber-800 pl-8 py-2">
