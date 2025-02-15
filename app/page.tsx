@@ -94,6 +94,20 @@ export default function Component() {
 
             <section>
               <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+                <strong>Mox offers</strong>
+              </h2>
+              <div className="prose prose-slate">
+                <ul className="list-disc pl-4 space-y-2">
+                  <li>Ample desks & monitors</li>
+                  <li>Industrial-grade wifi</li>
+                  <li>Conference rooms & phone booths</li>
+                  <li>Coffee, tea, and snacks to keep you going</li>
+                </ul>
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
                 <strong>About the space</strong>
               </h2>
               <div className="prose prose-slate">
@@ -122,37 +136,39 @@ export default function Component() {
           </div>
 
           {/* Right column */}
-          <div className="bg-white shadow-xl p-8 border border-amber-100 relative flex flex-col min-h-[300px]">
-            <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
-            <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
+          <div>
+            <div className="bg-white shadow-xl p-8 border border-amber-100 relative">
+              <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
+              <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
-            <div>
-              <h2 className="text-2xl font-bold mb-6 text-amber-900 font-playfair">
-                <strong>Opening Feb 2025</strong>
-              </h2>
-              <p className="mb-8 text-gray-600">
-                Looking for a mission-driven space to work from? We offer
-                coworking desks, private offices, and event space.
-              </p>
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-amber-900 font-playfair">
+                  <strong>Opening Feb 2025</strong>
+                </h2>
+                <p className="mb-8 text-gray-600">
+                  Looking for a mission-driven space to work from? We offer
+                  coworking desks, private offices, and event space.
+                </p>
 
-              <a
-                href="https://airtable.com/appkHZ2UvU6SouT5y/pagGp5iw06B9Fc57g/form"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
+                <a
+                  href="/apply"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
                   inline-block px-8 py-4 
                   bg-amber-800 text-white font-semibold
                   hover:bg-amber-900  
                   transition-all duration-200
                 "
-              >
-                Join the waitlist
-              </a>
-            </div>
+                >
+                  Join the waitlist
+                </a>
+              </div>
 
-            <div className="mt-auto pt-8 text-sm text-gray-500 italic">
-              Space is limited - we're looking for teams and individuals who
-              share our values.
+              <div className="mt-16 text-sm text-gray-500 italic">
+                Space is limited - we're looking for teams and individuals who
+                share our values.
+              </div>
             </div>
           </div>
         </div>
