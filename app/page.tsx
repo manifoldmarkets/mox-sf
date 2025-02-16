@@ -166,8 +166,8 @@ export default function Component() {
               </div>
 
               <div className="mt-16 text-sm text-gray-500 italic">
-                Space is limited - we're looking for teams and individuals who
-                share our values.
+                We love everyone, but alas -- space is limited. We admit members
+                as we have capacity to support them.
               </div>
             </div>
           </div>
