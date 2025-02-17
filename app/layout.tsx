@@ -14,13 +14,13 @@ const lora = Lora({
 export const metadata = {
   title: "Mox",
   description:
-    "Mox is a new coworking & events space in SF. We gather startups and researchers, EAs and hackers, writers and other masters of craft",
+    "Mox is a new coworking & events space in SF. For startups and charities; hackers and researchers; writers and other masters of craft",
   keywords:
     "coworking, San Francisco, startups, EA, AI safety, events space, Mission District",
   openGraph: {
     title: "Mox SF",
     description:
-      "Mox is a new coworking & events space in SF. We gather startups and researchers, EAs and hackers, writers and other masters of craft",
+      "Mox is a new coworking & events space in SF. For startups and charities; hackers and researchers; writers and other masters of craft",
     url: "https://mox.sf",
     siteName: "Mox SF",
     locale: "en_US",
@@ -38,7 +38,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Mox SF",
     description:
-      "Mox is a new coworking & events space in SF. We gather startups and researchers, EAs and hackers, writers and other masters of craft",
+      "Mox is a new coworking & events space in SF. For startups and charities; hackers and researchers; writers and other masters of craft",
     images: ["/images/003.jpg"],
   },
   robots: "index, follow",
