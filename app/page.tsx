@@ -26,12 +26,12 @@ export default function Component() {
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       {/* Open house banner */}
       <a
-        href="https://partiful.com/e/nmydyDFnwjMEbyMjq1HF"
+        href="https://partiful.com/e/qJLPSXLOC8k35JqxYeGz"
         target="_blank"
         rel="noopener noreferrer"
         className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
       >
-        Open house this Saturday, 10-4!
+        Love weird auctions? Come to PYOL, 7pm tonight
       </a>
 
       {/* Hero section with dictionary definition */}
@@ -86,8 +86,9 @@ export default function Component() {
                 <ul className="list-disc pl-4 space-y-2">
                   <li>Startups on the cutting edge</li>
                   <li>EAs and others seeking to improve the world</li>
-                  <li>AI and AI safety labs</li>
+                  <li>AI & AI safety labs</li>
                   <li>Indie researchers and builders</li>
+                  <li>Writers; artists; masters of craft</li>
                 </ul>
               </div>
             </section>
@@ -98,10 +99,10 @@ export default function Component() {
               </h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
-                  <li>Ample desks & monitors</li>
+                  <li>Ample desks and monitors</li>
                   <li>Industrial-grade wifi</li>
-                  <li>Conference rooms & phone booths</li>
-                  <li>Coffee, tea, and snacks to keep you going</li>
+                  <li>Conference rooms and phone booths</li>
+                  <li>Coffee, tea, and snacks</li>
                 </ul>
               </div>
             </section>
