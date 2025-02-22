@@ -1,10 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function DoorPage() {
   const [pin, setPin] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      // Handle numbers 0-9
+      if (/^[0-9]$/.test(e.key)) {
+        handleNumberClick(e.key)
+      }
+      // Handle backspace/delete for clear
+      else if (e.key === 'Backspace' || e.key === 'Delete') {
+        clearPin()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [pin]) // Include pin in dependencies since handleNumberClick uses it
 
   const handleNumberClick = async (num: string) => {
     const newPin = pin + num
