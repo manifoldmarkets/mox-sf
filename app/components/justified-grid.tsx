@@ -1,12 +1,12 @@
-"use client";
+'use client'
 
-import { useEffect, useState, useRef } from "react";
-import NextImage from "next/image";
+import { useEffect, useState, useRef } from 'react'
+import NextImage from 'next/image'
 
 interface MasonryProps {
-  images: string[];
-  targetRowHeight?: number;
-  sizes?: Record<string, [number, number]>;
+  images: string[]
+  targetRowHeight?: number
+  sizes?: Record<string, [number, number]>
 }
 
 export default function Masonry({
@@ -17,26 +17,26 @@ export default function Masonry({
   // Use index (number) so we can navigate between images.
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
-  );
+  )
   const initRatios = Object.values(sizes || {}).map(
     ([width, height]) => width / height
-  );
-  const [imageRatios, setImageRatios] = useState<number[]>(initRatios);
-  const [containerWidth, setContainerWidth] = useState(900);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef<number | null>(null);
+  )
+  const [imageRatios, setImageRatios] = useState<number[]>(initRatios)
+  const [containerWidth, setContainerWidth] = useState(900)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
 
   useEffect(() => {
     const updateContainerWidth = () => {
       if (containerRef.current) {
-        setContainerWidth(containerRef.current.getBoundingClientRect().width);
+        setContainerWidth(containerRef.current.getBoundingClientRect().width)
       }
-    };
+    }
 
-    updateContainerWidth();
-    window.addEventListener("resize", updateContainerWidth);
-    return () => window.removeEventListener("resize", updateContainerWidth);
-  }, []);
+    updateContainerWidth()
+    window.addEventListener('resize', updateContainerWidth)
+    return () => window.removeEventListener('resize', updateContainerWidth)
+  }, [])
 
   // Calculate image ratios in case sizes are not provided
   useEffect(() => {
@@ -45,47 +45,47 @@ export default function Masonry({
         images.map(
           (src) =>
             new Promise<number>((resolve) => {
-              const img = new Image();
-              img.onload = () => resolve(img.width / img.height);
-              img.src = src;
+              const img = new Image()
+              img.onload = () => resolve(img.width / img.height)
+              img.src = src
             })
         )
-      );
-      setImageRatios(ratios);
-    };
+      )
+      setImageRatios(ratios)
+    }
 
     if (!sizes) {
-      loadImages();
+      loadImages()
     }
-  }, [images, sizes]);
+  }, [images, sizes])
 
   // Group images into rows and include a global index for navigation
   const getRows = () => {
     const rows: {
-      src: string;
-      width: number;
-      height: number;
-      index: number;
-    }[][] = [];
-    const imagesPerRow = containerWidth < 640 ? 2 : 3; // Use 2 images per row on small screens
+      src: string
+      width: number
+      height: number
+      index: number
+    }[][] = []
+    const imagesPerRow = containerWidth < 640 ? 2 : 3 // Use 2 images per row on small screens
 
     for (let i = 0; i < images.length; i += imagesPerRow) {
-      const rowImages = images.slice(i, i + imagesPerRow);
-      const rowRatios = imageRatios.slice(i, i + imagesPerRow);
+      const rowImages = images.slice(i, i + imagesPerRow)
+      const rowRatios = imageRatios.slice(i, i + imagesPerRow)
 
       // Skip if ratio data isn’t ready
-      if (rowRatios.some((r) => !r)) continue;
+      if (rowRatios.some((r) => !r)) continue
 
-      const spacing = 16; // gap in pixels
-      const availableWidth = containerWidth - spacing * (imagesPerRow - 1);
+      const spacing = 16 // gap in pixels
+      const availableWidth = containerWidth - spacing * (imagesPerRow - 1)
 
       // Initial widths using the target row height
-      const initialWidths = rowRatios.map((ratio) => targetRowHeight * ratio);
-      const totalWidth = initialWidths.reduce((sum, w) => sum + w, 0);
+      const initialWidths = rowRatios.map((ratio) => targetRowHeight * ratio)
+      const totalWidth = initialWidths.reduce((sum, w) => sum + w, 0)
 
       // Scale images so they exactly fill the row
-      const scale = availableWidth / totalWidth;
-      const rowHeight = targetRowHeight * scale;
+      const scale = availableWidth / totalWidth
+      const rowHeight = targetRowHeight * scale
 
       rows.push(
         rowImages.map((src, j) => ({
@@ -94,63 +94,63 @@ export default function Masonry({
           height: rowHeight,
           index: i + j, // Global index in the images array
         }))
-      );
+      )
     }
-    return rows;
-  };
+    return rows
+  }
 
   // Handle keyboard navigation and scroll lock when overlay is active
   useEffect(() => {
     if (selectedImageIndex !== null) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset'
     }
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImageIndex === null) return;
+      if (selectedImageIndex === null) return
 
-      if (e.key === "Escape") {
-        setSelectedImageIndex(null);
-      } else if (e.key === "ArrowLeft" && selectedImageIndex > 0) {
-        setSelectedImageIndex(selectedImageIndex - 1);
+      if (e.key === 'Escape') {
+        setSelectedImageIndex(null)
+      } else if (e.key === 'ArrowLeft' && selectedImageIndex > 0) {
+        setSelectedImageIndex(selectedImageIndex - 1)
       } else if (
-        e.key === "ArrowRight" &&
+        e.key === 'ArrowRight' &&
         selectedImageIndex < images.length - 1
       ) {
-        setSelectedImageIndex(selectedImageIndex + 1);
+        setSelectedImageIndex(selectedImageIndex + 1)
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImageIndex, images.length]);
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedImageIndex, images.length])
 
   // Touch events for mobile swipe gestures
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
+    touchStartX.current = e.touches[0].clientX
+  }
 
   const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchEndX - touchStartX.current;
-    const threshold = 50; // Minimum swipe distance in pixels
+    if (touchStartX.current === null) return
+    const touchEndX = e.changedTouches[0].clientX
+    const diff = touchEndX - touchStartX.current
+    const threshold = 50 // Minimum swipe distance in pixels
 
     if (
       diff > threshold &&
       selectedImageIndex !== null &&
       selectedImageIndex > 0
     ) {
-      setSelectedImageIndex(selectedImageIndex - 1);
+      setSelectedImageIndex(selectedImageIndex - 1)
     } else if (
       diff < -threshold &&
       selectedImageIndex !== null &&
       selectedImageIndex < images.length - 1
     ) {
-      setSelectedImageIndex(selectedImageIndex + 1);
+      setSelectedImageIndex(selectedImageIndex + 1)
     }
-    touchStartX.current = null;
-  };
+    touchStartX.current = null
+  }
 
   return (
     <div ref={containerRef}>
@@ -214,10 +214,10 @@ export default function Masonry({
 
           {/* Display the currently selected image */}
           {(() => {
-            const displayedImage = images[selectedImageIndex];
+            const displayedImage = images[selectedImageIndex]
             const [origWidth, origHeight] = sizes?.[displayedImage] || [
               800, 600,
-            ];
+            ]
             return (
               <NextImage
                 src={displayedImage}
@@ -229,10 +229,10 @@ export default function Masonry({
                 priority={true} // Prioritize loading the full-size image
                 quality={100} // Use highest quality for the full-size view
               />
-            );
+            )
           })()}
         </div>
       )}
     </div>
-  );
+  )
 }
