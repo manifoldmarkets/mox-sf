@@ -1,13 +1,13 @@
-import Gallery from "./gallery";
+import Gallery from './gallery'
 
 function Link({
   href,
   children,
   className,
 }: {
-  href: string;
-  children: React.ReactNode;
-  className?: string;
+  href: string
+  children: React.ReactNode
+  className?: string
 }) {
   return (
     <a
@@ -18,21 +18,21 @@ function Link({
     >
       {children}
     </a>
-  );
+  )
 }
 
 export default function Component() {
   return (
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       {/* Open house banner */}
-      {/* <a
+      <a
         href="https://partiful.com/e/qJLPSXLOC8k35JqxYeGz"
         target="_blank"
         rel="noopener noreferrer"
         className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
       >
-        Love weird auctions? Come to PYOL, 7pm tonight
-      </a> */}
+        In town for EAG? Join for open hours: Mon & Tues 10-6
+      </a>
 
       {/* Hero section with dictionary definition */}
       <div className="max-w-3xl mx-auto pt-16 px-6">
@@ -49,13 +49,13 @@ export default function Component() {
             </div>
 
             <div>
-              2. Rare artifacts in{" "}
+              2. Rare artifacts in{' '}
               <span className="italic">Magic: the Gathering</span>, among the
               most powerful in the game.
             </div>
 
             <div>
-              3. Atypical acronym for{" "}
+              3. Atypical acronym for{' '}
               <span className="italic">Mixture Of eXperts</span>, a ML technique
               which divides an input between smaller "expert" models.
             </div>
@@ -113,11 +113,11 @@ export default function Component() {
               </h2>
               <div className="prose prose-slate">
                 <p className="mb-4">
-                  Located in the heart of SF at{" "}
+                  Located in the heart of SF at{' '}
                   <Link href="https://maps.google.com/?q=1680+Mission+St+San+Francisco">
                     1680 Mission Street
                   </Link>
-                  ; formerly the home of{" "}
+                  ; formerly the home of{' '}
                   <Link href="https://www.solarissf.com/">Solaris AI</Link>
                 </p>
 
@@ -179,13 +179,13 @@ export default function Component() {
       <footer className="mt-24 border-t border-amber-200 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           {/* © 2025 Mox SF. All rights reserved. */}
-          {/* Opening February 15th, 2025 */}A project of{" "}
+          {/* Opening February 15th, 2025 */}A project of{' '}
           <Link href="https://manifund.org">Manifund</Link>
           <br />
-          Questions? Contact{" "}
+          Questions? Contact{' '}
           <Link href="mailto:austin@manifund.org">austin@manifund.org</Link>
         </div>
       </footer>
     </div>
-  );
+  )
 }
