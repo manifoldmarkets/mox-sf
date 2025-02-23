@@ -16,6 +16,10 @@ export default function DoorPage() {
       else if (e.key === 'Backspace' || e.key === 'Delete') {
         clearPin()
       }
+      // Handle enter/return for submit
+      else if (e.key === 'Enter') {
+        submitPin()
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
@@ -26,22 +30,16 @@ export default function DoorPage() {
     const newPin = pin + num
     setPin(newPin)
     setIsSuccess(false)
+  }
 
-    try {
-      const response = await fetch('/door/api', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pin: newPin }),
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        setIsSuccess(true)
-      }
-    } catch (error) {
-      console.error('Error submitting pin:', error)
-    }
+  const submitPin = async () => {
+    const response = await fetch('/door/api', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin: pin }),
+    })
+    const data = await response.json()
+    setIsSuccess(data.success)
   }
 
   const clearPin = () => {
@@ -67,7 +65,7 @@ export default function DoorPage() {
     return (
       <button
         className={`w-20 h-20 rounded-full text-2xl font-medium flex items-center justify-center
-                 active:scale-95 transition-all duration-150 ${className}`}
+                 active:scale-95 transition-all cursor-pointer ${className}`}
         onClick={onClick}
       >
         {value}
@@ -79,10 +77,11 @@ export default function DoorPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-[280px]">
         <div
-          className={`h-16 text-4xl flex items-center justify-center tracking-wider font-mono mb-8
+          className={`h-16 text-4xl flex items-center justify-center tracking-wider mb-8
                       ${isSuccess ? 'text-green-500' : ''}`}
         >
-          {'•'.repeat(pin.length) || ' '}
+          {/* {'•'.repeat(pin.length) || ' '} */}
+          {pin}
         </div>
         <div className="grid grid-cols-3 gap-4">
           <NumpadButton value="1" />
@@ -94,9 +93,17 @@ export default function DoorPage() {
           <NumpadButton value="7" />
           <NumpadButton value="8" />
           <NumpadButton value="9" />
-          <NumpadButton value="" />
+          <NumpadButton
+            value="✗"
+            onClick={clearPin}
+            className="bg-red-100 hover:bg-red-200"
+          />
           <NumpadButton value="0" />
-          <NumpadButton value="×" onClick={clearPin} className="bg-red-100" />
+          <NumpadButton
+            value="✓"
+            onClick={submitPin}
+            className="bg-green-100 hover:bg-green-200"
+          />
         </div>
       </div>
     </div>
