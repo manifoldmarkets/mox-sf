@@ -2,7 +2,7 @@ export async function POST(request: Request) {
   const res = await request.json()
   const pin = res.pin as String
 
-  if (pin === process.env.MASTER_PIN) {
+  if (pin === process.env.MASTER_PIN || pin === process.env.DAILY_PIN) {
     try {
       return unlockDoor()
     } catch (error) {
