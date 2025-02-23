@@ -2,9 +2,12 @@
 
 import { useState, useEffect } from 'react'
 
+type SubmissionState = 'initial' | 'submitting' | 'success' | 'failure'
+
 export default function DoorPage() {
   const [pin, setPin] = useState('')
-  const [isSuccess, setIsSuccess] = useState(false)
+  const [submissionState, setSubmissionState] =
+    useState<SubmissionState>('initial')
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -29,22 +32,29 @@ export default function DoorPage() {
   const handleNumberClick = async (num: string) => {
     const newPin = pin + num
     setPin(newPin)
-    setIsSuccess(false)
+    setSubmissionState('initial')
   }
 
   const submitPin = async () => {
+    setSubmissionState('submitting')
+    const startTime = Date.now()
     const response = await fetch('/door/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin: pin }),
     })
     const data = await response.json()
-    setIsSuccess(data.success)
+    const elapsed = Date.now() - startTime
+    // Ensure the spinner is visible for a bit of time
+    if (elapsed < 600) {
+      await new Promise((resolve) => setTimeout(resolve, 600 - elapsed))
+    }
+    setSubmissionState(data.success ? 'success' : 'failure')
   }
 
   const clearPin = () => {
     setPin('')
-    setIsSuccess(false)
+    setSubmissionState('initial')
   }
 
   /* const numbers = [
@@ -65,7 +75,7 @@ export default function DoorPage() {
     return (
       <button
         className={`w-20 h-20 rounded-full text-2xl font-medium flex items-center justify-center
-                 active:scale-95 transition-all cursor-pointer ${className}`}
+                 active:scale-95 transition-all cursor-pointer ${className} border border-gray-200`}
         onClick={onClick}
       >
         {value}
@@ -76,12 +86,20 @@ export default function DoorPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-[280px]">
+        <h1 className="font-lora text-center mb-2 text-gray-900">
+          Welcome to Mox
+        </h1>
+        <div className="w-[240px] h-[1px] bg-amber-800 mx-auto mb-12"></div>
         <div
-          className={`h-16 text-4xl flex items-center justify-center tracking-wider mb-8
-                      ${isSuccess ? 'text-green-500' : ''}`}
+          className={`h-16 text-4xl flex items-center justify-center tracking-wider mb-8 gap-2
+                      ${submissionState === 'success' ? 'text-green-500' : ''}
+                      ${submissionState === 'failure' ? 'text-red-500' : ''}`}
         >
           {/* {'•'.repeat(pin.length) || ' '} */}
           {pin}
+          {submissionState === 'submitting' && <Spinner />}
+          {submissionState === 'success' && <span>✓</span>}
+          {submissionState === 'failure' && <span>✗</span>}
         </div>
         <div className="grid grid-cols-3 gap-4">
           <NumpadButton value="1" />
@@ -107,5 +125,12 @@ export default function DoorPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Tailwind spinner using animate-spin
+function Spinner() {
+  return (
+    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900"></div>
   )
 }
