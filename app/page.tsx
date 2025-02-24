@@ -26,12 +26,12 @@ export default function Component() {
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       {/* Open house banner */}
       <a
-        href="https://partiful.com/e/qJLPSXLOC8k35JqxYeGz"
+        href="https://partiful.com/e/zS6HwL1bBgzfUqnVXC0X"
         target="_blank"
         rel="noopener noreferrer"
         className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
       >
-        In town for EAG? Join for open hours: Mon & Tues 10-6
+        In town for EAG? Join for open hours: Mon & Tues 10-6, then tacos!
       </a>
 
       {/* Hero section with dictionary definition */}
