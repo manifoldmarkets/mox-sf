@@ -31,7 +31,7 @@ export default function Component() {
         rel="noopener noreferrer"
         className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
       >
-        Join us for open hours this week: Mon & Tues 10-6, then Taco Tues!
+        Open hours this week: Mon & Tues 10-6, then Taco Tues!
       </a>
 
       {/* Hero section with dictionary definition */}
