@@ -2,7 +2,56 @@
 
 import { useState } from 'react'
 
-const ALLOWED_NAMES = ['Gavriel', 'Simon', 'Rachel', 'Saul']
+const INVITED = [
+  'Alex',
+  'Anna',
+  'Antony',
+  'Ari',
+  'Austin',
+  'Ben',
+  'Brandon',
+  'Cassandra',
+  'Charlie',
+  'Chris',
+  'Constance',
+  'Dave',
+  'David',
+  'Dylan',
+  'Elizabeth',
+  'Eric',
+  'Euan',
+  'Gavriel',
+  'Gytis',
+  'James',
+  'Joel',
+  'Jonas',
+  'Jose',
+  'JueYan',
+  'Keri',
+  'Kipply',
+  'Leila',
+  'Leo',
+  'Michael',
+  'Misha',
+  'Neall',
+  'Noa',
+  'Qurat',
+  'Rachel',
+  'Ricki',
+  'Ronak',
+  'Ross',
+  'Sammy',
+  'Saul',
+  'Simon',
+  'Sinclair',
+  'Sophia',
+  'Stephen',
+  'Sydney',
+  'Tom',
+  'Trevor',
+  'Typed',
+  'Vishal',
+]
 
 function JoinContent(props: { firstName: string }) {
   const { firstName } = props
@@ -149,7 +198,7 @@ export default function JoinPage() {
     setIsSubmitted(true)
     // Check if the name case blind; ignore lowercase
     setIsAuthorized(
-      ALLOWED_NAMES.some(
+      INVITED.some(
         (allowedName) =>
           allowedName.trim().toLowerCase() === name.trim().toLowerCase()
       )
