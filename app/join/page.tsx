@@ -12,17 +12,17 @@ function JoinContent(props: { firstName: string }) {
         {/* Main intro */}
         <div className="mb-16">
           <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
-            Join Mox
+            Join Mox?
           </h1>
           <p className="text-lg text-gray-700">
             Hey {firstName}! I'm excited to invite you to be one of the initial
             members at Mox. We're trying something a little different here, and
             the exact shape of our space and community is still very TBD; but
-            what I know for sure is that I'd love to have you around more.
-            Whether you'd like to make Mox your main workplace, just drop by
-            once in a while, or throw an event here -- please consider joining!
+            what I know for sure is that I'd love to have you around. Whether
+            you decide to make Mox your main workplace, throw an event here, or
+            just drop by once in a while — please consider joining!
             <br />
-            <br />- Austin
+            <br /> — Austin
           </p>
         </div>
 
@@ -37,11 +37,13 @@ function JoinContent(props: { firstName: string }) {
               you can come by anytime: during the day for focused work, or
               evenings and weekends to hang out. You'll have full access to our
               space: hot desks, lounges, cafeteria, call booths & meeting rooms.
+              And we'd ask you to make Mox yours: host small events, bring
+              guests, and find ways to help each other flourish.
               <br /> <br />
               If you're planning on coming in 4+ days a week, and especially if
-              you're working with teammates, the <b>Resident</b> option may be
-              better for you. This includes a dedicated desk and monitor, placed
-              next to other residents working on similar projects.
+              you're working with teammates, the <b>Resident</b> option may be a
+              better fit. This includes a dedicated desk and monitor, beside
+              other residents working on similar projects.
               <br /> <br />
               Finally, if you're not usually in SF, or expect to be coming in
               about once a week or less, we'd love to have you as a{' '}
@@ -52,7 +54,7 @@ function JoinContent(props: { firstName: string }) {
 
           <section>
             <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
-              Mox is in beta -- what does that mean?
+              Mox is in beta — what does that mean?
             </h2>
             <p className="text-gray-700">
               Our space is brand new, and we're still trying to figure out a
@@ -62,10 +64,10 @@ function JoinContent(props: { firstName: string }) {
               we'll orient to the whole AI thing...
               <br /> <br />
               The best way to learn is by doing! So our plan is to test out
-              different setups and events -- things might change a lot during
-              the next month or two. Hence, "beta". Hopefully, you're okay with
-              a bit of chaos, and are excited to work with us to improve our
-              space~
+              different setups and events — things might change a lot during the
+              next month or two. Hence, "beta". Hopefully, you're okay with a
+              bit of chaos, and are excited to work with us to improve our
+              space.
             </p>
           </section>
 
@@ -79,16 +81,16 @@ function JoinContent(props: { firstName: string }) {
               our prices and our costs.
               <br /> <br />
               Rather, our priority is to bring in <i>really great people</i>:
-              people who make you excited to drop by on a weekend afternoon, who
+              people who make you eager to drop by on a weekend afternoon, who
               you can't help but talk late into the night with, who help you
               become the best version of yourself. People with whom you'll share
               ideas, start projects, invite to your wedding.
               <br /> <br />
               It's so important that great people are at Mox that we're happy to
               invite people slowly, and run at a loss for a while. We have a
-              bunch of ideas on how to make Mox fiscally sustainable (eg grants;
-              sponsorships; donations; incubate projects like YC); for now, we
-              want to make it as easy as possible for you to say "yes".
+              bunch of ideas on how to make Mox fiscally sustainable (eg events;
+              grants; sponsorships; donations; incubate projects like YC); for
+              now, we want to make it as easy as possible for you to say "yes".
             </p>
           </section>
 
@@ -123,13 +125,14 @@ function JoinContent(props: { firstName: string }) {
       {/* Footer */}
       <footer className="border-t border-amber-200 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
-          Questions? Contact{' '}
+          Questions? Ping{' '}
           <a
             href="mailto:austin@manifund.org"
             className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
           >
             austin@manifund.org
           </a>
+          ~
         </div>
       </footer>
     </div>
@@ -192,8 +195,7 @@ export default function JoinPage() {
 
               {isSubmitted && !isAuthorized && (
                 <p className="mt-4 text-red-600 text-sm">
-                  Sorry, we might not be ready to onboard you yet -- reach out
-                  to{' '}
+                  Sorry, we might not be ready to onboard you yet — reach out to{' '}
                   <a
                     href="mailto:austin@manifund.org"
                     className="underline hover:text-red-700"
