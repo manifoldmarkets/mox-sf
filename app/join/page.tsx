@@ -1,6 +1,9 @@
-import Script from 'next/script'
+'use client'
 
-export default function JoinPage() {
+import { useState } from 'react'
+
+function JoinContent(props: { firstName: string }) {
+  const { firstName } = props
   return (
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       <div className="max-w-2xl mx-auto px-6 py-16">
@@ -10,12 +13,14 @@ export default function JoinPage() {
             Join Mox
           </h1>
           <p className="text-lg text-gray-700">
-            Hey! Austin here. I'm excited to invite you to be one of the initial
+            Hey {firstName}! I'm excited to invite you to be one of the initial
             members at Mox. We're trying something a little different here, and
             the exact shape of our space and community is still very TBD; but
             what I know for sure is that I'd love to have you around more.
             Whether you'd like to make Mox your main workplace, just drop by
             once in a while, or throw an event here -- please consider joining!
+            <br />
+            <br />- Austin
           </p>
         </div>
 
@@ -85,13 +90,6 @@ export default function JoinPage() {
             </p>
           </section>
 
-          {/* <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
-              How do I run an event?
-            </h2>
-            <p className="text-gray-700"></p>
-          </section> */}
-
           <section>
             <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               What is the guest policy?
@@ -129,6 +127,83 @@ export default function JoinPage() {
           </a>
         </div>
       </footer>
+    </div>
+  )
+}
+
+const ALLOWED_NAMES = ['Gavriel', 'Simon']
+
+export default function JoinPage() {
+  const [name, setName] = useState('')
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isAuthorized, setIsAuthorized] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitted(true)
+    // Check if the name case blind; ignore lowercase
+    setIsAuthorized(
+      ALLOWED_NAMES.some(
+        (allowedName) =>
+          allowedName.trim().toLowerCase() === name.trim().toLowerCase()
+      )
+    )
+  }
+  const niceName =
+    name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase()
+
+  if (isAuthorized) {
+    return <JoinContent firstName={niceName} />
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f9f6f0] flex items-center justify-center p-4">
+      <div className="w-full max-w-lg">
+        {/* Envelope design */}
+        <div className="bg-white shadow-xl p-12 relative">
+          {/* Envelope corners */}
+          <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
+          <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
+          <div className="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-amber-800"></div>
+          <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-amber-800"></div>
+
+          <div className="text-center">
+            <h1 className="text-3xl font-bold mb-8 font-playfair text-amber-900">
+              You're invited to join Mox
+            </h1>
+
+            <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your first name"
+                className="w-full px-4 py-2 border border-amber-200 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
+              <button
+                type="submit"
+                className="w-full px-6 py-2 bg-amber-800 text-white font-semibold rounded-md hover:bg-amber-900 transition-colors"
+              >
+                Submit
+              </button>
+
+              {isSubmitted && !isAuthorized && (
+                <p className="mt-4 text-red-600 text-sm">
+                  Sorry, we might not be ready to onboard you yet -- reach out
+                  to{' '}
+                  <a
+                    href="mailto:austin@manifund.org"
+                    className="underline hover:text-red-700"
+                  >
+                    austin@manifund.org
+                  </a>{' '}
+                  if this seems like a mistake!
+                </p>
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
