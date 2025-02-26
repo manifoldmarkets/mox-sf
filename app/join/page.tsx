@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 const INVITED = [
+  'Asara',
   'Alex',
   'Anna',
   'Antony',
