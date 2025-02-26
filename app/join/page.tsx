@@ -111,10 +111,13 @@ function JoinContent(props: { firstName: string }) {
       {/* Pricing Table */}
       <div className="bg-white pt-12">
         <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+        {/* @ts-ignore */}
         <stripe-pricing-table
           pricing-table-id="prctbl_1QwTFGRobJaZ7DVCQSiJ4VWj"
           publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
-        ></stripe-pricing-table>
+        >
+          {/* @ts-ignore */}
+        </stripe-pricing-table>
       </div>
 
       {/* Footer */}
