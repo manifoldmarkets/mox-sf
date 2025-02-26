@@ -95,6 +95,10 @@ function JoinContent(props: { firstName: string }) {
               better fit. This includes a dedicated desk and monitor, beside
               other residents working on similar projects.
               <br /> <br />
+              (What about private offices? We plan on supporting these, but
+              aren't ready to finalize our space layout, so for now just get
+              however many Resident slots, and email me to sort it out.)
+              <br /> <br />
               Finally, if you're not usually in SF, or expect to be coming in
               about once a week or less, we'd love to have you as a{' '}
               <b>Friend</b>. You're still welcome at our members events and our
