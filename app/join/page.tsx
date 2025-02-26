@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+const ALLOWED_NAMES = ['Gavriel', 'Simon', 'Rachel', 'Saul']
+
 function JoinContent(props: { firstName: string }) {
   const { firstName } = props
   return (
@@ -130,8 +132,6 @@ function JoinContent(props: { firstName: string }) {
     </div>
   )
 }
-
-const ALLOWED_NAMES = ['Gavriel', 'Simon']
 
 export default function JoinPage() {
   const [name, setName] = useState('')
