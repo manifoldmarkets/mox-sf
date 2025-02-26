@@ -54,27 +54,35 @@ const INVITED = [
   'Vishal',
 ]
 
-function JoinContent(props: { firstName: string }) {
+export function JoinContent(props: { firstName?: string }) {
   const { firstName } = props
   return (
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       <div className="max-w-2xl mx-auto px-6 py-16">
         {/* Main intro */}
-        <div className="mb-16">
-          <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
-            Join Mox?
-          </h1>
-          <p className="text-lg text-gray-700">
-            Hey {firstName}! I'm excited to invite you to be one of the initial
-            members at Mox. We're trying something a little different here, and
-            the exact shape of our space and community is still very TBD; but
-            what I know for sure is that I'd love to have you around. Whether
-            you decide to make Mox your main workplace, throw an event here, or
-            just drop by once in a while — please consider joining!
-            <br />
-            <br /> — Austin
-          </p>
-        </div>
+        {firstName ? (
+          <div className="mb-16">
+            <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
+              Join Mox?
+            </h1>
+            <p className="text-lg text-gray-700">
+              Hey {firstName}! I'm excited to invite you to be one of the
+              initial members at Mox. We're trying something a little different
+              here, and the exact shape of our space and community is still very
+              TBD; but what I know for sure is that I'd love to have you around.
+              Whether you decide to make Mox your main workplace, throw an event
+              here, or just drop by once in a while — please consider joining!
+              <br />
+              <br /> — Austin
+            </p>
+          </div>
+        ) : (
+          <div className="mb-16">
+            <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
+              Memberships at Mox
+            </h1>
+          </div>
+        )}
 
         {/* FAQ Sections */}
         <div className="space-y-12 mb-16">
@@ -166,14 +174,52 @@ function JoinContent(props: { firstName: string }) {
 
       {/* Pricing Table */}
       <div className="bg-white pt-12">
-        <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-        {/* @ts-ignore */}
-        <stripe-pricing-table
-          pricing-table-id="prctbl_1QwTFGRobJaZ7DVCQSiJ4VWj"
-          publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
-        >
-          {/* @ts-ignore */}
-        </stripe-pricing-table>
+        {firstName ? (
+          <>
+            <script
+              async
+              src="https://js.stripe.com/v3/pricing-table.js"
+            ></script>
+            {/* @ts-ignore */}
+            <stripe-pricing-table
+              pricing-table-id="prctbl_1QwTFGRobJaZ7DVCQSiJ4VWj"
+              publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
+            >
+              {/* @ts-ignore */}
+            </stripe-pricing-table>
+          </>
+        ) : (
+          <div className="max-w-4xl mx-auto px-6 pb-12">
+            <div className="grid grid-cols-3 gap-8">
+              {[
+                { type: 'Friend', price: '$80' },
+                { type: 'Member', price: '$280' },
+                { type: 'Resident', price: '$480' },
+              ].map((tier) => (
+                <div
+                  key={tier.type}
+                  className="text-center p-8 border border-amber-200"
+                >
+                  <h3 className="text-2xl font-playfair text-amber-900 mb-4">
+                    {tier.type}
+                  </h3>
+                  <p className="text-3xl font-bold text-gray-800 mb-2">
+                    {tier.price}
+                  </p>
+                  <p className="text-gray-600">per month</p>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-12 cursor-pointer">
+              <a
+                href="https://moxsf.com/apply"
+                className="inline-block px-8 py-3 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
+              >
+                Apply for membership
+              </a>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer */}
