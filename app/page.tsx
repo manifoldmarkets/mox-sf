@@ -25,14 +25,14 @@ export default function Component() {
   return (
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       {/* Open house banner */}
-      <a
+      {/* <a
         href="https://partiful.com/e/zS6HwL1bBgzfUqnVXC0X"
         target="_blank"
         rel="noopener noreferrer"
         className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
       >
         Open hours this week: Mon & Tues 10-6, then Taco Tues!
-      </a>
+      </a> */}
 
       {/* Hero section with dictionary definition */}
       <div className="max-w-3xl mx-auto pt-16 px-6">
