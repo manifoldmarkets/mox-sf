@@ -189,7 +189,10 @@ export function JoinContent(props: { firstName?: string }) {
             </stripe-pricing-table>
           </>
         ) : (
-          <div className="max-w-4xl mx-auto px-6 pb-12">
+          <div className="max-w-4xl mx-auto px-6 pb-12 relative">
+            <div className="absolute -top-8 left-6 bg-amber-100 text-gray-800 font-bold text-xs px-2 py-1 rounded">
+              Prices during beta
+            </div>
             <div className="grid grid-cols-3 gap-8">
               {[
                 { type: 'Friend', price: '$80' },
