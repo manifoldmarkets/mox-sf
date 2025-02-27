@@ -162,7 +162,7 @@ export default function Component() {
                   transition-all duration-200
                 "
                 >
-                  Join the waitlist
+                  Apply for membership
                 </a>
               </div>
 
