@@ -13,17 +13,15 @@ export default function DoorPage() {
     useState<SubmissionState>('initial')
 
   // Check for code in URL when component mounts
+  // Enables auto unlocking via QR code with format `moxsf.com/door?pin=1234`.
   useEffect(() => {
     // Get code from URL
-    const codeFromQuery = searchParams.get('code')
-    const shouldAutoSubmit = searchParams.get('submit') === 'true'
+    const pinFromQuery = searchParams.get('pin')
 
-    // If code exists and is numeric, set it as the PIN
-    if (codeFromQuery && /^\d+$/.test(codeFromQuery)) {
-      setPin(codeFromQuery)
+    // If code exists and is numeric, set it as the PIN and auto submit it
+    if (pinFromQuery && /^\d+$/.test(pinFromQuery)) {
+      setPin(pinFromQuery)
 
-      // Auto-submit if submit=true is in the URL
-      if (shouldAutoSubmit) {
         // Use setTimeout to ensure the PIN is set before submitting
         setTimeout(() => {
           submitPin()
@@ -32,10 +30,9 @@ export default function DoorPage() {
 
       // Clear the URL parameter/hash for security (so the code isn't visible in the URL after loading)
       // This is optional but recommended for security
-      if (codeFromQuery) {
+      if (pinFromQuery) {
         router.replace('/door')
       }
-    }
   }, [searchParams, router])
 
   useEffect(() => {
