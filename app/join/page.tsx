@@ -52,6 +52,7 @@ const INVITED = [
   'Tom',
   'Trevor',
   'Typed',
+  'Venki',
   'Vishal',
 ]
 
