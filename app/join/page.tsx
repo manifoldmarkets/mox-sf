@@ -23,6 +23,7 @@ const INVITED = [
   'Euan',
   'Gavriel',
   'Gytis',
+  'Ian',
   'James',
   'Joel',
   'Jonas',
