@@ -1,13 +1,42 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 type SubmissionState = 'initial' | 'submitting' | 'success' | 'failure'
 
 export default function DoorPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const [pin, setPin] = useState('')
   const [submissionState, setSubmissionState] =
     useState<SubmissionState>('initial')
+
+  // Check for code in URL when component mounts
+  useEffect(() => {
+    // Get code from URL
+    const codeFromQuery = searchParams.get('code')
+    const shouldAutoSubmit = searchParams.get('submit') === 'true'
+
+    // If code exists and is numeric, set it as the PIN
+    if (codeFromQuery && /^\d+$/.test(codeFromQuery)) {
+      setPin(codeFromQuery)
+
+      // Auto-submit if submit=true is in the URL
+      if (shouldAutoSubmit) {
+        // Use setTimeout to ensure the PIN is set before submitting
+        setTimeout(() => {
+          submitPin()
+        }, 100)
+      }
+
+      // Clear the URL parameter/hash for security (so the code isn't visible in the URL after loading)
+      // This is optional but recommended for security
+      if (codeFromQuery) {
+        router.replace('/door')
+      }
+    }
+  }, [searchParams, router])
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
