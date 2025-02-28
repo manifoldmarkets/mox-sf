@@ -1,13 +1,39 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 type SubmissionState = 'initial' | 'submitting' | 'success' | 'failure'
 
 export default function DoorPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const [pin, setPin] = useState('')
   const [submissionState, setSubmissionState] =
     useState<SubmissionState>('initial')
+
+  // Check for code in URL when component mounts
+  // Enables auto unlocking via QR code with format `moxsf.com/door?pin=1234`.
+  useEffect(() => {
+    // Get code from URL
+    const pinFromQuery = searchParams.get('pin')
+
+    // If code exists and is numeric, set it as the PIN and auto submit it
+    if (pinFromQuery && /^\d+$/.test(pinFromQuery)) {
+      setPin(pinFromQuery)
+
+        // Use setTimeout to ensure the PIN is set before submitting
+        setTimeout(() => {
+          submitPin()
+        }, 100)
+      }
+
+      // Clear the URL parameter/hash for security (so the code isn't visible in the URL after loading)
+      // This is optional but recommended for security
+      if (pinFromQuery) {
+        router.replace('/door')
+      }
+  }, [searchParams, router])
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
