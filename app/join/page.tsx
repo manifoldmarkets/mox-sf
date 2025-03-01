@@ -33,6 +33,7 @@ const INVITED = [
   'Jose',
   'JueYan',
   'Keri',
+  'Kevin',
   'Kipply',
   'Leila',
   'Leo',
