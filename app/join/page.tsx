@@ -1,65 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-
-const INVITED = [
-  'Asara',
-  'Alex',
-  'Anna',
-  'Antony',
-  'Ari',
-  'Austin',
-  'Ben',
-  'Brandon',
-  'Cassandra',
-  'Charlie',
-  'Chris',
-  'Constance',
-  'Collin',
-  'Dan',
-  'Dave',
-  'David',
-  'Devansh',
-  'Dylan',
-  'Elizabeth',
-  'Emma',
-  'Eric',
-  'Euan',
-  'Gavriel',
-  'Gytis',
-  'Ian',
-  'James',
-  'Joel',
-  'Jonas',
-  'Jose',
-  'JueYan',
-  'Keri',
-  'Kevin',
-  'Kipply',
-  'Leila',
-  'Leo',
-  'Michael',
-  'Misha',
-  'Neall',
-  'Noa',
-  'Qurat',
-  'Rachel',
-  'Ricki',
-  'Ronak',
-  'Ross',
-  'Sammy',
-  'Saul',
-  'Simon',
-  'Sinclair',
-  'Sophia',
-  'Stephen',
-  'Sydney',
-  'Tom',
-  'Trevor',
-  'Typed',
-  'Venki',
-  'Vishal',
-]
+import { useEffect, useState } from 'react'
+import { getAirtableData } from './get-invite-list'
 
 export function JoinContent(props: { firstName?: string }) {
   const { firstName } = props
@@ -249,20 +191,41 @@ export function JoinContent(props: { firstName?: string }) {
   )
 }
 
+function useInvited() {
+  const [inviteList, setInviteList] = useState<string[] | null>(null)
+
+  useEffect(() => {
+    async function fetchInvites() {
+      const names = await getAirtableData()
+      // Extract first names only
+      const firstNames = names.map((name: string) => name.split(' ')[0])
+      setInviteList(firstNames)
+    }
+    fetchInvites()
+  }, [])
+
+  return inviteList
+}
+
 export default function JoinPage() {
+  const inviteList = useInvited()
   const [name, setName] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isAuthorized, setIsAuthorized] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitted(true)
-    // Check if the name case blind; ignore lowercase
+    if (inviteList === null) {
+      alert('Still loading invites')
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+    }
+    // Check if the name matches case blind; ignore lowercase
     setIsAuthorized(
-      INVITED.some(
+      inviteList?.some(
         (allowedName) =>
           allowedName.trim().toLowerCase() === name.trim().toLowerCase()
-      )
+      ) ?? false
     )
   }
   const niceName =
