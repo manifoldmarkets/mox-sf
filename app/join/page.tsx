@@ -15,6 +15,7 @@ const INVITED = [
   'Charlie',
   'Chris',
   'Constance',
+  'Collin',
   'Dan',
   'Dave',
   'David',
