@@ -43,7 +43,6 @@ export const metadata = {
     images: ['/images/003.jpg'],
   },
   robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1',
 }
 
 export default function RootLayout({
