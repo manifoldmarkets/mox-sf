@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 
 type SubmissionState = 'initial' | 'submitting' | 'success' | 'failure'
 
-export default function DoorPage() {
-  const [pin, setPin] = useState('')
+export default function DoorPage({ initialPin = '' }: { initialPin?: string }) {
+  const [pin, setPin] = useState(initialPin)
   const [submissionState, setSubmissionState] =
     useState<SubmissionState>('initial')
 
