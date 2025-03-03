@@ -8,7 +8,7 @@ export async function getAirtableData() {
   const encodedFormula = encodeURIComponent(formula)
 
   const response = await fetch(
-    `https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?view=All%20people&fields%5B%5D=Name&filterByFormula=${encodedFormula}`,
+    `https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?fields%5B%5D=Name&filterByFormula=${encodedFormula}`,
     {
       headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
     }
