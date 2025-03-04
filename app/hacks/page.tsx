@@ -61,9 +61,21 @@ export default function HackzPage() {
   return (
     <div className="min-h-screen bg-[#f9f6f0] p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-amber-900 font-playfair">
-          AI for Epistemics Hackathon Projects
+        <h1 className="text-3xl font-bold mb-4 text-amber-900 font-playfair">
+          AI for Epistemics: Hackathon Showcase
         </h1>
+        <h2 className="text-lg mb-6 text-amber-800">
+          (submit projects at{' '}
+          <a
+            href="https://moxsf.com/submit-hack"
+            className="text-blue-600 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            moxsf.com/submit-hack
+          </a>
+          )
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <ProjectCard
