@@ -1,66 +1,80 @@
-import { headers } from 'next/headers'
-import Image from 'next/image'
+'use client'
 
-async function getProjects() {
-  const res = await fetch(
-    'https://api.airtable.com/v0/appNJwWpcxwIbW89F/Projects?maxRecords=3&view=Grid%20view',
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AI4E_API_KEY}`,
-      },
-    }
-  )
-  return res.json()
+import { useState, useEffect } from 'react'
+import ProjectCard from '../components/ProjectCard'
+
+interface Project {
+  id: string
+  fields: {
+    'Project title': string
+    Description: string
+    Screenshot?: { url: string }[]
+    By?: string
+    URL?: string
+  }
 }
 
-export default async function HackzPage() {
-  const { records } = await getProjects()
+export default function HackzPage() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState<Record<string, boolean>>({})
+  const [feedback, setFeedback] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch('/api/projects')
+        const data = await res.json()
+        setProjects(data.records)
+      } catch (error) {
+        console.error('Error fetching projects:', error)
+      }
+    }
+    fetchProjects()
+  }, [])
+
+  const handleJudge = async (project: Project) => {
+    if (loading[project.id]) return
+    setLoading((prev) => ({ ...prev, [project.id]: true }))
+
+    try {
+      const response = await fetch('/api/judge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: project.fields['Project title'],
+          description: project.fields.Description,
+          screenshot: project.fields.Screenshot?.[0]?.url,
+        }),
+      })
+
+      const data = await response.json()
+      setFeedback((prev) => ({ ...prev, [project.id]: data.feedback }))
+    } catch (error) {
+      console.error('Error getting feedback:', error)
+    } finally {
+      setLoading((prev) => ({ ...prev, [project.id]: false }))
+    }
+  }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {records.map((project) => (
-          <div
-            key={project.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
-          >
-            {project.fields.Screenshot && (
-              <div className="relative h-48">
-                <Image
-                  src={project.fields.Screenshot[0].url}
-                  alt={project.fields.Name || 'Project screenshot'}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-1 text-amber-800">
-                {project.fields['Project title']}
-              </h2>
-              {project.fields.By && (
-                <p className="text-sm text-gray-500 mb-2">
-                  by {project.fields.By}
-                </p>
-              )}
-              {project.fields.Description && (
-                <p className="text-gray-600 mb-3 line-clamp-3">
-                  {project.fields.Description}
-                </p>
-              )}
-              {project.fields.URL && (
-                <a
-                  href={project.fields.URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  View Project →
-                </a>
-              )}
-            </div>
-          </div>
-        ))}
+    <div className="min-h-screen bg-[#f9f6f0] p-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8 text-amber-900 font-playfair">
+          AI for Epistemics Hackathon Projects
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onJudge={handleJudge}
+              loading={loading[project.id]}
+              feedback={feedback[project.id]}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
