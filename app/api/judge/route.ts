@@ -76,6 +76,7 @@ ${ABOUT_HACKATHON}`,
     console.log('response', response)
 
     return NextResponse.json({
+      // @ts-ignore
       feedback: response.content[0].text,
     })
   } catch (error) {
