@@ -25,14 +25,14 @@ export default function ProjectCard({
   loading,
 }: ProjectCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white shadow-md overflow-hidden">
       {project.fields.Screenshot && (
         <div className="relative h-48">
           <Image
             src={project.fields.Screenshot[0].url}
             alt={project.fields['Project title'] || 'Project screenshot'}
             fill
-            className="object-cover"
+            className="object-cover border-b-2 border-amber-800"
           />
         </div>
       )}
@@ -44,7 +44,7 @@ export default function ProjectCard({
           <p className="text-sm text-gray-500 mb-2">by {project.fields.By}</p>
         )}
         {project.fields.Description && (
-          <p className="text-gray-600 mb-3 line-clamp-3">
+          <p className="text-gray-600 mb-3 text-sm line-clamp-5">
             {project.fields.Description}
           </p>
         )}
@@ -54,7 +54,7 @@ export default function ProjectCard({
               href={project.fields.URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 hover:underline text-xs"
             >
               View Project →
             </a>
