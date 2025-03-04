@@ -25,7 +25,7 @@ export default function ProjectCard({
   loading,
 }: ProjectCardProps) {
   return (
-    <div className="bg-white shadow-md overflow-hidden">
+    <div className="bg-white shadow-md overflow-hidden flex flex-col h-full">
       {project.fields.Screenshot && (
         <div className="relative h-48">
           <Image
@@ -36,19 +36,21 @@ export default function ProjectCard({
           />
         </div>
       )}
-      <div className="p-4">
-        <h2 className="text-xl font-semibold mb-1 text-amber-800">
-          {project.fields['Project title']}
-        </h2>
-        {project.fields.By && (
-          <p className="text-sm text-gray-500 mb-2">by {project.fields.By}</p>
-        )}
-        {project.fields.Description && (
-          <p className="text-gray-600 mb-3 text-sm line-clamp-5">
-            {project.fields.Description}
-          </p>
-        )}
-        <div className="flex flex-col gap-2">
+      <div className="p-4 flex flex-col flex-grow">
+        <div>
+          <h2 className="text-xl font-semibold mb-1 text-amber-800">
+            {project.fields['Project title']}
+          </h2>
+          {project.fields.By && (
+            <p className="text-sm text-gray-500 mb-2">by {project.fields.By}</p>
+          )}
+          {project.fields.Description && (
+            <p className="text-gray-600 mb-3 text-xs line-clamp-6">
+              {project.fields.Description}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 mt-auto">
           {project.fields.URL && (
             <a
               href={project.fields.URL}
@@ -62,7 +64,7 @@ export default function ProjectCard({
           <button
             onClick={() => onJudge(project)}
             disabled={loading}
-            className={`px-4 py-2 text-sm font-semibold rounded ${
+            className={`px-4 py-2 text-sm font-semibold rounded mt-2 ${
               loading
                 ? 'bg-gray-300 cursor-not-allowed'
                 : 'bg-amber-800 text-white hover:bg-amber-900'
