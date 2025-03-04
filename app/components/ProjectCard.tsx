@@ -67,7 +67,7 @@ export default function ProjectCard({
             className={`px-4 py-2 text-sm font-semibold rounded mt-2 ${
               loading
                 ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-amber-800 text-white hover:bg-amber-900'
+                : 'bg-white text-amber-800 border-2 border-amber-800 hover:bg-amber-50'
             }`}
           >
             {loading ? 'Getting feedback...' : 'Judge with Claude'}
