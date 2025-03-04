@@ -13,6 +13,12 @@ const nextConfig = {
         destination: 'https://airtable.com/appkHZ2UvU6SouT5y/shrB6kpJ6tH14kU50',
         permanent: false,
       },
+      {
+        source: '/submit-hack',
+        destination:
+          'https://airtable.com/appNJwWpcxwIbW89F/pagQzXpkrwU7VMYzx/form',
+        permanent: false,
+      },
     ]
   },
 }
