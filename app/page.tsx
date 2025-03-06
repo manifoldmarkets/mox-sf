@@ -144,7 +144,7 @@ export default function Component() {
 
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-amber-900 font-playfair">
-                  <strong>Opening Feb 2025</strong>
+                  <strong>Become a member</strong>
                 </h2>
                 <p className="mb-8 text-gray-600">
                   Looking for a mission-driven space to work from? We offer
@@ -167,8 +167,8 @@ export default function Component() {
               </div>
 
               <div className="mt-16 text-sm text-gray-500 italic">
-                We love everyone, but alas -- space is limited, and membership
-                is invite-only for now.
+                We love everyone, but alas -- our capacity is limited, and
+                membership is invite-only for now.
               </div>
             </div>
           </div>
