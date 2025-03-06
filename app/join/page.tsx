@@ -3,8 +3,11 @@
 import { useEffect, useState } from 'react'
 import { getAirtableData } from './get-invite-list'
 
-export function JoinContent(props: { firstName?: string }) {
-  const { firstName } = props
+export function JoinContent(props: {
+  firstName?: string
+  specialInvite?: string
+}) {
+  const { firstName, specialInvite } = props
   return (
     <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
       <div className="max-w-2xl mx-auto px-6 py-16">
@@ -62,6 +65,24 @@ export function JoinContent(props: { firstName?: string }) {
               online community!
             </p>
           </section>
+
+          {specialInvite === 'friend-of-mythos' && (
+            <div className="border border-amber-800 p-6 max-w-4xl mx-auto mt-8">
+              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+                Friend of Mythos
+              </h2>
+              <p className="text-gray-700 mb-4">
+                Since you're a friend of Vishal's, we'd especially love to have
+                you around -- try out a month of membership, on us!
+              </p>
+              <a
+                href="https://buy.stripe.com/7sI2bd9TMb582L6fYY"
+                className="inline-block px-6 py-2 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
+              >
+                Try out membership
+              </a>
+            </div>
+          )}
 
           <section>
             <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
@@ -207,15 +228,35 @@ function useInvited() {
   return inviteList
 }
 
+// Whitelist of special invite codes
+const SPECIAL_INVITE_CODES = ['friend-of-mythos']
+
 export default function JoinPage() {
   const inviteList = useInvited()
   const [name, setName] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isAuthorized, setIsAuthorized] = useState(false)
+  const [specialInvite, setSpecialInvite] = useState<string | null>(null)
+
+  // Check for invite parameter in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const inviteCode = params.get('invite')
+    if (inviteCode && SPECIAL_INVITE_CODES.includes(inviteCode)) {
+      setSpecialInvite(inviteCode)
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitted(true)
+
+    // If using a special invite code, authorize immediately
+    if (specialInvite) {
+      setIsAuthorized(true)
+      return
+    }
+
     if (inviteList === null) {
       alert('Still loading invites')
       await new Promise((resolve) => setTimeout(resolve, 3000))
@@ -232,7 +273,11 @@ export default function JoinPage() {
     name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase()
 
   if (isAuthorized) {
-    return <JoinContent firstName={niceName} />
+    return (
+      <>
+        <JoinContent firstName={niceName} specialInvite={specialInvite} />
+      </>
+    )
   }
 
   return (
