@@ -1,15 +1,5 @@
 import Image from 'next/image'
-
-interface Project {
-  id: string
-  fields: {
-    'Project title': string
-    Description: string
-    Screenshot?: { url: string }[]
-    By?: string
-    URL?: string
-  }
-}
+import { Project } from '../lib/projects'
 
 interface ProjectCardProps {
   project: Project

@@ -8,7 +8,7 @@ export async function GET() {
         headers: {
           Authorization: `Bearer ${process.env.AI4E_API_KEY}`,
         },
-        cache: 'no-store',
+        next: { revalidate: 60 },
       }
     )
 
