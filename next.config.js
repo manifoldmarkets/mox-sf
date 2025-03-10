@@ -4,6 +4,10 @@ const redirects = {
   '/submit-hack':
     'https://airtable.com/appNJwWpcxwIbW89F/pagQzXpkrwU7VMYzx/form',
   '/discord': 'https://discord.gg/jZHTRHUWy9',
+
+  // Endpoints mostly for admin/staff
+  '/eventz':
+    'https://airtable.com/appkHZ2UvU6SouT5y/tblqzGMNypqO3jftS/viw1hb5Y019dA4NaL?blocks=hide',
 }
 
 /** @type {import('next').NextConfig} */
