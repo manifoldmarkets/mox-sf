@@ -45,7 +45,7 @@ export default function HacksClient({ initialProjects }: HacksClientProps) {
         <h1 className="text-3xl font-bold mb-4 text-amber-900 font-playfair">
           AI for Epistemics: Hackathon Showcase
         </h1>
-        <h2 className="text-lg mb-6 text-amber-800">
+        {/* <h2 className="text-lg mb-6 text-amber-800">
           (submit projects at{' '}
           <a
             href="https://moxsf.com/submit-hack"
@@ -56,7 +56,7 @@ export default function HacksClient({ initialProjects }: HacksClientProps) {
             moxsf.com/submit-hack
           </a>
           )
-        </h2>
+        </h2> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <ProjectCard
