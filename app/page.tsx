@@ -62,7 +62,7 @@ export default function Component() {
 
             <div>
               <span className="font-bold">
-                4. A new coworking & events space in San Francisco.
+                4. A coworking & events space in San Francisco.
               </span>
             </div>
           </div>
