@@ -1,4 +1,5 @@
 import Gallery from './gallery'
+import PeopleGallery from './people-gallery'
 
 function Link({
   href,
@@ -72,7 +73,7 @@ export default function Component() {
       {/* Main content */}
       <div className="max-w-4xl mx-auto mt-20 px-6">
         <section className="mb-16">
-          <Gallery />
+          <PeopleGallery />
         </section>
 
         <div className="grid md:grid-cols-2 gap-12">
@@ -121,7 +122,7 @@ export default function Component() {
                   <Link href="https://www.solarissf.com/">Solaris AI</Link>
                 </p>
 
-                <div className="mb-4 aspect-video">
+                {/* <div className="mb-4 aspect-video">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.7127335975223!2d-122.42051242356727!3d37.77159011642012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808580997b95c7e1%3A0x4e0f8c7d9f9f9b0!2s1680%20Mission%20St%2C%20San%20Francisco%2C%20CA%2094103!5e0!3m2!1sen!2sus!4v1707901234567!5m2!1sen!2sus"
                     width="100%"
@@ -131,7 +132,7 @@ export default function Component() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   ></iframe>
-                </div>
+                </div> */}
               </div>
             </section>
           </div>
@@ -173,6 +174,10 @@ export default function Component() {
             </div>
           </div>
         </div>
+
+        <section className="my-16">
+          <Gallery />
+        </section>
       </div>
 
       {/* Footer */}
