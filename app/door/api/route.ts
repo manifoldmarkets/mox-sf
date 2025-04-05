@@ -5,6 +5,7 @@ export async function POST(request: Request) {
   const PINS = [
     process.env.MASTER_PIN,
     process.env.DAILY_PIN,
+    process.env.EVENT_PIN,
     process.env.DELIVERY_PIN,
   ]
 
