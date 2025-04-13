@@ -35,7 +35,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
 
   return (
     <div
-      className="absolute left-1 right-1 bg-beige-50 rounded shadow-sm border border-amber-100 overflow-hidden"
+      className="absolute left-1 right-1 bg-beige-50 border border-amber-100 overflow-hidden"
       style={{
         top: `${top}px`,
         height: `${clampedHeight}px`,
@@ -71,7 +71,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
   const timeLinePosition = Math.max(0, (currentHour - START_HOUR) * HOUR_HEIGHT)
 
   return (
-    <div className="bg-white rounded-lg border border-amber-100">
+    <div className="bg-white border border-amber-100">
       {/* Header row with days */}
       <div
         className="grid"

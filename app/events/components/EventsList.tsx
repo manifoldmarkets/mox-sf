@@ -13,7 +13,7 @@ function EventTypeTag({ type }: { type: string }) {
 
   return (
     <span
-      className={`absolute top-4 right-4 px-2 py-1 rounded text-xs font-medium ${colorClasses}`}
+      className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium ${colorClasses}`}
     >
       {type.toLowerCase()}
     </span>
@@ -66,7 +66,7 @@ export default function EventsList({ events }: { events: Event[] }) {
             {dayEvents.map((event) => (
               <div
                 key={event.id}
-                className="bg-white p-6 rounded-lg shadow-sm border border-amber-100 relative"
+                className="bg-white p-6 shadow-sm border border-amber-100 relative"
               >
                 {event.fields.Type && <EventTypeTag type={event.fields.Type} />}
                 <h3 className="text-xl font-semibold text-amber-900 mb-2">
