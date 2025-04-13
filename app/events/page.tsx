@@ -20,7 +20,7 @@ export default function EventsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f9f6f0] text-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-beige-50 text-gray-800 flex items-center justify-center">
         <div className="text-amber-900">Loading events...</div>
       </div>
     )
@@ -28,14 +28,14 @@ export default function EventsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#f9f6f0] text-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-beige-50 text-gray-800 flex items-center justify-center">
         <div className="text-red-600">{error}</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
+    <div className="min-h-screen bg-beige-50 text-gray-800">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 font-playfair text-amber-900">
           Events at Mox
