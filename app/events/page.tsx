@@ -47,7 +47,7 @@ export default function EventsPage() {
               <Tab
                 key={tab}
                 className={({ selected }) =>
-                  `w-full rounded-lg py-2.5 text-sm font-medium leading-5
+                  `w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-0 focus:outline-none focus:ring-0
                   ${
                     selected
                       ? 'bg-white text-amber-900 shadow'

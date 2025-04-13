@@ -26,7 +26,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
 
   return (
     <div
-      className="absolute left-1 right-1 bg-amber-50 rounded shadow-sm border border-amber-100 overflow-hidden"
+      className="absolute left-1 right-1 bg-[#f9f6f0] rounded shadow-sm border border-amber-100 overflow-hidden"
       style={{
         top: `${top}px`,
         height: `${height}px`,
@@ -73,7 +73,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
           <div
             key={day.toISOString()}
             className={`p-4 text-center border-l border-amber-100 ${
-              isSameDay(day, today) ? 'bg-amber-100' : ''
+              isSameDay(day, today) ? 'bg-[#f9f6f0]' : ''
             }`}
           >
             <div className="font-medium text-amber-900">
