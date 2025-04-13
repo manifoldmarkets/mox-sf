@@ -43,7 +43,7 @@ export default function EventsPage() {
 
         <TabGroup>
           <TabList className="flex space-x-1 rounded-xl bg-amber-900/20 p-1 mb-6">
-            {['List View', 'Weekly View', 'Monthly View'].map((tab) => (
+            {['Upcoming', 'Week', 'Month'].map((tab) => (
               <Tab
                 key={tab}
                 className={({ selected }) =>
