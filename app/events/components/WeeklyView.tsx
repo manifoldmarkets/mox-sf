@@ -9,7 +9,7 @@ import {
   isSameDay,
 } from 'date-fns'
 
-const HOURS = Array.from({ length: 15 }, (_, i) => i + 9) // 9am to midnight
+const HOURS = Array.from({ length: 16 }, (_, i) => i + 8) // 8am to 11pm
 const HOUR_HEIGHT = 40 // pixels per hour
 
 function EventBlock({ event, index }: { event: Event; index: number }) {
@@ -22,7 +22,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
   const startHour = start.getHours() + start.getMinutes() / 60
   const durationMinutes = differenceInMinutes(end, start)
   const height = (durationMinutes / 60) * HOUR_HEIGHT
-  const top = (startHour - 8) * HOUR_HEIGHT // Offset from 8am
+  const top = (startHour - HOURS[0]) * HOUR_HEIGHT // Offset from first hour
 
   return (
     <div
@@ -58,7 +58,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
 
   // Calculate current time position
   const currentHour = today.getHours() + today.getMinutes() / 60
-  const timeLinePosition = (currentHour - 8) * HOUR_HEIGHT
+  const timeLinePosition = (currentHour - HOURS[0]) * HOUR_HEIGHT
 
   return (
     <div className="bg-white rounded-lg border border-amber-100">
@@ -90,11 +90,11 @@ export default function WeeklyView({ events }: { events: Event[] }) {
       >
         {/* Time labels */}
         <div className="relative">
-          {HOURS.map((hour) => (
+          {HOURS.slice(0, -1).map((hour) => (
             <div
               key={hour}
               className="absolute w-full text-right pr-2 text-sm text-gray-500"
-              style={{ top: `${(hour - 8) * HOUR_HEIGHT}px` }}
+              style={{ top: `${(hour - HOURS[0]) * HOUR_HEIGHT}px` }}
             >
               {format(new Date().setHours(hour, 0), 'h a')}
             </div>
@@ -115,14 +115,14 @@ export default function WeeklyView({ events }: { events: Event[] }) {
             <div
               key={day.toISOString()}
               className="relative border-l border-amber-100"
-              style={{ height: `${HOURS.length * HOUR_HEIGHT}px` }}
+              style={{ height: `${(HOURS.length - 1) * HOUR_HEIGHT}px` }}
             >
               {/* Hour lines */}
               {HOURS.map((hour) => (
                 <div
                   key={hour}
                   className="absolute w-full border-t border-amber-100/50"
-                  style={{ top: `${(hour - 8) * HOUR_HEIGHT}px` }}
+                  style={{ top: `${(hour - HOURS[0]) * HOUR_HEIGHT}px` }}
                 />
               ))}
 
