@@ -23,20 +23,23 @@ export async function getEvents(): Promise<Event[]> {
   return data.records?.filter(event => event.fields?.['Start Date']) || []
 }
 
-export function formatEventTime(event: Event): string {
+export function formatEventTime(event: Event, showDate = false): string {
   if (!event.fields?.['Start Date']) return 'Date not available'
 
   const date = parseISO(event.fields['Start Date'])
   if (isNaN(date.getTime())) return 'Invalid date'
 
-  const dateStr = format(date, 'EEEE, MMMM d')
   const startTime = format(date, 'h:mm a')
   
-  if (!event.fields['End Date']) return `${dateStr}, ${startTime}`
+  if (!event.fields['End Date']) {
+    return showDate ? `${format(date, 'EEEE, MMMM d')}, ${startTime}` : startTime
+  }
   
   const endDate = parseISO(event.fields['End Date'])
   const endTime = format(endDate, 'h:mm a')
-  return `${dateStr}, ${startTime} - ${endTime}`
+  return showDate 
+    ? `${format(date, 'EEEE, MMMM d')}, ${startTime} - ${endTime}`
+    : `${startTime} - ${endTime}`
 }
 
 export function getEventDate(event: Event): Date | null {
