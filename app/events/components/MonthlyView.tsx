@@ -27,7 +27,7 @@ function DayCard({
 
   return (
     <div
-      className={`bg-white p-2 h-32 overflow-y-auto ${
+      className={`bg-white p-1 h-32 overflow-y-auto ${
         isDayToday ? 'bg-beige-50' : ''
       }`}
     >
@@ -86,7 +86,7 @@ export default function MonthlyView({ events }: { events: Event[] }) {
         {format(today, 'MMMM yyyy')}
       </h3>
 
-      <div className="grid grid-cols-7 gap-px bg-amber-100">
+      <div className="grid grid-cols-7 bg-amber-100">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div
             key={day}
