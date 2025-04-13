@@ -35,11 +35,11 @@ function DayCard({
       {dayEvents.map((event) => (
         <div
           key={event.id}
-          className="text-xs p-1 mb-1 bg-amber-100 rounded"
+          className="text-xs p-1 mb-1 bg-amber-50 rounded shadow-sm border border-amber-100"
           title={event.fields.Notes || event.fields.Description}
         >
           <span className="text-amber-900 font-medium block">
-            <span className="text-amber-600">
+            <span className="text-amber-600 font-light">
               {format(parseISO(event.fields['Start Date']), 'h:mm a').replace(
                 ':00',
                 ''
@@ -47,6 +47,11 @@ function DayCard({
             </span>{' '}
             {event.fields.Name}
           </span>
+          {event.fields.Location && (
+            <div className="text-gray-600 truncate mt-0.5">
+              📍 {event.fields.Location}
+            </div>
+          )}
         </div>
       ))}
     </div>
