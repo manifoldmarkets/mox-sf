@@ -1,6 +1,7 @@
 import { format, parseISO, isSameDay } from 'date-fns'
 
-export interface Event {
+// The raw event data from Airtable
+interface AirtableEvent {
   id: string
   fields: {
     Name: string
@@ -15,44 +16,66 @@ export interface Event {
   }
 }
 
+// Our cleaned up event interface
+export interface Event {
+  id: string
+  name: string
+  startDate: Date
+  endDate?: Date
+  description?: string
+  location?: string
+  notes?: string
+  type?: string
+  status?: string
+  url?: string
+}
+
 export async function getEvents(): Promise<Event[]> {
   const res = await fetch('/api/events')
   if (!res.ok) throw new Error('Failed to fetch events')
 
   const data = await res.json()
-  return data.records?.filter((event) => event.fields?.['Start Date']) || []
+  const records = data.records?.filter(
+    (event: AirtableEvent) => event.fields?.['Start Date']
+  )
+
+  return (
+    records?.map((record: AirtableEvent): Event => ({
+      id: record.id,
+      name: record.fields.Name,
+      startDate: parseISO(record.fields['Start Date']),
+      endDate: record.fields['End Date']
+        ? parseISO(record.fields['End Date'])
+        : undefined,
+      description: record.fields.Description,
+      location: record.fields.Location,
+      notes: record.fields.Notes,
+      type: record.fields.Type,
+      status: record.fields.Status,
+      url: record.fields.URL,
+    })) || []
+  )
 }
 
 export function formatEventTime(event: Event, showDate = false): string {
-  if (!event.fields?.['Start Date']) return 'Date not available'
+  const startTime = format(event.startDate, 'h:mm a').replace(':00', '')
 
-  const date = parseISO(event.fields['Start Date'])
-  if (isNaN(date.getTime())) return 'Invalid date'
-
-  const startTime = format(date, 'h:mm a').replace(':00', '')
-
-  if (!event.fields['End Date']) {
+  if (!event.endDate) {
     return showDate
-      ? `${format(date, 'EEEE, MMMM d')}, ${startTime}`
+      ? `${format(event.startDate, 'EEEE, MMMM d')}, ${startTime}`
       : startTime
   }
 
-  const endDate = parseISO(event.fields['End Date'])
-  const endTime = format(endDate, 'h:mm a').replace(':00', '')
+  const endTime = format(event.endDate, 'h:mm a').replace(':00', '')
   return showDate
-    ? `${format(date, 'EEEE, MMMM d')}, ${startTime} - ${endTime}`
+    ? `${format(event.startDate, 'EEEE, MMMM d')}, ${startTime} - ${endTime}`
     : `${startTime} - ${endTime}`
 }
 
-export function getEventDate(event: Event): Date | null {
-  if (!event.fields?.['Start Date']) return null
-  const date = parseISO(event.fields['Start Date'])
-  return isNaN(date.getTime()) ? null : date
+export function getEventDate(event: Event): Date {
+  return event.startDate
 }
 
 export function filterEventsByDay(events: Event[], day: Date): Event[] {
-  return events.filter((event) => {
-    const eventDate = getEventDate(event)
-    return eventDate && isSameDay(eventDate, day)
-  })
+  return events.filter((event) => isSameDay(event.startDate, day))
 }

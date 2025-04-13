@@ -25,18 +25,13 @@ export default function EventsList({ events }: { events: Event[] }) {
 
   // Filter out past events
   const futureEvents = events.filter((event) => {
-    const eventDate = getEventDate(event)
-    return (
-      eventDate && (isAfter(eventDate, today) || isSameDay(eventDate, today))
-    )
+    return isAfter(event.startDate, today) || isSameDay(event.startDate, today)
   })
 
   // Group events by day
   const eventsByDay = futureEvents.reduce(
     (groups, event) => {
-      const date = getEventDate(event)
-      if (!date) return groups
-
+      const date = event.startDate
       const dayKey = format(date, 'yyyy-MM-dd')
       if (!groups[dayKey]) {
         groups[dayKey] = {
@@ -68,23 +63,23 @@ export default function EventsList({ events }: { events: Event[] }) {
                 key={event.id}
                 className="bg-white p-6 shadow-sm border border-amber-100 relative"
               >
-                {event.fields.Type && <EventTypeTag type={event.fields.Type} />}
+                {event.type && <EventTypeTag type={event.type} />}
                 <h3 className="text-xl font-semibold text-amber-900 mb-2">
-                  {event.fields.Name}
+                  {event.name}
                 </h3>
                 <p className="text-amber-800 mb-2">{formatEventTime(event)}</p>
-                {event.fields.Location && (
+                {event.location && (
                   <p className="text-gray-600 text-sm mb-2">
-                    📍 {event.fields.Location}
+                    📍 {event.location}
                   </p>
                 )}
-                {event.fields.Notes && (
-                  <p className="text-gray-700 mt-2">{event.fields.Notes}</p>
+                {event.notes && (
+                  <p className="text-gray-700 mt-2">{event.notes}</p>
                 )}
-                {event.fields.URL && (
+                {event.url && (
                   <div className="mt-4">
                     <a
-                      href={event.fields.URL}
+                      href={event.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-amber-700 hover:text-amber-900 underline"

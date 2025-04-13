@@ -6,7 +6,6 @@ import {
   eachDayOfInterval,
   format,
   isToday,
-  parseISO,
   isSameMonth,
 } from 'date-fns'
 
@@ -46,20 +45,17 @@ function DayCard({
         <div
           key={event.id}
           className="text-xs p-1 mb-1 bg-beige-50 border border-amber-100"
-          title={event.fields.Notes || event.fields.Description}
+          title={event.notes || event.description}
         >
           <span className="text-amber-900 font-medium block">
             <span className="text-amber-600 font-light">
-              {format(parseISO(event.fields['Start Date']), 'h:mm a').replace(
-                ':00',
-                ''
-              )}
+              {format(event.startDate, 'h:mm a').replace(':00', '')}
             </span>{' '}
-            {event.fields.Name}
+            {event.name}
           </span>
-          {event.fields.Location && (
+          {event.location && (
             <div className="text-gray-600 truncate mt-0.5">
-              📍 {event.fields.Location}
+              📍 {event.location}
             </div>
           )}
         </div>

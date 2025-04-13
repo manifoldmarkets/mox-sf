@@ -4,7 +4,6 @@ import {
   startOfWeek,
   addDays,
   format,
-  parseISO,
   differenceInMinutes,
   isSameDay,
 } from 'date-fns'
@@ -18,10 +17,8 @@ const HOURS = Array.from(
 const HOUR_HEIGHT = 40 // pixels per hour
 
 function EventBlock({ event, index }: { event: Event; index: number }) {
-  const start = parseISO(event.fields['Start Date'])
-  const end = event.fields['End Date']
-    ? parseISO(event.fields['End Date'])
-    : addDays(start, 0)
+  const start = event.startDate
+  const end = event.endDate || addDays(start, 0)
 
   // Calculate position and height
   const startHour = start.getHours() + start.getMinutes() / 60
@@ -44,16 +41,16 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
     >
       <div className="p-2 text-xs">
         <div className="font-medium text-amber-900 line-clamp-3">
-          {event.fields.Name}
+          {event.name}
         </div>
         <div className="text-amber-800 mt-0.5">
           {format(start, 'h:mm a').replace(':00', '')}
-          {event.fields['End Date'] &&
+          {event.endDate &&
             ` - ${format(end, 'h:mm a').replace(':00', '')}`}
         </div>
-        {event.fields.Location && clampedHeight > 60 && (
+        {event.location && clampedHeight > 60 && (
           <div className="text-gray-600 truncate mt-0.5">
-            📍 {event.fields.Location}
+            📍 {event.location}
           </div>
         )}
       </div>
@@ -114,9 +111,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
         {/* Day columns */}
         {days.map((day) => {
           const dayEvents = filterEventsByDay(events, day).sort((a, b) => {
-            const aStart = parseISO(a.fields['Start Date']).getTime()
-            const bStart = parseISO(b.fields['Start Date']).getTime()
-            return aStart - bStart
+            return a.startDate.getTime() - b.startDate.getTime()
           })
 
           const isToday = isSameDay(day, today)
