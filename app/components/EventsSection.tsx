@@ -60,11 +60,11 @@ export default function EventsSection({
 
       <TabGroup>
         <TabList className="flex space-x-1 bg-amber-900/20 p-1 mb-6">
-          {['Upcoming Events', 'Week', 'Month'].map((tab) => (
+          {['Events', 'Week', 'Month'].map((tab) => (
             <Tab
               key={tab}
               className={({ selected }) =>
-                `w-full rounded-sm py-2.5 text-sm font-medium leading-5 ring-0 focus:outline-none focus:ring-0
+                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0
                 ${
                   selected
                     ? 'bg-white text-amber-900 shadow'
@@ -72,7 +72,7 @@ export default function EventsSection({
                 }`
               }
             >
-              {tab}
+              {tab.toUpperCase()}
             </Tab>
           ))}
         </TabList>
