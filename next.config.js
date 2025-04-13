@@ -1,6 +1,5 @@
 const redirects = {
   '/apply': 'https://airtable.com/appkHZ2UvU6SouT5y/pagGp5iw06B9Fc57g/form',
-  '/events': 'https://airtable.com/appkHZ2UvU6SouT5y/shrB6kpJ6tH14kU50',
   '/submit-hack':
     'https://airtable.com/appNJwWpcxwIbW89F/pagQzXpkrwU7VMYzx/form',
   '/discord': 'https://discord.gg/jZHTRHUWy9',
