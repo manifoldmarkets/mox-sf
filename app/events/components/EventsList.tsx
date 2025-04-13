@@ -15,7 +15,7 @@ function EventTypeTag({ type }: { type: string }) {
     <span
       className={`absolute top-4 right-4 px-2 py-1 rounded text-xs font-medium ${colorClasses}`}
     >
-      {type}
+      {type.toLowerCase()}
     </span>
   )
 }
