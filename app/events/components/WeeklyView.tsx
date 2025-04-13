@@ -38,8 +38,9 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
           {event.fields.Name}
         </div>
         <div className="text-amber-800 mt-0.5">
-          {format(start, 'h:mm a')}
-          {event.fields['End Date'] && ` - ${format(end, 'h:mm a')}`}
+          {format(start, 'h:mm a').replace(':00', '')}
+          {event.fields['End Date'] &&
+            ` - ${format(end, 'h:mm a').replace(':00', '')}`}
         </div>
         {event.fields.Location && height > 60 && (
           <div className="text-gray-600 truncate mt-0.5">

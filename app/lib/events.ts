@@ -18,9 +18,9 @@ export interface Event {
 export async function getEvents(): Promise<Event[]> {
   const res = await fetch('/api/events')
   if (!res.ok) throw new Error('Failed to fetch events')
-  
+
   const data = await res.json()
-  return data.records?.filter(event => event.fields?.['Start Date']) || []
+  return data.records?.filter((event) => event.fields?.['Start Date']) || []
 }
 
 export function formatEventTime(event: Event, showDate = false): string {
@@ -29,15 +29,17 @@ export function formatEventTime(event: Event, showDate = false): string {
   const date = parseISO(event.fields['Start Date'])
   if (isNaN(date.getTime())) return 'Invalid date'
 
-  const startTime = format(date, 'h:mm a')
-  
+  const startTime = format(date, 'h:mm a').replace(':00', '')
+
   if (!event.fields['End Date']) {
-    return showDate ? `${format(date, 'EEEE, MMMM d')}, ${startTime}` : startTime
+    return showDate
+      ? `${format(date, 'EEEE, MMMM d')}, ${startTime}`
+      : startTime
   }
-  
+
   const endDate = parseISO(event.fields['End Date'])
-  const endTime = format(endDate, 'h:mm a')
-  return showDate 
+  const endTime = format(endDate, 'h:mm a').replace(':00', '')
+  return showDate
     ? `${format(date, 'EEEE, MMMM d')}, ${startTime} - ${endTime}`
     : `${startTime} - ${endTime}`
 }
@@ -49,7 +51,7 @@ export function getEventDate(event: Event): Date | null {
 }
 
 export function filterEventsByDay(events: Event[], day: Date): Event[] {
-  return events.filter(event => {
+  return events.filter((event) => {
     const eventDate = getEventDate(event)
     return eventDate && isSameDay(eventDate, day)
   })
