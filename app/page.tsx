@@ -177,7 +177,7 @@ export default function Component() {
         </div>
 
         {/* Events section */}
-        <section className="mt-24 mb-16">
+        <section className="mt-8 my-16">
           <EventsSection />
         </section>
 
