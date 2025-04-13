@@ -12,21 +12,10 @@ export default function EventsPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    async function fetchEvents() {
-      try {
-        setLoading(true)
-        setError(null)
-        const eventsData = await getEvents()
-        setEvents(eventsData)
-      } catch (error) {
-        console.error('Failed to fetch events:', error)
-        setError('Failed to load events. Please try again later.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchEvents()
+    getEvents()
+      .then(setEvents)
+      .catch(() => setError('Failed to load events'))
+      .finally(() => setLoading(false))
   }, [])
 
   if (loading) {

@@ -1,27 +1,17 @@
 'use client'
-import { Event, formatEventTime } from '../../lib/events'
-import { startOfWeek, addDays, format, isSameDay, parseISO } from 'date-fns'
+import { Event, filterEventsByDay } from '../../lib/events'
+import { startOfWeek, addDays, format, parseISO } from 'date-fns'
 
 export default function WeeklyView({ events }: { events: Event[] }) {
   const today = new Date()
-  const weekStart = startOfWeek(today, { weekStartsOn: 1 }) // Start from Monday
+  const weekStart = startOfWeek(today, { weekStartsOn: 1 })
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
 
   return (
     <div className="overflow-x-auto">
       <div className="flex min-w-[800px] gap-4">
         {days.map((day) => {
-          const dayEvents = events.filter((event) => {
-            try {
-              if (!event.fields?.['Start Date']) return false
-              const eventDate = parseISO(event.fields['Start Date'])
-              if (!eventDate || isNaN(eventDate.getTime())) return false
-              return isSameDay(eventDate, day)
-            } catch (error) {
-              console.error('Error parsing date:', error)
-              return false
-            }
-          })
+          const dayEvents = filterEventsByDay(events, day)
 
           return (
             <div
@@ -42,7 +32,8 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                     </p>
                     <p className="text-sm text-amber-800">
                       {format(parseISO(event.fields['Start Date']), 'h:mm a')}
-                      {event.fields['End Date'] && ` - ${format(parseISO(event.fields['End Date']), 'h:mm a')}`}
+                      {event.fields['End Date'] && 
+                        ` - ${format(parseISO(event.fields['End Date']), 'h:mm a')}`}
                     </p>
                     {event.fields.URL && (
                       <a

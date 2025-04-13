@@ -1,11 +1,10 @@
 'use client'
-import { Event } from '../../lib/events'
+import { Event, filterEventsByDay } from '../../lib/events'
 import {
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
   format,
-  isSameDay,
   isToday,
   parseISO,
 } from 'date-fns'
@@ -15,12 +14,7 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   const monthStart = startOfMonth(today)
   const monthEnd = endOfMonth(today)
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
-
-  // Get day of week for the first day (0-6, 0 = Sunday)
-  const firstDayOfWeek = monthStart.getDay()
-  
-  // Add empty cells for days before the first day of the month
-  const emptyCells = Array(firstDayOfWeek).fill(null)
+  const emptyCells = Array(monthStart.getDay()).fill(null)
   const allCells = [...emptyCells, ...days]
 
   return (
@@ -44,17 +38,7 @@ export default function MonthlyView({ events }: { events: Event[] }) {
             return <div key={`empty-${index}`} className="bg-white p-2 h-32" />
           }
 
-          const dayEvents = events.filter((event) => {
-            try {
-              if (!event.fields?.['Start Date']) return false
-              const eventDate = parseISO(event.fields['Start Date'])
-              if (!eventDate || isNaN(eventDate.getTime())) return false
-              return isSameDay(eventDate, day)
-            } catch (error) {
-              console.error('Error parsing date:', error)
-              return false
-            }
-          })
+          const dayEvents = filterEventsByDay(events, day)
 
           return (
             <div
