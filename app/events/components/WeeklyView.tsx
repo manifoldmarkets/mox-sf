@@ -9,7 +9,12 @@ import {
   isSameDay,
 } from 'date-fns'
 
-const HOURS = Array.from({ length: 16 }, (_, i) => i + 8) // 8am to 11pm
+const START_HOUR = 8 // 8am
+const END_HOUR = 23 // 11pm
+const HOURS = Array.from(
+  { length: END_HOUR - START_HOUR + 1 },
+  (_, i) => START_HOUR + i
+)
 const HOUR_HEIGHT = 40 // pixels per hour
 
 function EventBlock({ event, index }: { event: Event; index: number }) {
@@ -22,14 +27,18 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
   const startHour = start.getHours() + start.getMinutes() / 60
   const durationMinutes = differenceInMinutes(end, start)
   const height = (durationMinutes / 60) * HOUR_HEIGHT
-  const top = (startHour - HOURS[0]) * HOUR_HEIGHT // Offset from first hour
+  const top = Math.max(0, (startHour - START_HOUR) * HOUR_HEIGHT) // Clamp to top of view
+
+  // Clamp height to stay within view
+  const maxHeight = (END_HOUR + 1 - START_HOUR) * HOUR_HEIGHT
+  const clampedHeight = Math.min(height, maxHeight - top)
 
   return (
     <div
       className="absolute left-1 right-1 bg-beige-50 rounded shadow-sm border border-amber-100 overflow-hidden"
       style={{
         top: `${top}px`,
-        height: `${height}px`,
+        height: `${clampedHeight}px`,
         zIndex: index, // Later events (higher indices) will be on top
       }}
     >
@@ -42,7 +51,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
           {event.fields['End Date'] &&
             ` - ${format(end, 'h:mm a').replace(':00', '')}`}
         </div>
-        {event.fields.Location && height > 60 && (
+        {event.fields.Location && clampedHeight > 60 && (
           <div className="text-gray-600 truncate mt-0.5">
             📍 {event.fields.Location}
           </div>
@@ -59,7 +68,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
 
   // Calculate current time position
   const currentHour = today.getHours() + today.getMinutes() / 60
-  const timeLinePosition = (currentHour - HOURS[0]) * HOUR_HEIGHT
+  const timeLinePosition = Math.max(0, (currentHour - START_HOUR) * HOUR_HEIGHT)
 
   return (
     <div className="bg-white rounded-lg border border-amber-100">
@@ -91,11 +100,11 @@ export default function WeeklyView({ events }: { events: Event[] }) {
       >
         {/* Time labels */}
         <div className="relative">
-          {HOURS.slice(0, -1).map((hour) => (
+          {HOURS.map((hour) => (
             <div
               key={hour}
               className="absolute w-full text-right pr-2 text-sm text-gray-500"
-              style={{ top: `${(hour - HOURS[0]) * HOUR_HEIGHT}px` }}
+              style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
             >
               {format(new Date().setHours(hour, 0), 'h a')}
             </div>
@@ -116,26 +125,28 @@ export default function WeeklyView({ events }: { events: Event[] }) {
             <div
               key={day.toISOString()}
               className="relative border-l border-amber-100"
-              style={{ height: `${(HOURS.length - 1) * HOUR_HEIGHT}px` }}
+              style={{ height: `${HOURS.length * HOUR_HEIGHT}px` }}
             >
               {/* Hour lines */}
               {HOURS.map((hour) => (
                 <div
                   key={hour}
                   className="absolute w-full border-t border-amber-100/50"
-                  style={{ top: `${(hour - HOURS[0]) * HOUR_HEIGHT}px` }}
+                  style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
                 />
               ))}
 
               {/* Current time indicator */}
-              {isToday && (
-                <div
-                  className="absolute w-full border-t-2 border-amber-500 z-10"
-                  style={{ top: `${timeLinePosition}px` }}
-                >
-                  <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-amber-500" />
-                </div>
-              )}
+              {isToday &&
+                currentHour >= START_HOUR &&
+                currentHour <= END_HOUR && (
+                  <div
+                    className="absolute w-full border-t-2 border-amber-500 z-10"
+                    style={{ top: `${timeLinePosition}px` }}
+                  >
+                    <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-amber-500" />
+                  </div>
+                )}
 
               {/* Events */}
               {dayEvents.map((event, index) => (
