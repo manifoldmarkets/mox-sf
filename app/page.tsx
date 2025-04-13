@@ -1,5 +1,6 @@
 import Gallery from './gallery'
 import PeopleGallery from './people-gallery'
+import EventsSection from './components/EventsSection'
 
 function Link({
   href,
@@ -24,7 +25,7 @@ function Link({
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
+    <div className="min-h-screen bg-beige-50 text-gray-800">
       {/* Open house banner */}
       <a
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
@@ -175,6 +176,11 @@ export default function Component() {
           </div>
         </div>
 
+        {/* Events section */}
+        <section className="mt-24 mb-16">
+          <EventsSection />
+        </section>
+
         <section className="my-16">
           <Gallery />
         </section>
@@ -183,9 +189,7 @@ export default function Component() {
       {/* Footer */}
       <footer className="mt-24 border-t border-amber-200 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
-          {/* © 2025 Mox SF. All rights reserved. */}
-          {/* Opening February 15th, 2025 */}A project of{' '}
-          <Link href="https://manifund.org">Manifund</Link>
+          A project of <Link href="https://manifund.org">Manifund</Link>
           <br />
           Questions? Contact{' '}
           <Link href="mailto:austin@manifund.org">austin@manifund.org</Link>
