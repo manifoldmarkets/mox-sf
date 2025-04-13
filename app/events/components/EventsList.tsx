@@ -1,6 +1,6 @@
 'use client'
 import { Event, formatEventTime, getEventDate } from '../../lib/events'
-import { format } from 'date-fns'
+import { format, isAfter, isSameDay, startOfDay } from 'date-fns'
 
 function EventTypeTag({ type }: { type: string }) {
   const colorMap = {
@@ -21,8 +21,18 @@ function EventTypeTag({ type }: { type: string }) {
 }
 
 export default function EventsList({ events }: { events: Event[] }) {
+  const today = startOfDay(new Date())
+
+  // Filter out past events
+  const futureEvents = events.filter((event) => {
+    const eventDate = getEventDate(event)
+    return (
+      eventDate && (isAfter(eventDate, today) || isSameDay(eventDate, today))
+    )
+  })
+
   // Group events by day
-  const eventsByDay = events.reduce(
+  const eventsByDay = futureEvents.reduce(
     (groups, event) => {
       const date = getEventDate(event)
       if (!date) return groups

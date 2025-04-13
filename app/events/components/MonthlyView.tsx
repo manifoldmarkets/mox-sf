@@ -31,7 +31,17 @@ function DayCard({
         isDayToday ? 'bg-amber-50' : ''
       }`}
     >
-      <div className="font-medium text-gray-700 mb-1">{format(day, 'd')}</div>
+      <div className={`font-medium text-gray-700 mb-1 flex justify-center`}>
+        <span
+          className={`${
+            isDayToday
+              ? 'bg-amber-800 text-white w-7 h-7 rounded-full flex items-center justify-center'
+              : ''
+          }`}
+        >
+          {format(day, 'd')}
+        </span>
+      </div>
       {dayEvents.map((event) => (
         <div
           key={event.id}

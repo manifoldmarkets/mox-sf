@@ -6,6 +6,7 @@ import {
   format,
   parseISO,
   differenceInMinutes,
+  isSameDay,
 } from 'date-fns'
 
 const HOURS = Array.from({ length: 15 }, (_, i) => i + 9) // 9am to midnight
@@ -55,6 +56,10 @@ export default function WeeklyView({ events }: { events: Event[] }) {
   const weekStart = startOfWeek(today, { weekStartsOn: 0 }) // Start from Sunday
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
 
+  // Calculate current time position
+  const currentHour = today.getHours() + today.getMinutes() / 60
+  const timeLinePosition = (currentHour - 8) * HOUR_HEIGHT
+
   return (
     <div className="bg-white rounded-lg border border-amber-100">
       {/* Header row with days */}
@@ -66,7 +71,9 @@ export default function WeeklyView({ events }: { events: Event[] }) {
         {days.map((day) => (
           <div
             key={day.toISOString()}
-            className="p-4 text-center border-l border-amber-100"
+            className={`p-4 text-center border-l border-amber-100 ${
+              isSameDay(day, today) ? 'bg-amber-100' : ''
+            }`}
           >
             <div className="font-medium text-amber-900">
               {format(day, 'EEE')}
@@ -97,11 +104,12 @@ export default function WeeklyView({ events }: { events: Event[] }) {
         {/* Day columns */}
         {days.map((day) => {
           const dayEvents = filterEventsByDay(events, day).sort((a, b) => {
-            // Sort by start time so later events are rendered on top
             const aStart = parseISO(a.fields['Start Date']).getTime()
             const bStart = parseISO(b.fields['Start Date']).getTime()
             return aStart - bStart
           })
+
+          const isToday = isSameDay(day, today)
 
           return (
             <div
@@ -117,6 +125,16 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                   style={{ top: `${(hour - 8) * HOUR_HEIGHT}px` }}
                 />
               ))}
+
+              {/* Current time indicator */}
+              {isToday && (
+                <div
+                  className="absolute w-full border-t-2 border-amber-500 z-10"
+                  style={{ top: `${timeLinePosition}px` }}
+                >
+                  <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-amber-500" />
+                </div>
+              )}
 
               {/* Events */}
               {dayEvents.map((event, index) => (
