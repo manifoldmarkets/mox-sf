@@ -27,13 +27,17 @@ function createICalEvent(event: Event): string {
   // Build location string
   const location = event.location || 'Mox, 1680 Mission Street, San Francisco'
 
+  // Prefix private events with "[private]"
+  const prefix = event.type?.toLowerCase() === 'private' ? '[private] ' : ''
+  const eventName = `${prefix}${event.name}`
+
   return [
     'BEGIN:VEVENT',
     `UID:${uid}`,
     `DTSTAMP:${formatICalDate(new Date())}`,
     `DTSTART:${startDate}`,
     `DTEND:${endDate}`,
-    `SUMMARY:${event.name.replace(/[,;\\]/g, '\\$&')}`,
+    `SUMMARY:${eventName.replace(/[,;\\]/g, '\\$&')}`,
     `DESCRIPTION:${description.replace(/[,;\\]/g, '\\$&')}`,
     `LOCATION:${location.replace(/[,;\\]/g, '\\$&')}`,
     'END:VEVENT',
