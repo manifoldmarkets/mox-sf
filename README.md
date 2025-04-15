@@ -1,15 +1,5 @@
 # mox-sf
 
-## Using npm
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
 ## Using bun
 
 Bun (https://bun.sh/) is a fast Javascript runtime & package manager.
@@ -24,6 +14,10 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
----
+## Get env variables
 
-Made with [yield.sh](https://yield.sh)
+After you have vercel access, this will get you API keys:
+
+```
+vercel env pull .env.local
+```
