@@ -19,5 +19,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 After you have vercel access, this will get you API keys:
 
 ```
+bun add -g vercel
+vercel link
 vercel env pull .env.local
 ```
+
+(The weekly door code for moxsf.com/door is stored as an env variable.)
