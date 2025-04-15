@@ -53,7 +53,7 @@ export async function GET() {
         headers: {
           Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
         },
-        next: { revalidate: 300 }, // Cache for 5 minutes
+        next: { revalidate: 60 },
       }
     )
 

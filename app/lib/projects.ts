@@ -17,7 +17,7 @@ export async function getProjects(): Promise<Project[]> {
         headers: {
           Authorization: `Bearer ${process.env.AI4E_API_KEY}`,
         },
-        next: { revalidate: 600 }, // Revalidate every 10 minutes
+        next: { revalidate: 60 },
       }
     )
 
