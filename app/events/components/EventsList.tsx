@@ -64,10 +64,16 @@ export default function EventsList({ events }: { events: Event[] }) {
                 className="bg-white p-6 shadow-sm border border-amber-100 relative"
               >
                 {event.type && <EventTypeTag type={event.type} />}
-                <h3 className="text-xl font-semibold text-amber-900 mb-2">
+                <h3 className="text-xl font-semibold text-amber-900 mb-2 flex items-center">
                   {event.name}
                 </h3>
-                <p className="text-amber-800 mb-2">{formatEventTime(event)}</p>
+                <p className="text-sm mb-2 text-amber-800 font-semibold">
+                  {formatEventTime(event)}
+                  {event.host && (
+                    <span className="font-normal"> - {event.host}</span>
+                  )}
+                </p>
+
                 {event.location && (
                   <p className="text-gray-600 text-sm mb-2">
                     📍 {event.location}

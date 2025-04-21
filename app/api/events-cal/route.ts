@@ -20,6 +20,9 @@ function createICalEvent(event: Event): string {
   if (event.notes) {
     description += (description ? '\\n\\n' : '') + event.notes
   }
+  if (event.host) {
+    description += (description ? '\\n\\n' : '') + `Host: ${event.host}`
+  }
   if (event.url) {
     description += (description ? '\\n\\n' : '') + `More info: ${event.url}`
   }

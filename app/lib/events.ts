@@ -13,6 +13,7 @@ interface AirtableEvent {
     Type?: string
     Status?: string
     URL?: string
+    'Host Name'?: string[]
   }
 }
 
@@ -28,6 +29,7 @@ export interface Event {
   type?: string
   status?: string
   url?: string
+  host?: string
 }
 
 export async function getEvents(): Promise<Event[]> {
@@ -40,20 +42,23 @@ export async function getEvents(): Promise<Event[]> {
   )
 
   return (
-    records?.map((record: AirtableEvent): Event => ({
-      id: record.id,
-      name: record.fields.Name,
-      startDate: parseISO(record.fields['Start Date']),
-      endDate: record.fields['End Date']
-        ? parseISO(record.fields['End Date'])
-        : undefined,
-      description: record.fields.Description,
-      location: record.fields.Location,
-      notes: record.fields.Notes,
-      type: record.fields.Type,
-      status: record.fields.Status,
-      url: record.fields.URL,
-    })) || []
+    records?.map(
+      (record: AirtableEvent): Event => ({
+        id: record.id,
+        name: record.fields.Name,
+        startDate: parseISO(record.fields['Start Date']),
+        endDate: record.fields['End Date']
+          ? parseISO(record.fields['End Date'])
+          : undefined,
+        description: record.fields.Description,
+        location: record.fields.Location,
+        notes: record.fields.Notes,
+        type: record.fields.Type,
+        status: record.fields.Status,
+        url: record.fields.URL,
+        host: (record.fields['Host Name'] ?? []).join(', '),
+      })
+    ) || []
   )
 }
 

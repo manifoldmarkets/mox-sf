@@ -41,7 +41,7 @@ function AddSection() {
           onClick={() => setIsCalendarOpen(true)}
           className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
         >
-          📅 Add to calendar
+          Sync to cal
         </button>
       </div>
 
@@ -117,9 +117,14 @@ export default function EventsSection({
   useEffect(() => {
     getEvents()
       .then(setEvents)
-      .catch(() => setError('Failed to load events'))
+      .catch((e) => {
+        console.error('Error fetching events:', e)
+        setError('Failed to load events')
+      })
       .finally(() => setLoading(false))
   }, [])
+
+  console.log('e', events)
 
   if (loading) {
     return (
