@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import { Event, formatEventTime, getEventDate } from '../../lib/events'
 import { format, isAfter, isSameDay, startOfDay } from 'date-fns'
 
@@ -17,6 +18,53 @@ function EventTypeTag({ type }: { type: string }) {
     >
       {type.toLowerCase()}
     </span>
+  )
+}
+
+function EventCard({ event }: { event: Event }) {
+  const isLong = event.notes && event.notes.length > 480
+  const [expanded, setExpanded] = useState(!isLong)
+
+  return (
+    <div className="bg-white p-6 shadow-sm border border-amber-100 relative">
+      {event.type && <EventTypeTag type={event.type} />}
+      <h3 className="text-xl font-semibold text-amber-900 mb-2 flex items-center">
+        {event.name}
+      </h3>
+      <p className="text-sm mb-2 text-amber-800 font-semibold">
+        {formatEventTime(event)}
+        {event.host && <span className="font-normal"> - {event.host}</span>}
+      </p>
+
+      {event.location && (
+        <p className="text-gray-600 text-sm mb-2">📍 {event.location}</p>
+      )}
+      {event.notes && (
+        <p className="text-gray-700 mt-2 whitespace-pre-wrap">
+          {expanded ? event.notes : event.notes.slice(0, 480)}
+          {!expanded && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-amber-700 hover:text-amber-900 underline ml-2 cursor-pointer"
+            >
+              ... more
+            </button>
+          )}
+        </p>
+      )}
+      {event.url && (
+        <div className="mt-4">
+          <a
+            href={event.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-700 hover:text-amber-900 underline"
+          >
+            Event details →
+          </a>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -59,42 +107,7 @@ export default function EventsList({ events }: { events: Event[] }) {
           </p>
           <div className="space-y-4">
             {dayEvents.map((event) => (
-              <div
-                key={event.id}
-                className="bg-white p-6 shadow-sm border border-amber-100 relative"
-              >
-                {event.type && <EventTypeTag type={event.type} />}
-                <h3 className="text-xl font-semibold text-amber-900 mb-2 flex items-center">
-                  {event.name}
-                </h3>
-                <p className="text-sm mb-2 text-amber-800 font-semibold">
-                  {formatEventTime(event)}
-                  {event.host && (
-                    <span className="font-normal"> - {event.host}</span>
-                  )}
-                </p>
-
-                {event.location && (
-                  <p className="text-gray-600 text-sm mb-2">
-                    📍 {event.location}
-                  </p>
-                )}
-                {event.notes && (
-                  <p className="text-gray-700 mt-2">{event.notes}</p>
-                )}
-                {event.url && (
-                  <div className="mt-4">
-                    <a
-                      href={event.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-amber-700 hover:text-amber-900 underline"
-                    >
-                      Event details →
-                    </a>
-                  </div>
-                )}
-              </div>
+              <EventCard key={event.id} event={event} />
             ))}
           </div>
         </div>
