@@ -164,7 +164,7 @@ export default function EventsSection({
             <Tab
               key={tab}
               className={({ selected }) =>
-                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0
+                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer
                 ${
                   selected
                     ? 'bg-white text-amber-900 shadow'
