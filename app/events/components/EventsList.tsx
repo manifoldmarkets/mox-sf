@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react'
-import { Event, formatEventTime, getEventDate } from '../../lib/events'
+import { Event, formatEventTime } from '../../lib/events'
 import { format, isAfter, isSameDay, startOfDay } from 'date-fns'
+import { ExternalLink } from 'lucide-react'
 
 function EventTypeTag({ type }: { type: string }) {
   const colorMap = {
@@ -28,9 +29,25 @@ function EventCard({ event }: { event: Event }) {
   return (
     <div className="bg-white p-6 shadow-sm border border-amber-100 relative">
       {event.type && <EventTypeTag type={event.type} />}
-      <h3 className="text-xl font-semibold text-amber-900 mb-2 flex items-center">
-        {event.name}
-      </h3>
+      <div className="flex items-center gap-2 mb-2">
+        {event.url ? (
+          <a
+            href={event.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group"
+            title="Event details"
+          >
+            <h3 className="text-xl font-semibold">{event.name}</h3>
+            <ExternalLink
+              size={16}
+              className="text-amber-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+            />
+          </a>
+        ) : (
+          <h3 className="text-xl font-semibold text-amber-900">{event.name}</h3>
+        )}
+      </div>
       <p className="text-sm mb-2 text-amber-800 font-semibold">
         {formatEventTime(event)}
         {event.host && <span className="font-normal"> - {event.host}</span>}
@@ -51,18 +68,6 @@ function EventCard({ event }: { event: Event }) {
             </button>
           )}
         </p>
-      )}
-      {event.url && (
-        <div className="mt-4">
-          <a
-            href={event.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-amber-700 hover:text-amber-900 underline"
-          >
-            Event details →
-          </a>
-        </div>
       )}
     </div>
   )
