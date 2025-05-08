@@ -18,10 +18,13 @@ function AddSection() {
   }
 
   // See also https://webapps.stackexchange.com/questions/116392/how-to-get-a-link-to-add-a-google-calendar
-  // Luma has some special trick where it uses a URL for a cid...
-  // But for now we're just hardcoding a public Google Calendar that we sync
+  // Luma has some special trick where it uses an http URL for a cid...
+  //
+  // But for now we're just hardcoding a public Google Calendar that we sync,
+  // Using a hacky Google Apps script: https://github.com/derekantrican/GAS-ICS-Sync?tab=readme-ov-file
+  // https://script.google.com/home/projects/146hvkpHs-ODCTfK1MyldW0WJiXofSmHu361ao5eyR8zpvzeOViC_L-hV/edit
   const GOOGLE_CID =
-    '7vcnf7755ldvn1re8ob2o1qmoeng8pie@import.calendar.google.com'
+    '6395b6c6ab85cf5ff3b6a1e59bc218ec592b74bfebf94821158bcf7e56c23ab1@group.calendar.google.com'
   const GOOGLE_CALENDAR_URL = `https://www.google.com/calendar/render?cid=${GOOGLE_CID}`
   // Warning, outlook and Apple are basically untested
   const OUTLOOK_CALENDAR_URL = `https://outlook.live.com/calendar/0/addcalendar?url=${encodeURIComponent('webcal://moxsf.com/api/events-cal')}`
