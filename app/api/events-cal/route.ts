@@ -18,13 +18,13 @@ function createICalEvent(event: Event): string {
   // Build event description including any notes and URL
   let description = event.description || ''
   if (event.notes) {
-    description += (description ? '\\n\\n' : '') + event.notes
+    description += (description ? '\n\n' : '') + event.notes
   }
   if (event.host) {
-    description += (description ? '\\n\\n' : '') + `Host: ${event.host}`
+    description += (description ? '\n\n' : '') + `Host: ${event.host}`
   }
   if (event.url) {
-    description += (description ? '\\n\\n' : '') + `More info: ${event.url}`
+    description += (description ? '\n\n' : '') + `More info: ${event.url}`
   }
 
   // Build location string
@@ -40,11 +40,21 @@ function createICalEvent(event: Event): string {
     `DTSTAMP:${formatICalDate(new Date())}`,
     `DTSTART:${startDate}`,
     `DTEND:${endDate}`,
-    `SUMMARY:${eventName.replace(/[,;\\]/g, '\\$&')}`,
-    `DESCRIPTION:${description.replace(/[,;\\]/g, '\\$&')}`,
-    `LOCATION:${location.replace(/[,;\\]/g, '\\$&')}`,
+    `SUMMARY:${sanitize(eventName)}`,
+    `DESCRIPTION:${sanitize(description)}`,
+    `LOCATION:${sanitize(location)}`,
     'END:VEVENT',
   ].join('\r\n')
+}
+
+function sanitize(str: string): string {
+  return (
+    str
+      // Escape commas, semicolons, and backslashes
+      .replace(/[,;\\]/g, '\\$&')
+      // Escape carriage returns and newlines
+      .replace(/[\r\n]/g, '\\n')
+  )
 }
 
 export async function GET() {
