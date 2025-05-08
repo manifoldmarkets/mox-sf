@@ -32,6 +32,24 @@ export interface Event {
   host?: string
 }
 
+export function parseAirtableEvent(record: AirtableEvent): Event {
+  return {
+    id: record.id,
+    name: record.fields.Name,
+    startDate: parseISO(record.fields['Start Date']),
+    endDate: record.fields['End Date']
+      ? parseISO(record.fields['End Date'])
+      : undefined,
+    description: record.fields.Description,
+    location: record.fields.Location,
+    notes: record.fields.Notes,
+    type: record.fields.Type,
+    status: record.fields.Status,
+    url: record.fields.URL,
+    host: (record.fields['Host Name'] ?? []).join(', '),
+  }
+}
+
 export async function getEvents(): Promise<Event[]> {
   const res = await fetch('/api/events')
   if (!res.ok) throw new Error('Failed to fetch events')
@@ -41,25 +59,7 @@ export async function getEvents(): Promise<Event[]> {
     (event: AirtableEvent) => event.fields?.['Start Date']
   )
 
-  return (
-    records?.map(
-      (record: AirtableEvent): Event => ({
-        id: record.id,
-        name: record.fields.Name,
-        startDate: parseISO(record.fields['Start Date']),
-        endDate: record.fields['End Date']
-          ? parseISO(record.fields['End Date'])
-          : undefined,
-        description: record.fields.Description,
-        location: record.fields.Location,
-        notes: record.fields.Notes,
-        type: record.fields.Type,
-        status: record.fields.Status,
-        url: record.fields.URL,
-        host: (record.fields['Host Name'] ?? []).join(', '),
-      })
-    ) || []
-  )
+  return records?.map(parseAirtableEvent) || []
 }
 
 export function formatEventTime(event: Event, showDate = false): string {

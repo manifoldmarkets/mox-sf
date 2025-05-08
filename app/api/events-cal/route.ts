@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { Event } from '@/app/lib/events'
+import { Event, parseAirtableEvent } from '@/app/lib/events'
 import { format } from 'date-fns'
 
 // Convert a date to iCal format (e.g., "20240315T100000Z")
@@ -79,22 +79,7 @@ export async function GET() {
     // Transform Airtable records to Event objects
     const events: Event[] = data.records
       .filter((record: any) => record.fields?.['Start Date'])
-      .map(
-        (record: any): Event => ({
-          id: record.id,
-          name: record.fields.Name,
-          startDate: new Date(record.fields['Start Date']),
-          endDate: record.fields['End Date']
-            ? new Date(record.fields['End Date'])
-            : undefined,
-          description: record.fields.Description,
-          location: record.fields.Location,
-          notes: record.fields.Notes,
-          type: record.fields.Type,
-          status: record.fields.Status,
-          url: record.fields.URL,
-        })
-      )
+      .map(parseAirtableEvent)
 
     // Generate iCal content
     const icalContent = [
