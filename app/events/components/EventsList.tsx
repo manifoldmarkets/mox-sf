@@ -76,10 +76,11 @@ function EventCard({ event }: { event: Event }) {
 export default function EventsList({ events }: { events: Event[] }) {
   const today = startOfDay(new Date())
 
-  // Filter out past events
+  // Filter out past events, then sort by start time
   const futureEvents = events.filter((event) => {
     return isAfter(event.startDate, today) || isSameDay(event.startDate, today)
   })
+  futureEvents.sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
 
   // Group events by day
   const eventsByDay = futureEvents.reduce(
