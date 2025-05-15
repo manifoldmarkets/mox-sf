@@ -82,10 +82,14 @@ export default async function PeoplePage() {
                 rel="noopener noreferrer"
                 className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group hover:underline"
               >
-                <span>{person.name}</span>
+                <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
+                  {person.name}
+                </span>
               </a>
             ) : (
-              <span>{person.name}</span>
+              <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
+                {person.name}
+              </span>
             )}
           </div>
         ))}
