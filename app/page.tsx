@@ -1,6 +1,7 @@
 import Gallery from './gallery'
 import PeopleGallery from './people-gallery'
 import EventsSection from './components/EventsSection'
+import PeoplePage from './people/page'
 
 function Link({
   href,
@@ -179,6 +180,10 @@ export default function Component() {
         {/* Events section */}
         <section className="mt-8 my-16">
           <EventsSection />
+        </section>
+
+        <section className="mt-8 my-16">
+          <PeoplePage />
         </section>
 
         <section className="my-16">
