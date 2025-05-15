@@ -75,6 +75,7 @@ function EventCard({ event }: { event: Event }) {
 
 export default function EventsList({ events }: { events: Event[] }) {
   const today = startOfDay(new Date())
+  const [showAll, setShowAll] = useState(false)
 
   // Filter out past events, then sort by start time
   const futureEvents = events.filter((event) => {
@@ -104,9 +105,14 @@ export default function EventsList({ events }: { events: Event[] }) {
     (a, b) => a.date.getTime() - b.date.getTime()
   )
 
+  // Count total events and get visible days
+  const THRESHOLD = 6
+  const totalEvents = futureEvents.length
+  const visibleDays = showAll ? sortedDays : sortedDays.slice(0, THRESHOLD)
+
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
-      {sortedDays.map(({ date, events: dayEvents }) => (
+      {visibleDays.map(({ date, events: dayEvents }) => (
         <div key={date.toISOString()}>
           <p className="text-sm uppercase tracking-wide text-amber-700 mb-3">
             {format(date, 'EEEE, MMMM d')}
@@ -118,6 +124,14 @@ export default function EventsList({ events }: { events: Event[] }) {
           </div>
         </div>
       ))}
+      {!showAll && totalEvents > THRESHOLD && (
+        <button
+          onClick={() => setShowAll(true)}
+          className="w-full py-2 text-sm text-amber-700 hover:text-amber-900 border border-amber-200 hover:border-amber-300 rounded-md transition-colors cursor-pointer"
+        >
+          Show all upcoming events
+        </button>
+      )}
       {events.length === 0 && (
         <p className="text-gray-500 text-center py-8">No upcoming events</p>
       )}
