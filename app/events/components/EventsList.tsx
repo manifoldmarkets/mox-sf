@@ -105,8 +105,8 @@ export default function EventsList({ events }: { events: Event[] }) {
     (a, b) => a.date.getTime() - b.date.getTime()
   )
 
-  // Count total events and get visible days
-  const THRESHOLD = 6
+  // By default show 5 days' worth of events.
+  const THRESHOLD = 5
   const totalEvents = futureEvents.length
   const visibleDays = showAll ? sortedDays : sortedDays.slice(0, THRESHOLD)
 
