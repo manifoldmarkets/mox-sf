@@ -59,13 +59,16 @@ export default function Component() {
 
             <div>
               3. Atypical acronym for{' '}
-              <span className="italic">Mixture Of eXperts</span>, a ML technique
-              which divides an input between smaller "expert" models.
+              <span className="italic">Mixture Of eXperts</span>, a modern
+              machine learning technique.
             </div>
 
             <div>
               <span className="font-bold">
-                4. A coworking & events space in San Francisco.
+                4. A coworking & events space in San Francisco, on{' '}
+                <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
+                  1680 Mission Street
+                </Link>{' '}
               </span>
             </div>
           </div>
@@ -82,14 +85,14 @@ export default function Component() {
           {/* Left column */}
           <div className="space-y-8">
             <section>
-              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+              <h2 className="text-2xl font-bold mb-4 font-playfair">
                 <strong>A gathering place for</strong>
               </h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
-                  <li>Startups on the cutting edge</li>
-                  <li>EAs and others seeking to improve the world</li>
-                  <li>AI & AI safety labs</li>
+                  <li>Startups living in the future</li>
+                  <li>EAs, and other doers of good</li>
+                  <li>AI lab folks & their safety counterparts</li>
                   <li>Indie researchers and builders</li>
                   <li>Writers; artists; masters of craft</li>
                 </ul>
@@ -97,44 +100,17 @@ export default function Component() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+              <h2 className="text-2xl font-bold mb-4 font-playfair">
                 <strong>Mox offers</strong>
               </h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
-                  <li>Ample desks and monitors</li>
+                  <li>Space to work, learn, meet, and play</li>
+                  <li>Desks and monitors aplenty</li>
                   <li>Industrial-grade wifi</li>
                   <li>Conference rooms and phone booths</li>
                   <li>Coffee, tea, and snacks</li>
                 </ul>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
-                <strong>About the space</strong>
-              </h2>
-              <div className="prose prose-slate">
-                <p className="mb-4">
-                  Located in the heart of SF at{' '}
-                  <Link href="https://maps.google.com/?q=1680+Mission+St+San+Francisco">
-                    1680 Mission Street
-                  </Link>
-                  ; formerly the home of{' '}
-                  <Link href="https://www.solarissf.com/">Solaris AI</Link>
-                </p>
-
-                {/* <div className="mb-4 aspect-video">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.7127335975223!2d-122.42051242356727!3d37.77159011642012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808580997b95c7e1%3A0x4e0f8c7d9f9f9b0!2s1680%20Mission%20St%2C%20San%20Francisco%2C%20CA%2094103!5e0!3m2!1sen!2sus!4v1707901234567!5m2!1sen!2sus"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
-                </div> */}
               </div>
             </section>
           </div>
@@ -146,7 +122,7 @@ export default function Component() {
               <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-6 text-amber-900 font-playfair">
+                <h2 className="text-2xl font-bold mb-6 font-playfair">
                   <strong>Become a member</strong>
                 </h2>
                 <p className="mb-8 text-gray-600">
