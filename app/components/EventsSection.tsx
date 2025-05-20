@@ -33,7 +33,7 @@ function AddSection() {
   return (
     <>
       {/* Header with links */}
-      <div className="flex justify-end gap-4 mb-6">
+      <div className="flex justify-end gap-4 mb-6 max-w-xl mx-auto">
         <a
           href="/host-event"
           className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
@@ -117,7 +117,7 @@ export default function EventsSection(props: {
       <AddSection />
 
       <TabGroup>
-        <TabList className="flex space-x-1 bg-amber-900/20 p-1 mb-6">
+        <TabList className="flex space-x-1 bg-amber-900/20 p-1 mb-6 max-w-xl mx-auto">
           {['Events', 'Week', 'Month'].map((tab) => (
             <Tab
               key={tab}

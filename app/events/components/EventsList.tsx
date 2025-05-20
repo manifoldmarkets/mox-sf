@@ -29,7 +29,7 @@ function EventCard({ event }: { event: Event }) {
   return (
     <div className="bg-white p-6 shadow-sm border border-amber-100 relative">
       {event.type && <EventTypeTag type={event.type} />}
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2 mb-1">
         {event.url ? (
           <a
             href={event.url}
@@ -57,7 +57,7 @@ function EventCard({ event }: { event: Event }) {
         <p className="text-gray-600 text-sm mb-2">📍 {event.location}</p>
       )}
       {event.notes && (
-        <p className="text-gray-700 mt-2 whitespace-pre-wrap">
+        <p className="text-gray-700 mt-2 whitespace-pre-wrap text-sm">
           {expanded ? event.notes : event.notes.slice(0, 480)}
           {!expanded && (
             <button
@@ -111,7 +111,7 @@ export default function EventsList({ events }: { events: Event[] }) {
   const visibleDays = showAll ? sortedDays : sortedDays.slice(0, THRESHOLD)
 
   return (
-    <div className="space-y-8 max-w-2xl mx-auto">
+    <div className="space-y-8 max-w-xl mx-auto">
       {visibleDays.map(({ date, events: dayEvents }) => (
         <div key={date.toISOString()}>
           <p className="text-sm uppercase tracking-wide text-amber-700 mb-3">
