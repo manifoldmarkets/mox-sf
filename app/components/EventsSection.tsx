@@ -106,56 +106,11 @@ function AddSection() {
   )
 }
 
-interface EventsSectionProps {
-  fullPage?: boolean // Whether this is being rendered as a full page
-}
-
-export default function EventsSection({
-  fullPage = false,
-}: EventsSectionProps) {
-  const [events, setEvents] = useState<Event[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    getEvents()
-      .then(setEvents)
-      .catch((e) => {
-        console.error('Error fetching events:', e)
-        setError('Failed to load events')
-      })
-      .finally(() => setLoading(false))
-  }, [])
-
-  console.log('e', events)
-
-  if (loading) {
-    return (
-      <div
-        className={`text-amber-900 text-center py-8 ${
-          fullPage
-            ? 'min-h-screen bg-beige-50 flex items-center justify-center'
-            : ''
-        }`}
-      >
-        Loading events...
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div
-        className={`text-red-600 text-center py-8 ${
-          fullPage
-            ? 'min-h-screen bg-beige-50 flex items-center justify-center'
-            : ''
-        }`}
-      >
-        {error}
-      </div>
-    )
-  }
+export default function EventsSection(props: {
+  fullPage?: boolean
+  events?: Event[]
+}) {
+  const { fullPage = false, events = [] } = props
 
   const content = (
     <div className={fullPage ? 'px-4 py-8' : ''}>

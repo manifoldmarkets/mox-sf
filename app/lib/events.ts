@@ -51,9 +51,15 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
 }
 
 export async function getEvents(): Promise<Event[]> {
-  const res = await fetch('/api/events')
-  if (!res.ok) throw new Error('Failed to fetch events')
-
+  const res = await fetch(
+    'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB',
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+      },
+      next: { revalidate: 60 },
+    }
+  )
   const data = await res.json()
   const records = data.records?.filter(
     (event: AirtableEvent) => event.fields?.['Start Date']
