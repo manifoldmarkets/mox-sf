@@ -69,33 +69,60 @@ export default async function PeoplePage() {
   // Sort people by name
   const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name))
 
+  // Separate people into categories
+  const seldonPeople = sortedPeople.filter((person) =>
+    person.interests?.includes('Seldon')
+  )
+  const otherPeople = sortedPeople.filter(
+    (person) => !person.interests?.includes('Seldon')
+  )
+
+  const renderPeopleList = (people: Person[]) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
+      {people.map((person) => (
+        <div key={person.id}>
+          {person.website ? (
+            <a
+              href={formatUrl(person.website)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group hover:underline"
+            >
+              <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
+                {person.name}
+              </span>
+            </a>
+          ) : (
+            <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
+              {person.name}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-center font-playfair">
         Humans at Mox
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
-        {sortedPeople.map((person) => (
-          <div key={person.id}>
-            {person.website ? (
-              <a
-                href={formatUrl(person.website)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group hover:underline"
-              >
-                <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
-                  {person.name}
-                </span>
-              </a>
-            ) : (
-              <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
-                {person.name}
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
+
+      {otherPeople.length > 0 && (
+        <div className="mb-8">
+          {/* <h2 className="text-2xl font-semibold mb-4">Other Members</h2> */}
+          {renderPeopleList(otherPeople)}
+        </div>
+      )}
+
+      {seldonPeople.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
+            Seldon Accelerator
+          </h2>
+          {renderPeopleList(seldonPeople)}
+        </div>
+      )}
     </div>
   )
 }
