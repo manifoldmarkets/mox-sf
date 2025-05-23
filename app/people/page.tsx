@@ -11,6 +11,7 @@ type Person = {
   name: string
   website: string
   interests: string[]
+  orgIds: string[]
   aiBio: string | null
 }
 
@@ -18,7 +19,7 @@ async function getPeople(): Promise<Person[]> {
   // Restrict down to fields we need.
   // WARNING: if we fetch all fields, sensitive things like email may be exposed.
   // Unfortunately, Airtable doesn't support per-field control on access keys.
-  const FIELDS = ['Name', 'Website', 'Interests', 'AI bio']
+  const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org']
   // Hit Airtable directly from server component, rather than proxying through API route
   const res = await fetch(
     'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?maxRecords=100&view=viw9V2tzcnqvRXcV3&' +
@@ -43,6 +44,7 @@ async function getPeople(): Promise<Person[]> {
     website: record.fields.Website,
     interests: record.fields.Interests,
     aiBio: record.fields['AI bio'].value || null,
+    orgIds: record.fields.Org,
   }))
 
   // Exclude certain things from the display:
@@ -70,11 +72,12 @@ export default async function PeoplePage() {
   const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name))
 
   // Separate people into categories
+  const SELDON_ORG_ID = 'recDnro1YHnOv3SC4'
   const seldonPeople = sortedPeople.filter((person) =>
-    person.interests?.includes('Seldon')
+    person.orgIds?.includes(SELDON_ORG_ID)
   )
   const otherPeople = sortedPeople.filter(
-    (person) => !person.interests?.includes('Seldon')
+    (person) => !person.orgIds?.includes(SELDON_ORG_ID)
   )
 
   const renderPeopleList = (people: Person[]) => (
