@@ -15,30 +15,47 @@ type Person = {
   aiBio: string | null
 }
 
-async function getPeople(): Promise<Person[]> {
-  // Restrict down to fields we need.
-  // WARNING: if we fetch all fields, sensitive things like email may be exposed.
-  // Unfortunately, Airtable doesn't support per-field control on access keys.
-  const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org']
-  // Hit Airtable directly from server component, rather than proxying through API route
-  const res = await fetch(
-    'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?maxRecords=100&view=viw9V2tzcnqvRXcV3&' +
-      FIELDS.map((field) => `fields%5B%5D=${encodeURIComponent(field)}`).join(
-        '&'
-      ),
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      next: { revalidate: 60 },
-    }
-  )
+// Restrict down to fields we need.
+// WARNING: if we fetch all fields, sensitive things like email may be exposed.
+// Unfortunately, Airtable doesn't support per-field control on access keys.
+const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org']
+// Hit Airtable directly from server component, rather than proxying through API route
 
-  if (!res.ok) throw new Error('Failed to fetch people')
-  const data = await res.json()
+const PAGES_TO_FETCH = 2 // Number of pages to fetch (100 records per page)
+
+async function getPeople(): Promise<Person[]> {
+  let allRecords: any[] = []
+  let offset: string | undefined
+
+  // Fetch pages serially using the offset from previous response
+  for (let i = 0; i < PAGES_TO_FETCH; i++) {
+    const offsetParam = offset ? `&offset=${offset}` : ''
+    const res = await fetch(
+      'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?maxRecords=100&view=viw9V2tzcnqvRXcV3&' +
+        FIELDS.map((field) => `fields%5B%5D=${encodeURIComponent(field)}`).join(
+          '&'
+        ) +
+        offsetParam,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+        },
+        next: { revalidate: 60 },
+      }
+    )
+
+    if (!res.ok) throw new Error('Failed to fetch people')
+    const data = await res.json()
+
+    allRecords = [...allRecords, ...data.records]
+
+    // Get offset for next page, or break if no more pages
+    offset = data.offset
+    if (!offset) break
+  }
 
   // Parse the data into the Person type
-  const people = data.records.map((record: any) => ({
+  const people = allRecords.map((record: any) => ({
     id: record.id,
     name: record.fields.Name,
     website: record.fields.Website,
