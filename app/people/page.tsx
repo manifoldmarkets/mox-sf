@@ -73,11 +73,16 @@ export default async function PeoplePage() {
 
   // Separate people into categories
   const SELDON_ORG_ID = 'recDnro1YHnOv3SC4'
+  const PIBBSS_ORG_ID = 'recOn5K9r3BZ98ybk'
+  const ORGS = [SELDON_ORG_ID, PIBBSS_ORG_ID]
   const seldonPeople = sortedPeople.filter((person) =>
     person.orgIds?.includes(SELDON_ORG_ID)
   )
+  const pibbssPeople = sortedPeople.filter((person) =>
+    person.orgIds?.includes(PIBBSS_ORG_ID)
+  )
   const otherPeople = sortedPeople.filter(
-    (person) => !person.orgIds?.includes(SELDON_ORG_ID)
+    (person) => !ORGS.some((orgId) => person.orgIds?.includes(orgId))
   )
 
   const renderPeopleList = (people: Person[]) => (
@@ -124,6 +129,15 @@ export default async function PeoplePage() {
             Seldon Accelerator
           </h2>
           {renderPeopleList(seldonPeople)}
+        </div>
+      )}
+
+      {pibbssPeople.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
+            PIBBSS
+          </h2>
+          {renderPeopleList(pibbssPeople)}
         </div>
       )}
     </div>
