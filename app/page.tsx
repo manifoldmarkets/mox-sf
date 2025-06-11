@@ -135,13 +135,28 @@ export default function Component() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
-                  inline-block px-8 py-4 
+                  inline-block px-8 py-4
                   bg-amber-800 text-white font-semibold
-                  hover:bg-amber-900  
+                  hover:bg-amber-900
                   transition-all duration-200
                 "
                 >
                   Apply for membership
+                </a>
+                <p></p>
+                <br/>
+                <a
+                  href="/substack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                  inline-block px-8 py-4
+                  bg-amber-800 text-white font-semibold
+                  hover:bg-amber-900
+                  transition-all duration-200
+                "
+                >
+                  Just subscribe to events
                 </a>
               </div>
 

@@ -3,6 +3,7 @@ const redirects = {
   '/submit-hack':
     'https://airtable.com/appNJwWpcxwIbW89F/pagQzXpkrwU7VMYzx/form',
   '/discord': 'https://discord.gg/jZHTRHUWy9',
+  '/substack': 'https://moxsf.substack.com/',
   // '/people':
   //   'https://airtable.com/appkHZ2UvU6SouT5y/shrScGCEpYDJHG4m5/tbl3mg59vE4hyDveG',
   '/host-event':
