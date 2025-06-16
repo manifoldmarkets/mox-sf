@@ -21,7 +21,7 @@ type Person = {
 const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org']
 // Hit Airtable directly from server component, rather than proxying through API route
 
-const PAGES_TO_FETCH = 2 // Number of pages to fetch (100 records per page)
+const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
 
 async function getPeople(): Promise<Person[]> {
   let allRecords: any[] = []
@@ -31,7 +31,7 @@ async function getPeople(): Promise<Person[]> {
   for (let i = 0; i < PAGES_TO_FETCH; i++) {
     const offsetParam = offset ? `&offset=${offset}` : ''
     const res = await fetch(
-      'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?maxRecords=100&view=viw9V2tzcnqvRXcV3&' +
+      'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?view=viw9V2tzcnqvRXcV3&' +
         FIELDS.map((field) => `fields%5B%5D=${encodeURIComponent(field)}`).join(
           '&'
         ) +
