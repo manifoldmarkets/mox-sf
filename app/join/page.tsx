@@ -18,12 +18,12 @@ export function JoinContent(props: {
               Join Mox?
             </h1>
             <p className="text-lg text-gray-700">
-              Hey {firstName}! I'm excited to invite you to be one of the
-              initial members at Mox. We're trying something a little different
-              here, and the exact shape of our space and community is still very
-              TBD; but what I know for sure is that I'd love to have you around.
-              Whether you decide to make Mox your main workplace, throw an event
-              here, or just drop by once in a while — please consider joining!
+              Hey {firstName}! I'm excited to invite you to Mox. We're trying
+              something a little different here, and the exact shape of our
+              space and community is still very TBD; we'd love to figure it out
+              with you. Whether you decide to make Mox your main workplace,
+              throw an event here, or just drop by once in a while — please
+              consider joining!
               <br />
               <br /> — Austin
             </p>
@@ -52,17 +52,13 @@ export function JoinContent(props: {
               <br /> <br />
               If you're planning on coming in 4+ days a week, and especially if
               you're working with teammates, the <b>Resident</b> option may be a
-              better fit. This includes a dedicated desk and monitor, beside
-              other residents working on similar projects.
+              better fit. This includes a dedicated desk where you can leave
+              belongings, and external monitor.
               <br /> <br />
-              (What about private offices? We plan on supporting these, but
-              aren't ready to finalize our space layout, so for now just get
-              however many Resident slots, and email me to sort it out.)
-              <br /> <br />
-              Finally, if you're not usually in SF, or expect to be coming in
-              about once a week or less, we'd love to have you as a{' '}
-              <b>Friend</b>. You're still welcome at our members events and our
-              online community!
+              Finally, if you're not usually in SF, or expect to be coming
+              infrequently, we'd love to have you as a <b>Friend</b>. Beyond all
+              of our public and members events, you're welcome to drop by once
+              or twice a week!
             </p>
           </section>
 
@@ -89,17 +85,16 @@ export function JoinContent(props: {
               Mox is in beta — what does that mean?
             </h2>
             <p className="text-gray-700">
-              Our space is brand new, and we're still trying to figure out a
-              bunch about our mission: what kinds of people we host; how we lay
-              out and design the space; whether we want to focus on coworking,
-              offices, or events; how our financial model will shake out; how
-              we'll orient to the whole AI thing...
+              Our space is new, and there's still a lot we're figuring out: what
+              kinds of people we host; how we lay out and design the space;
+              whether we want to focus on coworking, offices, or events; how our
+              financial model will shake out; how we'll orient to the whole AI
+              thing...
               <br /> <br />
               The best way to learn is by doing! So our plan is to test out
-              different setups and events — things might change a lot during the
-              next month or two. Hence, "beta". Hopefully, you're okay with a
-              bit of chaos, and are excited to work with us to improve our
-              space.
+              different setups and events — things will continue to change a
+              lot. Hence, "beta". Hopefully, you're okay with a bit of chaos,
+              and are excited to work with us to improve our space.
             </p>
           </section>
 
@@ -119,10 +114,12 @@ export function JoinContent(props: {
               ideas, start projects, invite to your wedding.
               <br /> <br />
               It's so important that great people are at Mox that we're happy to
-              invite people slowly, and run at a loss for a while. We have a
-              bunch of ideas on how to make Mox fiscally sustainable (eg events;
-              grants; sponsorships; donations; incubate projects like YC); for
-              now, we want to make it as easy as possible for you to say "yes".
+              invite people slowly, and run at a loss for a while. (We spent
+              roughly ~$100k/mo and earned ~$30k/mo across our first three
+              months.) We have a bunch of ideas on how to make Mox fiscally
+              sustainable: events; grants; sponsorships; donations; incubate
+              projects like YC. But for now, we want to make it as easy as
+              possible for you to say "yes".
             </p>
           </section>
 
@@ -137,6 +134,21 @@ export function JoinContent(props: {
               check in with us about what you have in mind. If a friend of yours
               loves Mox so much they want to be coming in daily, nudge them to
               apply!
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+              What about private offices?
+            </h2>
+            <p className="text-gray-700">
+              Reach out to{' '}
+              <a href="mailto:austin@manifund.org">austin@manifund.org</a>! We
+              have a limited number of private offices available on renewable
+              3-month leases, starting at $3.2k/mo for a 4-person office and
+              scaling based on headcount. And if you're a startup, we may be
+              interested in receiving equity rather than cash, to align our
+              incentives~
             </p>
           </section>
         </div>

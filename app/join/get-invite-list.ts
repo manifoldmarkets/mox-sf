@@ -4,7 +4,7 @@ export async function getAirtableData() {
   const formula =
     `AND(` +
     `OR(Priority="Amazing",Priority="Great",Priority="Probably great"),` +
-    `OR(Status="Invited",Status="Toured",Status="Applied"))`
+    `OR(Status="Invited",Status="Toured",Status="Applied",Status="To Invite"))`
   const encodedFormula = encodeURIComponent(formula)
 
   const response = await fetch(
