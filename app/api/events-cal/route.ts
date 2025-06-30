@@ -78,7 +78,12 @@ export async function GET() {
 
     // Transform Airtable records to Event objects
     const events: Event[] = data.records
-      .filter((record: any) => record.fields?.['Start Date'])
+      .filter((record: any) => {
+        if (!record.fields?.['Start Date']) return false
+        
+        const status = record.fields.Status?.toLowerCase()
+        return status !== 'idea' && status !== 'maybe' && status !== 'cancelled'
+      })
       .map(parseAirtableEvent)
 
     // Generate iCal content
