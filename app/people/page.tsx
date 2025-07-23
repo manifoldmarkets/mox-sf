@@ -12,13 +12,14 @@ type Person = {
   website: string
   interests: string[]
   orgIds: string[]
+  programIds: string[]
   aiBio: string | null
 }
 
 // Restrict down to fields we need.
 // WARNING: if we fetch all fields, sensitive things like email may be exposed.
 // Unfortunately, Airtable doesn't support per-field control on access keys.
-const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org']
+const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org', 'Program']
 // Hit Airtable directly from server component, rather than proxying through API route
 
 const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
@@ -62,6 +63,7 @@ async function getPeople(): Promise<Person[]> {
     interests: record.fields.Interests,
     aiBio: record.fields['AI bio'].value || null,
     orgIds: record.fields.Org,
+    programIds: record.fields.Program,
   }))
 
   // Exclude certain things from the display:
@@ -89,17 +91,20 @@ export default async function PeoplePage() {
   const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name))
 
   // Separate people into categories
-  const SELDON_ORG_ID = 'recDnro1YHnOv3SC4'
-  const PIBBSS_ORG_ID = 'recOn5K9r3BZ98ybk'
-  const ORGS = [SELDON_ORG_ID, PIBBSS_ORG_ID]
+  const SELDON_PROGRAM_ID = 'recw9GcgF3DwVsxO1'
+  const PIBBSS_PROGRAM_ID = 'recbTATvXcYoaZNaf'
+  // const FLF_PROGRAM_ID = 'recfHeJ6J35XTpFY0'
+
+  const PROGRAMS = [SELDON_PROGRAM_ID, PIBBSS_PROGRAM_ID]
   const seldonPeople = sortedPeople.filter((person) =>
-    person.orgIds?.includes(SELDON_ORG_ID)
+    person.programIds?.includes(SELDON_PROGRAM_ID)
   )
   const pibbssPeople = sortedPeople.filter((person) =>
-    person.orgIds?.includes(PIBBSS_ORG_ID)
+    person.programIds?.includes(PIBBSS_PROGRAM_ID)
   )
   const otherPeople = sortedPeople.filter(
-    (person) => !ORGS.some((orgId) => person.orgIds?.includes(orgId))
+    (person) =>
+      !PROGRAMS.some((programId) => person.programIds?.includes(programId))
   )
 
   const renderPeopleList = (people: Person[]) => (
