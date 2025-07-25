@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatUrl, getPeople, Person } from '../page'
+import { formatUrl, getPeople, Person } from '../people'
 
 function Card({ person }: { person: Person }) {
   const { url, width, height } = person.photo[0]?.thumbnails.large ?? {
