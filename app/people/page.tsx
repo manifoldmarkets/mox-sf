@@ -1,12 +1,10 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'People | Mox',
 }
 
-type Person = {
+export type Person = {
   id: string
   name: string
   website: string
@@ -14,17 +12,26 @@ type Person = {
   orgIds: string[]
   programIds: string[]
   aiBio: string | null
+  photo: any[] | null
 }
 
 // Restrict down to fields we need.
 // WARNING: if we fetch all fields, sensitive things like email may be exposed.
 // Unfortunately, Airtable doesn't support per-field control on access keys.
-const FIELDS = ['Name', 'Website', 'Interests', 'AI bio', 'Org', 'Program']
+const FIELDS = [
+  'Name',
+  'Website',
+  'Interests',
+  'AI bio',
+  'Org',
+  'Program',
+  'Photo',
+]
 // Hit Airtable directly from server component, rather than proxying through API route
 
 const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
 
-async function getPeople(): Promise<Person[]> {
+export async function getPeople(): Promise<Person[]> {
   let allRecords: any[] = []
   let offset: string | undefined
 
@@ -64,6 +71,7 @@ async function getPeople(): Promise<Person[]> {
     aiBio: record.fields['AI bio'].value || null,
     orgIds: record.fields.Org,
     programIds: record.fields.Program,
+    photo: record.fields.Photo || [],
   }))
 
   // Exclude certain things from the display:
@@ -78,7 +86,7 @@ async function getPeople(): Promise<Person[]> {
   return filteredPeople
 }
 
-function formatUrl(url: string): string {
+export function formatUrl(url: string): string {
   if (!url) return ''
   if (url.startsWith('http://') || url.startsWith('https://')) return url
   return `https://${url}`
