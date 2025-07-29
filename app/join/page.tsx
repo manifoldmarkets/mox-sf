@@ -145,10 +145,9 @@ export function JoinContent(props: {
               Reach out to{' '}
               <a href="mailto:austin@manifund.org">austin@manifund.org</a>! We
               have a limited number of private offices available on renewable
-              3-month leases, starting at $3.2k/mo for a 4-person office and
-              scaling based on headcount. And if you're a startup, we may be
-              interested in receiving equity rather than cash, to align our
-              incentives~
+              3-month leases, starting at $4k/mo for a 4-person office. And if
+              you're a startup, we may be interested in investing a small amount
+              as well, to align our incentives!
             </p>
           </section>
         </div>
