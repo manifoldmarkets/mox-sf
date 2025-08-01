@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatUrl, getPeople, Person } from '../people'
+import { formatUrl, getPeople, Person, searchPerplexity } from '../people'
 
 function Card({ person }: { person: Person }) {
   const { url, width, height } = person.photo[0]?.thumbnails.large ?? {
@@ -39,6 +39,12 @@ function Card({ person }: { person: Person }) {
 
 export default async function CardsPage() {
   const people = await getPeople()
+
+  const imageSearch = await searchPerplexity(
+    'Return 1-3 urls of avatar images for the following person: Rachel Weinberg, https://rachelweinberg.substack.com/'
+  )
+
+  console.log(imageSearch)
 
   // Create a gallery of cards, one for each person
   return (

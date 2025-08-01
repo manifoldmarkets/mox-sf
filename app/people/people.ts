@@ -85,3 +85,40 @@ export function formatUrl(url: string): string {
   if (url.startsWith('http://') || url.startsWith('https://')) return url
   return `https://${url}`
 }
+
+export async function searchPerplexity(query: string): Promise<string> {
+  console.log('api key', process.env.PERPLEXITY_API_KEY)
+
+  // Set up the API endpoint and headers
+  const url = 'https://api.perplexity.ai/chat/completions'
+  const headers = {
+    Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
+    'Content-Type': 'application/json',
+  }
+
+  // Define the request payload
+  const payload = {
+    model: 'sonar-pro',
+    messages: [
+      {
+        role: 'user',
+        content: query,
+      },
+    ],
+  }
+
+  // Make the API call
+  const response = await fetch(url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  })
+
+  const data = await response.json()
+  const content = data.choices[0].message.content
+
+  // Print the AI's response
+  console.log(content) // replace with console.log(data.choices[0].message.content) for just the content
+
+  return content
+}
