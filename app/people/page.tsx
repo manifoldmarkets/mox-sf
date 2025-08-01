@@ -14,14 +14,17 @@ export default async function PeoplePage() {
   // Separate people into categories
   const SELDON_PROGRAM_ID = 'recw9GcgF3DwVsxO1'
   const PIBBSS_PROGRAM_ID = 'recbTATvXcYoaZNaf'
-  // const FLF_PROGRAM_ID = 'recfHeJ6J35XTpFY0'
+  const FLF_PROGRAM_ID = 'recfHeJ6J35XTpFY0'
 
-  const PROGRAMS = [SELDON_PROGRAM_ID, PIBBSS_PROGRAM_ID]
+  const PROGRAMS = [SELDON_PROGRAM_ID, PIBBSS_PROGRAM_ID, FLF_PROGRAM_ID]
   const seldonPeople = sortedPeople.filter((person) =>
     person.programIds?.includes(SELDON_PROGRAM_ID)
   )
   const pibbssPeople = sortedPeople.filter((person) =>
     person.programIds?.includes(PIBBSS_PROGRAM_ID)
+  )
+  const flfPeople = sortedPeople.filter((person) =>
+    person.programIds?.includes(FLF_PROGRAM_ID)
   )
   const otherPeople = sortedPeople.filter(
     (person) =>
@@ -81,6 +84,15 @@ export default async function PeoplePage() {
             PIBBSS
           </h2>
           {renderPeopleList(pibbssPeople)}
+        </div>
+      )}
+
+      {flfPeople.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
+            FLF Fellowship
+          </h2>
+          {renderPeopleList(flfPeople)}
         </div>
       )}
     </div>
