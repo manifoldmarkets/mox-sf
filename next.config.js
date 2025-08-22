@@ -7,6 +7,7 @@ const redirects = {
   //   'https://airtable.com/appkHZ2UvU6SouT5y/shrScGCEpYDJHG4m5/tbl3mg59vE4hyDveG',
   '/host-event':
     'https://manifoldmarkets.notion.site/Mox-Event-Host-Info-19354492ea7a80359441d2710b91f07a',
+  '/feedback': 'https://airtable.com/appkHZ2UvU6SouT5y/pagnAzfmwXz1SvOID/form',
 
   // Endpoints mostly for admin/staff
   '/eventz':
