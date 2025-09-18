@@ -10,6 +10,8 @@ const redirects = {
   '/feedback': 'https://airtable.com/appkHZ2UvU6SouT5y/pagnAzfmwXz1SvOID/form',
   '/fund':
     'https://manifoldmarkets.notion.site/Mox-Fund-for-massive-public-good-24e54492ea7a80a78e10d9dd9c149619',
+  '/populi':
+    'https://manifoldmarkets.notion.site/Mox-Populi-26954492ea7a80f7820ec2f5c237b212',
 
   // Endpoints mostly for admin/staff
   '/eventz':
