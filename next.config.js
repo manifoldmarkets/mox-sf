@@ -12,8 +12,7 @@ const redirects = {
     'https://manifoldmarkets.notion.site/Mox-Fund-for-massive-public-good-24e54492ea7a80a78e10d9dd9c149619',
   '/populi':
     'https://manifoldmarkets.notion.site/Mox-Populi-26954492ea7a80f7820ec2f5c237b212',
-  '/guest':
-    'https://manifoldmarkets.notion.site/Mox-Guest-Program-24254492ea7a8074b646e43fa5c03510',
+  '/guest': '/guests',
 
   // Endpoints mostly for admin/staff
   '/eventz':
