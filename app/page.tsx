@@ -144,11 +144,6 @@ export default function Component() {
                   Apply for membership
                 </a>
               </div>
-
-              <div className="mt-16 text-sm text-gray-500 italic">
-                We love everyone, but alas -- our capacity is limited, and
-                membership is invite-only for now.
-              </div>
             </div>
           </div>
         </div>

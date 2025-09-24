@@ -9,7 +9,7 @@ export function JoinContent(props: {
 }) {
   const { firstName, specialInvite } = props
   return (
-    <div className="min-h-screen bg-[#f9f6f0] text-gray-800">
+    <div className="min-h-screen bg-slate-50 text-gray-800">
       <div className="max-w-2xl mx-auto px-6 py-16">
         {/* Main intro */}
         {firstName ? (
