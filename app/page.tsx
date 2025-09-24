@@ -65,7 +65,7 @@ export default function Component() {
 
             <div>
               <span className="font-bold">
-                4. A coworking & events space in San Francisco, on{' '}
+                4. An incubator & community space in San Francisco, on{' '}
                 <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
                   1680 Mission Street
                 </Link>{' '}
