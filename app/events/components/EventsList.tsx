@@ -27,7 +27,7 @@ function EventCard({ event }: { event: Event }) {
   const [expanded, setExpanded] = useState(!isLong)
 
   return (
-    <div className="bg-white p-6 shadow-sm border border-amber-100 relative">
+    <div className="bg-white p-6 shadow-sm border border-slate-100 relative">
       {event.type && <EventTypeTag type={event.type} />}
       <div className="flex items-center gap-2 mb-1">
         {event.url ? (

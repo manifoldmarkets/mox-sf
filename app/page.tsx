@@ -26,7 +26,7 @@ function Link({
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-beige-50 text-gray-800">
+    <div className="min-h-screen bg-slate-50 text-gray-800">
       {/* Open house banner */}
       {/* <a
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
@@ -117,7 +117,7 @@ export default function Component() {
 
           {/* Right column */}
           <div>
-            <div className="bg-white shadow-xl p-8 border border-amber-100 relative">
+            <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
               <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
               <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 

@@ -54,7 +54,7 @@ function PartnerCard({
 
 export default function GuestsPage() {
   return (
-    <div className="min-h-screen bg-beige-50 text-gray-800">
+    <div className="min-h-screen bg-slate-50 text-gray-800">
       {/* Hero section */}
       <div className="max-w-4xl mx-auto pt-20 px-6">
         <div className="text-center mb-20">
@@ -68,7 +68,7 @@ export default function GuestsPage() {
 
         {/* What Mox offers section */}
         <section className="mb-20">
-          <div className="bg-white shadow-lg p-8 border border-amber-100 relative">
+          <div className="bg-white shadow-lg p-8 border border-slate-100 relative">
             <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
             <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
@@ -77,7 +77,7 @@ export default function GuestsPage() {
             </h2> */}
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center p-6">
-                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-8 h-8 text-amber-700"
                     fill="none"
@@ -100,7 +100,7 @@ export default function GuestsPage() {
                 </p>
               </div>
               <div className="text-center p-6">
-                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-8 h-8 text-amber-700"
                     fill="none"
@@ -123,7 +123,7 @@ export default function GuestsPage() {
                 </p>
               </div>
               <div className="text-center p-6">
-                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-8 h-8 text-amber-700"
                     fill="none"
@@ -191,7 +191,7 @@ export default function GuestsPage() {
         {/* CTA sections */}
         <div className="grid md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
           {/* For Organizations */}
-          <div className="bg-white p-8 border border-amber-200 shadow-lg">
+          <div className="bg-white p-8 border border-amber-700 shadow-lg">
             <h2 className="text-2xl font-bold mb-4 font-playfair">
               Partner with Mox
             </h2>
@@ -229,7 +229,7 @@ export default function GuestsPage() {
           </div>
 
           {/* For Individuals */}
-          {/* <div className="bg-white p-8 border border-amber-200 shadow-lg">
+          {/* <div className="bg-white p-8 border border-amber-700 shadow-lg">
             <h2 className="text-2xl font-bold mb-4 font-playfair">
               For individuals
             </h2>
@@ -386,7 +386,7 @@ export default function GuestsPage() {
             Resources for guests
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 border border-amber-100">
+            <div className="bg-white p-6 border border-amber-700">
               <h3 className="text-lg font-semibold mb-4">Getting Started</h3>
               <div className="space-y-3 text-sm">
                 <div>
@@ -401,7 +401,7 @@ export default function GuestsPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-white p-6 border border-amber-100">
+            <div className="bg-white p-6 border border-amber-700">
               <h3 className="text-lg font-semibold mb-4">
                 Contact Information
               </h3>
@@ -425,7 +425,7 @@ export default function GuestsPage() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 border-t border-amber-200 py-8">
+      <footer className="mt-24 border-t border-amber-700 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           <Link href="/">← Back to Mox homepage</Link>
           <br />
