@@ -1,3 +1,5 @@
+import Gallery from '../gallery'
+
 function Link({
   href,
   children,
@@ -24,35 +26,28 @@ function PartnerCard({
   url,
   logoUrl,
   logoPlaceholder,
+  bgColor = 'black',
 }: {
   name: string
   url: string
   logoUrl?: string
   logoPlaceholder?: string
+  bgColor?: string
 }) {
   return (
-    <div className="bg-white p-6 border border-gray-200 hover:border-gray-300 transition-colors">
-      <div className="flex items-center">
-        <div className="w-24 h-24 bg-black border border-gray-200 flex items-center justify-center text-gray-400 text-xs font-mono mr-4 overflow-hidden">
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt={`${name} logo`}
-              className="w-full h-full object-contain"
-            />
-          ) : (
-            logoPlaceholder
-          )}
+    <div className="flex flex-col items-center gap-4">
+      {logoUrl ? (
+        <img
+          src={logoUrl}
+          alt={`${name} logo`}
+          className={`w-36 h-36 ${bgColor} p-3`}
+        />
+      ) : (
+        <div className="w-36 h-36 bg-black border border-gray-200 flex items-center justify-center text-gray-400 text-xs font-mono mr-4 overflow-hidden">
+          {logoPlaceholder}
         </div>
-        <h3 className="text-lg font-semibold text-gray-900">
-          <Link
-            href={url}
-            className="no-underline hover:text-blue-600 text-gray-900"
-          >
-            {name}
-          </Link>
-        </h3>
-      </div>
+      )}
+      <h3 className="text-2xl text-gray-900">{name}</h3>
     </div>
   )
 }
@@ -67,7 +62,7 @@ export default function GuestsPage() {
             Mox Guest Program
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Drop-in access to Mox, for people working on projects we admire.
+            Drop-in access to Mox, for people working at orgs we admire.
           </p>
         </div>
 
@@ -77,9 +72,9 @@ export default function GuestsPage() {
             <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
             <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
-            <h2 className="text-3xl font-bold mb-12 text-center font-playfair">
+            {/* <h2 className="text-3xl font-bold mb-12 text-center font-playfair">
               What Mox offers guests
-            </h2>
+            </h2> */}
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center p-6">
                 <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -98,11 +93,10 @@ export default function GuestsPage() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                  Flexible Access
+                  Flexible access
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  2x/month access to our coworking and common spaces, through
-                  end of 2025
+                  2x/month complimentary access to our space
                 </p>
               </div>
               <div className="text-center p-6">
@@ -122,10 +116,10 @@ export default function GuestsPage() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                  Community Events
+                  Community events
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Invitations to Mox member talks and events
+                  Invites to public and Mox members-only events
                 </p>
               </div>
               <div className="text-center p-6">
@@ -145,10 +139,10 @@ export default function GuestsPage() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                  Fast-Track
+                  Fast-track
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Fast-tracked application for full membership or office at Mox
+                  Fast-tracked application for full Mox membership
                 </p>
               </div>
             </div>
@@ -158,182 +152,76 @@ export default function GuestsPage() {
         {/* Partner organizations */}
         <section className="mb-20">
           <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
-            Guest Program Partners
+            Our partners include
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <PartnerCard
-              name="Lightcone Infrastructure"
-              url="https://www.lighthaven.space/"
+              name="Lightcone"
+              url="https://www.lightconeinfrastructure.com//"
               logoUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s"
-              logoPlaceholder="LIGHT"
+              bgColor="bg-white"
             />
             <PartnerCard
-              name="Tarbell Fellowship"
+              name="Tarbell"
               url="https://www.tarbellfellowship.org/"
               logoUrl="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png"
-              logoPlaceholder="TARB"
+              bgColor="bg-[#123c75]"
             />
             <PartnerCard
               name="MIRI"
               url="https://intelligence.org/"
               logoUrl="https://intelligence.org/wp-content/uploads/2024/10/Group-47.svg"
-              logoPlaceholder="MIRI"
+              bgColor="bg-[#193655]"
             />
             <PartnerCard
-              name="Seldon Lab"
-              url="https://seldonlab.com/"
-              logoPlaceholder="SELD"
+              name="FAR.AI"
+              url="https://far.ai/"
+              logoUrl="https://cdn.prod.website-files.com/66f4503c3d0f4d4a75074a18/6712bf27e843ab5a68396da8_Far%20AI%20Logotype%20White.svg"
+              bgColor="bg-[#071024]"
             />
-          </div>
-        </section>
-
-        {/* Testimonials section */}
-        <section className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center font-playfair">
-            What people say about Mox
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8 text-sm">
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 italic mb-4 leading-relaxed">
-                "I think of people at Mox as a collection of my friends and
-                not-yet-friends. Nobody feels entirely like a stranger. Mox
-                members are (of course) smart, but they're also so open and
-                approachable. I can walk up to anyone and have an interesting
-                conversation; every single person I've met here has welcomed
-                questions about their work and been curious about mine."
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Gavriel Kleinwaks, Mox Member
-              </p>
-            </div>
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 italic mb-4 leading-relaxed">
-                "Mox has the best density of people with the values &
-                capabilities I care about the most. In general, it's more social
-                & feels better organized for serendipity vs any coworking space
-                I've been to before, comparable to perhaps like 0.3 Manifests
-                per month."
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Venki Kumar, Mox Member
-              </p>
-            </div>
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 italic mb-4 leading-relaxed">
-                "Austin and his staff have gone to great lengths to make Mox
-                incredibly accommodating. Not only is the space already equipped
-                with useful things like utensils, printers, and AV, but the
-                operational staff are communicative, flexible, and incredibly
-                helpful.... I definitely hope to find occasions to host more
-                events at Mox down the line, and would highly recommend it to
-                anyone I know who is looking for a slightly more casual, but
-                exceedingly well-managed venue."
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Xander Balwit, Asimov Press
-              </p>
-            </div>
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 italic mb-4 leading-relaxed">
-                "Mox is a spacious and welcoming coworking space, with kind,
-                helpful staff. We would be happy to host an event there again."
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Sawyer Bernath, Tarbell Fellowship
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Why this program section */}
-        <section className="mb-20">
-          <div className="bg-amber-50 p-8 border-l-4 border-amber-800">
-            <h2 className="text-2xl font-bold mb-6 font-playfair">
-              Why this guest program?
-            </h2>
-            <div className="space-y-4 text-gray-700">
-              <div className="flex items-start">
-                <span className="text-amber-800 mr-3 mt-1">•</span>
-                <p>
-                  Some people work elsewhere, but occasionally visit SF and want
-                  a place to work
-                </p>
-              </div>
-              <div className="flex items-start">
-                <span className="text-amber-800 mr-3 mt-1">•</span>
-                <p>
-                  Some people have offices, but want a community space to access
-                  on weekends
-                </p>
-              </div>
-              <div className="flex items-start">
-                <span className="text-amber-800 mr-3 mt-1">•</span>
-                <p>
-                  Mox exists to help people exchange ideas; we're always looking
-                  for more great folks!
-                </p>
-              </div>
-            </div>
+            <PartnerCard
+              name="Seldon"
+              url="https://seldonlab.com/"
+              logoUrl="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png"
+              bgColor="bg-white"
+            />
           </div>
         </section>
 
         {/* CTA sections */}
-        <div className="grid md:grid-cols-2 gap-8 mb-20">
+        <div className="grid md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
           {/* For Organizations */}
           <div className="bg-white p-8 border border-amber-200 shadow-lg">
             <h2 className="text-2xl font-bold mb-4 font-playfair">
-              For Organizations
+              Partner with Mox
             </h2>
             <p className="text-gray-600 mb-6">
-              Partner with us to provide your team members with access to our
-              vibrant community space.
+              A place for your team to work and collaborate, in the heart of SF.
             </p>
             <div className="space-y-3 mb-6 text-sm text-gray-700">
-              <div className="flex items-center">
-                <svg
-                  className="w-4 h-4 text-green-500 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Host events, talks, and hackathons</span>
-              </div>
-              <div className="flex items-center">
-                <svg
-                  className="w-4 h-4 text-green-500 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Access to retreats and fellowship space</span>
-              </div>
-              <div className="flex items-center">
-                <svg
-                  className="w-4 h-4 text-green-500 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Connect with like-minded researchers</span>
-              </div>
+              {[
+                'Ample desks, monitors, and call booths',
+                'Conference rooms and lounges ',
+                'Host talks, retreats, and hackathons with us',
+              ].map((text) => (
+                <div className="flex items-center" key={text}>
+                  <svg
+                    className="w-4 h-4 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span>{text}</span>
+                </div>
+              ))}
             </div>
             <a
-              href="mailto:team@moxsf.com?subject=Guest Program Partnership"
+              href="mailto:robin@moxsf.com?subject=Guest Program Partnership"
               className="inline-block px-6 py-3 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
             >
               Partner with us
@@ -341,9 +229,9 @@ export default function GuestsPage() {
           </div>
 
           {/* For Individuals */}
-          <div className="bg-white p-8 border border-amber-200 shadow-lg">
+          {/* <div className="bg-white p-8 border border-amber-200 shadow-lg">
             <h2 className="text-2xl font-bold mb-4 font-playfair">
-              For Individuals
+              For individuals
             </h2>
             <p className="text-gray-600 mb-6">
               Join through one of our partner organizations or reach out
@@ -399,13 +287,103 @@ export default function GuestsPage() {
             >
               Get in touch
             </a>
-          </div>
+          </div> */}
         </div>
+
+        {/* Testimonials section */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold mb-12 text-center font-playfair">
+            What people say about Mox
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8 text-sm">
+            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                I think of people at Mox as a collection of my friends and
+                not-yet-friends. Nobody feels entirely like a stranger. Mox
+                members are (of course) smart, but they're also so open and
+                approachable. I can walk up to anyone and have an interesting
+                conversation; every single person I've met here has welcomed
+                questions about their work and been curious about mine.
+              </p>
+              <p className="text-amber-800 font-semibold">
+                — Gavriel Kleinwaks, Mox member
+              </p>
+            </div>
+            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Mox has the best density of people with the values &
+                capabilities I care about the most. In general, it's more social
+                & feels better organized for serendipity vs any coworking space
+                I've been to before, comparable to perhaps like 0.3 Manifests
+                per month.
+              </p>
+              <p className="text-amber-800 font-semibold">
+                — Venki Kumar, Mox member
+              </p>
+            </div>
+            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Austin and his staff have gone to great lengths to make Mox
+                incredibly accommodating. Not only is the space already equipped
+                with useful things like utensils, printers, and AV, but the
+                operational staff are communicative, flexible, and incredibly
+                helpful.... I definitely hope to find occasions to host more
+                events at Mox down the line, and would highly recommend it to
+                anyone I know who is looking for a slightly more casual, but
+                exceedingly well-managed venue.
+              </p>
+              <p className="text-amber-800 font-semibold">
+                — Xander Balwit, Asimov Press
+              </p>
+            </div>
+            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Mox is a spacious and welcoming coworking space, with kind,
+                helpful staff. We would be happy to host an event there again.
+              </p>
+              <p className="text-amber-800 font-semibold">
+                — Sawyer Bernath, Tarbell Fellowship
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Why this program section */}
+        {/* <section className="mb-20">
+          <div className="bg-amber-50 p-8 border-l-4 border-amber-800">
+            <h2 className="text-2xl font-bold mb-6 font-playfair">
+              Why this guest program?
+            </h2>
+            <div className="space-y-4 text-gray-700">
+              <div className="flex items-start">
+                <span className="text-amber-800 mr-3 mt-1">•</span>
+                <p>
+                  Some people work elsewhere, but occasionally visit SF and want
+                  a place to work
+                </p>
+              </div>
+              <div className="flex items-start">
+                <span className="text-amber-800 mr-3 mt-1">•</span>
+                <p>
+                  Some people have offices, but want a community space to access
+                  on weekends
+                </p>
+              </div>
+              <div className="flex items-start">
+                <span className="text-amber-800 mr-3 mt-1">•</span>
+                <p>
+                  Mox exists to help people exchange ideas; we're always looking
+                  for more great folks!
+                </p>
+              </div>
+            </div>
+          </div>
+        </section> */}
 
         {/* Resources section */}
         <section className="mb-20">
           <h2 className="text-2xl font-bold mb-8 text-center font-playfair">
-            Resources for Guests
+            Resources for guests
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white p-6 border border-amber-100">
@@ -439,6 +417,10 @@ export default function GuestsPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section>
+          <Gallery />
         </section>
       </div>
 
