@@ -311,6 +311,8 @@ export default function JoinPage() {
               <input
                 type="text"
                 value={name}
+                name="firstName"
+                autoComplete="given-name"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your first name"
                 className="w-full px-4 py-2 border border-amber-200 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500"
