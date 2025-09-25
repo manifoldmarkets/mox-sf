@@ -40,38 +40,36 @@ export default function Component() {
       {/* Hero section with dictionary definition */}
       <div className="max-w-3xl mx-auto pt-16 px-6">
         <div className="border-l-4 border-amber-800 pl-8 py-2">
-          <h1 className="text-3xl font-bold mb-2 font-playfair">
+          <h1 className="mb-1">
             Mox <span className="italic font-normal">/mäks/</span>
           </h1>
-          <div className="italic text-lg mb-1">noun</div>
+          <div className="italic text-lg mb-4">noun</div>
 
-          <div className="space-y-3 mt-6">
-            <div>
-              1. Abbreviation for <span className="italic">moxie</span>: energy
+          <ol className="space-y-2 list-decimal list-inside">
+            <li>
+              Abbreviation for <span className="italic">moxie</span>: energy
               and pep, or courage and determination.
-            </div>
+            </li>
 
-            <div>
-              2. Rare artifacts in{' '}
+            <li>
+              Rare artifacts in{' '}
               <span className="italic">Magic: the Gathering</span>, among the
               most powerful in the game.
-            </div>
+            </li>
 
-            <div>
-              3. Atypical acronym for{' '}
+            <li>
+              Atypical acronym for{' '}
               <span className="italic">Mixture Of eXperts</span>, a modern
               machine learning technique.
-            </div>
+            </li>
 
-            <div>
-              <span className="font-bold">
-                4. An incubator & community space in San Francisco, on{' '}
-                <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
-                  1680 Mission Street
-                </Link>{' '}
-              </span>
-            </div>
-          </div>
+            <li className="font-bold">
+              An incubator & community space in San Francisco, on{' '}
+              <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
+                1680 Mission Street
+              </Link>{' '}
+            </li>
+          </ol>
         </div>
       </div>
 
@@ -85,8 +83,8 @@ export default function Component() {
           {/* Left column */}
           <div className="space-y-8">
             <section>
-              <h2 className="text-2xl font-bold mb-4 font-playfair">
-                <strong>A gathering place for</strong>
+              <h2 className='mb-4'>
+                A gathering place for
               </h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
@@ -100,8 +98,8 @@ export default function Component() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4 font-playfair">
-                <strong>Mox offers</strong>
+              <h2 className='mb-4'>
+                Mox offers
               </h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
@@ -122,8 +120,8 @@ export default function Component() {
               <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-6 font-playfair">
-                  <strong>Become a member</strong>
+                <h2 className='mb-4'>
+                  Become a member
                 </h2>
                 <p className="mb-8 text-gray-600">
                   Looking for a mission-driven space to work from? We offer

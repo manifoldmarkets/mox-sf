@@ -38,14 +38,14 @@ function EventCard({ event }: { event: Event }) {
             className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group"
             title="Event details"
           >
-            <h3 className="text-xl font-semibold">{event.name}</h3>
+            <h3>{event.name}</h3>
             <ExternalLink
               size={16}
               className="text-amber-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
             />
           </a>
         ) : (
-          <h3 className="text-xl font-semibold text-amber-900">{event.name}</h3>
+          <h3 className="text-amber-900">{event.name}</h3>
         )}
       </div>
       <p className="text-sm mb-2 text-amber-800 font-semibold">
@@ -114,7 +114,7 @@ export default function EventsList({ events }: { events: Event[] }) {
     <div className="space-y-8 max-w-xl mx-auto">
       {visibleDays.map(({ date, events: dayEvents }) => (
         <div key={date.toISOString()}>
-          <p className="text-sm uppercase tracking-wide text-amber-700 mb-3">
+          <p className="text-sm text-small-caps text-amber-700 mb-3">
             {format(date, 'EEEE, MMMM d')}
           </p>
           <div className="space-y-4">
