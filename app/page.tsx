@@ -47,8 +47,8 @@ export default function Component() {
 
           <ol className="space-y-2 list-decimal list-inside">
             <li>
-              Abbreviation for <span className="italic">moxie</span>: energy
-              and pep, or courage and determination.
+              Abbreviation for <span className="italic">moxie</span>: energy and
+              pep, or courage and determination.
             </li>
 
             <li>
@@ -83,9 +83,7 @@ export default function Component() {
           {/* Left column */}
           <div className="space-y-8">
             <section>
-              <h2 className='mb-4'>
-                A gathering place for
-              </h2>
+              <h2 className="mb-4">A gathering place for</h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
                   <li>Startups living in the future</li>
@@ -98,9 +96,7 @@ export default function Component() {
             </section>
 
             <section>
-              <h2 className='mb-4'>
-                Mox offers
-              </h2>
+              <h2 className="mb-4">Mox offers</h2>
               <div className="prose prose-slate">
                 <ul className="list-disc pl-4 space-y-2">
                   <li>Space to work, learn, meet, and play</li>
@@ -120,9 +116,7 @@ export default function Component() {
               <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
               <div>
-                <h2 className='mb-4'>
-                  Become a member
-                </h2>
+                <h2 className="mb-4">Become a member</h2>
                 <p className="mb-8 text-gray-600">
                   Looking for a mission-driven space to work from? We offer
                   coworking desks, private offices, and event space.
@@ -143,18 +137,16 @@ export default function Component() {
                     Apply for membership
                   </a>
 
-                  <a
-                    href="/day-pass"
-                    className="
-                    block w-full px-8 py-4 text-center
-                    bg-white text-amber-800 font-semibold border-2 border-amber-800
-                    hover:bg-amber-50
-                    transition-all duration-200
-                  "
-                  >
-                    Day passes starting at $40
-                  </a>
-
+                  <p className="text-sm text-gray-500 text-center mt-2">
+                    (or buy a{' '}
+                    <a
+                      href="/day-pass"
+                      className="text-amber-800 underline hover:text-amber-900"
+                    >
+                      day pass
+                    </a>
+                    )
+                  </p>
                 </div>
               </div>
             </div>
