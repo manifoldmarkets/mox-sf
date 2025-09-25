@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 type ActivationState = 'loading' | 'success' | 'expired' | 'not-found' | 'error'
 
-export default function ActivatePage() {
+function ActivatePageContent() {
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
   const [state, setState] = useState<ActivationState>('loading')
@@ -189,5 +189,20 @@ export default function ActivatePage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ActivatePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <ActivatePageContent />
+    </Suspense>
   )
 }
