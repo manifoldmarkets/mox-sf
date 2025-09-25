@@ -7,22 +7,119 @@
   --font-geist: var(--font-geist);
   --font-geist-mono: var(--font-geist-mono);
   --color-beige-50: #f9f6f0;
+  --heading-font: var(--font-castoro);
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+  /* Set Geist as default font for body text */
+  body {
+    font-family: var(--font-geist), sans-serif;
+  }
+
+  /* Automatically apply heading styles to HTML elements using font-heading */
+  h1 {
+    @apply text-4xl font-bold font-heading;
+  }
+
+  h2 {
+    @apply text-2xl font-bold font-heading;
+  }
+
+  h3 {
+    @apply text-xl font-semibold font-heading;
+  }
+
+  h4 {
+    @apply text-lg font-semibold font-heading;
+  }
+}
+
+@layer utilities {
+  /* Typography */
+  .font-heading {
+    font-family: var(--heading-font);
+  }
+
+  .heading-page-hero {
+    @apply text-5xl font-bold font-heading;
+  }
+
+  .heading-hero {
+    @apply text-4xl font-bold font-heading;
+  }
+
+  .heading-display {
+    @apply text-3xl font-bold font-heading;
+  }
+
+  .heading-section {
+    @apply text-2xl font-bold font-heading;
+  }
+
+  .heading-subsection {
+    @apply text-xl font-semibold font-heading;
+  }
+
+  .heading-small {
+    @apply text-lg font-semibold font-heading;
+  }
+
+  .text-small-caps {
+    @apply uppercase tracking-wide font-semibold;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center px-4 py-2 text-sm font-medium rounded transition-colors cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-primary text-white hover:bg-brand-secondary;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface-primary text-brand-primary border border-gray-200 hover:bg-gray-50;
+  }
+
+  .btn-large {
+    @apply px-8 py-4 text-base;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-surface-primary shadow-card border border-gray-100;
+  }
+
+  .card-lg {
+    @apply card shadow-card-lg p-8;
+  }
+
+  /* Links */
+  .link-brand {
+    @apply text-brand-primary hover:text-brand-secondary underline decoration-dotted underline-offset-2;
+  }
+
+  /* Layout */
+  .container-page {
+    @apply max-w-4xl mx-auto px-container;
+  }
+
+  .section-spacing {
+    @apply py-section;
+  }
+
+  /* Decorative corners */
+  .corner-brackets {
+    @apply relative;
+  }
+
+  .corner-brackets::before {
+    content: '';
+    @apply absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-brand-primary;
+  }
+
+  .corner-brackets::after {
+    content: '';
+    @apply absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-brand-primary;
   }
 }

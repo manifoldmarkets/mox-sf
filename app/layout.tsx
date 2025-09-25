@@ -35,6 +35,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata = {
+  metadataBase: new URL('https://moxsf.com'),
   title: 'Mox',
   description:
     'Mox is a coworking & events space in SF. For startups and charities; hackers and researchers; writers and other masters of craft',
@@ -44,7 +45,7 @@ export const metadata = {
     title: 'Mox SF',
     description:
       'Mox is a coworking & events space in SF. For startups and charities; hackers and researchers; writers and other masters of craft',
-    url: 'https://mox.sf',
+    url: 'https://moxsf.com',
     siteName: 'Mox SF',
     locale: 'en_US',
     type: 'website',
@@ -75,7 +76,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${lora.variable} ${castoro.variable} ${geist.variable} ${geistMono.variable} font-castoro`}
+        className={`${playfair.variable} ${lora.variable} ${castoro.variable} ${geist.variable} ${geistMono.variable}`}
       >
         {children}
         <Analytics />
