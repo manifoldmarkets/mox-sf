@@ -130,19 +130,33 @@ export default function Component() {
                   coworking desks, private offices, and event space.
                 </p>
 
-                <a
-                  href="/apply"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                  inline-block px-8 py-4 
-                  bg-amber-800 text-white font-semibold
-                  hover:bg-amber-900  
-                  transition-all duration-200
-                "
-                >
-                  Apply for membership
-                </a>
+                <div className="space-y-4">
+                  <a
+                    href="/apply"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                    block w-full px-8 py-4 text-center
+                    bg-amber-800 text-white font-semibold
+                    hover:bg-amber-900  
+                    transition-all duration-200
+                  "
+                  >
+                    Apply for membership
+                  </a>
+                  
+                  <a
+                    href="/day-pass"
+                    className="
+                    block w-full px-8 py-4 text-center
+                    bg-white text-amber-800 font-semibold border-2 border-amber-800
+                    hover:bg-amber-50  
+                    transition-all duration-200
+                  "
+                  >
+                    Day passes starting at $40
+                  </a>
+                </div>
               </div>
             </div>
           </div>
