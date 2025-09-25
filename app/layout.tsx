@@ -1,5 +1,11 @@
 import './globals.css'
-import { Playfair_Display, Lora } from 'next/font/google'
+import {
+  Playfair_Display,
+  Lora,
+  Castoro,
+  Geist,
+  Geist_Mono,
+} from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 
 const playfair = Playfair_Display({
@@ -10,6 +16,22 @@ const playfair = Playfair_Display({
 const lora = Lora({
   subsets: ['latin'],
   variable: '--font-lora',
+})
+
+const castoro = Castoro({
+  subsets: ['latin'],
+  variable: '--font-castoro',
+  weight: '400',
+})
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
 })
 
 export const metadata = {
@@ -52,7 +74,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${lora.variable} font-lora`}>
+      <body
+        className={`${playfair.variable} ${lora.variable} ${castoro.variable} ${geist.variable} ${geistMono.variable} font-castoro`}
+      >
         {children}
         <Analytics />
       </body>

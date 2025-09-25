@@ -26,7 +26,7 @@ function Link({
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-beige-50 text-gray-800">
+    <div className="min-h-screen bg-slate-50 text-gray-800">
       {/* Open house banner */}
       {/* <a
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
@@ -65,7 +65,7 @@ export default function Component() {
 
             <div>
               <span className="font-bold">
-                4. A coworking & events space in San Francisco, on{' '}
+                4. An incubator & community space in San Francisco, on{' '}
                 <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
                   1680 Mission Street
                 </Link>{' '}
@@ -117,7 +117,7 @@ export default function Component() {
 
           {/* Right column */}
           <div>
-            <div className="bg-white shadow-xl p-8 border border-amber-100 relative">
+            <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
               <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
               <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
@@ -130,39 +130,47 @@ export default function Component() {
                   coworking desks, private offices, and event space.
                 </p>
 
-                <a
-                  href="/apply"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                  inline-block px-8 py-4
-                  bg-amber-800 text-white font-semibold
-                  hover:bg-amber-900
-                  transition-all duration-200
-                "
-                >
-                  Apply for membership
-                </a>
-                <p></p>
-                <br/>
-                <a
-                  href="/substack"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                  inline-block px-8 py-4
-                  bg-amber-800 text-white font-semibold
-                  hover:bg-amber-900
-                  transition-all duration-200
-                "
-                >
-                  Just subscribe to events
-                </a>
-              </div>
-
-              <div className="mt-16 text-sm text-gray-500 italic">
-                We love everyone, but alas -- our capacity is limited, and
-                membership is invite-only for now.
+                <div className="space-y-4">
+                  <a
+                    href="/apply"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                    block w-full px-8 py-4 text-center
+                    bg-amber-800 text-white font-semibold
+                    hover:bg-amber-900  
+                    transition-all duration-200
+                  "
+                  >
+                    Apply for membership
+                  </a>
+                  
+                  <a
+                    href="/day-pass"
+                    className="
+                    block w-full px-8 py-4 text-center
+                    bg-white text-amber-800 font-semibold border-2 border-amber-800
+                    hover:bg-amber-50  
+                    transition-all duration-200
+                  "
+                  >
+                    Day passes starting at $40
+                  </a>
+                  
+                  <a
+                    href="/substack"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                    block w-full px-8 py-4 text-center
+                    bg-slate-100 text-amber-800 font-semibold border border-slate-300
+                    hover:bg-slate-200  
+                    transition-all duration-200
+                  "
+                  >
+                    Just subscribe to events
+                  </a>
+                </div>
               </div>
             </div>
           </div>

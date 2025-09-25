@@ -9,7 +9,7 @@ interface AirtableEvent {
     'End Date'?: string
     Description?: string
     Location?: string
-    Notes?: string
+    'Event Description'?: string
     Type?: string
     Status?: string
     URL?: string
@@ -42,7 +42,7 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
       : undefined,
     description: record.fields.Description,
     location: record.fields.Location,
-    notes: record.fields.Notes,
+    notes: record.fields['Event Description'],
     type: record.fields.Type,
     status: record.fields.Status,
     url: record.fields.URL,
@@ -62,7 +62,12 @@ export async function getEvents(): Promise<Event[]> {
   )
   const data = await res.json()
   const records = data.records?.filter(
-    (event: AirtableEvent) => event.fields?.['Start Date']
+    (event: AirtableEvent) => {
+      if (!event.fields?.['Start Date']) return false
+
+      const status = event.fields.Status?.toLowerCase()
+      return status !== 'idea' && status !== 'maybe' && status !== 'cancelled'
+    }
   )
 
   return records?.map(parseAirtableEvent) || []

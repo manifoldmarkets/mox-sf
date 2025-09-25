@@ -36,7 +36,7 @@ function AddSection() {
       <div className="flex justify-end gap-4 mb-6 max-w-xl mx-auto">
         <a
           href="/host-event"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer"
         >
           Host an event
         </a>
@@ -48,7 +48,7 @@ function AddSection() {
         </a>
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer"
         >
           Sync to cal
         </button>

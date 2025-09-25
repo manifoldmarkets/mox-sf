@@ -1,10 +1,13 @@
 'use server'
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
 export async function getAirtableData() {
-  const formula =
-    `AND(` +
-    `OR(Priority="Amazing",Priority="Great",Priority="Probably great"),` +
-    `OR(Status="Invited",Status="Toured",Status="Applied"))`
+  // const formula =
+  //   `AND(` +
+  //   `OR(Priority="Amazing",Priority="Great",Priority="Probably great"),` +
+  //   `OR(Status="Invited",Status="Toured",Status="Applied",Status="To Invite"))`
+
+  // New formula: anyone invited or to invite
+  const formula = `OR(Status="Invited",Status="To Invite")`
   const encodedFormula = encodeURIComponent(formula)
 
   const response = await fetch(
