@@ -44,7 +44,7 @@ function AddSection() {
           href="/substack"
           className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
         >
-          Subscribe to events
+          Subscribe to newsletter
         </a>
         <button
           onClick={() => setIsCalendarOpen(true)}

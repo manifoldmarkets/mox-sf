@@ -138,38 +138,25 @@ export default function Component() {
                     className="
                     block w-full px-8 py-4 text-center
                     bg-amber-800 text-white font-semibold
-                    hover:bg-amber-900  
+                    hover:bg-amber-900
                     transition-all duration-200
                   "
                   >
                     Apply for membership
                   </a>
-                  
+
                   <a
                     href="/day-pass"
                     className="
                     block w-full px-8 py-4 text-center
                     bg-white text-amber-800 font-semibold border-2 border-amber-800
-                    hover:bg-amber-50  
+                    hover:bg-amber-50
                     transition-all duration-200
                   "
                   >
                     Day passes starting at $40
                   </a>
-                  
-                  <a
-                    href="/substack"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                    block w-full px-8 py-4 text-center
-                    bg-slate-100 text-amber-800 font-semibold border border-slate-300
-                    hover:bg-slate-200  
-                    transition-all duration-200
-                  "
-                  >
-                    Just subscribe to events
-                  </a>
+
                 </div>
               </div>
             </div>
