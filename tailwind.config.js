@@ -1,6 +1,5 @@
-import type { Config } from 'tailwindcss'
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -16,15 +15,16 @@ const config: Config = {
         'geist-mono': ['var(--font-geist-mono)', 'monospace'],
       },
       colors: {
+        // Brand colors - easier to change globally
         'brand': {
-          'primary': '#92400e',
-          'secondary': '#d97706',
-          'accent': '#fbbf24',
+          'primary': '#92400e',    // amber-800
+          'secondary': '#d97706',  // amber-600
+          'accent': '#fbbf24',     // amber-400
         },
         'surface': {
-          'primary': '#ffffff',
-          'secondary': '#f8fafc',
-          'tertiary': '#f1f5f9',
+          'primary': '#ffffff',    // white
+          'secondary': '#f8fafc',  // slate-50
+          'tertiary': '#f1f5f9',   // slate-100
         },
         'beige': {
           50: '#f9f6f0',
@@ -38,12 +38,10 @@ const config: Config = {
         'card': '0.5rem',
       },
       spacing: {
-        'section': '4rem',
-        'container': '1.5rem',
+        'section': '4rem',    // 64px for section spacing
+        'container': '1.5rem', // 24px for container padding
       },
     },
   },
   plugins: [],
 }
-
-export default config

@@ -1,26 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --font-playfair: var(--font-playfair);
+  --font-lora: var(--font-lora);
+  --font-castoro: var(--font-castoro);
+  --font-geist: var(--font-geist);
+  --font-geist-mono: var(--font-geist-mono);
+  --color-beige-50: #f9f6f0;
+  --heading-font: var(--font-castoro);
+}
 
 @layer base {
+  /* Set Geist as default font for body text */
   body {
-    font-family: var(--font-castoro), serif;
+    font-family: var(--font-geist), sans-serif;
   }
 
+  /* Automatically apply heading styles to HTML elements using font-heading */
   h1 {
-    @apply text-4xl font-bold font-playfair;
+    @apply text-4xl font-bold font-heading;
   }
 
   h2 {
-    @apply text-2xl font-bold font-playfair;
+    @apply text-2xl font-bold font-heading;
   }
 
   h3 {
-    @apply text-xl font-semibold font-castoro;
+    @apply text-xl font-semibold font-heading;
   }
 
   h4 {
-    @apply text-lg font-semibold font-castoro;
+    @apply text-lg font-semibold font-heading;
   }
 }
 
@@ -31,27 +41,27 @@
   }
 
   .heading-page-hero {
-    @apply text-5xl font-bold font-playfair;
+    @apply text-5xl font-bold font-heading;
   }
 
   .heading-hero {
-    @apply text-4xl font-bold font-playfair;
+    @apply text-4xl font-bold font-heading;
   }
 
   .heading-display {
-    @apply text-3xl font-bold font-playfair;
+    @apply text-3xl font-bold font-heading;
   }
 
   .heading-section {
-    @apply text-2xl font-bold font-playfair;
+    @apply text-2xl font-bold font-heading;
   }
 
   .heading-subsection {
-    @apply text-xl font-semibold font-castoro;
+    @apply text-xl font-semibold font-heading;
   }
 
   .heading-small {
-    @apply text-lg font-semibold font-castoro;
+    @apply text-lg font-semibold font-heading;
   }
 
   .text-small-caps {
