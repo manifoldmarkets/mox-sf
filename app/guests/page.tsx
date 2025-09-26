@@ -47,7 +47,7 @@ function PartnerCard({
           {logoPlaceholder}
         </div>
       )}
-      <h3 className="text-3xl font-bold font-castoro text-gray-900">{name}</h3>
+      <h3 className="text-2xl text-gray-900">{name}</h3>
     </div>
   )
 }
@@ -58,7 +58,7 @@ export default function GuestsPage() {
       {/* Hero section */}
       <div className="max-w-4xl mx-auto pt-20 px-6">
         <div className="text-center mb-20">
-          <h1 className="heading-page-hero mb-6">
+          <h1 className="text-4xl font-bold mb-6 font-playfair">
             Mox Guest Program
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -92,7 +92,7 @@ export default function GuestsPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-gray-900">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   Flexible access
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -115,7 +115,7 @@ export default function GuestsPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-gray-900">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   Community events
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -138,7 +138,7 @@ export default function GuestsPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-gray-900">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   Fast-track
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -151,9 +151,9 @@ export default function GuestsPage() {
 
         {/* Partner organizations */}
         <section className="mb-20">
-          <h1 className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
             Our partners include
-          </h1>
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <PartnerCard
               name="Lightcone"
@@ -192,7 +192,7 @@ export default function GuestsPage() {
         <div className="grid md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
           {/* For Organizations */}
           <div className="bg-white p-8 border border-amber-700 shadow-lg">
-            <h2 className="mb-4">
+            <h2 className="text-2xl font-bold mb-4 font-playfair">
               Partner with Mox
             </h2>
             <p className="text-gray-600 mb-6">
@@ -292,7 +292,7 @@ export default function GuestsPage() {
 
         {/* Testimonials section */}
         <section className="mb-20">
-          <h2 className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-12 text-center font-playfair">
             What people say about Mox
           </h2>
           <div className="grid md:grid-cols-2 gap-8 text-sm">
@@ -382,12 +382,12 @@ export default function GuestsPage() {
 
         {/* Resources section */}
         <section className="mb-20">
-          <h2 className="mb-8 text-center">
+          <h2 className="text-2xl font-bold mb-8 text-center font-playfair">
             Resources for guests
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white p-6 border border-amber-700">
-              <h4 className="mb-4">Getting Started</h4>
+              <h3 className="text-lg font-semibold mb-4">Getting Started</h3>
               <div className="space-y-3 text-sm">
                 <div>
                   <strong>First time guide:</strong>{' '}
@@ -402,9 +402,9 @@ export default function GuestsPage() {
               </div>
             </div>
             <div className="bg-white p-6 border border-amber-700">
-              <h4 className="mb-4">
+              <h3 className="text-lg font-semibold mb-4">
                 Contact Information
-              </h4>
+              </h3>
               <div className="space-y-3 text-sm">
                 <div>
                   <strong>Contact email:</strong>{' '}

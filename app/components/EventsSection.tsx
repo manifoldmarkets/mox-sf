@@ -66,7 +66,7 @@ function AddSection() {
         {/* Full-screen container for centering */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-            <DialogTitle className="text-gray-900 mb-2">
+            <DialogTitle className="text-xl font-bold text-gray-900 mb-2">
               Sync events to your calendar
             </DialogTitle>
 
