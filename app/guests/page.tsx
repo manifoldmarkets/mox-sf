@@ -35,7 +35,12 @@ function PartnerCard({
   bgColor?: string
 }) {
   return (
-    <div className="flex flex-col items-center gap-4">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col items-center gap-4 hover:bg-slate-200 p-4"
+    >
       {logoUrl ? (
         <img
           src={logoUrl}
@@ -48,7 +53,7 @@ function PartnerCard({
         </div>
       )}
       <h3 className="text-xl font-bold font-castoro text-gray-900">{name}</h3>
-    </div>
+    </a>
   )
 }
 
@@ -163,7 +168,7 @@ export default function GuestsPage() {
           <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
             Our partners include
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-4xl mx-auto">
             <PartnerCard
               name="Lightcone"
               url="https://www.lightconeinfrastructure.com//"
@@ -196,7 +201,7 @@ export default function GuestsPage() {
             />
             <PartnerCard
               name="GovAI"
-              url="governance.ai"
+              url="https://governance.ai"
               logoUrl="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg"
               bgColor="bg-white"
             />
@@ -205,6 +210,18 @@ export default function GuestsPage() {
               url="https://www.alignment.org/"
               logoUrl="https://www.alignment.org/assets/img/arc-logo.svg"
               bgColor="bg-white"
+            />
+            <PartnerCard
+              name="Redwood"
+              url="https://redwoodresearch.org"
+              logoUrl="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="Elicit"
+              url="https://elicit.com"
+              logoUrl="https://i.imgur.com/NghnGgl.jpeg"
+              bgColor="bg-[#00666d]"
             />
           </div>
         </section>
