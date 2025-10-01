@@ -340,7 +340,7 @@ export default function GuestsPage() {
               quote="I think of people at Mox as a collection of my friends and not-yet-friends. Nobody feels entirely like a stranger. Mox members are (of course) smart, but they're also so open and approachable. I can walk up to anyone and have an interesting conversation; every single person I've met here has welcomed questions about their work and been curious about mine."
             />
             <TestimonialCard
-              name="Andreas Stuhllmueller, Elicit"
+              name="Andreas Stuhlmüller, Elicit"
               quote="Mox was an amazing space for the AI for Epistemics hackathon. I loved the thoughtful layout with central communal gathering areas and quiet work areas around the edges, easily enough space for the 40+ participants."
             />
             <TestimonialCard
