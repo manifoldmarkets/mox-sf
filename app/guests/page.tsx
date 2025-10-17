@@ -223,6 +223,42 @@ export default function GuestsPage() {
               logoUrl="https://i.imgur.com/NghnGgl.jpeg"
               bgColor="bg-[#00666d]"
             />
+            <PartnerCard
+              name="Palisade Research"
+              url="https://palisaderesearch.org/"
+              logoUrl="https://palisaderesearch.org/assets/images/logos/palisade.svg"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="AI Impacts"
+              url="https://aiimpacts.org/"
+              logoUrl="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png"
+              bgColor="bg-[#2c97cc]"
+            />
+            <PartnerCard
+                name="Roots of Progress"
+                url="https://rootsofprogress.org/"
+                logoUrl="https://media.licdn.com/dms/image/v2/D4D0BAQHZqWt1BOeRcQ/company-logo_200_200/company-logo_200_200/0/1719263296894/rootsofprogress_logo?e=2147483647&v=beta&t=ST2NF9TmGYBHrprrUCW_W1d_ZLnYFU8UCZlFC9-e9vs"
+                bgColor="bg-[#5e6f60]"
+              />
+              <PartnerCard
+                name="Epoch"
+                url="https://epoch.ai/"
+                logoUrl="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
+                bgColor="bg-[#eaf5f4]"
+              />
+              <PartnerCard
+                name="Timaeus"
+                url="https://timaeus.co/"
+                logoUrl="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
+                bgColor="bg-white"
+              />
+              <PartnerCard
+                name="BlueDot Impact"
+                url="https://bluedot.org/"
+                logoUrl="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg"
+                bgColor="bg-[#00104e]"
+              />
           </div>
         </section>
 
@@ -440,7 +476,7 @@ export default function GuestsPage() {
           <Link href="/">← Back to Mox homepage</Link>
           <br />
           Questions? Contact{' '}
-          <Link href="mailto:team@moxsf.com">team@moxsf.com</Link>
+          <Link href="mailto:robin@moxsf.com">robin@moxsf.com</Link>
         </div>
       </footer>
     </div>
