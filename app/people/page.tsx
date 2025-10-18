@@ -11,6 +11,7 @@ export default async function PeoplePage() {
   // Sort people by name
   const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name))
 
+  /*
   // Separate people into categories
   const SELDON_PROGRAM_ID = 'recw9GcgF3DwVsxO1'
   const PIBBSS_PROGRAM_ID = 'recbTATvXcYoaZNaf'
@@ -30,6 +31,7 @@ export default async function PeoplePage() {
     (person) =>
       !PROGRAMS.some((programId) => person.programIds?.includes(programId))
   )
+  */
 
   const renderPeopleList = (people: Person[]) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
@@ -62,9 +64,11 @@ export default async function PeoplePage() {
         Humans at Mox
       </h1>
 
+      {renderPeopleList(sortedPeople)}
+
+      {/*
       {otherPeople.length > 0 && (
         <div className="mb-8">
-          {/* <h2 className="text-2xl font-semibold mb-4">Other Members</h2> */}
           {renderPeopleList(otherPeople)}
         </div>
       )}
@@ -95,6 +99,7 @@ export default async function PeoplePage() {
           {renderPeopleList(flfPeople)}
         </div>
       )}
+      */}
     </div>
   )
 }
