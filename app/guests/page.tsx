@@ -437,7 +437,7 @@ export default function GuestsPage() {
               <div className="space-y-3 text-sm">
                 <div>
                   <strong>First time guide:</strong>{' '}
-                  <Link href="https://www.notion.so/Visiting-Mox-1af54492ea7a80d9b88ad1a5ad9c78eb?pvs=21">
+                  <Link href="https://moxsf.notion.site/visiting-mox">
                     Visiting Mox
                   </Link>
                 </div>

@@ -7,12 +7,12 @@ const redirects = {
   // '/people':
   //   'https://airtable.com/appkHZ2UvU6SouT5y/shrScGCEpYDJHG4m5/tbl3mg59vE4hyDveG',
   '/host-event':
-    'https://manifoldmarkets.notion.site/Mox-Event-Host-Info-19354492ea7a80359441d2710b91f07a',
+    'https://moxsf.notion.site/run-an-event',
   '/feedback': 'https://airtable.com/appkHZ2UvU6SouT5y/pagnAzfmwXz1SvOID/form',
   '/fund':
-    'https://manifoldmarkets.notion.site/Mox-Fund-for-massive-public-good-24e54492ea7a80a78e10d9dd9c149619',
+    'https://moxsf.notion.site/Mox-Fund-for-massive-public-good-24e54492ea7a80a78e10d9dd9c149619',
   '/populi':
-    'https://manifoldmarkets.notion.site/Mox-Populi-26954492ea7a80f7820ec2f5c237b212',
+    'https://moxsf.notion.site/Mox-Populi-26954492ea7a80f7820ec2f5c237b212',
   '/guest': '/guests',
 
   // Endpoints mostly for admin/staff
