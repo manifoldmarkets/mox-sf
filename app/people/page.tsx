@@ -64,6 +64,17 @@ export default async function PeoplePage() {
         Humans at Mox
       </h1>
 
+      <div className="mb-8 text-center -mt-4">
+        <a
+          href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
+        >
+         (Need to adjust? Manage your membership)
+        </a>
+      </div>
+
       {renderPeopleList(sortedPeople)}
 
       {/*

@@ -153,6 +153,24 @@ export function JoinContent(props: {
 
           <section>
             <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+              How do I manage my membership?
+            </h2>
+            <p className="text-gray-700 mb-4">
+              If you'd like to cancel your membership or change tiers, you can
+              do so here:
+            </p>
+            <a
+              href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-2 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
+            >
+              Manage your membership
+            </a>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               What about private offices?
             </h2>
             <p className="text-gray-700">
