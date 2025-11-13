@@ -37,42 +37,20 @@ export default function Component() {
         Mox is fundraising! Learn more & support us <u>here</u>
       </a> */}
 
-      {/* Hero section with dictionary definition */}
-      <div className="max-w-3xl mx-auto pt-16 px-6">
-        <div className="border-l-4 border-amber-800 pl-8 py-2">
-          <h1 className="text-4xl font-bold mb-2 font-playfair">
-            Mox <span className="italic font-normal">/mäks/</span>
-          </h1>
-          <div className="italic text-lg mb-1">noun</div>
-
-          <div className="space-y-2 mt-6">
-            <div>
-              1. Abbreviation for <span className="italic">moxie</span>: energy
-              and pep, or courage and determination.
-            </div>
-
-            <div>
-              2. Rare artifacts in{' '}
-              <span className="italic">Magic: the Gathering</span>, among the
-              most powerful in the game.
-            </div>
-
-            <div>
-              3. Atypical acronym for{' '}
-              <span className="italic">Mixture Of eXperts</span>, a modern
-              machine learning technique.
-            </div>
-
-            <div>
-              <span className="font-bold">
-                4. An incubator & community space in San Francisco, on{' '}
-                <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
-                  1680 Mission Street
-                </Link>{' '}
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* Hero section */}
+      <div className="max-w-3xl mx-auto pt-16 px-6 text-center">
+        <img
+          src="/images/mox_logo_text.svg"
+          alt="Mox"
+          className="mx-auto mb-8"
+          style={{ width: '400px', height: 'auto' }}
+        />
+        <p className="text-xl">
+          An incubator & community space in San Francisco, on{' '}
+          <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
+            1680 Mission Street
+          </Link>
+        </p>
       </div>
 
       {/* Main content */}
