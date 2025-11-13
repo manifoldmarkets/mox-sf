@@ -165,7 +165,7 @@ export default function Masonry({
                 alt=""
                 width={Math.round(width)}
                 height={Math.round(height)}
-                className="object-cover cursor-pointer hover:opacity-80"
+                className="object-cover cursor-pointer hover:opacity-80 rounded-2xl"
                 loading="lazy"
                 onClick={() => setSelectedImageIndex(index)}
               />
@@ -224,7 +224,7 @@ export default function Masonry({
                 alt=""
                 width={origWidth}
                 height={origHeight}
-                className="object-contain cursor-pointer"
+                className="object-contain cursor-pointer rounded-3xl"
                 onClick={() => setSelectedImageIndex(null)}
                 priority={true} // Prioritize loading the full-size image
                 quality={100} // Use highest quality for the full-size view
