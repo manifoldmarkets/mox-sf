@@ -7,7 +7,7 @@ const redirects = {
   // '/people':
   //   'https://airtable.com/appkHZ2UvU6SouT5y/shrScGCEpYDJHG4m5/tbl3mg59vE4hyDveG',
   '/host-event':
-    'https://moxsf.notion.site/run-an-event',
+    'https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form',
   '/feedback': 'https://airtable.com/appkHZ2UvU6SouT5y/pagnAzfmwXz1SvOID/form',
   '/fund':
     'https://moxsf.notion.site/Mox-Fund-for-massive-public-good-24e54492ea7a80a78e10d9dd9c149619',
