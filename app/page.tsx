@@ -17,7 +17,7 @@ function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2 ${className}`}
+      className={`text-amber-800 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2 ${className}`}
     >
       {children}
     </a>
@@ -26,7 +26,7 @@ function Link({
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Open house banner */}
       {/* <a
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
@@ -40,7 +40,7 @@ export default function Component() {
       {/* Hero section */}
       <div className="relative min-h-screen flex items-center justify-center px-6 py-16 pb-32">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5 dark:invert"
           style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
         />
         <div className="relative z-10 max-w-4xl w-full">
@@ -48,12 +48,12 @@ export default function Component() {
             <img
               src="/images/mox_logo_text.svg"
               alt="Mox"
-              className="mx-auto mb-8 w-full max-w-md"
+              className="mx-auto mb-8 w-full max-w-md dark:invert"
             />
             <p className="text-xl mb-4 leading-relaxed">
               An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
             </p>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-700 dark:text-gray-300">
               <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
                 1680 Mission Street, San Francisco
               </Link>
@@ -62,51 +62,51 @@ export default function Component() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Left column */}
-            <div className="bg-white bg-opacity-95 p-6 shadow-xl rounded-3xl">
-              <p className="text-base text-gray-700 mb-4 text-center font-semibold">
+            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-6 shadow-xl rounded-3xl">
+              <p className="text-base text-gray-700 dark:text-gray-200 mb-4 text-center font-semibold">
                 We bring together:
               </p>
 
               <div className="flex flex-wrap justify-center gap-2 mb-4">
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">AI alignment researchers</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">AI alignment researchers</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Startup founders</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Startup founders</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Defensive accelerationists</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Defensive accelerationists</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Filmmakers</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Filmmakers</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Writers</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Writers</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">High impact nonprofits</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">High impact nonprofits</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Artisans</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Artisans</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Figgie players</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Figgie players</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Policy advocates</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Policy advocates</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Community builders</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Community builders</p>
                 </div>
-                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Members of technical and untechnical staff</p>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Members of technical and untechnical staff</p>
                 </div>
               </div>
 
               <div className="text-center">
                 <a
                   href="#people"
-                  className="text-sm text-amber-800 hover:text-amber-900 underline decoration-dotted underline-offset-2"
+                  className="text-sm text-amber-800 dark:text-yellow-500 hover:text-amber-900 dark:hover:text-yellow-400 underline decoration-dotted underline-offset-2"
                 >
                   See people at Mox ↓
                 </a>
@@ -114,8 +114,8 @@ export default function Component() {
             </div>
 
             {/* Right column */}
-            <div className="bg-white bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col">
-              <p className="text-base text-gray-700 mb-6 leading-relaxed text-center">
+            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col">
+              <p className="text-base text-gray-700 dark:text-gray-200 mb-6 leading-relaxed text-center">
                 Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you'll find meaningful.
               </p>
 
@@ -124,19 +124,19 @@ export default function Component() {
                   href="/apply"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 text-sm text-center bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors rounded-full"
+                  className="px-6 py-3 text-sm text-center bg-amber-800 dark:bg-amber-700 text-white font-semibold hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors rounded-full"
                 >
                   Apply for membership
                 </a>
                 <a
                   href="mailto:rachel@moxsf.com"
-                  className="px-6 py-3 text-sm text-center bg-white border-2 border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-colors rounded-full"
+                  className="px-6 py-3 text-sm text-center bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors rounded-full"
                 >
                   Inquire about offices
                 </a>
                 <a
                   href="/day-pass"
-                  className="px-6 py-3 text-sm text-center bg-white border-2 border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-colors rounded-full"
+                  className="px-6 py-3 text-sm text-center bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors rounded-full"
                 >
                   Buy a day pass
                 </a>
@@ -150,12 +150,12 @@ export default function Component() {
       <div className="max-w-4xl mx-auto px-6">
         {/* Events section */}
         <section className="mb-16 -mt-24 relative z-20">
-          <div className="bg-white p-8 shadow-2xl rounded-3xl border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 p-8 shadow-2xl rounded-3xl border border-gray-200 dark:border-gray-700">
             <div className="text-center mb-6">
-              <h2 className="text-3xl font-bold text-amber-900 font-playfair mb-2">
+              <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
                 Events
               </h2>
-              <p className="text-gray-600 text-sm">What's happening at Mox</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">What's happening at Mox</p>
             </div>
             <EventsPage />
           </div>
@@ -163,10 +163,10 @@ export default function Component() {
 
         <section id="people" className="mb-16">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-amber-900 font-playfair mb-2">
+            <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
               Humans of Mox
             </h2>
-            <p className="text-gray-600 text-sm">The community that makes Mox special</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">The community that makes Mox special</p>
           </div>
           <PeopleGallery />
         </section>
@@ -177,22 +177,22 @@ export default function Component() {
 
         <section className="mb-16">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-amber-900 font-playfair mb-2">
+            <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
               The Space
             </h2>
-            <p className="text-gray-600 text-sm">A glimpse into our home</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">A glimpse into our home</p>
           </div>
           <Gallery />
         </section>
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 border-t border-gray-200 py-12 bg-white">
+      <footer className="mt-24 border-t border-gray-200 dark:border-gray-700 py-12 bg-white dark:bg-gray-800">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-gray-600 mb-2">
+          <p className="text-gray-600 dark:text-gray-400 mb-2">
             A project of <Link href="https://manifund.org">Manifund</Link>
           </p>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Questions? Contact{' '}
             <Link href="mailto:austin@manifund.org">rachel@moxsf.com</Link>
           </p>

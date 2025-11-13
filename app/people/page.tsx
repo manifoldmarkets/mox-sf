@@ -44,7 +44,7 @@ export default async function PeoplePage() {
           href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-amber-800 hover:text-amber-900 underline decoration-dotted underline-offset-2"
+          className="text-sm text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
         >
           Manage your membership
         </a>

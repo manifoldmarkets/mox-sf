@@ -27,7 +27,7 @@ function EventCard({ event }: { event: Event }) {
   const [expanded, setExpanded] = useState(!isLong)
 
   return (
-    <div className="bg-white p-6 shadow-sm border border-slate-100 relative rounded-2xl">
+    <div className="bg-white dark:bg-gray-800 p-6 shadow-sm border border-slate-100 dark:border-gray-700 relative rounded-2xl">
       {event.type && <EventTypeTag type={event.type} />}
       <div className="flex items-center gap-2 mb-1">
         {event.url ? (
@@ -35,34 +35,34 @@ function EventCard({ event }: { event: Event }) {
             href={event.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group"
+            className="text-amber-900 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 flex items-center gap-2 group"
             title="Event details"
           >
             <h3 className="text-xl font-semibold">{event.name}</h3>
             <ExternalLink
               size={16}
-              className="text-amber-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+              className="text-amber-700 dark:text-amber-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
             />
           </a>
         ) : (
-          <h3 className="text-xl font-semibold text-amber-900">{event.name}</h3>
+          <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400">{event.name}</h3>
         )}
       </div>
-      <p className="text-sm mb-2 text-amber-800 font-semibold">
+      <p className="text-sm mb-2 text-amber-800 dark:text-amber-500 font-semibold">
         {formatEventTime(event)}
         {event.host && <span className="font-normal"> - {event.host}</span>}
       </p>
 
       {event.location && (
-        <p className="text-gray-600 text-sm mb-2">📍 {event.location}</p>
+        <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">📍 {event.location}</p>
       )}
       {event.notes && (
-        <p className="text-gray-700 mt-2 whitespace-pre-wrap text-sm break-words">
+        <p className="text-gray-700 dark:text-gray-300 mt-2 whitespace-pre-wrap text-sm break-words">
           {expanded ? event.notes : event.notes.slice(0, 480)}
           {!expanded && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-amber-700 hover:text-amber-900 underline ml-2 cursor-pointer"
+              className="text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 underline ml-2 cursor-pointer"
             >
               ... more
             </button>
@@ -114,7 +114,7 @@ export default function EventsList({ events }: { events: Event[] }) {
     <div className="space-y-8 max-w-xl mx-auto">
       {visibleDays.map(({ date, events: dayEvents }) => (
         <div key={date.toISOString()}>
-          <p className="text-sm uppercase tracking-wide text-amber-700 mb-3">
+          <p className="text-sm uppercase tracking-wide text-amber-700 dark:text-amber-500 mb-3">
             {format(date, 'EEEE, MMMM d')}
           </p>
           <div className="space-y-4">
@@ -127,13 +127,13 @@ export default function EventsList({ events }: { events: Event[] }) {
       {!showAll && totalEvents > THRESHOLD && (
         <button
           onClick={() => setShowAll(true)}
-          className="w-full py-2 text-sm text-amber-700 hover:text-amber-900 border-2 border-amber-800 hover:bg-amber-50 rounded-full transition-colors cursor-pointer"
+          className="w-full py-2 text-sm text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 border-2 border-amber-800 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
         >
           Show all upcoming events
         </button>
       )}
       {events.length === 0 && (
-        <p className="text-gray-500 text-center py-8">No upcoming events</p>
+        <p className="text-gray-500 dark:text-gray-400 text-center py-8">No upcoming events</p>
       )}
     </div>
   )

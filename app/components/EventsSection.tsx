@@ -36,19 +36,19 @@ function AddSection() {
       <div className="flex flex-col md:flex-row gap-3 mb-6 max-w-xl mx-auto">
         <a
           href="/substack"
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium bg-amber-800 text-white hover:bg-amber-900 transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium bg-amber-800 dark:bg-amber-700 text-white hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors cursor-pointer rounded-full"
         >
           Events newsletter
         </a>
         <a
           href="/host-event"
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 dark:text-amber-400 bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors cursor-pointer rounded-full"
         >
           Host an event
         </a>
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 dark:text-amber-400 bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors cursor-pointer rounded-full"
         >
           Sync to cal
         </button>
@@ -123,7 +123,7 @@ export default function EventsSection(props: {
       <AddSection />
 
       <TabGroup>
-        <TabList className="flex space-x-1 bg-gray-200 p-1 mb-6 max-w-xl mx-auto rounded-full">
+        <TabList className="flex space-x-1 bg-gray-200 dark:bg-gray-700 p-1 mb-6 max-w-xl mx-auto rounded-full">
           {['Events', 'Week', 'Month'].map((tab) => (
             <Tab
               key={tab}
@@ -131,8 +131,8 @@ export default function EventsSection(props: {
                 `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer rounded-full
                 ${
                   selected
-                    ? 'bg-white text-amber-900 shadow'
-                    : 'text-gray-700 hover:bg-white/[0.6] hover:text-amber-900'
+                    ? 'bg-white dark:bg-gray-800 text-amber-900 dark:text-amber-400 shadow'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-white/[0.6] dark:hover:bg-gray-600 hover:text-amber-900 dark:hover:text-amber-400'
                 }`
               }
             >

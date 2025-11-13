@@ -19,22 +19,22 @@ function DayCard({
   isToday: boolean
 }) {
   if (!day) {
-    return <div className="bg-white p-2 h-32" />
+    return <div className="bg-white dark:bg-gray-800 p-2 h-32" />
   }
 
   const dayEvents = filterEventsByDay(events, day)
 
   return (
     <div
-      className={`bg-white p-1 h-32 overflow-y-auto ${
-        isDayToday ? 'bg-red-50' : ''
+      className={`bg-white dark:bg-gray-800 p-1 h-32 overflow-y-auto ${
+        isDayToday ? 'bg-red-50 dark:bg-red-900/30' : ''
       }`}
     >
-      <div className={`font-medium text-gray-700 mb-1 flex justify-center`}>
+      <div className={`font-medium text-gray-700 dark:text-gray-300 mb-1 flex justify-center`}>
         <span
           className={`${
             isDayToday
-              ? 'bg-red-800 text-white w-7 h-7 rounded-full flex items-center justify-center'
+              ? 'bg-red-800 dark:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center'
               : ''
           }`}
         >
@@ -44,17 +44,17 @@ function DayCard({
       {dayEvents.map((event) => (
         <div
           key={event.id}
-          className="text-xs p-1 mb-1 bg-gray-50 border border-gray-200 rounded-md"
+          className="text-xs p-1 mb-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md"
           title={event.notes || event.description}
         >
-          <span className="text-amber-900 font-medium block">
-            <span className="text-amber-600 font-light">
+          <span className="text-amber-900 dark:text-amber-400 font-medium block">
+            <span className="text-amber-600 dark:text-amber-500 font-light">
               {format(event.startDate, 'h:mm a').replace(':00', '')}
             </span>{' '}
             {event.name}
           </span>
           {event.location && (
-            <div className="text-gray-600 truncate mt-0.5">
+            <div className="text-gray-600 dark:text-gray-400 truncate mt-0.5">
               📍 {event.location}
             </div>
           )}
@@ -77,16 +77,16 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   }
 
   return (
-    <div className="bg-white border border-gray-200 p-4 rounded-2xl overflow-hidden">
-      <h3 className="text-xl font-semibold text-amber-900 mb-4 text-center">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl overflow-hidden">
+      <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400 mb-4 text-center">
         {format(today, 'MMMM yyyy')}
       </h3>
 
-      <div className="grid grid-cols-7 bg-gray-100">
+      <div className="grid grid-cols-7 bg-gray-100 dark:bg-gray-700">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div
             key={day}
-            className="p-2 text-center text-gray-700 font-medium bg-white"
+            className="p-2 text-center text-gray-700 dark:text-gray-300 font-medium bg-white dark:bg-gray-800"
           >
             {day}
           </div>
