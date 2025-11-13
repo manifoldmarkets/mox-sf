@@ -1,0 +1,295 @@
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes neon-flicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    text-shadow:
+      0 0 5px #ff00ff,
+      0 0 10px #ff00ff,
+      0 0 20px #ff00ff,
+      0 0 40px #ff00ff;
+  }
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes rotate-chaos {
+  0% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes slide-diagonal {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(5px, -5px) rotate(1deg);
+  }
+}
+
+.punkContainer {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.punkContainer::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 0, 255, 0.03) 10px,
+      rgba(255, 0, 255, 0.03) 20px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 255, 255, 0.03) 10px,
+      rgba(0, 255, 255, 0.03) 20px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.neonText {
+  color: #ff00ff;
+  text-shadow:
+    0 0 5px #ff00ff,
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 40px #ff00ff;
+  animation: neon-flicker 3s infinite;
+}
+
+.glitchText {
+  position: relative;
+  animation: glitch 0.5s infinite;
+}
+
+.rotatedCard {
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease;
+  animation: rotate-chaos 3s ease-in-out infinite;
+}
+
+.rotatedCard:hover {
+  transform: rotate(0deg) scale(1.02);
+  animation: none;
+}
+
+.neonBorder {
+  border: 3px solid #00ff00;
+  box-shadow:
+    0 0 10px #00ff00,
+    inset 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.punkCard {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 20, 20, 0.95) 0%,
+    rgba(40, 40, 40, 0.95) 100%
+  );
+  border: 3px solid;
+  position: relative;
+  overflow: visible;
+}
+
+.punkCard::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(
+    45deg,
+    #ff00ff 0%,
+    #00ffff 25%,
+    #ffff00 50%,
+    #ff00ff 75%,
+    #00ffff 100%
+  );
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(10px);
+  animation: slide-diagonal 4s ease-in-out infinite;
+}
+
+.punkTag {
+  background: rgba(255, 0, 255, 0.2);
+  border: 2px solid #ff00ff;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  font-family: 'Comic Sans MS', cursive;
+  font-weight: 900;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.punkTag:hover {
+  background: rgba(0, 255, 255, 0.3);
+  border-color: #00ffff;
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+  transform: scale(1.1) rotate(-3deg);
+}
+
+.punkButton {
+  background: linear-gradient(135deg, #ff00ff 0%, #ff0080 100%);
+  border: 3px solid #00ffff;
+  color: #fff;
+  font-family: 'Impact', sans-serif;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow:
+    0 0 20px rgba(255, 0, 255, 0.5),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.punkButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.punkButton:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.punkButton:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 30px rgba(255, 0, 255, 0.8),
+    inset 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.diagonalCut {
+  clip-path: polygon(0 5%, 100% 0%, 100% 95%, 0% 100%);
+}
+
+.chaosOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: overlay;
+  opacity: 0.1;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 35px,
+      rgba(255, 0, 255, 0.5) 35px,
+      rgba(255, 0, 255, 0.5) 70px
+    );
+}
+
+.textureOverlay {
+  position: relative;
+}
+
+.textureOverlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.sprayPaint {
+  font-family: 'Arial Black', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #ffff00;
+  text-shadow:
+    2px 2px 0px #000,
+    -2px -2px 0px #000,
+    2px -2px 0px #000,
+    -2px 2px 0px #000,
+    0 0 20px #ffff00;
+}
+
+.staticNoise {
+  position: relative;
+}
+
+.staticNoise::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='6.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  animation: glitch 0.3s infinite;
+}
