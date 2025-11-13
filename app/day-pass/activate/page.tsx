@@ -12,6 +12,9 @@ function ActivatePageContent() {
   const [doorCode, setDoorCode] = useState<string>('')
   // const [passType, setPassType] = useState<string>('')
   const [userName, setUserName] = useState<string>('')
+  const [unlocking, setUnlocking] = useState(false)
+  const [unlockSuccess, setUnlockSuccess] = useState(false)
+  const [unlockError, setUnlockError] = useState(false)
 
   useEffect(() => {
     if (!id) {
@@ -43,6 +46,32 @@ function ActivatePageContent() {
     .catch(() => setState('error'))
   }, [id])
 
+  const handleUnlockDoor = async () => {
+    setUnlocking(true)
+    setUnlockError(false)
+    setUnlockSuccess(false)
+
+    try {
+      const response = await fetch('/day-pass/activate/unlock-api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId: id })
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setUnlockSuccess(true)
+      } else {
+        setUnlockError(true)
+      }
+    } catch (error) {
+      setUnlockError(true)
+    } finally {
+      setUnlocking(false)
+    }
+  }
+
   if (state === 'loading') {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -68,13 +97,34 @@ function ActivatePageContent() {
             </h1>
 
             <p className="text-gray-600 mb-8">
-              {/* Your {passType} has been activated. Here's your door code: */}
-              Your pass has been activated. Here's your door code:
+              {/* Your {passType} has been activated, and will expire at midnight. Here's your door code: */}
+              Your pass has been activated, and will expire at midnight. Here's your door code:
             </p>
 
             <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-6 mb-8">
               <p className="text-sm text-amber-700 mb-2">Door Code</p>
-              <p className="text-4xl font-bold text-amber-800 tracking-wider">{doorCode}</p>
+              <p className="text-4xl font-bold text-amber-800 tracking-wider">{doorCode}#</p>
+            </div>
+
+            <div className="mb-8">
+              <button
+                onClick={handleUnlockDoor}
+                disabled={unlocking}
+                className={`w-full px-8 py-4 font-semibold transition-all duration-200 ${
+                  unlocking
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : unlockSuccess
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-amber-800 hover:bg-amber-900'
+                } text-white`}
+              >
+                {unlocking ? 'Unlocking...' : unlockSuccess ? '✓ Door Unlocked!' : 'Unlock Door Now'}
+              </button>
+              {unlockError && (
+                <p className="mt-2 text-sm text-red-600 text-center">
+                  Failed to unlock door. Please try again or use the door code.
+                </p>
+              )}
             </div>
 
             <div className="space-y-4 text-left bg-gray-50 p-6 rounded-lg">
