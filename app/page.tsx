@@ -38,102 +38,125 @@ export default function Component() {
       </a> */}
 
       {/* Hero section */}
-      <div className="max-w-3xl mx-auto pt-16 px-6 text-center">
-        <img
-          src="/images/mox_logo_text.svg"
-          alt="Mox"
-          className="mx-auto mb-8"
-          style={{ width: '400px', height: 'auto' }}
+      <div className="relative min-h-screen flex items-center justify-center px-6 py-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5"
+          style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
         />
-        <p className="text-xl">
-          An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
-          </p>
-          <p className="text-xl">
-          <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
-            1680 Mission Street, San Francisco
-          </Link>
-        </p>
+        <div className="relative z-10 max-w-4xl w-full">
+          <div className="text-center mb-16">
+            <img
+              src="/images/mox_logo_text.svg"
+              alt="Mox"
+              className="mx-auto mb-8"
+              style={{ width: '400px', height: 'auto' }}
+            />
+            <p className="text-xl mb-4">
+              An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
+            </p>
+            <p className="text-xl">
+              <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
+                1680 Mission Street, San Francisco
+              </Link>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Left column */}
+            <div className="bg-white bg-opacity-95 p-6 shadow-xl rounded-3xl">
+              <p className="text-base text-gray-800 mb-3 text-center font-semibold">
+                We bring together:
+              </p>
+
+              <div className="flex flex-wrap justify-start gap-2 mb-3">
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">AI alignment researchers</p>
+                </div>
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Startup founders</p>
+                </div>
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Defensive accelerationists</p>
+                </div>
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Filmmakers</p>
+                </div>
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Writers</p>
+                </div>
+                                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">High impact nonprofits</p>
+                </div>
+                                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Artisans</p>
+                </div>
+<div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Futurists</p>
+                </div>
+
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Policy advocates</p>
+                </div>
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Community builders</p>
+                </div>
+                <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Members of technical staff</p>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <a
+                  href="#people"
+                  className="text-sm text-amber-800 hover:text-amber-900 underline decoration-dotted underline-offset-2"
+                >
+                  See people at Mox ↓
+                </a>
+              </div>
+            </div>
+
+            {/* Right column */}
+            <div className="bg-white bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col justify-between">
+              <p className="text-base text-gray-800 mb-6 leading-relaxed">
+                Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you'll find meaningful.
+              </p>
+
+              <div className="grid grid-cols-1 gap-2">
+                <a
+                  href="/apply"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 text-sm text-center bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors rounded-full"
+                >
+                  Apply for membership
+                </a>
+                <a
+                  href="mailto:rachel@moxsf.com"
+                  className="px-4 py-2 text-sm text-center bg-white border-2 border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-colors rounded-full"
+                >
+                  Inquire about offices
+                </a>
+                <a
+                  href="/day-pass"
+                  className="px-4 py-2 text-sm text-center bg-white border-2 border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-colors rounded-full"
+                >
+                  Buy a day pass
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main content */}
       <div className="max-w-4xl mx-auto mt-20 px-6">
-        <div className="bg-white p-12 mb-16">
-          <div className="max-w-3xl mx-auto">
-            <p className="text-lg text-gray-800 mb-6 leading-relaxed">
-              Mox is where San Francisco's most interesting minds work on what matters. We bring together:
-            </p>
-
-            <ul className="space-y-3 mb-8 text-gray-700 border-l-4 border-amber-800 pl-8">
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>AI alignment researchers and safety advocates</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>Startup founders building the future</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>Nonprofits working on welfare, climate, and techno-resilience</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>Independent writers, artists, and community builders</span>
-              </li>
-            </ul>
-
-            <p className="text-lg text-gray-800 mb-6 leading-relaxed">
-              We value intellectual rigor, philosophical inquiry, ambitious work, and making things happen.
-              Mox offers:
-            </p>
-
-            <ul className="space-y-3 mb-10 text-gray-700 border-l-4 border-amber-800 pl-8">
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>All the infrastructure you need for deep work</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>A rich community atmosphere with lunchtime gatherings and evening events</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-800 mr-3">•</span>
-                <span>Great conversations</span>
-              </li>
-            </ul>
-
-            <div className="grid md:grid-cols-3 gap-4">
-              <a
-                href="/apply"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 text-center bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
-              >
-                Apply for membership
-              </a>
-              <a
-                href="mailto:rachel@moxsf.com"
-                className="px-6 py-3 text-center bg-white border-2 border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-colors"
-              >
-                Inquire about offices
-              </a>
-              <a
-                href="/day-pass"
-                className="px-6 py-3 text-center bg-white border-2 border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-colors"
-              >
-                Buy a day pass
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <section className="mb-16 mt-16">
-          <PeopleGallery />
+        {/* Events section */}
+        <section className="mb-16">
+          <EventsPage />
         </section>
 
-        {/* Events section */}
-        <section className="mt-8 my-16">
-          <EventsPage />
+        <section id="people" className="mb-16">
+          <PeopleGallery />
         </section>
 
         <section className="mt-8 my-16">
