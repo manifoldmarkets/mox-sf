@@ -47,7 +47,7 @@ export const defaultContent: HomeContent = {
   offersTitle: 'What Mox Offers',
   offersImage: '/images/005.jpg',
   offersText:
-    'Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you'll find meaningful.',
+    'Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you\'ll find meaningful.',
   ctaButtons: {
     primary: { text: 'Apply for membership', href: '/apply' },
     secondary: { text: 'Inquire about offices', href: 'mailto:rachel@moxsf.com' },
@@ -99,5 +99,39 @@ export const punkContent: HomeContent = {
   galleryTitle: 'THE SPACE',
   gallerySubtitle: 'Look at this sick space',
   footerText: 'Powered by Manifund',
+  footerContact: 'rachel@moxsf.com',
+}
+
+export const dinosaurContent: HomeContent = {
+  tagline: 'An incubator where dinosaurs (metaphorically) help you build the future!',
+  subtitle: '1680 Mission Street, San Francisco',
+  location: 'https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco',
+  communityTitle: 'The fellow dinosaurs you\'ll meet:',
+  communityImage: '/images/014.jpg',
+  communityTags: [
+    'T-Rex startup founders',
+    'Velociraptor researchers', 
+    'Stegosaurus builders',
+    'Pterodactyl visionaries',
+    'Triceratops makers',
+    'Brachiosaurus thinkers',
+  ],
+  communityLink: 'See all the dinosaurs!',
+  offersTitle: 'What Mox offers',
+  offersImage: '/images/005.jpg',
+  offersText:
+    'A prehistoric space for modern work! Community! Events! Everything a dinosaur needs to thrive in the 21st century!',
+  ctaButtons: {
+    primary: { text: 'Join the herd!', href: '/apply' },
+    secondary: { text: 'Inquire about caves', href: 'mailto:rachel@moxsf.com' },
+    tertiary: { text: 'Day pass for dinos', href: '/day-pass' },
+  },
+  eventsTitle: 'Dinosaur Gatherings',
+  eventsSubtitle: 'When dinosaurs convene',
+  peopleTitle: 'Our Dinosaurs',
+  peopleSubtitle: 'The prehistoric crew',
+  galleryTitle: 'The Habitat',
+  gallerySubtitle: 'Where dinosaurs roam',
+  footerText: 'A project of Manifund',
   footerContact: 'rachel@moxsf.com',
 }
