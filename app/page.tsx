@@ -38,13 +38,13 @@ export default function Component() {
       </a> */}
 
       {/* Hero section */}
-      <div className="relative min-h-screen flex items-center justify-center px-6 py-16">
+      <div className="relative min-h-screen flex items-center justify-center px-6 py-16 pb-32">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5"
           style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
         />
         <div className="relative z-10 max-w-4xl w-full">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <img
               src="/images/mox_logo_text.svg"
               alt="Mox"
@@ -149,10 +149,18 @@ export default function Component() {
       </div>
 
       {/* Main content */}
-      <div className="max-w-4xl mx-auto mt-20 px-6">
+      <div className="max-w-4xl mx-auto px-6">
         {/* Events section */}
-        <section className="mb-16">
-          <EventsPage />
+        <section className="mb-16 -mt-24 relative z-20">
+          <div className="bg-white p-8 shadow-2xl rounded-3xl border border-amber-100">
+            <div className="text-center mb-6">
+              <h2 className="text-3xl font-bold text-amber-900 font-playfair mb-2">
+                Events
+              </h2>
+              <p className="text-gray-600 text-sm">What's happening at Mox</p>
+            </div>
+            <EventsPage />
+          </div>
         </section>
 
         <section id="people" className="mb-16">

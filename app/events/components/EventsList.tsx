@@ -15,7 +15,7 @@ function EventTypeTag({ type }: { type: string }) {
 
   return (
     <span
-      className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium ${colorClasses}`}
+      className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium rounded-full ${colorClasses}`}
     >
       {type.toLowerCase()}
     </span>
@@ -27,7 +27,7 @@ function EventCard({ event }: { event: Event }) {
   const [expanded, setExpanded] = useState(!isLong)
 
   return (
-    <div className="bg-white p-6 shadow-sm border border-slate-100 relative">
+    <div className="bg-white p-6 shadow-sm border border-slate-100 relative rounded-2xl">
       {event.type && <EventTypeTag type={event.type} />}
       <div className="flex items-center gap-2 mb-1">
         {event.url ? (
@@ -127,7 +127,7 @@ export default function EventsList({ events }: { events: Event[] }) {
       {!showAll && totalEvents > THRESHOLD && (
         <button
           onClick={() => setShowAll(true)}
-          className="w-full py-2 text-sm text-amber-700 hover:text-amber-900 border border-amber-200 hover:border-amber-300 rounded-md transition-colors cursor-pointer"
+          className="w-full py-2 text-sm text-amber-700 hover:text-amber-900 border-2 border-amber-800 hover:bg-amber-50 rounded-full transition-colors cursor-pointer"
         >
           Show all upcoming events
         </button>

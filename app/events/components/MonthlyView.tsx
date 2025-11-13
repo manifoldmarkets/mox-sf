@@ -44,7 +44,7 @@ function DayCard({
       {dayEvents.map((event) => (
         <div
           key={event.id}
-          className="text-xs p-1 mb-1 bg-beige-50 border border-amber-100"
+          className="text-xs p-1 mb-1 bg-beige-50 border border-amber-100 rounded-md"
           title={event.notes || event.description}
         >
           <span className="text-amber-900 font-medium block">
@@ -77,7 +77,7 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   }
 
   return (
-    <div className="bg-white border border-amber-100 p-4">
+    <div className="bg-white border border-amber-100 p-4 rounded-2xl overflow-hidden">
       <h3 className="text-xl font-semibold text-amber-900 mb-4 text-center">
         {format(today, 'MMMM yyyy')}
       </h3>

@@ -36,19 +36,19 @@ function AddSection() {
       <div className="flex gap-4 mb-6 max-w-xl mx-auto">
         <a
           href="/host-event"
-          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer"
+          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
         >
           Host an event
         </a>
         <a
           href="/substack"
-          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer"
+          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
         >
           Events newsletter
         </a>
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer"
+          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
         >
           Sync to cal
         </button>
@@ -65,7 +65,7 @@ function AddSection() {
 
         {/* Full-screen container for centering */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
+          <DialogPanel className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-xl">
             <DialogTitle className="text-xl font-bold text-gray-900 mb-2">
               Sync events to your calendar
             </DialogTitle>
@@ -75,7 +75,7 @@ function AddSection() {
                 href={GOOGLE_CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-full px-4 py-3 text-white bg-[#4285f4] hover:bg-[#3367d6] rounded transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 text-white bg-[#4285f4] hover:bg-[#3367d6] rounded-full transition-colors"
               >
                 Google Calendar
               </a>
@@ -84,14 +84,14 @@ function AddSection() {
                 href={OUTLOOK_CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-full px-4 py-3 text-white bg-[#0078d4] hover:bg-[#106ebe] rounded transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 text-white bg-[#0078d4] hover:bg-[#106ebe] rounded-full transition-colors"
               >
                 Outlook Calendar
               </a>
 
               <a
                 href={APPLE_CALENDAR_URL}
-                className="flex items-center justify-center w-full px-4 py-3 text-white bg-gray-900 hover:bg-gray-800 rounded transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 text-white bg-gray-900 hover:bg-gray-800 rounded-full transition-colors"
               >
                 Apple Calendar
               </a>
@@ -100,7 +100,7 @@ function AddSection() {
                 onClick={() => {
                   handleCopyUrl()
                 }}
-                className="cursor-pointer flex items-center justify-center w-full px-4 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="cursor-pointer flex items-center justify-center w-full px-4 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
               >
                 {calendarCopied ? 'Copied!' : 'Copy URL to Clipboard'}
               </button>
@@ -123,12 +123,12 @@ export default function EventsSection(props: {
       <AddSection />
 
       <TabGroup>
-        <TabList className="flex space-x-1 bg-amber-900/20 p-1 mb-6 max-w-xl mx-auto">
+        <TabList className="flex space-x-1 bg-amber-900/20 p-1 mb-6 max-w-xl mx-auto rounded-full">
           {['Events', 'Week', 'Month'].map((tab) => (
             <Tab
               key={tab}
               className={({ selected }) =>
-                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer
+                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer rounded-full
                 ${
                   selected
                     ? 'bg-white text-amber-900 shadow'
