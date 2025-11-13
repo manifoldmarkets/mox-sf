@@ -36,12 +36,6 @@ export default async function PeoplePage() {
 
   return (
     <div>
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-amber-900 font-playfair mb-2">
-          Humans at Mox
-        </h2>
-        <p className="text-gray-600 text-sm">Click highlighted names to learn more</p>
-      </div>
 
       <PeopleListClient people={sortedPeople} />
 

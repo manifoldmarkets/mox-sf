@@ -67,7 +67,7 @@ export default function Component() {
                 We bring together:
               </p>
 
-              <div className="flex flex-wrap justify-start gap-2 mb-4">
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
                 <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
                   <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">AI alignment researchers</p>
                 </div>
@@ -90,7 +90,7 @@ export default function Component() {
                   <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Artisans</p>
                 </div>
                 <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Futurists</p>
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Figgie players</p>
                 </div>
                 <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
                   <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Policy advocates</p>
@@ -99,7 +99,7 @@ export default function Component() {
                   <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Community builders</p>
                 </div>
                 <div className="bg-gray-100 border-2 border-gray-300 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Members of technical staff</p>
+                  <p className="font-semibold text-gray-800 text-sm whitespace-nowrap">Members of technical and untechnical staff</p>
                 </div>
               </div>
 
@@ -114,8 +114,8 @@ export default function Component() {
             </div>
 
             {/* Right column */}
-            <div className="bg-white bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col justify-between">
-              <p className="text-base text-gray-700 mb-6 leading-relaxed">
+            <div className="bg-white bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col">
+              <p className="text-base text-gray-700 mb-6 leading-relaxed text-center">
                 Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you'll find meaningful.
               </p>
 
@@ -164,7 +164,7 @@ export default function Component() {
         <section id="people" className="mb-16">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-amber-900 font-playfair mb-2">
-              People at Mox
+              Humans of Mox
             </h2>
             <p className="text-gray-600 text-sm">The community that makes Mox special</p>
           </div>
@@ -194,7 +194,7 @@ export default function Component() {
           </p>
           <p className="text-gray-600">
             Questions? Contact{' '}
-            <Link href="mailto:austin@manifund.org">austin@manifund.org</Link>
+            <Link href="mailto:austin@manifund.org">rachel@moxsf.com</Link>
           </p>
         </div>
       </footer>
