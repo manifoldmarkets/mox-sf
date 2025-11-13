@@ -27,14 +27,14 @@ function DayCard({
   return (
     <div
       className={`bg-white p-1 h-32 overflow-y-auto ${
-        isDayToday ? 'bg-beige-50' : ''
+        isDayToday ? 'bg-red-50' : ''
       }`}
     >
       <div className={`font-medium text-gray-700 mb-1 flex justify-center`}>
         <span
           className={`${
             isDayToday
-              ? 'bg-amber-800 text-white w-7 h-7 rounded-full flex items-center justify-center'
+              ? 'bg-red-800 text-white w-7 h-7 rounded-full flex items-center justify-center'
               : ''
           }`}
         >
@@ -44,7 +44,7 @@ function DayCard({
       {dayEvents.map((event) => (
         <div
           key={event.id}
-          className="text-xs p-1 mb-1 bg-beige-50 border border-amber-100 rounded-md"
+          className="text-xs p-1 mb-1 bg-gray-50 border border-gray-200 rounded-md"
           title={event.notes || event.description}
         >
           <span className="text-amber-900 font-medium block">
@@ -77,16 +77,16 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   }
 
   return (
-    <div className="bg-white border border-amber-100 p-4 rounded-2xl overflow-hidden">
+    <div className="bg-white border border-gray-200 p-4 rounded-2xl overflow-hidden">
       <h3 className="text-xl font-semibold text-amber-900 mb-4 text-center">
         {format(today, 'MMMM yyyy')}
       </h3>
 
-      <div className="grid grid-cols-7 bg-amber-100">
+      <div className="grid grid-cols-7 bg-gray-100">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div
             key={day}
-            className="p-2 text-center text-amber-900 font-medium bg-beige-50"
+            className="p-2 text-center text-gray-700 font-medium bg-white"
           >
             {day}
           </div>

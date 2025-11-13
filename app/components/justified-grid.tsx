@@ -73,10 +73,10 @@ export default function Masonry({
       const rowImages = images.slice(i, i + imagesPerRow)
       const rowRatios = imageRatios.slice(i, i + imagesPerRow)
 
-      // Skip if ratio data isn’t ready
+      // Skip if ratio data isn't ready
       if (rowRatios.some((r) => !r)) continue
 
-      const spacing = 16 // gap in pixels
+      const spacing = 12 // gap-3 in pixels
       const availableWidth = containerWidth - spacing * (imagesPerRow - 1)
 
       // Initial widths using the target row height
@@ -155,9 +155,9 @@ export default function Masonry({
   return (
     <div ref={containerRef}>
       {/* Masonry Grid */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {getRows().map((row, i) => (
-          <div key={i} className="flex gap-2">
+          <div key={i} className="flex gap-3">
             {row.map(({ src, width, height, index }) => (
               <NextImage
                 key={index}

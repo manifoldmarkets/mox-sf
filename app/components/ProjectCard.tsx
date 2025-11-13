@@ -63,7 +63,7 @@ export default function ProjectCard({
             {loading ? 'Getting feedback...' : 'Judge with Claude'}
           </button>
           {feedback && (
-            <div className="mt-2 p-3 bg-amber-50 rounded text-sm">
+            <div className="mt-2 p-3 bg-gray-50 rounded text-sm">
               {feedback}
             </div>
           )}

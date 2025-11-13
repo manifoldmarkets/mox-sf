@@ -33,22 +33,22 @@ function AddSection() {
   return (
     <>
       {/* Header with links */}
-      <div className="flex gap-4 mb-6 max-w-xl mx-auto">
-        <a
-          href="/host-event"
-          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
-        >
-          Host an event
-        </a>
+      <div className="flex flex-col md:flex-row gap-3 mb-6 max-w-xl mx-auto">
         <a
           href="/substack"
-          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium bg-amber-800 text-white hover:bg-amber-900 transition-colors cursor-pointer rounded-full"
         >
           Events newsletter
         </a>
+        <a
+          href="/host-event"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
+        >
+          Host an event
+        </a>
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="flex-1 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 bg-white border-2 border-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded-full"
         >
           Sync to cal
         </button>
@@ -123,7 +123,7 @@ export default function EventsSection(props: {
       <AddSection />
 
       <TabGroup>
-        <TabList className="flex space-x-1 bg-amber-900/20 p-1 mb-6 max-w-xl mx-auto rounded-full">
+        <TabList className="flex space-x-1 bg-gray-200 p-1 mb-6 max-w-xl mx-auto rounded-full">
           {['Events', 'Week', 'Month'].map((tab) => (
             <Tab
               key={tab}
@@ -132,7 +132,7 @@ export default function EventsSection(props: {
                 ${
                   selected
                     ? 'bg-white text-amber-900 shadow'
-                    : 'text-amber-800 hover:bg-white/[0.12] hover:text-amber-900'
+                    : 'text-gray-700 hover:bg-white/[0.6] hover:text-amber-900'
                 }`
               }
             >
@@ -158,7 +158,7 @@ export default function EventsSection(props: {
 
   if (fullPage) {
     return (
-      <div className="min-h-screen bg-beige-50 text-gray-800">
+      <div className="min-h-screen bg-slate-50 text-gray-800">
         <div className="max-w-6xl mx-auto">{content}</div>
       </div>
     )

@@ -8,7 +8,7 @@ function EventTypeTag({ type }: { type: string }) {
   const colorMap = {
     public: 'bg-green-100 text-green-800',
     private: 'bg-red-100 text-red-800',
-    members: 'bg-amber-100 text-amber-800',
+    members: 'bg-blue-100 text-blue-800',
   }
   const colorClasses =
     colorMap[type.toLowerCase()] || 'bg-gray-100 text-gray-800'

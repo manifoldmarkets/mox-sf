@@ -32,7 +32,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
 
   return (
     <div
-      className="absolute left-1 right-1 bg-beige-50 border border-amber-100 overflow-hidden rounded-lg"
+      className="absolute left-1 right-1 bg-gray-50 border border-gray-200 overflow-hidden rounded-lg"
       style={{
         top: `${top}px`,
         height: `${clampedHeight}px`,
@@ -68,7 +68,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
   const timeLinePosition = Math.max(0, (currentHour - START_HOUR) * HOUR_HEIGHT)
 
   return (
-    <div className="bg-white border border-amber-100 rounded-2xl overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
       {/* Header row with days */}
       <div
         className="grid"
@@ -78,8 +78,8 @@ export default function WeeklyView({ events }: { events: Event[] }) {
         {days.map((day) => (
           <div
             key={day.toISOString()}
-            className={`p-4 text-center border-l border-amber-100 ${
-              isSameDay(day, today) ? 'bg-beige-50' : ''
+            className={`p-4 text-center border-l border-gray-200 ${
+              isSameDay(day, today) ? 'bg-red-50' : ''
             }`}
           >
             <div className="font-medium text-amber-900">
@@ -119,14 +119,14 @@ export default function WeeklyView({ events }: { events: Event[] }) {
           return (
             <div
               key={day.toISOString()}
-              className="relative border-l border-amber-100"
+              className="relative border-l border-gray-200"
               style={{ height: `${HOURS.length * HOUR_HEIGHT}px` }}
             >
               {/* Hour lines */}
               {HOURS.map((hour) => (
                 <div
                   key={hour}
-                  className="absolute w-full border-t border-amber-100/50"
+                  className="absolute w-full border-t border-gray-200/50"
                   style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
                 />
               ))}
@@ -136,10 +136,10 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                 currentHour >= START_HOUR &&
                 currentHour <= END_HOUR && (
                   <div
-                    className="absolute w-full border-t-2 border-amber-500 z-10"
+                    className="absolute w-full border-t-2 border-red-600 z-10"
                     style={{ top: `${timeLinePosition}px` }}
                   >
-                    <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-amber-500" />
+                    <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-red-600" />
                   </div>
                 )}
 
