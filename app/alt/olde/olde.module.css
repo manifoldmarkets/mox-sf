@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;600;900&display=swap');
+
+.oldeContainer {
+  min-height: 100vh;
+  background: #f4e9d8;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.15' fill='%238b7355'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #f4e9d8 0%, #e8dcc8 100%);
+  color: #3e2723;
+  font-family: 'Cinzel', 'Georgia', serif;
+  position: relative;
+}
+
+.oldeContainer::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 115, 85, 0.03) 2px,
+      rgba(139, 115, 85, 0.03) 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.parchment {
+  background: #faf7f0;
+  background-image:
+    linear-gradient(90deg, transparent 79px, rgba(139, 115, 85, 0.1) 79px, rgba(139, 115, 85, 0.1) 81px, transparent 81px),
+    linear-gradient(transparent 0, #faf7f0 100%);
+  box-shadow: 
+    0 0 30px rgba(62, 39, 35, 0.3),
+    inset 0 0 50px rgba(139, 115, 85, 0.1);
+  border: 8px solid #8b7355;
+  border-image: repeating-linear-gradient(
+    45deg,
+    #8b7355,
+    #8b7355 10px,
+    #a0826d 10px,
+    #a0826d 20px
+  ) 8;
+  position: relative;
+}
+
+.parchment::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid #6d4c41;
+  pointer-events: none;
+}
+
+.illuminated {
+  font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+  font-size: 4rem;
+  color: #8b0000;
+  text-shadow: 
+    2px 2px 0 #d4af37,
+    -1px -1px 0 #d4af37;
+  line-height: 1.2;
+}
+
+.dropCap {
+  font-family: 'UnifrakturMaguntia', serif;
+  float: left;
+  font-size: 5rem;
+  line-height: 0.8;
+  margin: 0.1em 0.1em 0 0;
+  color: #8b0000;
+  text-shadow: 
+    2px 2px 0 #d4af37,
+    -1px -1px 0 #d4af37;
+}
+
+.gothicText {
+  font-family: 'UnifrakturMaguntia', serif;
+  letter-spacing: 0.05em;
+}
+
+.ornateTitle {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  text-align: center;
+  color: #5d4037;
+  text-shadow: 
+    2px 2px 0 #d4af37,
+    1px 1px 0 rgba(212, 175, 55, 0.5);
+  letter-spacing: 0.1em;
+  margin: 2rem 0;
+}
+
+.manuscriptBorder {
+  border: 4px solid #8b7355;
+  padding: 0.5rem;
+  position: relative;
+  background: linear-gradient(135deg, #faf7f0 0%, #f4e9d8 100%);
+}
+
+.manuscriptBorder::before,
+.manuscriptBorder::after {
+  content: '❧';
+  position: absolute;
+  font-size: 1.5rem;
+  color: #8b0000;
+}
+
+.manuscriptBorder::before {
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.manuscriptBorder::after {
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.sealBadge {
+  background: radial-gradient(circle, #8b0000 0%, #5d0000 100%);
+  border: 3px solid #d4af37;
+  border-radius: 50%;
+  padding: 0.5rem 1rem;
+  color: #d4af37;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(212, 175, 55, 0.3);
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.scrollButton {
+  background: linear-gradient(135deg, #8b7355 0%, #6d4c41 100%);
+  border: 3px solid #d4af37;
+  color: #faf7f0;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.scrollButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.scrollButton:hover::before {
+  left: 100%;
+}
+
+.scrollButton:hover {
+  background: linear-gradient(135deg, #a0826d 0%, #8b7355 100%);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.ornament {
+  text-align: center;
+  color: #8b7355;
+  font-size: 2rem;
+  margin: 2rem 0;
+}
+
+.rubrication {
+  color: #8b0000;
+  font-weight: 600;
+}
+
+.oldeParagraph {
+  text-align: justify;
+  line-height: 1.8;
+  hyphens: auto;
+  text-indent: 2em;
+}
+
+.illuminatedBorder {
+  border: 6px solid;
+  border-image: 
+    repeating-linear-gradient(
+      45deg,
+      #8b7355 0%,
+      #8b7355 25%,
+      #d4af37 25%,
+      #d4af37 50%,
+      #8b0000 50%,
+      #8b0000 75%,
+      #8b7355 75%,
+      #8b7355 100%
+    ) 6;
+  padding: 1rem;
+  background: #faf7f0;
+}
+
+.vineDeco {
+  position: relative;
+  padding: 2rem;
+}
+
+.vineDeco::before,
+.vineDeco::after {
+  content: '❦';
+  position: absolute;
+  font-size: 3rem;
+  color: #8b7355;
+  opacity: 0.5;
+}
+
+.vineDeco::before {
+  top: 0;
+  left: 0;
+  transform: rotate(-45deg);
+}
+
+.vineDeco::after {
+  bottom: 0;
+  right: 0;
+  transform: rotate(135deg);
+}
+
+.capitalLetter {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #8b0000;
+}

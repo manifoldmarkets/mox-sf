@@ -135,3 +135,38 @@ export const dinosaurContent: HomeContent = {
   footerText: 'A project of Manifund',
   footerContact: 'rachel@moxsf.com',
 }
+
+export const oldeContent: HomeContent = {
+  tagline: 'A Guild Hall for Craftſmen & Scholarſ of Moſt Excellent Charaƈter',
+  subtitle: 'XVI·LXXX Miſsion Street, San Franciſco',
+  location: 'https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco',
+  communityTitle: 'Ye Eſteemed Members of Our Guild:',
+  communityImage: '/images/014.jpg',
+  communityTags: [
+    'Alchymiſts of Artificiall Intelligence',
+    'Maſters of Enterpriſe',
+    'Scribes & Chroniclers',
+    'Artificers & Inventors',
+    'Philoſophers of Policy',
+    'Builders of ye Commons',
+    'Keepers of Wiſdom',
+  ],
+  communityLink: 'Behold ye Full Roſter of Guild Members ↓',
+  offersTitle: 'What ye Guild Provideth',
+  offersImage: '/images/005.jpg',
+  offersText:
+    'A moſt Noble Hall for Deep Contemplation, a Brotherhood of Learned Perſons, and Gatherings of Great Purpoſe. All manner of Accomodations for ye Purſuit of Excellence.',
+  ctaButtons: {
+    primary: { text: 'Petition for Memberſhip', href: '/apply' },
+    secondary: { text: 'Enquire About Chambers', href: 'mailto:rachel@moxsf.com' },
+    tertiary: { text: 'Day Paſs for Viѕitors', href: '/day-pass' },
+  },
+  eventsTitle: 'Gatherings & Feaſts',
+  eventsSubtitle: 'Wherein ye Guild Aſſembles',
+  peopleTitle: 'Ye Good Folke of Mox',
+  peopleSubtitle: 'A Moſt Diſtinguiſhed Company',
+  galleryTitle: 'Ye Guild Hall',
+  gallerySubtitle: 'A Glimſe into Our Noble Eſtabliſhment',
+  footerText: 'A Venture of ye Manifund',
+  footerContact: 'rachel@moxsf.com',
+}
