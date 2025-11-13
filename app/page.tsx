@@ -63,6 +63,11 @@ export default function Component() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Left column */}
             <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-6 shadow-xl rounded-3xl">
+              <img
+                src="/images/014.jpg"
+                alt="Mox community"
+                className="w-full h-48 object-cover rounded-2xl mb-4"
+              />
               <p className="text-base text-gray-700 dark:text-gray-200 mb-4 text-center font-semibold">
                 We bring together:
               </p>
@@ -115,6 +120,11 @@ export default function Component() {
 
             {/* Right column */}
             <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col">
+              <img
+                src="/images/005.jpg"
+                alt="Mox space"
+                className="w-full h-48 object-cover rounded-2xl mb-4"
+              />
               <p className="text-base text-gray-700 dark:text-gray-200 mb-6 leading-relaxed text-center">
                 Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you'll find meaningful.
               </p>
