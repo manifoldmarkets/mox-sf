@@ -28,9 +28,9 @@ export default function ProjectCard({
       )}
       <div className="p-4 flex flex-col flex-grow">
         <div>
-          <h3 className="mb-1 text-amber-800">
+          <h2 className="text-xl font-semibold mb-1 text-amber-800">
             {project.fields['Project title']}
-          </h3>
+          </h2>
           {project.fields.By && (
             <p className="text-sm text-gray-500 mb-2">by {project.fields.By}</p>
           )}

@@ -14,23 +14,19 @@ export function JoinContent(props: {
         {/* Main intro */}
         {firstName ? (
           <div className="mb-16">
-            <h1 className="heading-page-hero mb-6 text-amber-900">
+            <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
               Join Mox?
             </h1>
             <p className="text-lg text-gray-700">
-              Hey {firstName}! I'm excited to invite you to Mox. We're trying
-              something a little different here, and the exact shape of our
-              space and community is still very TBD; we'd love to figure it out
-              with you. Whether you decide to make Mox your main workplace,
-              throw an event here, or just drop by once in a while — please
-              consider joining!
+              Hey {firstName}! I'm excited to invite you to Mox. Whether you
+              decide to make Mox your main workplace or just drop by once in a
+              while — please consider joining as a member!
               <br />
-              <br /> — Austin
             </p>
           </div>
         ) : (
           <div className="mb-16">
-            <h1 className="heading-page-hero mb-6 text-amber-900">
+            <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
               Memberships at Mox
             </h1>
           </div>
@@ -39,32 +35,39 @@ export function JoinContent(props: {
         {/* FAQ Sections */}
         <div className="space-y-12 mb-16">
           <section>
-            <h2 className="mb-4 text-amber-900">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               Which membership is right for me?
             </h2>
             <p className="text-gray-700">
-              We expect <b>Member</b> to be a good fit for most. As a member,
-              you can come by anytime: during the day for focused work, or
-              evenings and weekends to hang out. You'll have full access to our
-              space: hot desks, lounges, cafeteria, call booths & meeting rooms.
-              And we'd ask you to make Mox yours: host small events, bring
-              guests, and find ways to help each other flourish.
+              We expect <u className="underline-offset-2">Member</u> to be a
+              good fit for most. As a member, you can come by anytime: during
+              the day for focused work, or evenings and weekends to hang out.
+              You'll have full access to our space: hot desks, lounges,
+              cafeteria, call booths & meeting rooms. And we'd ask you to make
+              Mox yours: host small events, bring guests, and find ways to help
+              each other flourish.
               <br /> <br />
               If you're planning on coming in 4+ days a week, and especially if
-              you're working with teammates, the <b>Resident</b> option may be a
+              you're working with teammates, the{' '}
+              <u className="underline-offset-2">Resident</u> option may be a
               better fit. This includes a dedicated desk where you can leave
               belongings, and external monitor.
               <br /> <br />
               Finally, if you're not usually in SF, or expect to be coming
-              infrequently, we'd love to have you as a <b>Friend</b>. Beyond all
-              of our public and members events, you're welcome to drop by once
-              or twice a week!
+              infrequently, we'd love to have you as a{' '}
+              <u className="underline-offset-2">Friend</u>. Beyond all of our
+              public and members events, you're welcome to drop by up to twice a
+              week!
+              <br /> <br />
+              We want you to be confident that Mox is the right choice, so every
+              membership comes with a 1-week free trial. You can also update or
+              cancel your membership at any time.
             </p>
           </section>
 
           {specialInvite === 'friend-of-mythos' && (
             <div className="border border-amber-800 p-6 max-w-4xl mx-auto mt-8">
-              <h2 className="mb-4 text-amber-900">
+              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
                 Friend of Mythos
               </h2>
               <p className="text-gray-700 mb-4">
@@ -80,8 +83,8 @@ export function JoinContent(props: {
             </div>
           )}
 
-          <section>
-            <h2 className="mb-4 text-amber-900">
+          {/* <section>
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               Mox is in beta — what does that mean?
             </h2>
             <p className="text-gray-700">
@@ -96,10 +99,10 @@ export function JoinContent(props: {
               lot. Hence, "beta". Hopefully, you're okay with a bit of chaos,
               and are excited to work with us to improve our space.
             </p>
-          </section>
+          </section> */}
 
-          <section>
-            <h2 className="mb-4 text-amber-900">
+          {/* <section>
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               Why is membership so cheap?
             </h2>
             <p className="text-gray-700">
@@ -121,33 +124,62 @@ export function JoinContent(props: {
               projects like YC. But for now, we want to make it as easy as
               possible for you to say "yes".
             </p>
-          </section>
+          </section> */}
 
           <section>
-            <h2 className="mb-4 text-amber-900">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               What is the guest policy?
             </h2>
             <p className="text-gray-700">
               We want Mox to be a place you're proud to show off to your friends
-              and family. So if you want to eg bring in 1-2 folks for a day, go
-              ahead and swipe them in, no need to even ask. Beyond that, just
-              check in with us about what you have in mind. If a friend of yours
-              loves Mox so much they want to be coming in daily, nudge them to
-              apply!
+              and family. All memberships come with some free allowances for
+              guests: 1x/week for Friend, 1x/day for Member, and 2x/day for
+              Resident and Office members. Beyond that, we ask that you or your
+              guest purchase a{' '}
+              <a
+                href="/day-pass"
+                className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
+              >
+                day pass
+              </a>
+              .
+              <br />
+              <br />
+              We do ask that you be on site to host your guests, and to have
+              your guests sign in at the lobby. This helps us keep track of
+              who's coming to Mox!
             </p>
           </section>
 
           <section>
-            <h2 className="mb-4 text-amber-900">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+              How do I manage my membership?
+            </h2>
+            <p className="text-gray-700 mb-4">
+              If you'd like to cancel your membership or change tiers, you can
+              do so here:
+            </p>
+            <a
+              href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-2 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
+            >
+              Manage your membership
+            </a>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
               What about private offices?
             </h2>
             <p className="text-gray-700">
               Reach out to{' '}
-              <a href="mailto:austin@manifund.org">austin@manifund.org</a>! We
-              have a limited number of private offices available on renewable
-              3-month leases, starting at $4k/mo for a 4-person office. And if
-              you're a startup, we may be interested in investing a small amount
-              as well, to align our incentives!
+              <a href="mailto:rachel@moxsf.com">rachel@moxsf.com</a>! We have a
+              limited number of private offices available, starting at $4k/mo
+              for a 4-person office. And if you're a startup, we may be
+              interested in investing a small amount as well, to align our
+              incentives!
             </p>
           </section>
         </div>
@@ -163,7 +195,7 @@ export function JoinContent(props: {
             ></script>
             {/* @ts-ignore */}
             <stripe-pricing-table
-              pricing-table-id="prctbl_1QwTFGRobJaZ7DVCQSiJ4VWj"
+              pricing-table-id="prctbl_1SBTulRobJaZ7DVC19nKSvjs"
               publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
             >
               {/* @ts-ignore */}
@@ -171,23 +203,23 @@ export function JoinContent(props: {
           </>
         ) : (
           <div className="max-w-4xl mx-auto px-6 pb-12 relative">
-            <div className="absolute -top-8 left-6 bg-amber-100 text-gray-800 font-bold text-xs px-2 py-1 rounded">
+            {/* <div className="absolute -top-8 left-6 bg-amber-100 text-gray-800 font-bold text-xs px-2 py-1 rounded">
               Prices during beta
-            </div>
+            </div> */}
             <div className="grid grid-cols-3 gap-8">
               {[
-                { type: 'Friend', price: '$80' },
-                { type: 'Member', price: '$280' },
-                { type: 'Resident', price: '$480' },
+                { type: 'Friend', price: '$160' },
+                { type: 'Member', price: '$380' },
+                { type: 'Resident', price: '$780' },
               ].map((tier) => (
                 <div
                   key={tier.type}
                   className="text-center p-8 border border-amber-200"
                 >
-                  <h2 className="text-amber-900 mb-4">
-                     {tier.type}
-                  </h2>
-                   <p className="text-3xl font-bold text-gray-800 mb-2">
+                  <h3 className="text-2xl font-playfair text-amber-900 mb-4">
+                    {tier.type}
+                  </h3>
+                  <p className="text-3xl font-bold text-gray-800 mb-2">
                     {tier.price}
                   </p>
                   <p className="text-gray-600">per month</p>
@@ -211,10 +243,10 @@ export function JoinContent(props: {
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           Questions? Ping{' '}
           <a
-            href="mailto:austin@manifund.org"
+            href="mailto:rachel@moxsf.com"
             className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
           >
-            austin@manifund.org
+            rachel@moxsf.com
           </a>
           ~
         </div>
@@ -303,7 +335,7 @@ export default function JoinPage() {
           <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-amber-800"></div>
 
           <div className="text-center">
-            <h1 className="heading-hero mb-8 text-amber-900">
+            <h1 className="text-3xl font-bold mb-8 font-playfair text-amber-900">
               You're invited to join Mox
             </h1>
 
@@ -328,10 +360,10 @@ export default function JoinPage() {
                 <p className="mt-4 text-red-600 text-sm">
                   Sorry, we might not be ready to onboard you yet — reach out to{' '}
                   <a
-                    href="mailto:austin@manifund.org"
+                    href="mailto:rachel@moxsf.com"
                     className="underline hover:text-red-700"
                   >
-                    austin@manifund.org
+                    rachel@moxsf.com
                   </a>{' '}
                   if this seems like a mistake!
                 </p>

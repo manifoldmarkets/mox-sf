@@ -40,36 +40,38 @@ export default function Component() {
       {/* Hero section with dictionary definition */}
       <div className="max-w-3xl mx-auto pt-16 px-6">
         <div className="border-l-4 border-amber-800 pl-8 py-2">
-          <h1 className="mb-1">
+          <h1 className="text-4xl font-bold mb-2 font-playfair">
             Mox <span className="italic font-normal">/mäks/</span>
           </h1>
-          <div className="italic text-lg mb-4">noun</div>
+          <div className="italic text-lg mb-1">noun</div>
 
-          <ol className="space-y-2 list-decimal list-inside">
-            <li>
-              Abbreviation for <span className="italic">moxie</span>: energy
+          <div className="space-y-2 mt-6">
+            <div>
+              1. Abbreviation for <span className="italic">moxie</span>: energy
               and pep, or courage and determination.
-            </li>
+            </div>
 
-            <li>
-              Rare artifacts in{' '}
+            <div>
+              2. Rare artifacts in{' '}
               <span className="italic">Magic: the Gathering</span>, among the
               most powerful in the game.
-            </li>
+            </div>
 
-            <li>
-              Atypical acronym for{' '}
+            <div>
+              3. Atypical acronym for{' '}
               <span className="italic">Mixture Of eXperts</span>, a modern
               machine learning technique.
-            </li>
+            </div>
 
-            <li className="font-bold">
-              An incubator & community space in San Francisco, on{' '}
-              <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
-                1680 Mission Street
-              </Link>{' '}
-            </li>
-          </ol>
+            <div>
+              <span className="font-bold">
+                4. An incubator & community space in San Francisco, on{' '}
+                <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
+                  1680 Mission Street
+                </Link>{' '}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -83,7 +85,7 @@ export default function Component() {
           {/* Left column */}
           <div className="space-y-8">
             <section>
-              <h2 className='mb-4'>
+              <h2 className="text-2xl font-bold mb-4 font-playfair">
                 A gathering place for
               </h2>
               <div className="prose prose-slate">
@@ -98,7 +100,7 @@ export default function Component() {
             </section>
 
             <section>
-              <h2 className='mb-4'>
+              <h2 className="text-2xl font-bold mb-4 font-playfair">
                 Mox offers
               </h2>
               <div className="prose prose-slate">
@@ -120,7 +122,7 @@ export default function Component() {
               <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
               <div>
-                <h2 className='mb-4'>
+                <h2 className="text-2xl font-bold mb-6 font-playfair">
                   Become a member
                 </h2>
                 <p className="mb-8 text-gray-600">
@@ -128,19 +130,32 @@ export default function Component() {
                   coworking desks, private offices, and event space.
                 </p>
 
-                <a
-                  href="/apply"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                  inline-block px-8 py-4
-                  bg-amber-800 text-white font-semibold
-                  hover:bg-amber-900
-                  transition-all duration-200
-                "
-                >
-                  Apply for membership
-                </a>
+                <div className="space-y-4">
+                  <a
+                    href="/apply"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                    block w-full px-8 py-4 text-center
+                    bg-amber-800 text-white font-semibold
+                    hover:bg-amber-900
+                    transition-all duration-200
+                  "
+                  >
+                    Apply for membership
+                  </a>
+
+                  <p className="text-sm text-gray-500 text-center mt-2">
+                    (or buy a{' '}
+                    <a
+                      href="/day-pass"
+                      className="text-amber-800 underline hover:text-amber-900"
+                    >
+                      day pass
+                    </a>
+                    )
+                  </p>
+                </div>
               </div>
             </div>
           </div>

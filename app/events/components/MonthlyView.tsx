@@ -78,7 +78,7 @@ export default function MonthlyView({ events }: { events: Event[] }) {
 
   return (
     <div className="bg-white border border-amber-100 p-4">
-      <h3 className="text-amber-900 mb-4 text-center">
+      <h3 className="text-xl font-semibold text-amber-900 mb-4 text-center">
         {format(today, 'MMMM yyyy')}
       </h3>
 

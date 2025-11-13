@@ -11,6 +11,7 @@ export default async function PeoplePage() {
   // Sort people by name
   const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name))
 
+  /*
   // Separate people into categories
   const SELDON_PROGRAM_ID = 'recw9GcgF3DwVsxO1'
   const PIBBSS_PROGRAM_ID = 'recbTATvXcYoaZNaf'
@@ -30,6 +31,7 @@ export default async function PeoplePage() {
     (person) =>
       !PROGRAMS.some((programId) => person.programIds?.includes(programId))
   )
+  */
 
   const renderPeopleList = (people: Person[]) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
@@ -58,20 +60,33 @@ export default async function PeoplePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-center">
+      <h1 className="text-3xl font-bold mb-8 text-center font-playfair">
         Humans at Mox
       </h1>
 
+      <div className="mb-8 text-center -mt-4">
+        <a
+          href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
+        >
+         (Need to adjust? Manage your membership)
+        </a>
+      </div>
+
+      {renderPeopleList(sortedPeople)}
+
+      {/*
       {otherPeople.length > 0 && (
         <div className="mb-8">
-          {/* <h2 className="text-2xl font-semibold mb-4">Other Members</h2> */}
           {renderPeopleList(otherPeople)}
         </div>
       )}
 
       {seldonPeople.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-center mb-4">
+          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
             Seldon Accelerator
           </h2>
           {renderPeopleList(seldonPeople)}
@@ -80,7 +95,7 @@ export default async function PeoplePage() {
 
       {pibbssPeople.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-center mb-4">
+          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
             PIBBSS
           </h2>
           {renderPeopleList(pibbssPeople)}
@@ -89,12 +104,13 @@ export default async function PeoplePage() {
 
       {flfPeople.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-center mb-4">
+          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
             FLF Fellowship
           </h2>
           {renderPeopleList(flfPeople)}
         </div>
       )}
+      */}
     </div>
   )
 }

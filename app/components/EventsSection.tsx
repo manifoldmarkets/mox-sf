@@ -42,9 +42,9 @@ function AddSection() {
         </a>
         <a
           href="/substack"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer"
         >
-          Subscribe to newsletter
+          Events newsletter
         </a>
         <button
           onClick={() => setIsCalendarOpen(true)}
@@ -66,7 +66,7 @@ function AddSection() {
         {/* Full-screen container for centering */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-            <DialogTitle className="text-gray-900 mb-2">
+            <DialogTitle className="text-xl font-bold text-gray-900 mb-2">
               Sync events to your calendar
             </DialogTitle>
 
@@ -129,9 +129,10 @@ export default function EventsSection(props: {
               key={tab}
               className={({ selected }) =>
                 `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer
-                ${selected
-                  ? 'bg-white text-amber-900 shadow'
-                  : 'text-amber-800 hover:bg-white/[0.12] hover:text-amber-900'
+                ${
+                  selected
+                    ? 'bg-white text-amber-900 shadow'
+                    : 'text-amber-800 hover:bg-white/[0.12] hover:text-amber-900'
                 }`
               }
             >

@@ -35,7 +35,12 @@ function PartnerCard({
   bgColor?: string
 }) {
   return (
-    <div className="flex flex-col items-center gap-4">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col items-center gap-4 hover:bg-slate-200 p-4"
+    >
       {logoUrl ? (
         <img
           src={logoUrl}
@@ -47,7 +52,16 @@ function PartnerCard({
           {logoPlaceholder}
         </div>
       )}
-      <h3 className="text-3xl font-bold font-castoro text-gray-900">{name}</h3>
+      <h3 className="text-xl font-bold font-castoro text-gray-900">{name}</h3>
+    </a>
+  )
+}
+
+function TestimonialCard({ name, quote }: { name: string; quote: string }) {
+  return (
+    <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm break-inside-avoid">
+      <p className="text-gray-700 mb-4 leading-relaxed text-sm">{quote}</p>
+      <p className="text-amber-800 font-semibold">— {name}</p>
     </div>
   )
 }
@@ -58,7 +72,7 @@ export default function GuestsPage() {
       {/* Hero section */}
       <div className="max-w-4xl mx-auto pt-20 px-6">
         <div className="text-center mb-20">
-          <h1 className="heading-page-hero mb-6">
+          <h1 className="text-5xl font-bold font-playfair mb-6">
             Mox Guest Program
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -92,7 +106,7 @@ export default function GuestsPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-gray-900">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   Flexible access
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -115,7 +129,7 @@ export default function GuestsPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-gray-900">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   Community events
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -138,7 +152,7 @@ export default function GuestsPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-gray-900">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   Fast-track
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -151,10 +165,10 @@ export default function GuestsPage() {
 
         {/* Partner organizations */}
         <section className="mb-20">
-          <h1 className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
             Our partners include
-          </h1>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-4xl mx-auto">
             <PartnerCard
               name="Lightcone"
               url="https://www.lightconeinfrastructure.com//"
@@ -185,6 +199,66 @@ export default function GuestsPage() {
               logoUrl="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png"
               bgColor="bg-white"
             />
+            <PartnerCard
+              name="GovAI"
+              url="https://governance.ai"
+              logoUrl="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="ARC"
+              url="https://www.alignment.org/"
+              logoUrl="https://www.alignment.org/assets/img/arc-logo.svg"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="Redwood"
+              url="https://redwoodresearch.org"
+              logoUrl="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="Elicit"
+              url="https://elicit.com"
+              logoUrl="https://i.imgur.com/NghnGgl.jpeg"
+              bgColor="bg-[#00666d]"
+            />
+            <PartnerCard
+              name="Palisade Research"
+              url="https://palisaderesearch.org/"
+              logoUrl="https://palisaderesearch.org/assets/images/logos/palisade.svg"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="AI Impacts"
+              url="https://aiimpacts.org/"
+              logoUrl="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png"
+              bgColor="bg-[#2c97cc]"
+            />
+            <PartnerCard
+                name="Roots of Progress"
+                url="https://rootsofprogress.org/"
+                logoUrl="https://media.licdn.com/dms/image/v2/D4D0BAQHZqWt1BOeRcQ/company-logo_200_200/company-logo_200_200/0/1719263296894/rootsofprogress_logo?e=2147483647&v=beta&t=ST2NF9TmGYBHrprrUCW_W1d_ZLnYFU8UCZlFC9-e9vs"
+                bgColor="bg-[#5e6f60]"
+              />
+              <PartnerCard
+                name="Epoch"
+                url="https://epoch.ai/"
+                logoUrl="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
+                bgColor="bg-[#eaf5f4]"
+              />
+              <PartnerCard
+                name="Timaeus"
+                url="https://timaeus.co/"
+                logoUrl="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
+                bgColor="bg-white"
+              />
+              <PartnerCard
+                name="BlueDot Impact"
+                url="https://bluedot.org/"
+                logoUrl="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg"
+                bgColor="bg-[#00104e]"
+              />
           </div>
         </section>
 
@@ -192,7 +266,7 @@ export default function GuestsPage() {
         <div className="grid md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
           {/* For Organizations */}
           <div className="bg-white p-8 border border-amber-700 shadow-lg">
-            <h2 className="mb-4">
+            <h2 className="text-2xl font-bold mb-4 font-playfair">
               Partner with Mox
             </h2>
             <p className="text-gray-600 mb-6">
@@ -292,59 +366,31 @@ export default function GuestsPage() {
 
         {/* Testimonials section */}
         <section className="mb-20">
-          <h2 className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
             What people say about Mox
           </h2>
-          <div className="grid md:grid-cols-2 gap-8 text-sm">
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                I think of people at Mox as a collection of my friends and
-                not-yet-friends. Nobody feels entirely like a stranger. Mox
-                members are (of course) smart, but they're also so open and
-                approachable. I can walk up to anyone and have an interesting
-                conversation; every single person I've met here has welcomed
-                questions about their work and been curious about mine.
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Gavriel Kleinwaks, Mox member
-              </p>
-            </div>
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Mox has the best density of people with the values &
-                capabilities I care about the most. In general, it's more social
-                & feels better organized for serendipity vs any coworking space
-                I've been to before, comparable to perhaps like 0.3 Manifests
-                per month.
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Venki Kumar, Mox member
-              </p>
-            </div>
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Austin and his staff have gone to great lengths to make Mox
-                incredibly accommodating. Not only is the space already equipped
-                with useful things like utensils, printers, and AV, but the
-                operational staff are communicative, flexible, and incredibly
-                helpful.... I definitely hope to find occasions to host more
-                events at Mox down the line, and would highly recommend it to
-                anyone I know who is looking for a slightly more casual, but
-                exceedingly well-managed venue.
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Xander Balwit, Asimov Press
-              </p>
-            </div>
-            <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm">
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Mox is a spacious and welcoming coworking space, with kind,
-                helpful staff. We would be happy to host an event there again.
-              </p>
-              <p className="text-amber-800 font-semibold">
-                — Sawyer Bernath, Tarbell Fellowship
-              </p>
-            </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <TestimonialCard
+              name="Gavriel Kleinwaks, Mox member"
+              quote="I think of people at Mox as a collection of my friends and not-yet-friends. Nobody feels entirely like a stranger. Mox members are (of course) smart, but they're also so open and approachable. I can walk up to anyone and have an interesting conversation; every single person I've met here has welcomed questions about their work and been curious about mine."
+            />
+            <TestimonialCard
+              name="Andreas Stuhlmüller, Elicit"
+              quote="Mox was an amazing space for the AI for Epistemics hackathon. I loved the thoughtful layout with central communal gathering areas and quiet work areas around the edges, easily enough space for the 40+ participants."
+            />
+            <TestimonialCard
+              name="Venki Kumar, Mox member"
+              quote="Mox has the best density of people with the values & capabilities I care about the most. In general, it's more social & feels better organized for serendipity vs any coworking space I've been to before, comparable to perhaps like 0.3 Manifests per month."
+            />
+            <TestimonialCard
+              name="Xander Balwit, Asimov Press"
+              quote="Austin and his staff have gone to great lengths to make Mox incredibly accommodating. Not only is the space already equipped with useful things like utensils, printers, and AV, but the operational staff are communicative, flexible, and incredibly helpful.... I definitely hope to find occasions to host more events at Mox down the line, and would highly recommend it to anyone I know who is looking for a slightly more casual, but exceedingly well-managed venue."
+            />
+            <TestimonialCard
+              name="Sawyer Bernath, Tarbell Fellowship"
+              quote="Mox is a spacious and welcoming coworking space, with kind, helpful staff. We would be happy to host an event there again."
+            />
           </div>
         </section>
 
@@ -382,16 +428,16 @@ export default function GuestsPage() {
 
         {/* Resources section */}
         <section className="mb-20">
-          <h2 className="mb-8 text-center">
+          <h2 className="text-2xl font-bold mb-8 text-center font-playfair">
             Resources for guests
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white p-6 border border-amber-700">
-              <h4 className="mb-4">Getting Started</h4>
+              <h3 className="text-lg font-semibold mb-4">Getting Started</h3>
               <div className="space-y-3 text-sm">
                 <div>
                   <strong>First time guide:</strong>{' '}
-                  <Link href="https://www.notion.so/Visiting-Mox-1af54492ea7a80d9b88ad1a5ad9c78eb?pvs=21">
+                  <Link href="https://moxsf.notion.site/visiting-mox">
                     Visiting Mox
                   </Link>
                 </div>
@@ -402,9 +448,9 @@ export default function GuestsPage() {
               </div>
             </div>
             <div className="bg-white p-6 border border-amber-700">
-              <h4 className="mb-4">
+              <h3 className="text-lg font-semibold mb-4">
                 Contact Information
-              </h4>
+              </h3>
               <div className="space-y-3 text-sm">
                 <div>
                   <strong>Contact email:</strong>{' '}
@@ -430,7 +476,7 @@ export default function GuestsPage() {
           <Link href="/">← Back to Mox homepage</Link>
           <br />
           Questions? Contact{' '}
-          <Link href="mailto:team@moxsf.com">team@moxsf.com</Link>
+          <Link href="mailto:robin@moxsf.com">robin@moxsf.com</Link>
         </div>
       </footer>
     </div>
