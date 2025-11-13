@@ -170,3 +170,38 @@ export const oldeContent: HomeContent = {
   footerText: 'A Venture of ye Manifund',
   footerContact: 'rachel@moxsf.com',
 }
+
+export const csContent: HomeContent = {
+  tagline: 'A Collaborative Research Facility and Workspace for Innovation',
+  subtitle: '1680 Mission Street, San Francisco, CA 94103',
+  location: 'https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco',
+  communityTitle: 'Research Areas and Affiliations',
+  communityImage: '/images/014.jpg',
+  communityTags: [
+    'Artificial Intelligence',
+    'Entrepreneurship',
+    'Multimedia Production',
+    'Technical Writing',
+    'Public Policy',
+    'Community Development',
+    'Applied Research',
+  ],
+  communityLink: 'View complete member directory',
+  offersTitle: 'Facilities and Resources',
+  offersImage: '/images/005.jpg',
+  offersText:
+    'Mox provides workspace infrastructure, collaborative environment, and regular seminars. Suitable for individual research and group projects.',
+  ctaButtons: {
+    primary: { text: 'Application Form', href: '/apply' },
+    secondary: { text: 'Contact for Office Space', href: 'mailto:rachel@moxsf.com' },
+    tertiary: { text: 'Day Pass Information', href: '/day-pass' },
+  },
+  eventsTitle: 'Seminars and Meetings',
+  eventsSubtitle: 'Scheduled Activities',
+  peopleTitle: 'Current Members',
+  peopleSubtitle: 'Research staff and affiliates',
+  galleryTitle: 'Facility Photos',
+  gallerySubtitle: 'Laboratory and workspace images',
+  footerText: 'Supported by Manifund',
+  footerContact: 'rachel@moxsf.com',
+}
