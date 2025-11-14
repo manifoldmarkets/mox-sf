@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     console.log('Sending email to:', normalizedEmail);
     const emailResult = await resend.emails.send({
-      from: 'Mox SF <onboarding@resend.dev>',
+      from: 'Mox SF <noreply@account.moxsf.com>',
       to: normalizedEmail,
       subject: 'Your Mox SF Member Portal Login Link',
       html: `
