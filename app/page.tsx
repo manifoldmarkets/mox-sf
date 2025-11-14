@@ -155,6 +155,17 @@ export default function Component() {
                     </a>
                     )
                   </p>
+
+                  <p className="text-sm text-gray-500 text-center mt-4 pt-4 border-t border-gray-200">
+                    Already a member?{' '}
+                    <a
+                      href="/portal/login"
+                      className="text-amber-800 underline hover:text-amber-900"
+                    >
+                      Access your portal
+                    </a>{' '}
+                    to manage billing and other details.
+                  </p>
                 </div>
               </div>
             </div>
