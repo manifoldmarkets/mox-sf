@@ -62,7 +62,7 @@ export async function getPeople(): Promise<Person[]> {
     name: record.fields.Name,
     website: record.fields.Website,
     interests: record.fields.Interests,
-    aiBio: record.fields['AI bio'].value || null,
+    aiBio: record.fields['AI bio']?.value || null,
     orgIds: record.fields.Org,
     programIds: record.fields.Program,
     photo: record.fields.Photo || [],
