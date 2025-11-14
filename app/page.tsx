@@ -150,6 +150,14 @@ export default function Component() {
                 >
                   Buy a day pass
                 </a>
+                <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                  <a
+                    href="/portal/login"
+                    className="block text-center text-xs text-gray-600 dark:text-gray-400 hover:text-amber-800 dark:hover:text-amber-400"
+                  >
+                    Already a member? Access your portal →
+                  </a>
+                </div>
               </div>
             </div>
           </div>
