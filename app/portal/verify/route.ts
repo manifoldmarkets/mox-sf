@@ -29,8 +29,8 @@ export async function GET(request: NextRequest) {
     // Clear the token from Airtable (one-time use)
     await clearToken(user.id);
 
-    // Redirect to dashboard
-    return NextResponse.redirect(new URL('/portal/dashboard', request.url));
+    // Redirect to portal
+    return NextResponse.redirect(new URL('/portal', request.url));
   } catch (error) {
     console.error('Error verifying token:', error);
     return NextResponse.redirect(new URL('/portal/login?error=server', request.url));
