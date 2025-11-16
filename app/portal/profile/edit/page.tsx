@@ -63,6 +63,7 @@ async function getUserProfile(recordId: string) {
 
   const data = await response.json();
   const fields = data.fields;
+  const showInDirectory = fields['Show in directory'];
 
   return {
     name: fields.Name || '',
@@ -70,5 +71,6 @@ async function getUserProfile(recordId: string) {
     website: fields.Website || '',
     interests: fields.Interests || [],
     photo: fields.Photo?.[0]?.url || null,
+    directoryVisible: showInDirectory === true,
   };
 }

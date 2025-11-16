@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     const name = formData.get('name') as string;
     const website = formData.get('website') as string;
     const interestsStr = formData.get('interests') as string;
+    const directoryVisible = formData.get('directoryVisible') === 'true';
     const photoFile = formData.get('photo') as File | null;
 
     // Verify the user is updating their own profile
@@ -66,6 +67,10 @@ export async function POST(request: Request) {
       Website: trimmedWebsite,
       Interests: interests,
     };
+
+    // For Airtable checkboxes: explicitly set false when unchecked, true when checked
+    // Don't rely on omission - be explicit
+    fields['Show in directory'] = directoryVisible;
 
     // Handle photo upload if provided
     if (photoFile && photoFile.size > 0) {

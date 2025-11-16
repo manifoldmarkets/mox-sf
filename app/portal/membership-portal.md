@@ -26,6 +26,7 @@ Members can update:
 - Website
 - Interests (comma-separated)
 - Profile photo (uploaded to Airtable as attachment)
+- Directory visibility (show/hide profile in member directory)
 
 Email is read-only (cannot be changed).
 
@@ -58,6 +59,7 @@ Email is read-only (cannot be changed).
 - `Website`: Personal website URL
 - `Interests`: Array of interests
 - `Photo`: Attachment field for profile photo
+- `Show in directory`: Checkbox for directory visibility (defaults to true)
 - `magic_link_token`: Temporary token for authentication
 - `token_expires`: Token expiration timestamp
 
@@ -96,7 +98,7 @@ Email is read-only (cannot be changed).
 
 ## Future Improvements
 - Event creation/management through portal
-- Member directory visibility settings
 - Custom profile fields beyond name/website/interests
 - Change email address (with verification)
 - Email notification preferences
+- Batch member actions (admin features)

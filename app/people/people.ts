@@ -20,6 +20,7 @@ const FIELDS = [
   'Org',
   'Program',
   'Photo',
+  'Show in directory',
 ]
 // Hit Airtable directly from server component, rather than proxying through API route
 
@@ -57,25 +58,26 @@ export async function getPeople(): Promise<Person[]> {
   }
 
   // Parse the data into the Person type
-  const people = allRecords.map((record: any) => ({
-    id: record.id,
-    name: record.fields.Name,
-    website: record.fields.Website,
-    interests: record.fields.Interests,
-    aiBio: record.fields['AI bio'].value || null,
-    orgIds: record.fields.Org,
-    programIds: record.fields.Program,
-    photo: record.fields.Photo || [],
-  }))
+  const people = allRecords.map((record: any) => {
+    // Airtable checkboxes: true when checked, undefined when unchecked
+    // Default to true (show in directory) unless explicitly false
+    const showInDirectory = record.fields['Show in directory'];
 
-  // Exclude certain things from the display:
-  const HIDDEN_NAMES = ['Non-member']
-  const HIDDEN_IDS = ['reco3E5mPisBLozIZ']
+    return {
+      id: record.id,
+      name: record.fields.Name,
+      website: record.fields.Website,
+      interests: record.fields.Interests,
+      aiBio: record.fields['AI bio'].value || null,
+      orgIds: record.fields.Org,
+      programIds: record.fields.Program,
+      photo: record.fields.Photo || [],
+      showInDirectory: showInDirectory === false ? false : true,
+    };
+  })
 
-  const filteredPeople = people.filter(
-    (person) =>
-      !HIDDEN_NAMES.includes(person.name) && !HIDDEN_IDS.includes(person.id)
-  )
+  // Filter to only show people who opted into directory visibility
+  const filteredPeople = people.filter((person) => person.showInDirectory)
 
   return filteredPeople
 }

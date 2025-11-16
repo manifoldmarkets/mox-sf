@@ -10,6 +10,7 @@ interface ProfileEditFormProps {
     website: string;
     interests: string[];
     photo: string | null;
+    directoryVisible: boolean;
   };
   userId: string;
 }
@@ -20,15 +21,17 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
     name: profile.name,
     website: profile.website,
     interests: profile.interests.join(', '),
+    directoryVisible: profile.directoryVisible,
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 
@@ -49,6 +52,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       formDataToSend.append('name', formData.name);
       formDataToSend.append('website', formData.website);
       formDataToSend.append('interests', formData.interests);
+      formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
 
       if (photoFile) {
         formDataToSend.append('photo', photoFile);
@@ -169,6 +173,32 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <p className="text-xs text-gray-500 mt-1">
             Upload a new photo to replace the current one
           </p>
+        </div>
+
+        {/* Directory Visibility */}
+        <div className="border-t pt-6">
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input
+                type="checkbox"
+                id="directoryVisible"
+                name="directoryVisible"
+                checked={formData.directoryVisible}
+                onChange={handleChange}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+            </div>
+            <div className="ml-3">
+              <label htmlFor="directoryVisible" className="font-medium text-gray-700">
+                Show my profile in the member directory
+              </label>
+              <p className="text-sm text-gray-500">
+                When enabled, other members can see your profile in the{' '}
+                <a href="/people" className="text-blue-600 hover:underline">member directory</a>.
+                You can change this setting at any time.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Status Message */}
