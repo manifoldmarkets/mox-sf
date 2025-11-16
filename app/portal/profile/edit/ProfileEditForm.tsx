@@ -122,7 +122,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             disabled
             className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
           />
-          <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+          <p className="text-xs text-gray-500 mt-1">Ask a staff member if you want to update your email</p>
         </div>
 
         {/* Website */}
