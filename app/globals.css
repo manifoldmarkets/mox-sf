@@ -153,4 +153,18 @@
   --color-google-hover: #3367d6;
   --color-outlook: #0078d4;
   --color-outlook-hover: #106ebe;
+
+  /* ============================================ */
+  /* ANIMATIONS */
+  /* ============================================ */
+  --animate-scroll: scroll 30s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
 }

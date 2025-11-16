@@ -55,7 +55,7 @@ export default async function Component() {
       </a> */}
 
       {/* Hero section */}
-      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-24 sm:pb-32 bg-background-page dark:bg-primary-950">
+      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-background-page dark:bg-primary-950">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 dark:invert"
           style={{
@@ -88,7 +88,7 @@ export default async function Component() {
             {/* Events column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
               <img
-                src="/images/003.jpg"
+                src="/images/023.jpg"
                 alt="Mox events"
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
@@ -136,7 +136,7 @@ export default async function Component() {
                   'Community builders',
                   'Members of technical and untechnical staff'
                 ].map((label) => (
-                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-700 px-3 py-1 rounded-full flex items-center">
+                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-primary-700 dark:border-primary-600 px-3 py-1 rounded-full flex items-center">
                     <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">{label}</p>
                   </div>
                 ))}
@@ -156,7 +156,7 @@ export default async function Component() {
             {/* Membership column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
               <img
-                src="/images/005.jpg"
+                src="/images/003.jpg"
                 alt="Mox space"
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
@@ -197,6 +197,87 @@ export default async function Component() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Guest Programs Ticker */}
+      <div className="mb-12 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-8 text-center">
+            Partner Orgs
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <a href="https://www.tarbellfellowship.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#123c75] hover:bg-[#0f2f5c] transition-colors flex items-center justify-center overflow-hidden p-3">
+              <img src="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png" alt="Tarbell logo" className="h-full w-auto object-contain scale-250" />
+            </a>
+
+            <a href="https://intelligence.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#193655] hover:bg-[#142b44] transition-colors flex items-center justify-center p-3">
+              <img src="https://intelligence.org/wp-content/uploads/2024/10/Group-47.svg" alt="MIRI logo" className="h-full w-auto object-contain" />
+            </a>
+
+            <a href="https://far.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#071024] hover:bg-[#050b1a] transition-colors flex items-center justify-center p-3">
+              <img src="https://cdn.prod.website-files.com/66f4503c3d0f4d4a75074a18/6712bf27e843ab5a68396da8_Far%20AI%20Logotype%20White.svg" alt="FAR.AI logo" className="h-full w-auto object-contain" />
+            </a>
+
+            <a href="https://elicit.com" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00666d] hover:bg-[#005259] transition-colors flex items-center justify-center p-3 gap-2">
+              <img src="https://i.imgur.com/NghnGgl.jpeg" alt="Elicit logo" className="h-full w-auto object-contain" />
+              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">Elicit</span>
+            </a>
+
+            <a href="https://aiimpacts.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#2c97cc] hover:bg-[#2383b3] transition-colors flex items-center justify-center p-3 gap-2">
+              <img src="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png" alt="AI Impacts logo" className="h-full w-auto object-contain" />
+              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">Impacts</span>
+            </a>
+
+            <a href="https://rootsofprogress.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-colors flex items-center justify-center p-1 gap-1">
+              <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHZqWt1BOeRcQ/company-logo_200_200/company-logo_200_200/0/1719263296894/rootsofprogress_logo?e=2147483647&v=beta&t=ST2NF9TmGYBHrprrUCW_W1d_ZLnYFU8UCZlFC9-e9vs" alt="Roots of Progress logo" className="h-full w-auto object-contain" />
+              <span className="text-xl font-semibold text-white uppercase font-sans tracking-tight leading-none">Roots of Progress</span>
+            </a>
+
+            <a href="https://epoch.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#eaf5f4] hover:bg-[#d5e8e6] transition-colors flex items-center justify-center p-3 gap-2">
+              <img src="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg" alt="Epoch logo" className="h-full w-auto object-contain" />
+              <span className="text-2xl font-semibold text-gray-900 uppercase font-sans tracking-wide">Epoch</span>
+            </a>
+
+            <a href="https://bluedot.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00104e] hover:bg-[#000c3d] transition-colors flex items-center justify-center p-3">
+              <img src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg" alt="BlueDot Impact logo" className="h-full w-auto object-contain" />
+            </a>
+
+            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
+            </a>
+
+            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
+            </a>
+
+            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
+            </a>
+
+            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
+            </a>
+
+            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
+            </a>
+
+            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
+            </a>
+
+            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-colors flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+              <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
+            </a>
           </div>
         </div>
       </div>
