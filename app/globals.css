@@ -3,10 +3,10 @@
 @theme {
   --font-playfair: var(--font-playfair);
   --font-lora: var(--font-lora);
-  --font-castoro: var(--font-castoro);
-  --font-geist: var(--font-geist);
+  --font-merriweather: var(--font-merriweather);
   --font-geist-mono: var(--font-geist-mono);
   --color-beige-50: #f9f6f0;
+  --font-family-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 /*
