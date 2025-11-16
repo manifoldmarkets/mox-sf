@@ -22,9 +22,3 @@ export default async function EventsPage() {
     </div>
   )
 }
-
-// Export a version without wrapper for embedding
-export async function EventsPageEmbed() {
-  const events = await getEvents()
-  return <EventsSection fullPage={false} events={events} />
-}

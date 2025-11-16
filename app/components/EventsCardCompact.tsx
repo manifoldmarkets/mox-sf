@@ -9,12 +9,12 @@ interface EventsCardCompactProps {
 export default function EventsCardCompact({ events }: EventsCardCompactProps) {
   // Show only upcoming events, limit to 5
   const upcomingEvents = events
-    .filter((event) => new Date(event.startDate) >= new Date())
-    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+    .filter((event) => event.startDate >= new Date())
+    .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
     .slice(0, 5)
 
-  const formatEventDate = (dateString: string) => {
-    const eventDate = new Date(dateString)
+  const formatEventDate = (date: Date) => {
+    const eventDate = date
     const now = new Date()
     const daysUntil = differenceInDays(eventDate, now)
 
@@ -31,8 +31,8 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
     return `${dayOfWeek} at ${time}`
   }
 
-  const getDateTimeParts = (dateString: string) => {
-    const eventDate = new Date(dateString)
+  const getDateTimeParts = (date: Date) => {
+    const eventDate = date
     const now = new Date()
     const daysUntil = differenceInDays(eventDate, now)
 
