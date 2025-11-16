@@ -88,15 +88,15 @@ export default function EventEditModal({
 
       {/* Full-screen on mobile, centered modal on desktop */}
       <div className="fixed inset-0 lg:flex lg:items-center lg:justify-center lg:p-4">
-        <DialogPanel className="w-full h-full lg:h-auto lg:max-w-2xl lg:rounded-lg bg-white dark:bg-gray-800 flex flex-col lg:block lg:overflow-y-auto lg:shadow-xl lg:max-h-[90vh]">
+        <DialogPanel className="w-full h-full lg:h-auto lg:max-w-2xl lg:rounded-lg bg-background-surface dark:bg-background-surface-dark flex flex-col lg:block lg:overflow-y-auto lg:shadow-xl lg:max-h-[90vh]">
           {/* Mobile header with close button */}
-          <div className="lg:hidden flex-shrink-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair">
+          <div className="lg:hidden flex-shrink-0 bg-background-surface dark:bg-background-surface-dark border-b border-border-light dark:border-border-light-dark px-4 py-3 flex items-center justify-between">
+            <DialogTitle className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair">
               Edit Event
             </DialogTitle>
             <button
               onClick={onClose}
-              className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              className="p-2 text-text-muted dark:text-text-muted-dark hover:text-text-secondary dark:hover:text-text-secondary-dark transition-colors"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -106,7 +106,7 @@ export default function EventEditModal({
 
           {/* Desktop header */}
           <div className="hidden lg:block p-6 sm:p-8">
-            <DialogTitle className="text-2xl sm:text-3xl font-bold text-amber-900 dark:text-amber-400 mb-6 font-playfair">
+            <DialogTitle className="text-2xl sm:text-3xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">
               Edit Event
             </DialogTitle>
           </div>
@@ -116,7 +116,7 @@ export default function EventEditModal({
             <div className="p-4 lg:px-6 lg:pb-6 lg:pt-0 sm:lg:px-8 sm:lg:pb-8">
 
             {saveError && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
+              <div className="mb-4 p-3 bg-error-bg dark:bg-error-bg-dark border border-error-bg dark:border-error-bg-dark rounded-lg text-error-text dark:text-error-text-dark text-sm">
                 {saveError}
               </div>
             )}
@@ -124,68 +124,68 @@ export default function EventEditModal({
             <div className="space-y-4 lg:space-y-5 font-sans">
               {/* Event Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   Event Name
                 </label>
                 <input
                   type="text"
                   value={editedEvent.name}
                   onChange={(e) => handleFieldChange('name', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600 font-merriweather"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
                 />
               </div>
 
               {/* Start Date and Time */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   Start Date & Time
                 </label>
                 <input
                   type="datetime-local"
                   value={formatDateTimeForInput(editedEvent.startDate)}
                   onChange={(e) => handleFieldChange('startDate', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 />
               </div>
 
               {/* End Date and Time */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   End Date & Time
                 </label>
                 <input
                   type="datetime-local"
                   value={formatDateTimeForInput(editedEvent.endDate)}
                   onChange={(e) => handleFieldChange('endDate', e.target.value || undefined)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 />
               </div>
 
               {/* Assigned Rooms (Read-only) */}
               {editedEvent.assignedRooms && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                     Assigned Rooms
                   </label>
                   <input
                     type="text"
                     value={editedEvent.assignedRooms}
                     disabled
-                    className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed"
+                    className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
                   />
-                  <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Room assignment is managed by staff</p>
+                  <p className="mt-1.5 text-xs text-text-muted dark:text-text-muted-dark">Room assignment is managed by staff</p>
                 </div>
               )}
 
               {/* Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   Type
                 </label>
                 <select
                   value={editedEvent.type || ''}
                   onChange={(e) => handleFieldChange('type', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 >
                   <option value="">Select type...</option>
                   {TYPE_OPTIONS.map((option) => (
@@ -198,55 +198,55 @@ export default function EventEditModal({
 
               {/* Event Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   Event Description
                 </label>
                 <textarea
                   value={editedEvent.description || ''}
                   onChange={(e) => handleFieldChange('description', e.target.value)}
                   rows={4}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600 font-merriweather"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
                   placeholder="Describe your event..."
                 />
               </div>
 
               {/* Internal Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   Notes (Internal)
                 </label>
                 <textarea
                   value={editedEvent.notes || ''}
                   onChange={(e) => handleFieldChange('notes', e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600 font-merriweather"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
                   placeholder="Internal notes (optional)"
                 />
               </div>
 
               {/* URL */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                   Event URL
                 </label>
                 <input
                   type="url"
                   value={editedEvent.url || ''}
                   onChange={(e) => handleFieldChange('url', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 />
               </div>
 
               {/* Status Display */}
               {editedEvent.status && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                     Status
                   </label>
-                  <div className="px-3 py-2.5 lg:px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                  <div className="px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-subtle dark:bg-background-subtle-dark text-text-secondary dark:text-text-secondary-dark">
                     {editedEvent.status}
                   </div>
-                  <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Status is managed by staff</p>
+                  <p className="mt-1.5 text-xs text-text-muted dark:text-text-muted-dark">Status is managed by staff</p>
                 </div>
               )}
             </div>
@@ -357,7 +357,7 @@ export default function EventEditModal({
           </div>
 
           {/* Mobile sticky footer */}
-          <div className="lg:hidden flex-shrink-0 bg-white border-t border-gray-200 px-4 py-3 font-sans">
+          <div className="lg:hidden flex-shrink-0 bg-background-surface dark:bg-background-surface-dark border-t border-border-light dark:border-border-light-dark px-4 py-3 font-sans">
             <div className="flex gap-2">
               {editedEvent.status !== 'Cancelled' && (
                 <button

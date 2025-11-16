@@ -71,8 +71,8 @@ function GeneralAmenities() {
 function AmenityItem({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="text-amber-800 dark:text-amber-400 text-xl mt-0.5">✓</span>
-      <span className="text-gray-700 dark:text-gray-300">{text}</span>
+      <span className="text-brand dark:text-brand-dark-mode text-xl mt-0.5">✓</span>
+      <span className="text-text-secondary dark:text-text-secondary-dark">{text}</span>
     </div>
   )
 }
@@ -157,8 +157,8 @@ function AreaSection({ name, capacity, floor, description, images, features }: A
           {features && features.length > 0 && (
             <ul className="space-y-2">
               {features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <span className="text-amber-700 dark:text-amber-400">•</span>
+                <li key={index} className="flex items-start gap-2 text-sm text-text-tertiary dark:text-text-tertiary-dark">
+                  <span className="text-brand dark:text-brand-dark-mode">•</span>
                   {feature}
                 </li>
               ))}
@@ -458,14 +458,14 @@ export default function EventHostingPage() {
     : GeneralAmenities
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+    <div className="min-h-screen bg-background-page dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark">
       {/* Hero / CTA Section */}
-      <section className="bg-gradient-to-b from-amber-50 dark:from-gray-800 to-slate-50 dark:to-gray-900 py-20">
+      <section className="bg-gradient-to-b from-background-accent dark:from-background-surface-dark to-background-page dark:to-background-page-dark py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-6 font-playfair text-amber-900 dark:text-amber-400">
+          <h1 className="text-5xl font-bold mb-6 font-playfair text-brand dark:text-brand-dark-mode">
             Host Your Event at Mox
           </h1>
-          <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-text-secondary dark:text-text-secondary-dark mb-8 max-w-2xl mx-auto">
             A premium event space in San Francisco's Mission District, designed
             for meaningful gatherings. From intimate workshops to major
             conferences, we provide the venue and support you need to create
@@ -473,7 +473,7 @@ export default function EventHostingPage() {
           </p>
           <a
             href="mailto:rachel@moxsf.com?subject=Event%20Inquiry"
-            className="inline-block px-8 py-4 bg-amber-800 dark:bg-amber-700 text-white font-semibold text-lg hover:bg-amber-900 dark:hover:bg-amber-800 transition-all duration-200 rounded-full shadow-lg hover:shadow-xl"
+            className="inline-block px-8 py-4 bg-brand dark:bg-brand text-white font-semibold text-lg hover:bg-brand-dark dark:hover:bg-brand-dark transition-all duration-200 rounded-full shadow-lg hover:shadow-xl"
           >
             Inquire About Hosting
           </a>
@@ -481,12 +481,12 @@ export default function EventHostingPage() {
       </section>
 
       {/* Event Types Overview */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-16 bg-background-surface dark:bg-background-surface-dark">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-brand dark:text-brand-dark-mode">
             Event Types
           </h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-text-tertiary dark:text-text-tertiary-dark mb-12 max-w-2xl mx-auto">
             Select an event type to see tailored information about amenities,
             past events, and testimonials
           </p>
@@ -502,22 +502,22 @@ export default function EventHostingPage() {
                 }
                 className={`p-8 border-2 transition-all duration-200 cursor-pointer text-left rounded-2xl ${
                   selectedCategory === type.id
-                    ? 'border-amber-800 dark:border-amber-700 bg-amber-50 dark:bg-gray-700 shadow-lg'
-                    : 'border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-amber-600 dark:hover:border-amber-500 hover:shadow-md'
+                    ? 'border-strong dark:border-strong bg-background-accent dark:bg-background-subtle-dark shadow-lg'
+                    : 'border-border-light dark:border-border-medium-dark bg-background-surface dark:bg-background-surface-dark hover:border-strong-alt dark:hover:border-strong hover:shadow-md'
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-2xl font-bold font-playfair text-amber-900 dark:text-amber-400">
+                  <h3 className="text-2xl font-bold font-playfair text-brand dark:text-brand-dark-mode">
                     {type.name}
                   </h3>
-                  <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 text-xs font-semibold rounded-full whitespace-nowrap ml-2">
+                  <span className="px-3 py-1 bg-background-accent dark:bg-brand-dark text-brand dark:text-text-primary-dark text-xs font-semibold rounded-full whitespace-nowrap ml-2">
                     {type.capacity}
                   </span>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300">{type.description}</p>
+                <p className="text-text-secondary dark:text-text-secondary-dark">{type.description}</p>
                 {selectedCategory === type.id && (
                   <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-700">
-                    <span className="text-sm text-amber-800 dark:text-amber-400 font-semibold">
+                    <span className="text-sm text-brand dark:text-brand-dark-mode font-semibold">
                       ✓ Selected
                     </span>
                   </div>
@@ -530,7 +530,7 @@ export default function EventHostingPage() {
             <div className="mt-8 text-center">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline text-sm cursor-pointer"
+                className="text-brand dark:text-brand-dark-mode hover:text-brand-dark dark:hover:text-primary-500 underline text-sm cursor-pointer"
               >
                 Clear filter to see all events
               </button>
@@ -540,9 +540,9 @@ export default function EventHostingPage() {
       </section>
 
       {/* Past Events */}
-      <section className="py-16 bg-slate-50 dark:bg-gray-900">
+      <section className="py-16 bg-background-page dark:bg-background-page-dark">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-brand dark:text-brand-dark-mode">
             Past Events
           </h2>
           <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
@@ -557,7 +557,7 @@ export default function EventHostingPage() {
             {filteredEvents.map((event, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden rounded-2xl"
+                className="bg-background-surface dark:bg-background-surface-dark shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden rounded-2xl"
               >
                 {event.image && (
                   <div className="relative h-48 w-full">
@@ -570,20 +570,20 @@ export default function EventHostingPage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 font-playfair text-amber-900 dark:text-amber-400">
+                  <h3 className="text-xl font-bold mb-2 font-playfair text-brand dark:text-brand-dark-mode">
                     {event.name}
                   </h3>
-                  <p className="text-sm text-amber-700 dark:text-amber-400 font-semibold mb-2">
+                  <p className="text-sm text-brand dark:text-brand-dark-mode font-semibold mb-2">
                     {event.organizer} • {event.attendees} attendees
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">{event.description}</p>
+                  <p className="text-text-secondary dark:text-text-secondary-dark text-sm">{event.description}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {filteredEvents.length === 0 && (
-            <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+            <p className="text-center text-text-muted dark:text-text-muted-dark py-8">
               No events match the selected category
             </p>
           )}
@@ -591,9 +591,9 @@ export default function EventHostingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-16 bg-background-surface dark:bg-background-surface-dark">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-brand dark:text-brand-dark-mode">
             What Organizers Say
           </h2>
           <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
@@ -608,17 +608,17 @@ export default function EventHostingPage() {
             {filteredTestimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-slate-50 dark:bg-gray-700 p-8 border-l-4 border-amber-800 dark:border-amber-700 rounded-r-2xl"
+                className="bg-background-subtle dark:bg-background-subtle-dark p-8 border-l-4 border-strong dark:border-strong rounded-r-2xl"
               >
-                <p className="text-gray-700 dark:text-gray-300 italic mb-4">
+                <p className="text-text-secondary dark:text-text-secondary-dark italic mb-4">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-center gap-4">
                   <div>
-                    <p className="font-semibold text-amber-900 dark:text-amber-400">
+                    <p className="font-semibold text-brand dark:text-brand-dark-mode">
                       {testimonial.name}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-text-tertiary dark:text-text-tertiary-dark">
                       {testimonial.organization}
                     </p>
                   </div>
@@ -628,7 +628,7 @@ export default function EventHostingPage() {
           </div>
 
           {filteredTestimonials.length === 0 && (
-            <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+            <p className="text-center text-text-muted dark:text-text-muted-dark py-8">
               No testimonials match the selected category
             </p>
           )}
@@ -636,9 +636,9 @@ export default function EventHostingPage() {
       </section>
 
       {/* Amenities & Services */}
-      <section className="py-16 bg-amber-50 dark:bg-gray-900">
+      <section className="py-16 bg-background-accent dark:bg-background-page-dark">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-brand dark:text-brand-dark-mode">
             Amenities & Services
           </h2>
           <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
@@ -651,16 +651,16 @@ export default function EventHostingPage() {
 
           <AmenitiesComponent />
 
-          <div className="mt-12 bg-white dark:bg-gray-800 p-8 max-w-4xl mx-auto shadow-lg rounded-2xl">
-            <h3 className="text-2xl font-bold mb-4 font-playfair text-amber-900 dark:text-amber-400">
+          <div className="mt-12 bg-background-surface dark:bg-background-surface-dark p-8 max-w-4xl mx-auto shadow-lg rounded-2xl">
+            <h3 className="text-2xl font-bold mb-4 font-playfair text-brand dark:text-brand-dark-mode">
               Additional Services Available
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-amber-800 dark:text-amber-400 mb-2">
+                <h4 className="font-semibold text-brand dark:text-brand-dark-mode mb-2">
                   Event Support
                 </h4>
-                <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                <ul className="text-sm text-text-secondary dark:text-text-secondary-dark space-y-1">
                   <li>• Setup and breakdown assistance</li>
                   <li>• On-site staff during your event</li>
                   <li>• Tech support and AV troubleshooting</li>
@@ -668,10 +668,10 @@ export default function EventHostingPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-amber-800 dark:text-amber-400 mb-2">
+                <h4 className="font-semibold text-brand dark:text-brand-dark-mode mb-2">
                   Catering & Hospitality
                 </h4>
-                <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                <ul className="text-sm text-text-secondary dark:text-text-secondary-dark space-y-1">
                   <li>• Catering coordination with local vendors</li>
                   <li>• Coffee and beverage service</li>
                   <li>• Kitchen access for self-catering</li>
@@ -684,9 +684,9 @@ export default function EventHostingPage() {
       </section>
 
       {/* Available Spaces */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-16 bg-background-surface dark:bg-background-surface-dark">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-brand dark:text-brand-dark-mode">
             Available Spaces
           </h2>
           <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
@@ -736,7 +736,7 @@ export default function EventHostingPage() {
                 <strong>Transit:</strong> Near 16th St BART, multiple Muni
                 lines
               </p>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-text-secondary dark:text-text-secondary-dark">
                 <strong>Parking:</strong> Street parking and nearby garages
               </p>
             </div>
@@ -745,7 +745,7 @@ export default function EventHostingPage() {
               <h3 className="text-xl font-bold mb-3 font-playfair text-amber-900 dark:text-amber-400">
                 Accessibility
               </h3>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-text-secondary dark:text-text-secondary-dark">
                 Mox is committed to being an inclusive space. We offer
                 wheelchair accessibility, gender-neutral restrooms, and can
                 accommodate various accessibility needs. Please let us know how
@@ -757,7 +757,7 @@ export default function EventHostingPage() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 bg-slate-50 dark:bg-gray-900">
+      <section className="py-16 bg-background-page dark:bg-background-page-dark">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-8 text-center font-playfair text-amber-900 dark:text-amber-400">
             Gallery
@@ -788,45 +788,45 @@ export default function EventHostingPage() {
       </section>
 
       {/* Final CTA & Contact */}
-      <section className="py-20 bg-amber-900 dark:bg-amber-950 text-white">
+      <section className="py-20 bg-brand-dark dark:bg-brand-dark text-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold mb-6 font-playfair">
             Ready to Host Your Event?
           </h2>
-          <p className="text-xl mb-8 text-amber-100 dark:text-amber-200">
+          <p className="text-xl mb-8 text-text-primary-dark dark:text-text-primary-dark">
             Let's discuss how Mox can support your vision. We'd love to hear
             about your event and explore whether we're the right fit.
           </p>
 
           {/* Member Link */}
-          <div className="mb-8 pb-8 border-b border-amber-700 dark:border-amber-800">
-            <p className="text-amber-100 dark:text-amber-200 mb-4">
+          <div className="mb-8 pb-8 border-b border-strong dark:border-strong">
+            <p className="text-text-primary-dark dark:text-text-primary-dark mb-4">
               Already a member wanting to run a small free event?
             </p>
             <a
               href="/portal"
-              className="inline-block px-6 py-3 bg-white dark:bg-gray-800 text-amber-900 dark:text-amber-400 font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 rounded-full"
+              className="inline-block px-6 py-3 bg-background-surface dark:bg-background-surface-dark text-brand dark:text-brand-dark-mode font-semibold hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-all duration-200 rounded-full"
             >
               Go to Member Portal →
             </a>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-8 max-w-2xl mx-auto shadow-2xl rounded-3xl relative">
-            <h3 className="text-2xl font-bold mb-6 font-playfair text-amber-900 dark:text-amber-400">
+          <div className="bg-background-surface dark:bg-background-surface-dark text-text-primary dark:text-text-primary-dark p-8 max-w-2xl mx-auto shadow-2xl rounded-3xl relative">
+            <h3 className="text-2xl font-bold mb-6 font-playfair text-brand dark:text-brand-dark-mode">
               Get in Touch
             </h3>
 
             <div className="space-y-4 mb-6">
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-text-secondary dark:text-text-secondary-dark">
                 <strong>Email:</strong>{' '}
                 <a
                   href="mailto:rachel@moxsf.com"
-                  className="text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline"
+                  className="text-brand dark:text-brand-dark-mode hover:text-brand-dark dark:hover:text-primary-500 underline"
                 >
                   rachel@moxsf.com
                 </a>
               </p>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-text-secondary dark:text-text-secondary-dark">
                 <strong>What to include:</strong> Event date, expected
                 attendance, event type/purpose, and any specific requirements
               </p>
@@ -834,21 +834,21 @@ export default function EventHostingPage() {
 
             <a
               href="mailto:rachel@moxsf.com?subject=Event%20Inquiry&body=Hi!%20I'm%20interested%20in%20hosting%20an%20event%20at%20Mox.%0A%0AEvent%20Date:%20%0AExpected%20Attendance:%20%0AEvent%20Type:%20%0AAdditional%20Details:%20"
-              className="inline-block w-full px-8 py-4 bg-amber-800 dark:bg-amber-700 text-white font-semibold hover:bg-amber-900 dark:hover:bg-amber-800 transition-all duration-200 rounded-full"
+              className="inline-block w-full px-8 py-4 bg-brand dark:bg-brand text-white font-semibold hover:bg-brand-dark dark:hover:bg-brand-dark transition-all duration-200 rounded-full"
             >
               Send Event Inquiry
             </a>
 
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+            <p className="text-sm text-text-tertiary dark:text-text-tertiary-dark mt-4">
               We typically respond within 24 hours
             </p>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-amber-700 dark:border-amber-800">
-            <h4 className="text-lg font-semibold mb-4 text-amber-100 dark:text-amber-200">
+          <div className="mt-12 pt-8 border-t border-strong dark:border-strong">
+            <h4 className="text-lg font-semibold mb-4 text-text-primary-dark dark:text-text-primary-dark">
               Pricing & Booking
             </h4>
-            <p className="text-amber-100 dark:text-amber-200 max-w-2xl mx-auto">
+            <p className="text-text-primary-dark dark:text-text-primary-dark max-w-2xl mx-auto">
               Our pricing is designed to be accessible for mission-aligned
               organizations. Rates vary based on event type, duration, and
               services needed. We offer special rates for nonprofits, research
@@ -860,8 +860,8 @@ export default function EventHostingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-amber-200 dark:border-gray-700 py-8 bg-white dark:bg-gray-800">
-        <div className="max-w-4xl mx-auto px-6 text-center text-gray-500 dark:text-gray-400">
+      <footer className="border-t border-border-light dark:border-border-light-dark py-8 bg-background-surface dark:bg-background-surface-dark">
+        <div className="max-w-4xl mx-auto px-6 text-center text-text-muted dark:text-text-muted-dark">
           <p className="mb-2">
             A project of{' '}
             <a

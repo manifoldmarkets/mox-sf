@@ -30,7 +30,7 @@ export default function PeopleListClient({ people }: { people: Person[] }) {
           'border-2 px-3 py-1 rounded-full transition-colors duration-200'
         const colorClasses = isEmphasized
           ? 'bg-red-50 dark:bg-yellow-900/30 border-red-800 dark:border-yellow-600 hover:bg-red-100 dark:hover:bg-yellow-900/50'
-          : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600'
+          : 'bg-background-subtle dark:bg-background-subtle-dark border-border-medium dark:border-border-medium-dark'
 
         const fontWeight = isEmphasized ? 'font-extrabold' : 'font-semibold'
 
@@ -43,7 +43,7 @@ export default function PeopleListClient({ people }: { people: Person[] }) {
               rel="noopener noreferrer"
               className={`${baseClasses} ${colorClasses} cursor-pointer`}
             >
-              <p className={`${fontWeight} text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap`}>
+              <p className={`${fontWeight} text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap`}>
                 {person.name}
               </p>
             </a>
@@ -51,7 +51,7 @@ export default function PeopleListClient({ people }: { people: Person[] }) {
         } else {
           return (
             <div key={person.id} className={`${baseClasses} ${colorClasses}`}>
-              <p className={`${fontWeight} text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap`}>
+              <p className={`${fontWeight} text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap`}>
                 {person.name}
               </p>
             </div>

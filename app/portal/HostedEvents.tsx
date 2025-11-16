@@ -160,32 +160,32 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">{SECTION_TITLE}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Loading events...</p>
+      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+        <p className="text-sm text-text-muted dark:text-text-muted-dark">Loading events...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">{SECTION_TITLE}</h2>
-        <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+        <p className="text-sm text-error-text dark:text-error-text-dark">{error}</p>
       </div>
     );
   }
 
   if (events.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">{SECTION_TITLE}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">You don't have any upcoming events</p>
+      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+        <p className="text-sm text-text-muted dark:text-text-muted-dark mb-4">You don't have any upcoming events</p>
         <a
           href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block px-4 py-2 text-sm bg-amber-800 dark:bg-amber-700 text-white hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors rounded-full"
+          className="inline-block px-4 py-2 text-sm bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors rounded-full"
         >
           Submit an event
         </a>
@@ -195,14 +195,14 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
+      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair">{SECTION_TITLE}</h2>
+          <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair">{SECTION_TITLE}</h2>
           <a
             href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-4 py-2 text-sm bg-amber-800 dark:bg-amber-700 text-white hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors rounded-full"
+            className="inline-block px-4 py-2 text-sm bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors rounded-full"
           >
             Submit an event
           </a>
@@ -243,12 +243,12 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
               <button
                 key={event.id}
                 onClick={() => handleEventClick(event)}
-                className="w-full text-left p-2.5 sm:p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                className="w-full text-left p-2.5 sm:p-4 border border-border-light dark:border-border-medium-dark rounded-lg hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 mb-1 font-merriweather">{event.name}</h3>
-                    <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400 font-sans">
+                    <h3 className="text-base font-medium text-text-primary dark:text-text-primary-dark mb-1 font-merriweather">{event.name}</h3>
+                    <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-sm text-text-muted dark:text-text-muted-dark font-sans">
                       <span className="whitespace-nowrap">{formattedDate} at {formattedTime}</span>
                       {event.assignedRooms && <span className="truncate">📍 {event.assignedRooms}</span>}
                       {event.status && (
@@ -259,7 +259,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
                     </div>
                   </div>
                   <svg
-                    className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0"
+                    className="w-5 h-5 text-text-muted dark:text-text-muted-dark flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

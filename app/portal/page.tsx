@@ -41,13 +41,13 @@ export default async function DashboardPage() {
 
   // Desktop view - original layout
   const desktopView = (
-    <div className="hidden lg:block min-h-screen bg-slate-50 dark:bg-gray-900 font-sans">
+    <div className="hidden lg:block min-h-screen bg-background-page dark:bg-background-page-dark font-sans">
 
       <div className="flex">
         {/* Desktop Left Sidebar */}
-        <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 sticky top-0 h-screen">
+        <aside className="w-64 bg-background-surface dark:bg-background-surface-dark border-r border-border-light dark:border-border-light-dark sticky top-0 h-screen">
           <div className="px-4 py-6 h-full flex flex-col">
-            <Link href="/" className="text-gray-600 dark:text-gray-400 hover:text-amber-800 dark:hover:text-amber-400 text-sm flex items-center gap-2 mb-8 transition-colors px-4 py-2">
+            <Link href="/" className="text-text-tertiary dark:text-text-tertiary-dark hover:text-brand dark:hover:text-brand-dark-mode text-sm flex items-center gap-2 mb-8 transition-colors px-4 py-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
@@ -58,34 +58,34 @@ export default async function DashboardPage() {
             <nav className="space-y-1 flex-1">
               <a
                 href="#subscription"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-amber-800 dark:hover:text-amber-400 rounded-lg transition-all group"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode rounded-lg transition-all group"
               >
-                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-amber-800 dark:group-hover:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
                 <span>Subscription</span>
               </a>
               <a
                 href="#events"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-amber-800 dark:hover:text-amber-400 rounded-lg transition-all group"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode rounded-lg transition-all group"
               >
-                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-amber-800 dark:group-hover:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <span>Events</span>
               </a>
               <a
                 href="#profile"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-amber-800 dark:hover:text-amber-400 rounded-lg transition-all group"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode rounded-lg transition-all group"
               >
-                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-amber-800 dark:group-hover:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span>Profile</span>
               </a>
             </nav>
 
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-auto">
+            <div className="border-t border-border-light dark:border-border-light-dark pt-4 mt-auto">
               <LogoutButton />
             </div>
           </div>
@@ -103,8 +103,8 @@ export default async function DashboardPage() {
             </div>
 
             <div id="profile" className="scroll-mt-8">
-              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h1 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-6 font-playfair">Profile</h1>
+              <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-6">
+                <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">Profile</h1>
                 <ProfileEditForm profile={profile} userId={session.userId} />
               </div>
             </div>

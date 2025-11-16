@@ -96,7 +96,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       <div className="space-y-6">
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label htmlFor="name" className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
             Name *
           </label>
           <input
@@ -106,7 +106,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
           />
         </div>
 
@@ -120,9 +120,9 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             id="email"
             value={profile.email}
             disabled
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
           />
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Ask a staff member if you want to update your email</p>
+          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Ask a staff member if you want to update your email</p>
         </div>
 
         {/* Website */}
@@ -137,7 +137,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             value={formData.website}
             onChange={handleChange}
             placeholder="https://yourwebsite.com"
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
           />
         </div>
 
@@ -151,13 +151,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
               <img
                 src={photoFile ? URL.createObjectURL(photoFile) : profile.photo || '/default-avatar.png'}
                 alt="Profile"
-                className="w-32 h-32 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600"
+                className="w-32 h-32 rounded-full object-cover border-2 border-border-light dark:border-border-medium-dark"
               />
             </div>
             <div className="flex-1">
               <label
                 htmlFor="photo"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer transition-colors"
+                className="inline-flex items-center px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg shadow-sm text-sm font-medium text-text-secondary dark:text-text-secondary-dark bg-background-surface dark:bg-background-subtle-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark cursor-pointer transition-colors"
               >
                 Choose File
                 <input
@@ -168,7 +168,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
                   className="sr-only"
                 />
               </label>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              <p className="text-xs text-text-muted dark:text-text-muted-dark mt-2">
                 JPG, PNG, WebP, GIF, or HEIC. Max size 10MB.
               </p>
             </div>
@@ -176,7 +176,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
         </div>
 
         {/* Directory Visibility */}
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+        <div className="border-t border-border-light dark:border-border-light-dark pt-6">
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
@@ -185,16 +185,16 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
                 name="directoryVisible"
                 checked={formData.directoryVisible}
                 onChange={handleChange}
-                className="w-4 h-4 text-amber-800 dark:text-amber-600 border-gray-300 dark:border-gray-600 rounded focus:ring-amber-500 dark:focus:ring-amber-600"
+                className="w-4 h-4 text-brand dark:text-brand border-border-medium dark:border-border-medium-dark rounded focus:ring-brand dark:focus:ring-brand"
               />
             </div>
             <div className="ml-3">
-              <label htmlFor="directoryVisible" className="font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="directoryVisible" className="font-medium text-text-secondary dark:text-text-secondary-dark">
                 Show my profile in the member directory
               </label>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-text-muted dark:text-text-muted-dark">
                 When enabled, other members can see your profile in the{' '}
-                <a href="/people" className="text-amber-800 dark:text-amber-400 hover:underline">member directory</a>.
+                <a href="/people" className="text-brand dark:text-brand-dark-mode hover:underline">member directory</a>.
                 You can change this setting at any time.
               </p>
             </div>
@@ -206,8 +206,8 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <div
             className={`p-4 rounded-lg ${
               status === 'success'
-                ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800'
-                : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800'
+                ? 'bg-success-bg dark:bg-success-bg-dark text-success-text dark:text-success-text-dark border border-success-bg dark:border-success-bg-dark'
+                : 'bg-error-bg dark:bg-error-bg-dark text-error-text dark:text-error-text-dark border border-error-bg dark:border-error-bg-dark'
             }`}
           >
             {message}
@@ -219,7 +219,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full bg-amber-800 dark:bg-amber-700 text-white py-2 px-4 rounded-lg hover:bg-amber-900 dark:hover:bg-amber-800 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-brand dark:bg-brand text-white py-2 px-4 rounded-lg hover:bg-brand-dark dark:hover:bg-brand-dark disabled:bg-text-muted dark:disabled:bg-text-muted-dark disabled:cursor-not-allowed transition-colors"
           >
             {status === 'loading' ? 'Saving...' : 'Save Changes'}
           </button>

@@ -19,7 +19,7 @@ export async function PeopleContent() {
     <>
       {members.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-4 text-center">
             General Membership
           </h3>
           <PeopleListClient people={members} />
@@ -39,18 +39,18 @@ export async function PeopleContent() {
 
         return (
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-4 text-center">
+            <h3 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-4 text-center">
               Private Offices
             </h3>
             <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-4">
               {Array.from(orgGroups.entries()).map(([orgName, people]) => (
-                <div key={orgName} className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full sm:w-auto">
-                  <h4 className="text-xs font-bold text-amber-900 dark:text-amber-400 uppercase font-sans tracking-wide text-center mb-2">
+                <div key={orgName} className="bg-background-subtle dark:bg-background-subtle-dark border-2 border-border-medium dark:border-border-medium-dark rounded-lg p-2 w-full sm:w-auto">
+                  <h4 className="text-xs font-bold text-brand dark:text-brand-dark-mode uppercase font-sans tracking-wide text-center mb-2">
                     {orgName}
                   </h4>
                   <div className="flex flex-wrap justify-center gap-2">
                     {people.map((person) => {
-                      const baseClasses = 'border-2 px-3 py-1 rounded-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                      const baseClasses = 'border-2 px-3 py-1 rounded-full bg-background-surface dark:bg-background-surface-dark border-border-medium dark:border-border-medium-dark'
 
                       if (person.website) {
                         return (
@@ -61,7 +61,7 @@ export async function PeopleContent() {
                             rel="noopener noreferrer"
                             className={`${baseClasses} cursor-pointer transition-colors duration-200`}
                           >
-                            <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">
+                            <p className="font-semibold text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap">
                               {person.name}
                             </p>
                           </a>
@@ -69,7 +69,7 @@ export async function PeopleContent() {
                       } else {
                         return (
                           <div key={person.id} className={baseClasses}>
-                            <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">
+                            <p className="font-semibold text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap">
                               {person.name}
                             </p>
                           </div>
@@ -86,7 +86,7 @@ export async function PeopleContent() {
 
       {staff.length > 0 && (
         <div>
-          <h3 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-4 text-center">
             Staff
           </h3>
           <PeopleListClient people={staff} />
@@ -120,13 +120,13 @@ export default async function PeoplePage() {
   */
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-background-page dark:bg-background-page-dark py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
+          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-2">
             Humans of Mox
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">The community that makes Mox special</p>
+          <p className="text-text-tertiary dark:text-text-tertiary-dark text-sm">The community that makes Mox special</p>
         </div>
         <PeopleContent />
       </div>
