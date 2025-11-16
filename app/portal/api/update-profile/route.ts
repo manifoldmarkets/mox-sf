@@ -25,7 +25,6 @@ export async function POST(request: Request) {
     const userId = formData.get('userId') as string;
     const name = formData.get('name') as string;
     const website = formData.get('website') as string;
-    const interestsStr = formData.get('interests') as string;
     const directoryVisible = formData.get('directoryVisible') === 'true';
     const photoFile = formData.get('photo') as File | null;
 
@@ -48,24 +47,10 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid website URL' }, { status: 400 });
     }
 
-    // Parse and validate interests
-    const interests = interestsStr
-      ? interestsStr.split(',').map(i => i.trim()).filter(i => i.length > 0)
-      : [];
-
-    if (interests.length > 20) {
-      return Response.json({ error: 'Too many interests (max 20)' }, { status: 400 });
-    }
-    if (interests.some(i => i.length > 100)) {
-      return Response.json({ error: 'Interest is too long (max 100 characters each)' }, { status: 400 });
-    }
-
     // Prepare fields to update
-    // Note: 'AI bio' is a computed AI field in Airtable that cannot be updated via API
     const fields: any = {
       Name: name.trim(),
       Website: trimmedWebsite,
-      Interests: interests,
     };
 
     // For Airtable checkboxes: explicitly set false when unchecked, true when checked

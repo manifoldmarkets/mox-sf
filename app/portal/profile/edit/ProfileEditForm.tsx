@@ -8,7 +8,6 @@ interface ProfileEditFormProps {
     name: string;
     email: string;
     website: string;
-    interests: string[];
     photo: string | null;
     directoryVisible: boolean;
   };
@@ -20,7 +19,6 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   const [formData, setFormData] = useState({
     name: profile.name,
     website: profile.website,
-    interests: profile.interests.join(', '),
     directoryVisible: profile.directoryVisible,
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -32,7 +30,6 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
     setFormData({
       name: profile.name,
       website: profile.website,
-      interests: profile.interests.join(', '),
       directoryVisible: profile.directoryVisible,
     });
     setStatus('idle');
@@ -64,7 +61,6 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       formDataToSend.append('userId', userId);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('website', formData.website);
-      formDataToSend.append('interests', formData.interests);
       formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
 
       if (photoFile) {
@@ -143,23 +139,6 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             placeholder="https://yourwebsite.com"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
-        </div>
-
-        {/* Interests */}
-        <div>
-          <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
-            Interests
-          </label>
-          <input
-            type="text"
-            id="interests"
-            name="interests"
-            value={formData.interests}
-            onChange={handleChange}
-            placeholder="AI, philosophy, effective altruism (comma-separated)"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <p className="text-xs text-gray-500 mt-1">Separate multiple interests with commas</p>
         </div>
 
         {/* Photo */}
