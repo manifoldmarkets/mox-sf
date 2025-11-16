@@ -2,6 +2,7 @@ import { getSession } from '@/app/lib/session';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import LogoutButton from './LogoutButton';
+import ProfileEditForm from '../profile/edit/ProfileEditForm';
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -37,56 +38,24 @@ export default async function DashboardPage() {
         </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome, {profile.name}!</h1>
           <p className="text-gray-600">Manage your Mox SF membership and profile</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Profile Card */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Your Profile</h2>
-            <div className="space-y-3">
-              <div>
-                <label className="text-sm font-medium text-gray-600">Name</label>
-                <p className="text-gray-900">{profile.name || 'Not set'}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-600">Email</label>
-                <p className="text-gray-900">{profile.email}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-600">Website</label>
-                <p className="text-gray-900">
-                  {profile.website ? (
-                    <a href={profile.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                      {profile.website}
-                    </a>
-                  ) : (
-                    'Not set'
-                  )}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-600">Interests</label>
-                <p className="text-gray-900">
-                  {profile.interests && profile.interests.length > 0
-                    ? profile.interests.join(', ')
-                    : 'Not set'}
-                </p>
-              </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Profile Edit Form - Takes up 2 columns */}
+          <div className="lg:col-span-2">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Profile</h2>
+              <p className="text-gray-600">Update your information to help other members discover you</p>
             </div>
-            <Link
-              href="/portal/profile/edit"
-              className="mt-6 block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-            >
-              Edit Profile
-            </Link>
+            <ProfileEditForm profile={profile} userId={session.userId} />
           </div>
 
-          {/* Quick Actions Card */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          {/* Quick Actions Card - Takes up 1 column */}
+          <div className="bg-white rounded-lg shadow-md p-6 h-fit">
             <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
             <div className="space-y-3">
               <a
@@ -112,18 +81,6 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
-
-        {/* Profile Preview */}
-        {profile.photo && (
-          <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Profile Photo</h2>
-            <img
-              src={profile.photo}
-              alt={profile.name}
-              className="w-32 h-32 rounded-full object-cover"
-            />
-          </div>
-        )}
       </div>
     </div>
   );
@@ -146,12 +103,14 @@ async function getUserProfile(recordId: string) {
 
   const data = await response.json();
   const fields = data.fields;
+  const showInDirectory = fields['Show in directory'];
 
   return {
-    name: fields.Name,
-    email: fields.Email,
-    website: fields.Website,
-    interests: fields.Interests,
-    photo: fields.Photo?.[0]?.url,
+    name: fields.Name || '',
+    email: fields.Email || '',
+    website: fields.Website || '',
+    interests: fields.Interests || [],
+    photo: fields.Photo?.[0]?.url || null,
+    directoryVisible: showInDirectory === true,
   };
 }

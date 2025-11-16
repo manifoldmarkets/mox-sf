@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ProfileEditFormProps {
@@ -26,6 +26,19 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  // Update form data when profile prop changes (e.g., after router.refresh())
+  useEffect(() => {
+    setFormData({
+      name: profile.name,
+      website: profile.website,
+      interests: profile.interests.join(', '),
+      directoryVisible: profile.directoryVisible,
+    });
+    setStatus('idle');
+    setMessage('');
+    setPhotoFile(null);
+  }, [profile]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
@@ -68,8 +81,9 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       if (response.ok) {
         setStatus('success');
         setMessage('Profile updated successfully!');
+        // Refresh the page to show updated data (useEffect will clear state)
         setTimeout(() => {
-          router.push('/portal/dashboard');
+          router.refresh();
         }, 1500);
       } else {
         setStatus('error');
@@ -215,20 +229,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
         )}
 
         {/* Submit Button */}
-        <div className="flex gap-4">
+        <div>
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
             {status === 'loading' ? 'Saving...' : 'Save Changes'}
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push('/portal/dashboard')}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-          >
-            Cancel
           </button>
         </div>
       </div>
