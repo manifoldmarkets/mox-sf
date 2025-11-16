@@ -2,8 +2,8 @@ import './globals.css'
 import {
   Playfair_Display,
   Lora,
-  Castoro,
-  Geist,
+  Merriweather,
+  Fira_Sans,
   Geist_Mono,
 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
@@ -18,15 +18,16 @@ const lora = Lora({
   variable: '--font-lora',
 })
 
-const castoro = Castoro({
+const merriweather = Merriweather({
   subsets: ['latin'],
-  variable: '--font-castoro',
-  weight: '400',
+  variable: '--font-merriweather',
+  weight: ['300', '400', '700'],
 })
 
-const geist = Geist({
+const firaSans = Fira_Sans({
   subsets: ['latin'],
-  variable: '--font-geist',
+  variable: '--font-sans',
+  weight: ['300', '400', '500', '600', '700'],
 })
 
 const geistMono = Geist_Mono({
@@ -76,7 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${lora.variable} ${castoro.variable} ${geist.variable} ${geistMono.variable} font-castoro`}
+        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-merriweather`}
       >
         {children}
         <Analytics />
