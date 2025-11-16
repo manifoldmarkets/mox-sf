@@ -57,7 +57,7 @@ function EventCard({ event }: { event: Event }) {
         <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">📍 {event.location}</p>
       )}
       {event.description && (
-        <p className="text-gray-700 mt-2 whitespace-pre-wrap text-sm break-words">
+        <p className="text-gray-700 dark:text-gray-300 mt-2 whitespace-pre-wrap text-sm break-words">
           {expanded ? event.description : event.description.slice(0, 480)}
           {!expanded && (
             <button

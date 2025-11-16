@@ -23,7 +23,7 @@ export default function PeopleListClient({ people }: { people: Person[] }) {
   }, [people])
 
   return (
-    <div className="flex flex-wrap justify-start gap-2">
+    <div className="flex flex-wrap justify-center gap-2">
       {people.map((person) => {
         const isEmphasized = emphasizedIds.includes(person.id)
         const baseClasses =

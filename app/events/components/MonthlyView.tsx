@@ -44,7 +44,7 @@ function DayCard({
       {dayEvents.map((event) => (
         <div
           key={event.id}
-          className="text-xs p-1 mb-1 bg-beige-50 border border-amber-100"
+          className="text-xs p-1 mb-1 bg-beige-50 dark:bg-gray-700 border border-amber-100 dark:border-gray-600"
           title={event.description || event.name}
         >
           <span className="text-amber-900 dark:text-amber-400 font-medium block">
