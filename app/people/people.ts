@@ -1,11 +1,11 @@
 export type Person = {
   id: string
   name: string
+  tier: string | null
+  org: string[]
+  program: string[]
+  status: string | null
   website: string
-  interests: string[]
-  orgIds: string[]
-  programIds: string[]
-  aiBio: string | null
   photo: any[] | null
   showInDirectory: boolean
 }
@@ -15,11 +15,11 @@ export type Person = {
 // Unfortunately, Airtable doesn't support per-field control on access keys.
 const FIELDS = [
   'Name',
-  'Website',
-  'Interests',
-  'AI bio',
+  'Tier',
   'Org',
   'Program',
+  'Status',
+  'Website',
   'Photo',
   'Show in directory',
 ]
@@ -34,8 +34,12 @@ export async function getPeople(): Promise<Person[]> {
   // Fetch pages serially using the offset from previous response
   for (let i = 0; i < PAGES_TO_FETCH; i++) {
     const offsetParam = offset ? `&offset=${offset}` : ''
+    // Filter by visibility and status on the backend
+    // Only fetch records where Show in directory is true AND Status is 'Joined'
+    const filterFormula = encodeURIComponent('AND({Show in directory}=TRUE(), {Status}="Joined")')
     const res = await fetch(
       `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?view=viw9V2tzcnqvRXcV3&` +
+        `filterByFormula=${filterFormula}&` +
         FIELDS.map((field) => `fields%5B%5D=${encodeURIComponent(field)}`).join(
           '&'
         ) +
@@ -59,28 +63,22 @@ export async function getPeople(): Promise<Person[]> {
   }
 
   // Parse the data into the Person type
-  const people = allRecords.map((record: any) => {
-    // Airtable checkboxes: true when checked, undefined when unchecked
-    // Only show in directory if explicitly checked (true)
-    const showInDirectory = record.fields['Show in directory'];
-
+  // Note: All records already have Show in directory=true due to backend filtering
+  const people: Person[] = allRecords.map((record: any) => {
     return {
       id: record.id,
-      name: record.fields.Name,
-      website: record.fields.Website,
-      interests: record.fields.Interests,
-      aiBio: record.fields['AI bio'].value || null,
-      orgIds: record.fields.Org,
-      programIds: record.fields.Program,
+      name: record.fields.Name || '',
+      tier: record.fields.Tier || null,
+      org: record.fields.Org || [],
+      program: record.fields.Program || [],
+      status: record.fields.Status || null,
+      website: record.fields.Website || '',
       photo: record.fields.Photo || [],
-      showInDirectory: showInDirectory === true,
+      showInDirectory: true, // Always true since we filter on the backend
     };
   })
 
-  // Filter to only show people who opted into directory visibility
-  const filteredPeople = people.filter((person) => person.showInDirectory)
-
-  return filteredPeople
+  return people
 }
 
 export function formatUrl(url: string): string {

@@ -87,8 +87,22 @@ export default async function DashboardPage() {
 }
 
 async function getUserProfile(recordId: string) {
+  // Only fetch the fields we need for the profile edit form
+  const fieldsToFetch = [
+    'Name',
+    'Email',
+    'Website',
+    'Interests',
+    'Photo',
+    'Show in directory',
+  ];
+
+  const fieldsParam = fieldsToFetch
+    .map((field) => `fields%5B%5D=${encodeURIComponent(field)}`)
+    .join('&');
+
   const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}`,
+    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}?${fieldsParam}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
