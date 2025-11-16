@@ -45,7 +45,7 @@ function DayCard({
         <div
           key={event.id}
           className="text-xs p-1 mb-1 bg-beige-50 border border-amber-100"
-          title={event.notes || event.description}
+          title={event.description || event.name}
         >
           <span className="text-amber-900 font-medium block">
             <span className="text-amber-600 font-light">

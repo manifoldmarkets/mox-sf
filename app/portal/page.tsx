@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import LogoutButton from './LogoutButton';
 import ProfileEditForm from './profile/edit/ProfileEditForm';
 import SubscriptionInfo from './SubscriptionInfo';
+import HostedEvents from './HostedEvents';
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -43,6 +44,8 @@ export default async function DashboardPage() {
 
       <div className="max-w-4xl mx-auto px-6 py-12">
         <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
+
+        <HostedEvents userName={profile.name} />
 
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h1 className="text-lg font-semibold text-gray-900 mb-6">Profile</h1>

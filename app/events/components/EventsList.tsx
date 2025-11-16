@@ -23,7 +23,7 @@ function EventTypeTag({ type }: { type: string }) {
 }
 
 function EventCard({ event }: { event: Event }) {
-  const isLong = event.notes && event.notes.length > 480
+  const isLong = event.description && event.description.length > 480
   const [expanded, setExpanded] = useState(!isLong)
 
   return (
@@ -56,9 +56,9 @@ function EventCard({ event }: { event: Event }) {
       {event.location && (
         <p className="text-gray-600 text-sm mb-2">📍 {event.location}</p>
       )}
-      {event.notes && (
+      {event.description && (
         <p className="text-gray-700 mt-2 whitespace-pre-wrap text-sm break-words">
-          {expanded ? event.notes : event.notes.slice(0, 480)}
+          {expanded ? event.description : event.description.slice(0, 480)}
           {!expanded && (
             <button
               onClick={() => setExpanded(!expanded)}
