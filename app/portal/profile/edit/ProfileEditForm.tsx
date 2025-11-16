@@ -92,7 +92,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
+    <form onSubmit={handleSubmit}>
       <div className="space-y-6">
         {/* Name */}
         <div>

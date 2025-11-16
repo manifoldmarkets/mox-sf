@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import LogoutButton from './LogoutButton';
 import ProfileEditForm from '../profile/edit/ProfileEditForm';
+import SubscriptionInfo from './SubscriptionInfo';
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -41,19 +42,12 @@ export default async function DashboardPage() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Profile</h1>
-          <a
-            href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            Manage Billing
-          </a>
-        </div>
+        <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
 
-        <ProfileEditForm profile={profile} userId={session.userId} />
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h1 className="text-lg font-semibold text-gray-900 mb-6">Profile</h1>
+          <ProfileEditForm profile={profile} userId={session.userId} />
+        </div>
       </div>
     </div>
   );
@@ -65,6 +59,7 @@ async function getUserProfile(recordId: string): Promise<{
   website: string;
   photo: string | null;
   directoryVisible: boolean;
+  stripeCustomerId: string | null;
   error?: string;
 } | null> {
   // Fetch only the fields we need for the profile edit form
@@ -100,5 +95,6 @@ async function getUserProfile(recordId: string): Promise<{
     website: fields.Website || '',
     photo: fields.Photo?.[0]?.url || null,
     directoryVisible: showInDirectory === true, // Will be false if field is undefined/unchecked
+    stripeCustomerId: fields['Stripe Customer ID'] || null,
   };
 }
