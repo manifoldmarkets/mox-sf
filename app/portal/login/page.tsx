@@ -1,11 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  // Check if user is already logged in
+  useEffect(() => {
+    async function checkSession() {
+      try {
+        const response = await fetch('/portal/api/session');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.isLoggedIn) {
+            router.push('/portal');
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+      } finally {
+        setCheckingSession(false);
+      }
+    }
+    checkSession();
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +57,14 @@ export default function LoginPage() {
       setMessage('Failed to send email. Please try again.');
     }
   };
+
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="text-gray-600">Checking session...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
