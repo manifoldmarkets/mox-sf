@@ -2,7 +2,7 @@ import { getSession } from '@/app/lib/session';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import LogoutButton from './LogoutButton';
-import ProfileEditForm from '../profile/edit/ProfileEditForm';
+import ProfileEditForm from './profile/edit/ProfileEditForm';
 import SubscriptionInfo from './SubscriptionInfo';
 
 export default async function DashboardPage() {
