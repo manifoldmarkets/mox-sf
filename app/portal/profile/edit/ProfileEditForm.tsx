@@ -96,7 +96,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       <div className="space-y-6">
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Name *
           </label>
           <input
@@ -106,13 +106,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
           />
         </div>
 
         {/* Email (read-only) */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Email
           </label>
           <input
@@ -120,14 +120,14 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             id="email"
             value={profile.email}
             disabled
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed"
           />
-          <p className="text-xs text-gray-500 mt-1">Ask a staff member if you want to update your email</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Ask a staff member if you want to update your email</p>
         </div>
 
         {/* Website */}
         <div>
-          <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="website" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Website
           </label>
           <input
@@ -137,13 +137,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             value={formData.website}
             onChange={handleChange}
             placeholder="https://yourwebsite.com"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-600 focus:border-amber-500 dark:focus:border-amber-600"
           />
         </div>
 
         {/* Photo */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             Profile Photo
           </label>
           <div className="flex items-center gap-6">
@@ -151,13 +151,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
               <img
                 src={photoFile ? URL.createObjectURL(photoFile) : profile.photo || '/default-avatar.png'}
                 alt="Profile"
-                className="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
+                className="w-32 h-32 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600"
               />
             </div>
             <div className="flex-1">
               <label
                 htmlFor="photo"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer transition-colors"
               >
                 Choose File
                 <input
@@ -168,7 +168,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
                   className="sr-only"
                 />
               </label>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                 JPG, PNG, WebP, GIF, or HEIC. Max size 10MB.
               </p>
             </div>
@@ -176,7 +176,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
         </div>
 
         {/* Directory Visibility */}
-        <div className="border-t pt-6">
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
@@ -185,16 +185,16 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
                 name="directoryVisible"
                 checked={formData.directoryVisible}
                 onChange={handleChange}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-amber-800 dark:text-amber-600 border-gray-300 dark:border-gray-600 rounded focus:ring-amber-500 dark:focus:ring-amber-600"
               />
             </div>
             <div className="ml-3">
-              <label htmlFor="directoryVisible" className="font-medium text-gray-700">
+              <label htmlFor="directoryVisible" className="font-medium text-gray-700 dark:text-gray-300">
                 Show my profile in the member directory
               </label>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 When enabled, other members can see your profile in the{' '}
-                <a href="/people" className="text-blue-600 hover:underline">member directory</a>.
+                <a href="/people" className="text-amber-800 dark:text-amber-400 hover:underline">member directory</a>.
                 You can change this setting at any time.
               </p>
             </div>
@@ -206,8 +206,8 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <div
             className={`p-4 rounded-lg ${
               status === 'success'
-                ? 'bg-green-50 text-green-800'
-                : 'bg-red-50 text-red-800'
+                ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800'
+                : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800'
             }`}
           >
             {message}
@@ -219,7 +219,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-amber-800 dark:bg-amber-700 text-white py-2 px-4 rounded-lg hover:bg-amber-900 dark:hover:bg-amber-800 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
           >
             {status === 'loading' ? 'Saving...' : 'Save Changes'}
           </button>

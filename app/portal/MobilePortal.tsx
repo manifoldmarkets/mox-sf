@@ -25,13 +25,13 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
   const [activeSection, setActiveSection] = useState<Section>('subscription');
 
   return (
-    <div className="min-h-screen bg-gray-50 font-geist flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 font-sans flex flex-col">
       {/* Header with Back to Home */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="flex items-center justify-between p-3">
           <Link
             href="/"
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-geist"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-amber-800 dark:hover:text-amber-400 transition-colors font-sans"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -57,12 +57,12 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
 
         {activeSection === 'profile' && (
           <div className="p-3">
-            <div className="bg-white rounded-lg border border-gray-200 p-3">
-              <h1 className="text-xl font-bold text-gray-900 mb-6 font-playfair">Profile</h1>
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+              <h1 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-6 font-playfair">Profile</h1>
               <ProfileEditForm profile={profile} userId={userId} />
 
               {/* Logout Button */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
+              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <LogoutButton />
               </div>
             </div>
@@ -71,14 +71,14 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-20 safe-area-inset-bottom font-geist">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-20 safe-area-inset-bottom font-sans">
         <div className="grid grid-cols-3 h-16">
           <button
             onClick={() => setActiveSection('subscription')}
             className={`flex flex-col items-center justify-center gap-1 transition-colors ${
               activeSection === 'subscription'
-                ? 'text-blue-600'
-                : 'text-gray-600'
+                ? 'text-amber-800 dark:text-amber-400'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -90,8 +90,8 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
             onClick={() => setActiveSection('events')}
             className={`flex flex-col items-center justify-center gap-1 transition-colors ${
               activeSection === 'events'
-                ? 'text-green-600'
-                : 'text-gray-600'
+                ? 'text-amber-800 dark:text-amber-400'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -103,8 +103,8 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
             onClick={() => setActiveSection('profile')}
             className={`flex flex-col items-center justify-center gap-1 transition-colors ${
               activeSection === 'profile'
-                ? 'text-purple-600'
-                : 'text-gray-600'
+                ? 'text-amber-800 dark:text-amber-400'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
