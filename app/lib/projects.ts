@@ -12,7 +12,7 @@ export interface Project {
 export async function getProjects(): Promise<Project[]> {
   try {
     const res = await fetch(
-      'https://api.airtable.com/v0/appNJwWpcxwIbW89F/Projects?view=Grid%20view',
+      `https://api.airtable.com/v0/${process.env.AI4E_AIRTABLE_BASE_ID}/Projects?view=Grid%20view`,
       {
         headers: {
           Authorization: `Bearer ${process.env.AI4E_API_KEY}`,

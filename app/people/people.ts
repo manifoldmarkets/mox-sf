@@ -33,7 +33,7 @@ export async function getPeople(): Promise<Person[]> {
   for (let i = 0; i < PAGES_TO_FETCH; i++) {
     const offsetParam = offset ? `&offset=${offset}` : ''
     const res = await fetch(
-      'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/People?view=viw9V2tzcnqvRXcV3&' +
+      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?view=viw9V2tzcnqvRXcV3&` +
         FIELDS.map((field) => `fields%5B%5D=${encodeURIComponent(field)}`).join(
           '&'
         ) +
