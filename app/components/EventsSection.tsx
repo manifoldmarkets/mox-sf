@@ -41,7 +41,7 @@ function AddSection() {
           Events newsletter
         </a>
         <a
-          href="/host-event"
+          href="/events-hosting"
           className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-amber-800 dark:text-amber-400 bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors cursor-pointer rounded-full"
         >
           Host an event
