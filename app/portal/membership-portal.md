@@ -39,6 +39,19 @@ Email is read-only (cannot be changed).
 - Resend (email delivery)
 - iron-session (session management)
 
+**Security Features:**
+- Email format validation using regex
+- Rate limiting: 3 magic link requests per 15 minutes per email
+- Airtable formula injection protection using escape functions
+- Token format validation (64-char hex strings)
+- Profile input validation:
+  - Name: Required, max 200 characters
+  - Website: Valid HTTP/HTTPS URL only
+  - Interests: Max 20 items, 100 characters each
+  - Photo: Max 10MB, only JPEG/PNG/WebP/GIF/HEIC
+- Session-based authorization checks
+- One-time use magic links with 24-hour expiry
+
 **Airtable Fields:**
 - `Email`: User's email address
 - `Name`: Full name
