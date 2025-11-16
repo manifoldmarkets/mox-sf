@@ -26,12 +26,6 @@ export async function GET(request: Request) {
       limit: 10,
     });
 
-    console.log(`Found ${subscriptions.data.length} subscriptions for customer ${stripeCustomerId}`);
-
-    if (subscriptions.data.length > 0) {
-      console.log('Subscription statuses:', subscriptions.data.map(s => s.status));
-    }
-
     if (subscriptions.data.length === 0) {
       return Response.json({
         subscription: null,
@@ -59,8 +53,9 @@ export async function GET(request: Request) {
     const productId = typeof price.product === 'string' ? price.product : price.product.id;
     const product = await stripe.products.retrieve(productId);
 
-    // Format the renewal date
-    const renewalDate = new Date((subscription as any).current_period_end * 1000);
+    // Format the renewal date - get it from the subscription item
+    const currentPeriodEnd = (priceItem as any).current_period_end;
+    const renewalDate = new Date(currentPeriodEnd * 1000);
 
     // Calculate the rate (convert from cents to dollars)
     const amount = price.unit_amount ? price.unit_amount / 100 : 0;
