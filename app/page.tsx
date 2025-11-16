@@ -52,7 +52,7 @@ export default function Component() {
       </a> */}
 
       {/* Hero section */}
-      <div className="relative min-h-screen flex items-center justify-center px-6 py-16 pb-32">
+      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-24 sm:pb-32">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5 dark:invert"
           style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
@@ -74,9 +74,9 @@ export default function Component() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
             {/* Left column */}
-            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-6 shadow-xl rounded-3xl">
+            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-4 sm:p-6 shadow-xl rounded-2xl sm:rounded-3xl">
               <img
                 src="/images/014.jpg"
                 alt="Mox community"
@@ -133,7 +133,7 @@ export default function Component() {
             </div>
 
             {/* Right column */}
-            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-6 shadow-xl rounded-3xl flex flex-col">
+            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-4 sm:p-6 shadow-xl rounded-2xl sm:rounded-3xl flex flex-col">
               <img
                 src="/images/005.jpg"
                 alt="Mox space"
@@ -179,10 +179,10 @@ export default function Component() {
       </div>
 
       {/* Main content */}
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Events section */}
-        <section className="mb-16 -mt-24 relative z-20">
-          <div className="bg-white dark:bg-gray-800 p-8 shadow-2xl rounded-3xl border border-gray-200 dark:border-gray-700">
+        <section className="mb-12 sm:mb-16 -mt-16 sm:-mt-24 relative z-20">
+          <div className="bg-white dark:bg-gray-800 p-4 sm:p-8 shadow-2xl rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-gray-700">
             <div className="text-center mb-6">
               <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
                 Events
@@ -193,7 +193,7 @@ export default function Component() {
           </div>
         </section>
 
-        <section id="people" className="mb-16">
+        <section id="people" className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
               Humans of Mox
@@ -203,11 +203,11 @@ export default function Component() {
           <PeopleGallery />
         </section>
 
-        <section className="mb-16">
+        <section className="mb-12 sm:mb-16">
           <PeoplePage />
         </section>
 
-        <section className="mb-16">
+        <section className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
               The Space
@@ -219,8 +219,8 @@ export default function Component() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 border-t border-gray-200 dark:border-gray-700 py-12 bg-white dark:bg-gray-800">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <footer className="mt-16 sm:mt-24 border-t border-gray-200 dark:border-gray-700 py-8 sm:py-12 bg-white dark:bg-gray-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-gray-600 dark:text-gray-400 mb-2">
             A project of <Link href="https://manifund.org">Manifund</Link>
           </p>

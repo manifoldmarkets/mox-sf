@@ -6,16 +6,16 @@ import { ExternalLink } from 'lucide-react'
 
 function EventTypeTag({ type }: { type: string }) {
   const colorMap = {
-    public: 'bg-green-100 text-green-800',
-    private: 'bg-red-100 text-red-800',
-    members: 'bg-blue-100 text-blue-800',
+    public: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    private: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+    members: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   }
   const colorClasses =
-    colorMap[type.toLowerCase()] || 'bg-gray-100 text-gray-800'
+    colorMap[type.toLowerCase()] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
 
   return (
     <span
-      className={`absolute top-4 right-4 px-2 py-1 text-xs font-medium rounded-full ${colorClasses}`}
+      className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${colorClasses}`}
     >
       {type.toLowerCase()}
     </span>
@@ -27,31 +27,32 @@ function EventCard({ event }: { event: Event }) {
   const [expanded, setExpanded] = useState(!isLong)
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 shadow-sm border border-slate-100 dark:border-gray-700 relative rounded-2xl">
-      {event.type && <EventTypeTag type={event.type} />}
-      <div className="flex items-center gap-2 mb-1">
-        {event.url ? (
-          <a
-            href={event.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-amber-900 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 flex items-center gap-2 group"
-            title="Event details"
-          >
-            <h3 className="text-xl font-semibold">{event.name}</h3>
-            <ExternalLink
-              size={16}
-              className="text-amber-700 dark:text-amber-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
-            />
-          </a>
-        ) : (
-          <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400">{event.name}</h3>
-        )}
-      </div>
+    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 shadow-sm border border-slate-100 dark:border-gray-700 rounded-2xl relative">
+      {event.url && (
+        <a
+          href={event.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute top-4 right-4 text-amber-700 dark:text-amber-500 hover:text-amber-900 dark:hover:text-amber-600 transition-colors"
+          title="Event details"
+          aria-label="Event details"
+        >
+          <ExternalLink size={18} />
+        </a>
+      )}
+      <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400 leading-tight mb-1 pr-10">
+        {event.name}
+      </h3>
       <p className="text-sm mb-2 text-amber-800 dark:text-amber-500 font-semibold">
         {formatEventTime(event)}
         {event.host && <span className="font-normal"> - {event.host}</span>}
       </p>
+
+      {event.type && (
+        <div className="mb-2">
+          <EventTypeTag type={event.type} />
+        </div>
+      )}
 
       {event.location && (
         <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">📍 {event.location}</p>
