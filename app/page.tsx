@@ -40,7 +40,7 @@ export default async function Component() {
           <svg className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
-          <span className="hidden sm:inline text-sm font-medium text-text-secondary dark:text-text-tertiary-dark">Login</span>
+          <span className="hidden sm:inline text-sm font-semibold text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">Login</span>
         </a>
       </nav>
 
@@ -136,8 +136,8 @@ export default async function Component() {
                   'Community builders',
                   'Members of technical and untechnical staff'
                 ].map((label) => (
-                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-700 px-2 py-0.5 rounded-xl flex items-center">
-                    <p className="text-text-primary dark:text-text-secondary-dark text-base whitespace-nowrap font-serif leading-tight">{label}</p>
+                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-700 px-3 py-1 rounded-full flex items-center">
+                    <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">{label}</p>
                   </div>
                 ))}
               </div>
