@@ -77,10 +77,23 @@ export default function Masonry({
       if (rowRatios.some((r) => !r)) continue
 
       const spacing = 12 // gap-3 in pixels
+      const isLastRow = i + imagesPerRow >= images.length
+      const isIncompleteRow = rowImages.length < imagesPerRow
+
+      // For incomplete last rows, add dummy images to simulate a full row for height calculation
+      let calculationRatios = [...rowRatios]
+      if (isLastRow && isIncompleteRow) {
+        // Add average ratio placeholders to fill the row
+        const avgRatio = rowRatios.reduce((sum, r) => sum + r, 0) / rowRatios.length
+        while (calculationRatios.length < imagesPerRow) {
+          calculationRatios.push(avgRatio)
+        }
+      }
+
       const availableWidth = containerWidth - spacing * (imagesPerRow - 1)
 
       // Initial widths using the target row height
-      const initialWidths = rowRatios.map((ratio) => targetRowHeight * ratio)
+      const initialWidths = calculationRatios.map((ratio) => targetRowHeight * ratio)
       const totalWidth = initialWidths.reduce((sum, w) => sum + w, 0)
 
       // Scale images so they exactly fill the row
