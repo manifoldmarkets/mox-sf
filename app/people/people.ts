@@ -3,6 +3,7 @@ export type Person = {
   name: string
   tier: string | null
   org: string[]
+  orgNames: string[]
   program: string[]
   status: string | null
   website: string
@@ -27,7 +28,38 @@ const FIELDS = [
 
 const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
 
+async function getOrgNames(): Promise<Map<string, string>> {
+  const res = await fetch(
+    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Orgs?fields%5B%5D=Name`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+      },
+      next: { revalidate: 60 },
+    }
+  )
+
+  if (!res.ok) {
+    console.error('Failed to fetch orgs, using empty map')
+    return new Map()
+  }
+
+  const data = await res.json()
+  const orgMap = new Map<string, string>()
+
+  data.records?.forEach((record: any) => {
+    if (record.id && record.fields.Name) {
+      orgMap.set(record.id, record.fields.Name)
+    }
+  })
+
+  return orgMap
+}
+
 export async function getPeople(): Promise<Person[]> {
+  // Fetch org names first
+  const orgMap = await getOrgNames()
+
   let allRecords: any[] = []
   let offset: string | undefined
 
@@ -65,11 +97,15 @@ export async function getPeople(): Promise<Person[]> {
   // Parse the data into the Person type
   // Note: All records already have Show in directory=true due to backend filtering
   const people: Person[] = allRecords.map((record: any) => {
+    const orgIds = record.fields.Org || []
+    const orgNames = orgIds.map((id: string) => orgMap.get(id) || id)
+
     return {
       id: record.id,
       name: record.fields.Name || '',
       tier: record.fields.Tier || null,
-      org: record.fields.Org || [],
+      org: orgIds,
+      orgNames: orgNames,
       program: record.fields.Program || [],
       status: record.fields.Status || null,
       website: record.fields.Website || '',
