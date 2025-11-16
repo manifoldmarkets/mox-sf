@@ -156,22 +156,31 @@ export default function Masonry({
     <div ref={containerRef}>
       {/* Masonry Grid */}
       <div className="flex flex-col gap-3">
-        {getRows().map((row, i) => (
-          <div key={i} className="flex gap-3">
-            {row.map(({ src, width, height, index }) => (
-              <NextImage
-                key={index}
-                src={src}
-                alt=""
-                width={Math.round(width)}
-                height={Math.round(height)}
-                className="object-cover cursor-pointer hover:opacity-80 rounded-2xl"
-                loading="lazy"
-                onClick={() => setSelectedImageIndex(index)}
-              />
-            ))}
-          </div>
-        ))}
+        {getRows().map((row, i) => {
+          const imagesPerRow = containerWidth < 640 ? 2 : 3
+          const isLastRow = i === getRows().length - 1
+          const isIncompleteRow = row.length < imagesPerRow
+
+          return (
+            <div
+              key={i}
+              className={`flex gap-3 ${isLastRow && isIncompleteRow ? 'justify-center' : ''}`}
+            >
+              {row.map(({ src, width, height, index }) => (
+                <NextImage
+                  key={index}
+                  src={src}
+                  alt=""
+                  width={Math.round(width)}
+                  height={Math.round(height)}
+                  className="object-cover cursor-pointer hover:opacity-80 rounded-2xl"
+                  loading="lazy"
+                  onClick={() => setSelectedImageIndex(index)}
+                />
+              ))}
+            </div>
+          )
+        })}
       </div>
 
       {/* Fullscreen Overlay (if an image is selected) */}
