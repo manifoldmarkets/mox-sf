@@ -61,7 +61,7 @@ export async function GET() {
   try {
     // Fetch events from Airtable
     const res = await fetch(
-      'https://api.airtable.com/v0/appkHZ2UvU6SouT5y/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB',
+      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB`,
       {
         headers: {
           Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
