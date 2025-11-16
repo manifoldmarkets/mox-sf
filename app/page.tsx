@@ -175,7 +175,7 @@ export default async function Component() {
                     Apply for membership
                   </a>
                   <a
-                    href="mailto:rachel@moxsf.com"
+                    href="/offices"
                     className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
                   >
                     Inquire about offices
