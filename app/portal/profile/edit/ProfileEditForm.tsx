@@ -143,29 +143,36 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
 
         {/* Photo */}
         <div>
-          <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
             Profile Photo
           </label>
-          {profile.photo && !photoFile && (
-            <div className="mb-4">
+          <div className="flex items-center gap-6">
+            <div className="flex-shrink-0">
               <img
-                src={profile.photo}
-                alt="Current profile"
-                className="w-24 h-24 rounded-full object-cover"
+                src={photoFile ? URL.createObjectURL(photoFile) : profile.photo || '/default-avatar.png'}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
               />
-              <p className="text-xs text-gray-500 mt-1">Current photo</p>
             </div>
-          )}
-          <input
-            type="file"
-            id="photo"
-            accept="image/*"
-            onChange={handlePhotoChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Upload a new photo to replace the current one
-          </p>
+            <div className="flex-1">
+              <label
+                htmlFor="photo"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+              >
+                Choose File
+                <input
+                  type="file"
+                  id="photo"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
+                  onChange={handlePhotoChange}
+                  className="sr-only"
+                />
+              </label>
+              <p className="text-xs text-gray-500 mt-2">
+                JPG, PNG, WebP, GIF, or HEIC. Max size 10MB.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Directory Visibility */}
