@@ -160,8 +160,8 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 font-serif">{SECTION_TITLE}</h2>
+      <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 font-playfair">{SECTION_TITLE}</h2>
         <p className="text-sm text-gray-500">Loading events...</p>
       </div>
     );
@@ -169,8 +169,8 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (error) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 font-serif">{SECTION_TITLE}</h2>
+      <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 font-playfair">{SECTION_TITLE}</h2>
         <p className="text-sm text-red-500">{error}</p>
       </div>
     );
@@ -178,8 +178,8 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (events.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 font-serif">{SECTION_TITLE}</h2>
+      <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 font-playfair">{SECTION_TITLE}</h2>
         <p className="text-sm text-gray-500">You don't have any upcoming events</p>
       </div>
     );
@@ -187,10 +187,10 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 font-serif">{SECTION_TITLE}</h2>
+      <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 font-playfair">{SECTION_TITLE}</h2>
 
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {events.map((event) => {
             const startDate = new Date(event.startDate);
             const formattedDate = format(startDate, 'MMM d, yyyy');
@@ -225,23 +225,23 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
               <button
                 key={event.id}
                 onClick={() => handleEventClick(event)}
-                className="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                className="w-full text-left p-2.5 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="text-base font-medium text-gray-900 mb-1 font-serif">{event.name}</h3>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
-                      <span>{formattedDate} at {formattedTime}</span>
-                      {event.assignedRooms && <span>📍 {event.assignedRooms}</span>}
+                <div className="flex justify-between items-start gap-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base font-medium text-gray-900 mb-1 font-castoro">{event.name}</h3>
+                    <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-sm text-gray-500 font-geist">
+                      <span className="whitespace-nowrap">{formattedDate} at {formattedTime}</span>
+                      {event.assignedRooms && <span className="truncate">📍 {event.assignedRooms}</span>}
                       {event.status && (
-                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(event.status)}`}>
+                        <span className={`px-2 py-0.5 rounded text-xs font-medium whitespace-nowrap ${getStatusColor(event.status)}`}>
                           {event.status}
                         </span>
                       )}
                     </div>
                   </div>
                   <svg
-                    className="w-5 h-5 text-gray-400 flex-shrink-0 ml-2"
+                    className="w-5 h-5 text-gray-400 flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
