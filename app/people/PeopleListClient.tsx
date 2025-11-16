@@ -29,8 +29,8 @@ export default function PeopleListClient({ people }: { people: Person[] }) {
         const baseClasses =
           'border-2 px-3 py-1 rounded-full transition-colors duration-200'
         const colorClasses = isEmphasized
-          ? 'bg-red-50 dark:bg-yellow-900/30 border-red-800 dark:border-yellow-600 hover:bg-red-100 dark:hover:bg-yellow-900/50'
-          : 'bg-background-subtle dark:bg-background-subtle-dark border-border-medium dark:border-border-medium-dark'
+          ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-600 dark:border-secondary-500 hover:bg-secondary-200 dark:hover:bg-secondary-900/50'
+          : 'bg-background-subtle dark:bg-transparent border-border-medium dark:border-primary-700'
 
         const fontWeight = isEmphasized ? 'font-extrabold' : 'font-semibold'
 
