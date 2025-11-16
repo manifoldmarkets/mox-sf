@@ -31,13 +31,13 @@ export default function Component() {
       <nav className="fixed top-0 right-0 z-50 p-4">
         <a
           href="/portal"
-          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
           aria-label="Login to member portal"
         >
           <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Login</span>
+          <span className="hidden sm:inline text-sm font-medium text-gray-700 dark:text-gray-300">Login</span>
         </a>
       </nav>
 
