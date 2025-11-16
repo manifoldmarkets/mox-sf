@@ -111,7 +111,7 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
           disabled={billingLoading}
           className="px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {billingLoading ? 'Loading...' : 'Manage Billing'}
+          {billingLoading ? 'Loading...' : 'Manage billing on Stripe'}
         </button>
       </div>
 
