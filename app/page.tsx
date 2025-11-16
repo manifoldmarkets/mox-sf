@@ -1,7 +1,8 @@
 import Gallery from './gallery'
 import PeopleGallery from './people-gallery'
-import PeoplePage from './people/page'
-import EventsPage from './events/page'
+import { PeopleContent } from './people/page'
+import EventsCardCompact from './components/EventsCardCompact'
+import { getEvents } from './lib/events'
 
 function Link({
   href,
@@ -24,7 +25,9 @@ function Link({
   )
 }
 
-export default function Component() {
+export default async function Component() {
+  const events = await getEvents()
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Top navigation with login */}
@@ -57,7 +60,7 @@ export default function Component() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5 dark:invert"
           style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
         />
-        <div className="relative z-10 max-w-4xl w-full">
+        <div className="relative z-10 max-w-7xl w-full">
           <div className="text-center mb-12">
             <img
               src="/images/mox_logo_text.svg"
@@ -74,102 +77,131 @@ export default function Component() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-            {/* Left column */}
-            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-4 sm:p-6 shadow-xl rounded-2xl sm:rounded-3xl">
+          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* Events column */}
+            <div className="bg-orange-50 dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-2xl sm:rounded-3xl flex flex-col md:flex-row lg:flex-col overflow-hidden">
               <img
-                src="/images/014.jpg"
-                alt="Mox community"
-                className="w-full h-48 object-cover rounded-2xl mb-4"
+                src="/images/003.jpg"
+                alt="Mox events"
+                className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
-              <p className="text-base text-gray-700 dark:text-gray-200 mb-4 text-center font-semibold">
-                We bring together:
-              </p>
-
-              <div className="flex flex-wrap justify-center gap-2 mb-4">
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">AI alignment researchers</p>
+              <div className="p-4 sm:p-6 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-4 text-center">
+                  Events we're hosting
+                </h3>
+                <div className="flex-1">
+                  <EventsCardCompact events={events} />
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Startup founders</p>
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                  <a
+                    href="/events"
+                    className="block text-center text-sm font-semibold text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline decoration-dotted underline-offset-2"
+                  >
+                    See all events →
+                  </a>
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Defensive accelerationists</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Filmmakers</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Writers</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">High impact nonprofits</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Artisans</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Figgie players</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Policy advocates</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Community builders</p>
-                </div>
-                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full">
-                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap">Members of technical and untechnical staff</p>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <a
-                  href="#people"
-                  className="text-sm text-amber-800 dark:text-yellow-500 hover:text-amber-900 dark:hover:text-yellow-400 underline decoration-dotted underline-offset-2"
-                >
-                  See people at Mox ↓
-                </a>
               </div>
             </div>
 
-            {/* Right column */}
-            <div className="bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-4 sm:p-6 shadow-xl rounded-2xl sm:rounded-3xl flex flex-col">
+            {/* People column */}
+            <div className="bg-orange-50 dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-2xl sm:rounded-3xl flex flex-col md:flex-row lg:flex-col overflow-hidden">
+              <img
+                src="/images/014.jpg"
+                alt="Mox community"
+                className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
+              />
+              <div className="p-4 sm:p-6 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-4 text-center">
+                  Who we're gathering
+                </h3>
+
+                <div className="flex flex-wrap justify-center gap-1.5 flex-1">
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">AI alignment researchers</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Startup founders</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Defensive accelerationists</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Filmmakers</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Writers</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">High impact nonprofits</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Artisans</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Figgie players</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Policy advocates</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Community builders</p>
+                </div>
+                <div className="bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 px-2 py-0.5 rounded-xl flex items-center">
+                  <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-nowrap font-sans leading-tight">Members of technical and untechnical staff</p>
+                </div>
+              </div>
+
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                  <a
+                    href="#people"
+                    className="block text-center text-sm font-semibold text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline decoration-dotted underline-offset-2"
+                  >
+                    See people →
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Membership column */}
+            <div className="bg-orange-50 dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-2xl sm:rounded-3xl flex flex-col md:flex-row lg:flex-col overflow-hidden">
               <img
                 src="/images/005.jpg"
                 alt="Mox space"
-                className="w-full h-48 object-cover rounded-2xl mb-4"
+                className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
-              <p className="text-base text-gray-700 dark:text-gray-200 mb-6 leading-relaxed text-center">
-                Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you'll find meaningful.
-              </p>
+              <div className="p-4 sm:p-6 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-6 text-center">
+                  Space for meaningful work
+                </h3>
 
-              <div className="flex flex-col gap-2">
-                <a
-                  href="/apply"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 text-sm text-center bg-amber-800 dark:bg-amber-700 text-white font-semibold hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors rounded-full"
-                >
-                  Apply for membership
-                </a>
-                <a
-                  href="mailto:rachel@moxsf.com"
-                  className="px-6 py-3 text-sm text-center bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors rounded-full"
-                >
-                  Inquire about offices
-                </a>
-                <a
-                  href="/day-pass"
-                  className="px-6 py-3 text-sm text-center bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors rounded-full"
-                >
-                  Buy a day pass
-                </a>
+                <div className="flex flex-col gap-2 flex-1">
+                  <a
+                    href="/apply"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 text-sm text-center bg-amber-800 dark:bg-amber-700 text-white font-semibold hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors rounded-full"
+                  >
+                    Apply for membership
+                  </a>
+                  <a
+                    href="mailto:rachel@moxsf.com"
+                    className="px-6 py-3 text-sm text-center bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors rounded-full"
+                  >
+                    Inquire about offices
+                  </a>
+                  <a
+                    href="/day-pass"
+                    className="px-6 py-3 text-sm text-center bg-white dark:bg-gray-700 border-2 border-amber-800 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors rounded-full"
+                  >
+                    Buy a day pass
+                  </a>
+                </div>
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                   <a
                     href="/portal/login"
                     className="block text-center text-sm font-semibold text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline decoration-dotted underline-offset-2"
                   >
-                    Member Portal: Manage Billing & Profile →
+                    Member Portal →
                   </a>
                 </div>
               </div>
@@ -180,19 +212,6 @@ export default function Component() {
 
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Events section */}
-        <section className="mb-12 sm:mb-16 -mt-16 sm:-mt-24 relative z-20">
-          <div className="bg-white dark:bg-gray-800 p-4 sm:p-8 shadow-2xl rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-gray-700">
-            <div className="text-center mb-6">
-              <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
-                Events
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">What's happening at Mox</p>
-            </div>
-            <EventsPage />
-          </div>
-        </section>
-
         <section id="people" className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-2">
@@ -204,7 +223,7 @@ export default function Component() {
         </section>
 
         <section className="mb-12 sm:mb-16">
-          <PeoplePage />
+          <PeopleContent />
         </section>
 
         <section className="mb-12 sm:mb-16">
@@ -226,7 +245,7 @@ export default function Component() {
           </p>
           <p className="text-gray-600 dark:text-gray-400">
             Questions? Contact{' '}
-            <Link href="mailto:austin@manifund.org">rachel@moxsf.com</Link>
+            <Link href="mailto:rachel@moxsf.com">rachel@moxsf.com</Link>
           </p>
         </div>
       </footer>

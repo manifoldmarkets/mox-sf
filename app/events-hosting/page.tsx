@@ -449,12 +449,12 @@ export default function EventHostingPage() {
       : testimonials.filter((t) => t.eventType === selectedCategory)
 
   // Determine which amenities component to show
-  const AmenitiesComponent = selectedCategory === 'small' 
-    ? SmallEventAmenities 
-    : selectedCategory === 'large' 
-    ? LargeEventAmenities 
-    : selectedCategory === 'hackathon' 
-    ? HackathonAmenities 
+  const AmenitiesComponent = selectedCategory === 'small'
+    ? SmallEventAmenities
+    : selectedCategory === 'large'
+    ? LargeEventAmenities
+    : selectedCategory === 'hackathon'
+    ? HackathonAmenities
     : GeneralAmenities
 
   return (
@@ -472,7 +472,7 @@ export default function EventHostingPage() {
             something exceptional.
           </p>
           <a
-            href="mailto:austin@manifund.org?subject=Event%20Inquiry"
+            href="mailto:rachel@moxsf.com?subject=Event%20Inquiry"
             className="inline-block px-8 py-4 bg-amber-800 dark:bg-amber-700 text-white font-semibold text-lg hover:bg-amber-900 dark:hover:bg-amber-800 transition-all duration-200 rounded-full shadow-lg hover:shadow-xl"
           >
             Inquire About Hosting
@@ -798,6 +798,19 @@ export default function EventHostingPage() {
             about your event and explore whether we're the right fit.
           </p>
 
+          {/* Member Link */}
+          <div className="mb-8 pb-8 border-b border-amber-700 dark:border-amber-800">
+            <p className="text-amber-100 dark:text-amber-200 mb-4">
+              Already a member wanting to run a small free event?
+            </p>
+            <a
+              href="/portal"
+              className="inline-block px-6 py-3 bg-white dark:bg-gray-800 text-amber-900 dark:text-amber-400 font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 rounded-full"
+            >
+              Go to Member Portal →
+            </a>
+          </div>
+
           <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-8 max-w-2xl mx-auto shadow-2xl rounded-3xl relative">
             <h3 className="text-2xl font-bold mb-6 font-playfair text-amber-900 dark:text-amber-400">
               Get in Touch
@@ -807,10 +820,10 @@ export default function EventHostingPage() {
               <p className="text-gray-700 dark:text-gray-300">
                 <strong>Email:</strong>{' '}
                 <a
-                  href="mailto:austin@manifund.org"
+                  href="mailto:rachel@moxsf.com"
                   className="text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline"
                 >
-                  austin@manifund.org
+                  rachel@moxsf.com
                 </a>
               </p>
               <p className="text-gray-700 dark:text-gray-300">
@@ -820,7 +833,7 @@ export default function EventHostingPage() {
             </div>
 
             <a
-              href="mailto:austin@manifund.org?subject=Event%20Inquiry&body=Hi!%20I'm%20interested%20in%20hosting%20an%20event%20at%20Mox.%0A%0AEvent%20Date:%20%0AExpected%20Attendance:%20%0AEvent%20Type:%20%0AAdditional%20Details:%20"
+              href="mailto:rachel@moxsf.com?subject=Event%20Inquiry&body=Hi!%20I'm%20interested%20in%20hosting%20an%20event%20at%20Mox.%0A%0AEvent%20Date:%20%0AExpected%20Attendance:%20%0AEvent%20Type:%20%0AAdditional%20Details:%20"
               className="inline-block w-full px-8 py-4 bg-amber-800 dark:bg-amber-700 text-white font-semibold hover:bg-amber-900 dark:hover:bg-amber-800 transition-all duration-200 rounded-full"
             >
               Send Event Inquiry
