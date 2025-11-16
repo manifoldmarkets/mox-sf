@@ -71,8 +71,8 @@ function GeneralAmenities() {
 function AmenityItem({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="text-amber-800 text-xl mt-0.5">✓</span>
-      <span className="text-gray-700">{text}</span>
+      <span className="text-amber-800 dark:text-amber-400 text-xl mt-0.5">✓</span>
+      <span className="text-gray-700 dark:text-gray-300">{text}</span>
     </div>
   )
 }
@@ -139,26 +139,26 @@ interface AreaSectionProps {
 
 function AreaSection({ name, capacity, floor, description, images, features }: AreaSectionProps) {
   return (
-    <div className="bg-white p-8 shadow-lg border border-slate-200">
+    <div className="bg-white dark:bg-gray-800 p-8 shadow-lg border border-slate-200 dark:border-gray-700 rounded-2xl">
       <div className="grid lg:grid-cols-[1fr_2fr] gap-8">
         <div>
-          <h3 className="text-2xl font-bold mb-2 font-playfair text-amber-900">
+          <h3 className="text-2xl font-bold mb-2 font-playfair text-amber-900 dark:text-amber-400">
             {name}
           </h3>
           <div className="flex gap-4 mb-4 text-sm">
-            <span className="px-3 py-1 bg-amber-100 text-amber-800 font-semibold">
+            <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-semibold rounded-full">
               {capacity}
             </span>
-            <span className="px-3 py-1 bg-slate-100 text-slate-700">
+            <span className="px-3 py-1 bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-gray-300 rounded-full">
               {floor}
             </span>
           </div>
-          <p className="text-gray-700 mb-4">{description}</p>
+          <p className="text-gray-700 dark:text-gray-300 mb-4">{description}</p>
           {features && features.length > 0 && (
             <ul className="space-y-2">
               {features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
-                  <span className="text-amber-700">•</span>
+                <li key={index} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-amber-700 dark:text-amber-400">•</span>
                   {feature}
                 </li>
               ))}
@@ -458,14 +458,14 @@ export default function EventHostingPage() {
     : GeneralAmenities
 
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Hero / CTA Section */}
-      <section className="bg-gradient-to-b from-amber-50 to-slate-50 py-20">
+      <section className="bg-gradient-to-b from-amber-50 dark:from-gray-800 to-slate-50 dark:to-gray-900 py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-6 font-playfair text-amber-900">
+          <h1 className="text-5xl font-bold mb-6 font-playfair text-amber-900 dark:text-amber-400">
             Host Your Event at Mox
           </h1>
-          <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             A premium event space in San Francisco's Mission District, designed
             for meaningful gatherings. From intimate workshops to major
             conferences, we provide the venue and support you need to create
@@ -473,7 +473,7 @@ export default function EventHostingPage() {
           </p>
           <a
             href="mailto:austin@manifund.org?subject=Event%20Inquiry"
-            className="inline-block px-8 py-4 bg-amber-800 text-white font-semibold text-lg hover:bg-amber-900 transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="inline-block px-8 py-4 bg-amber-800 dark:bg-amber-700 text-white font-semibold text-lg hover:bg-amber-900 dark:hover:bg-amber-800 transition-all duration-200 rounded-full shadow-lg hover:shadow-xl"
           >
             Inquire About Hosting
           </a>
@@ -481,12 +481,12 @@ export default function EventHostingPage() {
       </section>
 
       {/* Event Types Overview */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-800">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
             Event Types
           </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
             Select an event type to see tailored information about amenities,
             past events, and testimonials
           </p>
@@ -500,24 +500,24 @@ export default function EventHostingPage() {
                     selectedCategory === type.id ? null : type.id
                   )
                 }
-                className={`p-8 border-2 transition-all duration-200 cursor-pointer text-left ${
+                className={`p-8 border-2 transition-all duration-200 cursor-pointer text-left rounded-2xl ${
                   selectedCategory === type.id
-                    ? 'border-amber-800 bg-amber-50 shadow-lg'
-                    : 'border-slate-200 bg-white hover:border-amber-600 hover:shadow-md'
+                    ? 'border-amber-800 dark:border-amber-700 bg-amber-50 dark:bg-gray-700 shadow-lg'
+                    : 'border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-amber-600 dark:hover:border-amber-500 hover:shadow-md'
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-2xl font-bold font-playfair text-amber-900">
+                  <h3 className="text-2xl font-bold font-playfair text-amber-900 dark:text-amber-400">
                     {type.name}
                   </h3>
-                  <span className="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full whitespace-nowrap ml-2">
+                  <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 text-xs font-semibold rounded-full whitespace-nowrap ml-2">
                     {type.capacity}
                   </span>
                 </div>
-                <p className="text-gray-700">{type.description}</p>
+                <p className="text-gray-700 dark:text-gray-300">{type.description}</p>
                 {selectedCategory === type.id && (
-                  <div className="mt-4 pt-4 border-t border-amber-200">
-                    <span className="text-sm text-amber-800 font-semibold">
+                  <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-700">
+                    <span className="text-sm text-amber-800 dark:text-amber-400 font-semibold">
                       ✓ Selected
                     </span>
                   </div>
@@ -530,7 +530,7 @@ export default function EventHostingPage() {
             <div className="mt-8 text-center">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="text-amber-800 hover:text-amber-900 underline text-sm cursor-pointer"
+                className="text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline text-sm cursor-pointer"
               >
                 Clear filter to see all events
               </button>
@@ -540,12 +540,12 @@ export default function EventHostingPage() {
       </section>
 
       {/* Past Events */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-slate-50 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
             Past Events
           </h2>
-          <p className="text-center text-gray-600 mb-12">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
             {selectedCategory
               ? `${
                   eventTypes.find((t) => t.id === selectedCategory)?.name
@@ -557,7 +557,7 @@ export default function EventHostingPage() {
             {filteredEvents.map((event, index) => (
               <div
                 key={index}
-                className="bg-white shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden"
+                className="bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden rounded-2xl"
               >
                 {event.image && (
                   <div className="relative h-48 w-full">
@@ -570,20 +570,20 @@ export default function EventHostingPage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 font-playfair text-amber-900">
+                  <h3 className="text-xl font-bold mb-2 font-playfair text-amber-900 dark:text-amber-400">
                     {event.name}
                   </h3>
-                  <p className="text-sm text-amber-700 font-semibold mb-2">
+                  <p className="text-sm text-amber-700 dark:text-amber-400 font-semibold mb-2">
                     {event.organizer} • {event.attendees} attendees
                   </p>
-                  <p className="text-gray-700 text-sm">{event.description}</p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">{event.description}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {filteredEvents.length === 0 && (
-            <p className="text-center text-gray-500 py-8">
+            <p className="text-center text-gray-500 dark:text-gray-400 py-8">
               No events match the selected category
             </p>
           )}
@@ -591,12 +591,12 @@ export default function EventHostingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-800">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
             What Organizers Say
           </h2>
-          <p className="text-center text-gray-600 mb-12">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
             {selectedCategory
               ? `Testimonials from ${
                   eventTypes.find((t) => t.id === selectedCategory)?.name
@@ -608,17 +608,17 @@ export default function EventHostingPage() {
             {filteredTestimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-slate-50 p-8 border-l-4 border-amber-800"
+                className="bg-slate-50 dark:bg-gray-700 p-8 border-l-4 border-amber-800 dark:border-amber-700 rounded-r-2xl"
               >
-                <p className="text-gray-700 italic mb-4">
+                <p className="text-gray-700 dark:text-gray-300 italic mb-4">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-center gap-4">
                   <div>
-                    <p className="font-semibold text-amber-900">
+                    <p className="font-semibold text-amber-900 dark:text-amber-400">
                       {testimonial.name}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       {testimonial.organization}
                     </p>
                   </div>
@@ -628,7 +628,7 @@ export default function EventHostingPage() {
           </div>
 
           {filteredTestimonials.length === 0 && (
-            <p className="text-center text-gray-500 py-8">
+            <p className="text-center text-gray-500 dark:text-gray-400 py-8">
               No testimonials match the selected category
             </p>
           )}
@@ -636,12 +636,12 @@ export default function EventHostingPage() {
       </section>
 
       {/* Amenities & Services */}
-      <section className="py-16 bg-amber-50">
+      <section className="py-16 bg-amber-50 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
             Amenities & Services
           </h2>
-          <p className="text-center text-gray-600 mb-12">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
             {selectedCategory
               ? `Everything you need for ${
                   eventTypes.find((t) => t.id === selectedCategory)?.name
@@ -651,16 +651,16 @@ export default function EventHostingPage() {
 
           <AmenitiesComponent />
 
-          <div className="mt-12 bg-white p-8 max-w-4xl mx-auto shadow-lg">
-            <h3 className="text-2xl font-bold mb-4 font-playfair text-amber-900">
+          <div className="mt-12 bg-white dark:bg-gray-800 p-8 max-w-4xl mx-auto shadow-lg rounded-2xl">
+            <h3 className="text-2xl font-bold mb-4 font-playfair text-amber-900 dark:text-amber-400">
               Additional Services Available
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-amber-800 mb-2">
+                <h4 className="font-semibold text-amber-800 dark:text-amber-400 mb-2">
                   Event Support
                 </h4>
-                <ul className="text-sm text-gray-700 space-y-1">
+                <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
                   <li>• Setup and breakdown assistance</li>
                   <li>• On-site staff during your event</li>
                   <li>• Tech support and AV troubleshooting</li>
@@ -668,10 +668,10 @@ export default function EventHostingPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-amber-800 mb-2">
+                <h4 className="font-semibold text-amber-800 dark:text-amber-400 mb-2">
                   Catering & Hospitality
                 </h4>
-                <ul className="text-sm text-gray-700 space-y-1">
+                <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
                   <li>• Catering coordination with local vendors</li>
                   <li>• Coffee and beverage service</li>
                   <li>• Kitchen access for self-catering</li>
@@ -684,12 +684,12 @@ export default function EventHostingPage() {
       </section>
 
       {/* Available Spaces */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-800">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900">
+          <h2 className="text-3xl font-bold mb-4 text-center font-playfair text-amber-900 dark:text-amber-400">
             Available Spaces
           </h2>
-          <p className="text-center text-gray-600 mb-12">
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
             {selectedCategory
               ? `Spaces suitable for ${
                   eventTypes.find((t) => t.id === selectedCategory)?.name
@@ -725,27 +725,27 @@ export default function EventHostingPage() {
 
           {/* Location Details */}
           <div className="mt-16 grid md:grid-cols-2 gap-8">
-            <div className="bg-amber-50 p-6">
-              <h3 className="text-xl font-bold mb-3 font-playfair text-amber-900">
+            <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-2xl">
+              <h3 className="text-xl font-bold mb-3 font-playfair text-amber-900 dark:text-amber-400">
                 Location & Access
               </h3>
-              <p className="text-gray-700 mb-2">
+              <p className="text-gray-700 dark:text-gray-300 mb-2">
                 <strong>Address:</strong> 1680 Mission Street, San Francisco
               </p>
-              <p className="text-gray-700 mb-2">
+              <p className="text-gray-700 dark:text-gray-300 mb-2">
                 <strong>Transit:</strong> Near 16th St BART, multiple Muni
                 lines
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 <strong>Parking:</strong> Street parking and nearby garages
               </p>
             </div>
 
-            <div className="bg-amber-50 p-6">
-              <h3 className="text-xl font-bold mb-3 font-playfair text-amber-900">
+            <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-2xl">
+              <h3 className="text-xl font-bold mb-3 font-playfair text-amber-900 dark:text-amber-400">
                 Accessibility
               </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 Mox is committed to being an inclusive space. We offer
                 wheelchair accessibility, gender-neutral restrooms, and can
                 accommodate various accessibility needs. Please let us know how
@@ -757,9 +757,9 @@ export default function EventHostingPage() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-slate-50 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-8 text-center font-playfair text-amber-900">
+          <h2 className="text-3xl font-bold mb-8 text-center font-playfair text-amber-900 dark:text-amber-400">
             Gallery
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -773,7 +773,7 @@ export default function EventHostingPage() {
             ].map((image, index) => (
               <div
                 key={index}
-                className="relative aspect-video overflow-hidden"
+                className="relative aspect-video overflow-hidden rounded-2xl"
               >
                 <NextImage
                   src={image}
@@ -788,35 +788,32 @@ export default function EventHostingPage() {
       </section>
 
       {/* Final CTA & Contact */}
-      <section className="py-20 bg-amber-900 text-white">
+      <section className="py-20 bg-amber-900 dark:bg-amber-950 text-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold mb-6 font-playfair">
             Ready to Host Your Event?
           </h2>
-          <p className="text-xl mb-8 text-amber-100">
+          <p className="text-xl mb-8 text-amber-100 dark:text-amber-200">
             Let's discuss how Mox can support your vision. We'd love to hear
             about your event and explore whether we're the right fit.
           </p>
 
-          <div className="bg-white text-gray-800 p-8 max-w-2xl mx-auto shadow-2xl">
-            <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-200"></div>
-            <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-200"></div>
-
-            <h3 className="text-2xl font-bold mb-6 font-playfair text-amber-900">
+          <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-8 max-w-2xl mx-auto shadow-2xl rounded-3xl relative">
+            <h3 className="text-2xl font-bold mb-6 font-playfair text-amber-900 dark:text-amber-400">
               Get in Touch
             </h3>
 
             <div className="space-y-4 mb-6">
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 <strong>Email:</strong>{' '}
                 <a
                   href="mailto:austin@manifund.org"
-                  className="text-amber-800 hover:text-amber-900 underline"
+                  className="text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline"
                 >
                   austin@manifund.org
                 </a>
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 <strong>What to include:</strong> Event date, expected
                 attendance, event type/purpose, and any specific requirements
               </p>
@@ -824,21 +821,21 @@ export default function EventHostingPage() {
 
             <a
               href="mailto:austin@manifund.org?subject=Event%20Inquiry&body=Hi!%20I'm%20interested%20in%20hosting%20an%20event%20at%20Mox.%0A%0AEvent%20Date:%20%0AExpected%20Attendance:%20%0AEvent%20Type:%20%0AAdditional%20Details:%20"
-              className="inline-block w-full px-8 py-4 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all duration-200"
+              className="inline-block w-full px-8 py-4 bg-amber-800 dark:bg-amber-700 text-white font-semibold hover:bg-amber-900 dark:hover:bg-amber-800 transition-all duration-200 rounded-full"
             >
               Send Event Inquiry
             </a>
 
-            <p className="text-sm text-gray-600 mt-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
               We typically respond within 24 hours
             </p>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-amber-700">
-            <h4 className="text-lg font-semibold mb-4 text-amber-100">
+          <div className="mt-12 pt-8 border-t border-amber-700 dark:border-amber-800">
+            <h4 className="text-lg font-semibold mb-4 text-amber-100 dark:text-amber-200">
               Pricing & Booking
             </h4>
-            <p className="text-amber-100 max-w-2xl mx-auto">
+            <p className="text-amber-100 dark:text-amber-200 max-w-2xl mx-auto">
               Our pricing is designed to be accessible for mission-aligned
               organizations. Rates vary based on event type, duration, and
               services needed. We offer special rates for nonprofits, research
@@ -850,15 +847,15 @@ export default function EventHostingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-amber-200 py-8 bg-white">
-        <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
+      <footer className="border-t border-amber-200 dark:border-gray-700 py-8 bg-white dark:bg-gray-800">
+        <div className="max-w-4xl mx-auto px-6 text-center text-gray-500 dark:text-gray-400">
           <p className="mb-2">
             A project of{' '}
             <a
               href="https://manifund.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
+              className="text-amber-800 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
             >
               Manifund
             </a>
@@ -866,7 +863,7 @@ export default function EventHostingPage() {
           <p>
             <a
               href="/"
-              className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
+              className="text-amber-800 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
             >
               Back to main site
             </a>
