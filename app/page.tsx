@@ -150,12 +150,12 @@ export default function Component() {
                 >
                   Buy a day pass
                 </a>
-                <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                   <a
                     href="/portal/login"
-                    className="block text-center text-xs text-gray-600 dark:text-gray-400 hover:text-amber-800 dark:hover:text-amber-400"
+                    className="block text-center text-sm font-semibold text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-500 underline decoration-dotted underline-offset-2"
                   >
-                    Already a member? Access your portal →
+                    Member Portal: Manage Billing & Profile →
                   </a>
                 </div>
               </div>

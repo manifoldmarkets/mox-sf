@@ -2,7 +2,7 @@ import { getSession } from '@/app/lib/session';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2025-10-29.clover',
 });
 
 export async function GET(request: Request) {
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
     const product = await stripe.products.retrieve(productId);
 
     // Format the renewal date
-    const renewalDate = new Date(subscription.current_period_end * 1000);
+    const renewalDate = new Date((subscription as any).current_period_end * 1000);
 
     // Calculate the rate (convert from cents to dollars)
     const amount = price.unit_amount ? price.unit_amount / 100 : 0;
