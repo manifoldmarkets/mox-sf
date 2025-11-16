@@ -1,7 +1,29 @@
 import { Resend } from 'resend';
 import crypto from 'crypto';
+import { isValidEmail, escapeAirtableString } from '@/app/lib/airtable-helpers';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Simple in-memory rate limiting (replace with Redis in production)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(email: string): boolean {
+  const now = Date.now();
+  const limit = rateLimitMap.get(email);
+
+  if (!limit || now > limit.resetAt) {
+    // Reset: allow 3 requests per 15 minutes
+    rateLimitMap.set(email, { count: 1, resetAt: now + 15 * 60 * 1000 });
+    return true;
+  }
+
+  if (limit.count >= 3) {
+    return false; // Rate limit exceeded
+  }
+
+  limit.count++;
+  return true;
+}
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +35,18 @@ export async function POST(request: Request) {
 
     // Normalize email
     const normalizedEmail = email.toLowerCase().trim();
+
+    // Validate email format
+    if (!isValidEmail(normalizedEmail)) {
+      return Response.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
+    // Check rate limit
+    if (!checkRateLimit(normalizedEmail)) {
+      return Response.json({
+        error: 'Too many requests. Please wait 15 minutes before trying again.'
+      }, { status: 429 });
+    }
 
     // Find user in Airtable by email
     const user = await findUserByEmail(normalizedEmail);
@@ -75,11 +109,11 @@ export async function POST(request: Request) {
 }
 
 async function findUserByEmail(email: string) {
-  // Try without LOWER() first to debug
-  const formula = `{Email} = '${email.replace(/'/g, "\\'")}'`;
+  // Use escapeAirtableString to prevent formula injection
+  const escapedEmail = escapeAirtableString(email);
+  const formula = `{Email} = '${escapedEmail}'`;
 
   console.log('Looking for user with email:', email);
-  console.log('Airtable formula:', formula);
 
   const response = await fetch(
     `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?filterByFormula=${encodeURIComponent(formula)}`,
@@ -91,8 +125,6 @@ async function findUserByEmail(email: string) {
   );
 
   const data = await response.json();
-
-  console.log('Airtable search result:', JSON.stringify(data, null, 2));
 
   if (data.records && data.records.length > 0) {
     const record = data.records[0];

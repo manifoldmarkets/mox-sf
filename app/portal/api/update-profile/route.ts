@@ -1,5 +1,18 @@
 import { getSession } from '@/app/lib/session';
 
+const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif'];
+
+function isValidURL(url: string): boolean {
+  if (!url) return true; // Empty is okay
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const session = await getSession();
@@ -12,7 +25,7 @@ export async function POST(request: Request) {
     const userId = formData.get('userId') as string;
     const name = formData.get('name') as string;
     const website = formData.get('website') as string;
-    const interestsStr = formData.get('interests') as string;
+    const directoryVisible = formData.get('directoryVisible') === 'true';
     const photoFile = formData.get('photo') as File | null;
 
     // Verify the user is updating their own profile
@@ -20,21 +33,46 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    // Parse interests (comma-separated string to array)
-    const interests = interestsStr
-      ? interestsStr.split(',').map(i => i.trim()).filter(i => i.length > 0)
-      : [];
+    // Validate name
+    if (!name || name.trim().length === 0) {
+      return Response.json({ error: 'Name is required' }, { status: 400 });
+    }
+    if (name.length > 200) {
+      return Response.json({ error: 'Name is too long (max 200 characters)' }, { status: 400 });
+    }
+
+    // Validate website URL
+    const trimmedWebsite = website?.trim() || '';
+    if (trimmedWebsite && !isValidURL(trimmedWebsite)) {
+      return Response.json({ error: 'Invalid website URL' }, { status: 400 });
+    }
 
     // Prepare fields to update
-    // Note: 'AI bio' is a computed AI field in Airtable that cannot be updated via API
     const fields: any = {
-      Name: name,
-      Website: website,
-      Interests: interests,
+      Name: name.trim(),
+      Website: trimmedWebsite,
     };
+
+    // For Airtable checkboxes: explicitly set false when unchecked, true when checked
+    // Don't rely on omission - be explicit
+    fields['Show in directory'] = directoryVisible;
 
     // Handle photo upload if provided
     if (photoFile && photoFile.size > 0) {
+      // Validate file size
+      if (photoFile.size > MAX_PHOTO_SIZE) {
+        return Response.json({
+          error: `Photo is too large (max ${MAX_PHOTO_SIZE / 1024 / 1024}MB)`
+        }, { status: 400 });
+      }
+
+      // Validate file type
+      if (!ALLOWED_PHOTO_TYPES.includes(photoFile.type)) {
+        return Response.json({
+          error: 'Invalid photo format. Allowed: JPEG, PNG, WebP, GIF, HEIC'
+        }, { status: 400 });
+      }
+
       try {
         // Convert photo to base64
         const arrayBuffer = await photoFile.arrayBuffer();
@@ -51,7 +89,9 @@ export async function POST(request: Request) {
         ];
       } catch (photoError) {
         console.error('Error processing photo:', photoError);
-        // Continue without photo update if it fails
+        return Response.json({
+          error: 'Failed to process photo. Please try again.'
+        }, { status: 500 });
       }
     }
 

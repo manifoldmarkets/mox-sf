@@ -13,19 +13,21 @@ A member portal that allows coworking members to edit their own profiles using p
 - **Email service**: Resend (noreply@account.moxsf.com)
 
 ### Member Dashboard
-- View profile overview (name, email, website, interests, photo)
-- Quick actions:
+- Integrated profile editing form (name, email, website, interests, photo)
+- Directory visibility toggle (show/hide profile in member directory)
+- Quick actions sidebar:
   - Manage Billing (Stripe customer portal)
   - View Member Directory
   - View Events
 - Logout functionality
 
 ### Profile Editing
-Members can update:
+Profile editing is integrated directly into the dashboard. Members can update:
 - Name
 - Website
 - Interests (comma-separated)
 - Profile photo (uploaded to Airtable as attachment)
+- Directory visibility (show/hide profile in member directory)
 
 Email is read-only (cannot be changed).
 
@@ -39,12 +41,26 @@ Email is read-only (cannot be changed).
 - Resend (email delivery)
 - iron-session (session management)
 
+**Security Features:**
+- Email format validation using regex
+- Rate limiting: 3 magic link requests per 15 minutes per email
+- Airtable formula injection protection using escape functions
+- Token format validation (64-char hex strings)
+- Profile input validation:
+  - Name: Required, max 200 characters
+  - Website: Valid HTTP/HTTPS URL only
+  - Interests: Max 20 items, 100 characters each
+  - Photo: Max 10MB, only JPEG/PNG/WebP/GIF/HEIC
+- Session-based authorization checks
+- One-time use magic links with 24-hour expiry
+
 **Airtable Fields:**
 - `Email`: User's email address
 - `Name`: Full name
 - `Website`: Personal website URL
 - `Interests`: Array of interests
 - `Photo`: Attachment field for profile photo
+- `Show in directory`: Checkbox for directory visibility (defaults to true)
 - `magic_link_token`: Temporary token for authentication
 - `token_expires`: Token expiration timestamp
 
@@ -52,8 +68,8 @@ Email is read-only (cannot be changed).
 - `/app/portal/login/page.tsx` - Login page
 - `/app/portal/api/send-magic-link/route.ts` - Sends magic link email
 - `/app/portal/verify/route.ts` - Verifies token and creates session
-- `/app/portal/dashboard/page.tsx` - Member dashboard
-- `/app/portal/profile/edit/page.tsx` - Profile editing page
+- `/app/portal/dashboard/page.tsx` - Member dashboard with integrated profile editing
+- `/app/portal/profile/edit/ProfileEditForm.tsx` - Profile editing form component
 - `/app/portal/api/update-profile/route.ts` - Updates profile in Airtable
 - `/app/lib/session.ts` - Session management utilities
 - `/middleware.ts` - Route protection
@@ -72,9 +88,9 @@ Email is read-only (cannot be changed).
 2. Enters email address
 3. Receives magic link email
 4. Clicks link → redirected to dashboard
-5. Can view profile and click "Edit Profile"
+5. Dashboard displays profile editing form with current information
 6. Updates information → saved to Airtable
-7. Changes reflected on member directory
+7. Changes reflected on member directory immediately
 
 ## Access
 
@@ -83,7 +99,7 @@ Email is read-only (cannot be changed).
 
 ## Future Improvements
 - Event creation/management through portal
-- Member directory visibility settings
 - Custom profile fields beyond name/website/interests
 - Change email address (with verification)
 - Email notification preferences
+- Batch member actions (admin features)

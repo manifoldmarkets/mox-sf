@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ProfileEditFormProps {
@@ -8,8 +8,8 @@ interface ProfileEditFormProps {
     name: string;
     email: string;
     website: string;
-    interests: string[];
     photo: string | null;
+    directoryVisible: boolean;
   };
   userId: string;
 }
@@ -19,16 +19,29 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   const [formData, setFormData] = useState({
     name: profile.name,
     website: profile.website,
-    interests: profile.interests.join(', '),
+    directoryVisible: profile.directoryVisible,
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
+  // Update form data when profile prop changes (e.g., after router.refresh())
+  useEffect(() => {
+    setFormData({
+      name: profile.name,
+      website: profile.website,
+      directoryVisible: profile.directoryVisible,
+    });
+    setStatus('idle');
+    setMessage('');
+    setPhotoFile(null);
+  }, [profile]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 
@@ -48,7 +61,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       formDataToSend.append('userId', userId);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('website', formData.website);
-      formDataToSend.append('interests', formData.interests);
+      formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
 
       if (photoFile) {
         formDataToSend.append('photo', photoFile);
@@ -64,8 +77,9 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       if (response.ok) {
         setStatus('success');
         setMessage('Profile updated successfully!');
+        // Refresh the page to show updated data (useEffect will clear state)
         setTimeout(() => {
-          router.push('/portal/dashboard');
+          router.refresh();
         }, 1500);
       } else {
         setStatus('error');
@@ -78,7 +92,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
+    <form onSubmit={handleSubmit}>
       <div className="space-y-6">
         {/* Name */}
         <div>
@@ -127,48 +141,64 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           />
         </div>
 
-        {/* Interests */}
-        <div>
-          <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
-            Interests
-          </label>
-          <input
-            type="text"
-            id="interests"
-            name="interests"
-            value={formData.interests}
-            onChange={handleChange}
-            placeholder="AI, philosophy, effective altruism (comma-separated)"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <p className="text-xs text-gray-500 mt-1">Separate multiple interests with commas</p>
-        </div>
-
         {/* Photo */}
         <div>
-          <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
             Profile Photo
           </label>
-          {profile.photo && !photoFile && (
-            <div className="mb-4">
+          <div className="flex items-center gap-6">
+            <div className="flex-shrink-0">
               <img
-                src={profile.photo}
-                alt="Current profile"
-                className="w-24 h-24 rounded-full object-cover"
+                src={photoFile ? URL.createObjectURL(photoFile) : profile.photo || '/default-avatar.png'}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
               />
-              <p className="text-xs text-gray-500 mt-1">Current photo</p>
             </div>
-          )}
-          <input
-            type="file"
-            id="photo"
-            accept="image/*"
-            onChange={handlePhotoChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Upload a new photo to replace the current one
-          </p>
+            <div className="flex-1">
+              <label
+                htmlFor="photo"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+              >
+                Choose File
+                <input
+                  type="file"
+                  id="photo"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
+                  onChange={handlePhotoChange}
+                  className="sr-only"
+                />
+              </label>
+              <p className="text-xs text-gray-500 mt-2">
+                JPG, PNG, WebP, GIF, or HEIC. Max size 10MB.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Directory Visibility */}
+        <div className="border-t pt-6">
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input
+                type="checkbox"
+                id="directoryVisible"
+                name="directoryVisible"
+                checked={formData.directoryVisible}
+                onChange={handleChange}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+            </div>
+            <div className="ml-3">
+              <label htmlFor="directoryVisible" className="font-medium text-gray-700">
+                Show my profile in the member directory
+              </label>
+              <p className="text-sm text-gray-500">
+                When enabled, other members can see your profile in the{' '}
+                <a href="/people" className="text-blue-600 hover:underline">member directory</a>.
+                You can change this setting at any time.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Status Message */}
@@ -185,20 +215,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
         )}
 
         {/* Submit Button */}
-        <div className="flex gap-4">
+        <div>
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
             {status === 'loading' ? 'Saving...' : 'Save Changes'}
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push('/portal/dashboard')}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-          >
-            Cancel
           </button>
         </div>
       </div>
