@@ -27,9 +27,9 @@
   /* ============================================ */
   /* SEMANTIC BRAND ALIASES */
   /* ============================================ */
-  --color-brand: #0f766e;
+  --color-brand: #115e59;
   --color-brand-light: #0d9488;
-  --color-brand-dark: #0a3432;
+  --color-brand-dark: #134e4a;
   --color-brand-dark-mode: #2dd4bf;
 
   /* ============================================ */
@@ -62,15 +62,15 @@
   /* ============================================ */
   /* SEMANTIC TEXT COLORS */
   /* ============================================ */
-  --color-text-primary: #111827;
+  --color-text-primary: #1f2937;
   --color-text-primary-dark: #f3f4f6;
-  --color-text-secondary: #1f2937;
+  --color-text-secondary: #374151;
   --color-text-secondary-dark: #e5e7eb;
-  --color-text-tertiary: #374151;
+  --color-text-tertiary: #4b5563;
   --color-text-tertiary-dark: #d1d5db;
-  --color-text-muted: #4b5563;
+  --color-text-muted: #6b7280;
   --color-text-muted-dark: #9ca3af;
-  --color-text-subtle: #6b7280;
+  --color-text-subtle: #9ca3af;
   --color-text-subtle-dark: #6b7280;
 
   /* ============================================ */

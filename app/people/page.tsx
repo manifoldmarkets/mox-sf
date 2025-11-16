@@ -44,7 +44,7 @@ export async function PeopleContent() {
             </h3>
             <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-4">
               {Array.from(orgGroups.entries()).map(([orgName, people]) => (
-                <div key={orgName} className="bg-background-subtle dark:bg-primary-950 border-2 border-border-medium dark:border-primary-700 rounded-lg p-2 w-full sm:w-auto">
+                <div key={orgName} className="bg-background-surface dark:bg-primary-950 border-2 border-secondary-600 dark:border-primary-700 rounded-lg p-2 w-full sm:w-auto">
                   <h4 className="text-xs font-bold text-brand dark:text-brand-dark-mode uppercase font-sans tracking-wide text-center mb-2">
                     {orgName}
                   </h4>

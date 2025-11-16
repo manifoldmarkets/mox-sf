@@ -34,7 +34,7 @@ export default async function Component() {
       <nav className="fixed top-0 right-0 z-50 p-4">
         <a
           href="/portal"
-          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-primary-700 rounded-full hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
+          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-secondary-200 dark:border-primary-700 rounded-full hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
           aria-label="Login to member portal"
         >
           <svg className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,7 +99,7 @@ export default async function Component() {
                 <div className="flex-1">
                   <EventsCardCompact events={events} />
                 </div>
-                <div className="mt-4 pt-4 border-t border-border-light dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
                   <a
                     href="/events"
                     className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
@@ -136,13 +136,13 @@ export default async function Component() {
                   'Community builders',
                   'Members of technical and untechnical staff'
                 ].map((label) => (
-                  <div key={label} className="bg-background-subtle dark:bg-background-accent-dark border-2 border-border-medium dark:border-secondary-700 px-2 py-0.5 rounded-xl flex items-center">
+                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-700 px-2 py-0.5 rounded-xl flex items-center">
                     <p className="text-text-primary dark:text-text-secondary-dark text-base whitespace-nowrap font-serif leading-tight">{label}</p>
                   </div>
                 ))}
               </div>
 
-                <div className="mt-4 pt-4 border-t border-border-light dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
                   <a
                     href="#people"
                     className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
@@ -187,7 +187,7 @@ export default async function Component() {
                     Buy a day pass
                   </a>
                 </div>
-                <div className="mt-4 pt-4 border-t border-border-light dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
                   <a
                     href="/portal/login"
                     className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
