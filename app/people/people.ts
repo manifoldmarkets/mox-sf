@@ -7,6 +7,7 @@ export type Person = {
   programIds: string[]
   aiBio: string | null
   photo: any[] | null
+  showInDirectory: boolean
 }
 
 // Restrict down to fields we need.
@@ -60,7 +61,7 @@ export async function getPeople(): Promise<Person[]> {
   // Parse the data into the Person type
   const people = allRecords.map((record: any) => {
     // Airtable checkboxes: true when checked, undefined when unchecked
-    // Default to true (show in directory) unless explicitly false
+    // Only show in directory if explicitly checked (true)
     const showInDirectory = record.fields['Show in directory'];
 
     return {
@@ -72,7 +73,7 @@ export async function getPeople(): Promise<Person[]> {
       orgIds: record.fields.Org,
       programIds: record.fields.Program,
       photo: record.fields.Photo || [],
-      showInDirectory: showInDirectory === false ? false : true,
+      showInDirectory: showInDirectory === true,
     };
   })
 
