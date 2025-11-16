@@ -7,13 +7,13 @@ interface AirtableEvent {
     Name: string
     'Start Date': string
     'End Date'?: string
-    Description?: string
-    Location?: string
     'Event Description'?: string
+    Location?: string
+    Notes?: string
     Type?: string
     Status?: string
     URL?: string
-    'Host Name'?: string[]
+    'Host Name'?: string  // Formula field that returns a string
   }
 }
 
@@ -40,13 +40,13 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
     endDate: record.fields['End Date']
       ? parseISO(record.fields['End Date'])
       : undefined,
-    description: record.fields.Description,
+    description: record.fields['Event Description'],
     location: record.fields.Location,
-    notes: record.fields['Event Description'],
+    notes: record.fields.Notes,
     type: record.fields.Type,
     status: record.fields.Status,
     url: record.fields.URL,
-    host: (record.fields['Host Name'] ?? []).join(', '),
+    host: record.fields['Host Name'] || '',  // Formula field returns a string
   }
 }
 
