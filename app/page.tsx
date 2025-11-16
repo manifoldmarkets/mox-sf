@@ -88,7 +88,7 @@ export default async function Component() {
             {/* Events column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
               <img
-                src="/images/023.jpg"
+                src="/images/014.jpg"
                 alt="Mox events"
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
@@ -113,7 +113,7 @@ export default async function Component() {
             {/* People column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
               <img
-                src="/images/014.jpg"
+                src="/images/023.jpg"
                 alt="Mox community"
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
