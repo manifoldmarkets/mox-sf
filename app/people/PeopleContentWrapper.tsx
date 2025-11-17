@@ -12,7 +12,7 @@ export default function PeopleContentWrapper({
   privateOffices: Person[]
   staff: Person[]
 }) {
-  const [showFaces, setShowFaces] = useState(true)
+  const [showFaces, setShowFaces] = useState(false)
 
   // Group private offices by organization ID (not name, so stealth companies stay separate)
   const orgGroups = new Map<string, { name: string; people: Person[] }>()
@@ -45,7 +45,7 @@ export default function PeopleContentWrapper({
       {members.length > 0 && (
         <div className="mb-8">
           <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
-            General Membership
+            Members
           </h3>
           <PeopleListClient people={members} showFaces={showFaces} />
         </div>
@@ -56,7 +56,8 @@ export default function PeopleContentWrapper({
           <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
             Private Offices
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
             {Array.from(orgGroups.entries())
               .sort(([, a], [, b]) => {
                 // Sort stealth orgs to the bottom
@@ -75,6 +76,7 @@ export default function PeopleContentWrapper({
                   <PeopleListClient people={people} showFaces={showFaces} />
                 </div>
               ))}
+            </div>
           </div>
         </div>
       )}

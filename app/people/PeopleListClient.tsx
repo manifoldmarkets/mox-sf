@@ -114,7 +114,7 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
       {people.map((person) => {
         const isEmphasized = emphasizedIds.includes(person.id)
         const baseClasses =
-          'border-2 px-3 py-1 rounded-full transition-colors duration-200'
+          'border-2 px-3 py-1 rounded-full transition-all duration-700 ease-in-out'
         const colorClasses = isEmphasized
           ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-600 dark:border-secondary-500 hover:bg-secondary-200 dark:hover:bg-secondary-900/50'
           : 'bg-background-surface dark:bg-transparent border-secondary-600 dark:border-primary-700'
