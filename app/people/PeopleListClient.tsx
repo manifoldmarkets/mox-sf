@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Person, formatUrl } from './people'
 
-export default function PeopleListClient({ people }: { people: Person[] }) {
+export default function PeopleListClient({ people, showFaces }: { people: Person[]; showFaces: boolean }) {
   // Randomly select members with links to emphasize (client-side only to avoid hydration mismatch)
   const [emphasizedIds, setEmphasizedIds] = useState<string[]>([])
 
@@ -21,6 +21,81 @@ export default function PeopleListClient({ people }: { people: Person[] }) {
 
     setEmphasizedIds(emphasized)
   }, [people])
+
+  const getPhotoUrl = (person: Person): string | null => {
+    if (person.photo && person.photo.length > 0 && person.photo[0].url) {
+      return person.photo[0].url
+    }
+    return null
+  }
+
+  // Get optimized thumbnail URL from Airtable
+  const getOptimizedPhotoUrl = (person: Person): string | null => {
+    if (person.photo && person.photo.length > 0) {
+      // Try large thumbnail first, then small, then fall back to full URL
+      if (person.photo[0].thumbnails?.large?.url) {
+        return person.photo[0].thumbnails.large.url
+      }
+      if (person.photo[0].thumbnails?.small?.url) {
+        return person.photo[0].thumbnails.small.url
+      }
+    }
+    return getPhotoUrl(person)
+  }
+
+  if (showFaces) {
+    return (
+      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4">
+        <div className="flex flex-wrap justify-center gap-8 max-w-[75vw] mx-auto">
+        {people.map((person) => {
+          const photoUrl = getOptimizedPhotoUrl(person)
+          const content = (
+            <div className="flex flex-col items-center w-24 sm:w-28 md:w-32">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
+                {photoUrl ? (
+                  <img
+                    src={photoUrl}
+                    alt={person.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-center"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-primary-400">
+                    {person.name.charAt(0)}
+                  </div>
+                )}
+              </div>
+              <p className="text-xs font-semibold text-center text-text-primary dark:text-text-primary-dark leading-tight">
+                {person.name}
+              </p>
+            </div>
+          )
+
+          if (person.website) {
+            return (
+              <a
+                key={person.id}
+                href={formatUrl(person.website)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+              >
+                {content}
+              </a>
+            )
+          } else {
+            return (
+              <div key={person.id}>
+                {content}
+              </div>
+            )
+          }
+        })}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-wrap justify-center gap-2">

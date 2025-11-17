@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import { formatUrl, getPeople, Person } from './people'
-import PeopleListClient from './PeopleListClient'
+import { getPeople } from './people'
+import PeopleContentWrapper from './PeopleContentWrapper'
 
 export const metadata: Metadata = {
   title: 'People | Mox',
@@ -16,55 +16,11 @@ export async function PeopleContent() {
   const members = sortedPeople.filter((person) => person.tier !== 'Staff' && person.tier !== 'Private Office')
 
   return (
-    <>
-      {members.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
-            General Membership
-          </h3>
-          <PeopleListClient people={members} />
-        </div>
-      )}
-
-      {privateOffices.length > 0 && (() => {
-        // Group private offices by organization
-        const orgGroups = new Map<string, Person[]>()
-        privateOffices.forEach((person) => {
-          const orgName = person.orgNames && person.orgNames.length > 0 ? person.orgNames[0] : 'Independent'
-          if (!orgGroups.has(orgName)) {
-            orgGroups.set(orgName, [])
-          }
-          orgGroups.get(orgName)!.push(person)
-        })
-
-        return (
-          <div className="mb-8">
-            <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
-              Private Offices
-            </h3>
-            <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-4">
-              {Array.from(orgGroups.entries()).map(([orgName, people]) => (
-                <div key={orgName} className="bg-background-surface dark:bg-primary-950 border-2 border-secondary-600 dark:border-primary-700 rounded-lg p-2 w-full sm:w-auto">
-                  <h4 className="text-xs font-bold text-brand dark:text-brand-dark-mode uppercase font-sans tracking-wide text-center mb-2">
-                    {orgName}
-                  </h4>
-                  <PeopleListClient people={people} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-      })()}
-
-      {staff.length > 0 && (
-        <div>
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
-            Staff
-          </h3>
-          <PeopleListClient people={staff} />
-        </div>
-      )}
-    </>
+    <PeopleContentWrapper
+      members={members}
+      privateOffices={privateOffices}
+      staff={staff}
+    />
   )
 }
 

@@ -30,7 +30,7 @@ const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
 
 async function getOrgNames(): Promise<Map<string, string>> {
   const res = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Orgs?fields%5B%5D=Name`,
+    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Orgs?fields%5B%5D=Name&fields%5B%5D=Stealth`,
     {
       headers: {
         Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
@@ -49,7 +49,9 @@ async function getOrgNames(): Promise<Map<string, string>> {
 
   data.records?.forEach((record: any) => {
     if (record.id && record.fields.Name) {
-      orgMap.set(record.id, record.fields.Name)
+      const isStealth = record.fields.Stealth === true
+      const displayName = isStealth ? '<stealth>' : record.fields.Name
+      orgMap.set(record.id, displayName)
     }
   })
 
