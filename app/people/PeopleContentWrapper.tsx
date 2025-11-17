@@ -54,7 +54,7 @@ export default function PeopleContentWrapper({
           <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
             Private Offices
           </h3>
-          <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {Array.from(orgGroups.entries())
               .sort(([, a], [, b]) => {
                 // Sort stealth orgs to the bottom
