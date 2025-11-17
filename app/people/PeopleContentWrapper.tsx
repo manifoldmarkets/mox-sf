@@ -12,7 +12,7 @@ export default function PeopleContentWrapper({
   privateOffices: Person[]
   staff: Person[]
 }) {
-  const [showFaces, setShowFaces] = useState(false)
+  const [showFaces, setShowFaces] = useState(true)
 
   // Group private offices by organization ID (not name, so stealth companies stay separate)
   const orgGroups = new Map<string, { name: string; people: Person[] }>()
