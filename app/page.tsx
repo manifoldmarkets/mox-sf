@@ -201,12 +201,37 @@ export default async function Component() {
         </div>
       </div>
 
-      {/* Guest Programs Ticker */}
+      {/* Main content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <section id="people" className="mb-12 sm:mb-16">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
+              Humans of Mox
+            </h2>
+            <p className="text-brand-dark dark:text-primary-100 text-sm">The community that makes Mox special</p>
+          </div>
+          <PeopleGallery />
+        </section>
+
+        <section className="mb-12 sm:mb-16">
+          <PeopleContent />
+        </section>
+      </div>
+
+      {/* Guest Programs / Partner Orgs */}
       <div className="mb-12 py-4">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-8 text-center">
+          <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
             Partner Orgs
           </h2>
+          <p className="text-center text-brand-dark dark:text-primary-100 text-sm mb-8">
+            Learn more about our <a
+              href="https://moxsf.com/guest-program"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2 font-semibold"
+            >guest program</a>
+          </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             <a href="https://www.tarbellfellowship.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#123c75] hover:bg-[#0f2f5c] transition-colors flex items-center justify-center overflow-hidden p-3">
               <img src="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png" alt="Tarbell logo" className="h-full w-auto object-contain scale-250" />
@@ -282,22 +307,8 @@ export default async function Component() {
         </div>
       </div>
 
-      {/* Main content */}
+      {/* The Space section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <section id="people" className="mb-12 sm:mb-16">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
-              Humans of Mox
-            </h2>
-            <p className="text-brand-dark dark:text-primary-100 text-sm">The community that makes Mox special</p>
-          </div>
-          <PeopleGallery />
-        </section>
-
-        <section className="mb-12 sm:mb-16">
-          <PeopleContent />
-        </section>
-
         <section className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
