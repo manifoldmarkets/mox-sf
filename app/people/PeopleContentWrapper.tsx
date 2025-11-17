@@ -29,15 +29,17 @@ export default function PeopleContentWrapper({
     <>
       {/* Global toggle */}
       <div className="flex justify-center mb-6">
-        <label className="flex items-center gap-2 cursor-pointer text-text-secondary dark:text-text-secondary-dark">
-          <input
-            type="checkbox"
-            checked={showFaces}
-            onChange={(e) => setShowFaces(e.target.checked)}
-            className="w-4 h-4 rounded border-secondary-600 dark:border-primary-700 text-secondary-600 focus:ring-secondary-500 cursor-pointer"
-          />
+        <button
+          onClick={() => setShowFaces(!showFaces)}
+          className="flex items-center gap-3 cursor-pointer text-text-secondary dark:text-text-secondary-dark hover:text-text-primary dark:hover:text-text-primary-dark transition-colors"
+          role="switch"
+          aria-checked={showFaces}
+        >
           <span className="text-sm font-semibold">Show faces</span>
-        </label>
+          <div className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showFaces ? 'bg-secondary-600 dark:bg-secondary-700' : 'bg-secondary-300 dark:bg-primary-700'}`}>
+            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showFaces ? 'translate-x-6' : 'translate-x-1'}`} />
+          </div>
+        </button>
       </div>
 
       {members.length > 0 && (
