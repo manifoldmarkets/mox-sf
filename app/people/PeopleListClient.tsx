@@ -8,18 +8,30 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
 
   useEffect(() => {
     const withLinks = people.filter((p) => p.website)
-    // Distribute emphasis evenly: select ~1/12th by picking from evenly spaced intervals
-    const interval = 12
-    const emphasized: string[] = []
 
-    for (let i = 0; i < withLinks.length; i += interval) {
-      // Pick a random person from this interval
-      const chunkSize = Math.min(interval, withLinks.length - i)
-      const randomOffset = Math.floor(Math.random() * chunkSize)
-      emphasized.push(withLinks[i + randomOffset].id)
+    // Function to select a new set of emphasized people
+    const selectEmphasized = () => {
+      // Distribute emphasis evenly: select ~1/12th by picking from evenly spaced intervals
+      const interval = 12
+      const emphasized: string[] = []
+
+      for (let i = 0; i < withLinks.length; i += interval) {
+        // Pick a random person from this interval
+        const chunkSize = Math.min(interval, withLinks.length - i)
+        const randomOffset = Math.floor(Math.random() * chunkSize)
+        emphasized.push(withLinks[i + randomOffset].id)
+      }
+
+      setEmphasizedIds(emphasized)
     }
 
-    setEmphasizedIds(emphasized)
+    // Set initial emphasized people
+    selectEmphasized()
+
+    // Rotate every 3 seconds
+    const intervalId = setInterval(selectEmphasized, 3000)
+
+    return () => clearInterval(intervalId)
   }, [people])
 
   const getPhotoUrl = (person: Person): string | null => {
