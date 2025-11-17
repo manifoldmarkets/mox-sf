@@ -1,5 +1,6 @@
 import { Event } from '../lib/events'
 import { format, differenceInDays } from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
 import Link from 'next/link'
 
 interface EventsCardCompactProps {
@@ -14,8 +15,9 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
     .slice(0, 5)
 
   const formatEventDate = (date: Date) => {
-    const eventDate = date
-    const now = new Date()
+    // Convert to PST timezone
+    const eventDate = toZonedTime(date, 'America/Los_Angeles')
+    const now = toZonedTime(new Date(), 'America/Los_Angeles')
     const daysUntil = differenceInDays(eventDate, now)
 
     // If more than 7 days away, show just "Mon Nov 25"
@@ -32,8 +34,9 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
   }
 
   const getDateTimeParts = (date: Date) => {
-    const eventDate = date
-    const now = new Date()
+    // Convert to PST timezone
+    const eventDate = toZonedTime(date, 'America/Los_Angeles')
+    const now = toZonedTime(new Date(), 'America/Los_Angeles')
     const daysUntil = differenceInDays(eventDate, now)
 
     if (daysUntil > 7) {
