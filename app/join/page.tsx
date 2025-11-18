@@ -347,11 +347,11 @@ export default function JoinPage() {
                 autoComplete="given-name"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your first name"
-                className="w-full px-4 py-2 border border-gray-200 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
+                className="w-full px-4 py-2 border border-gray-200 mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
               />
               <button
                 type="submit"
-                className="w-full px-6 py-2 bg-amber-800 text-white font-semibold rounded-md hover:bg-amber-900 transition-colors"
+                className="w-full px-6 py-2 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
               >
                 Submit
               </button>

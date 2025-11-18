@@ -58,7 +58,7 @@ export default async function DashboardPage() {
             <nav className="space-y-1 flex-1">
               <a
                 href="#subscription"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode rounded-lg transition-all group"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-all group"
               >
                 <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
               </a>
               <a
                 href="#events"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode rounded-lg transition-all group"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-all group"
               >
                 <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
               </a>
               <a
                 href="#profile"
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode rounded-lg transition-all group"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-all group"
               >
                 <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -103,7 +103,7 @@ export default async function DashboardPage() {
             </div>
 
             <div id="profile" className="scroll-mt-8">
-              <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-6">
+              <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-6">
                 <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">Profile</h1>
                 <ProfileEditForm profile={profile} userId={session.userId} />
               </div>

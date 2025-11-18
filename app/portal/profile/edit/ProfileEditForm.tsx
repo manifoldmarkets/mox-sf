@@ -106,7 +106,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
           />
         </div>
 
@@ -120,7 +120,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             id="email"
             value={profile.email}
             disabled
-            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
           />
           <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Ask a staff member if you want to update your email</p>
         </div>
@@ -137,7 +137,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             value={formData.website}
             onChange={handleChange}
             placeholder="https://yourwebsite.com"
-            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
           />
         </div>
 
@@ -151,13 +151,13 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
               <img
                 src={photoFile ? URL.createObjectURL(photoFile) : profile.photo || '/default-avatar.png'}
                 alt="Profile"
-                className="w-32 h-32 rounded-full object-cover border-2 border-border-light dark:border-border-medium-dark"
+                className="w-32 h-32 object-cover border-2 border-border-light dark:border-border-medium-dark"
               />
             </div>
             <div className="flex-1">
               <label
                 htmlFor="photo"
-                className="inline-flex items-center px-4 py-2 border border-border-medium dark:border-border-medium-dark rounded-lg shadow-sm text-sm font-medium text-text-secondary dark:text-text-secondary-dark bg-background-surface dark:bg-background-subtle-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark cursor-pointer transition-colors"
+                className="inline-flex items-center px-4 py-2 border border-border-medium dark:border-border-medium-dark shadow-sm text-sm font-medium text-text-secondary dark:text-text-secondary-dark bg-background-surface dark:bg-background-subtle-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark cursor-pointer transition-colors"
               >
                 Choose File
                 <input
@@ -204,7 +204,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
         {/* Status Message */}
         {message && (
           <div
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               status === 'success'
                 ? 'bg-success-bg dark:bg-success-bg-dark text-success-text dark:text-success-text-dark border border-success-bg dark:border-success-bg-dark'
                 : 'bg-error-bg dark:bg-error-bg-dark text-error-text dark:text-error-text-dark border border-error-bg dark:border-error-bg-dark'
@@ -219,7 +219,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full bg-brand dark:bg-brand text-white py-2 px-4 rounded-lg hover:bg-brand-dark dark:hover:bg-brand-dark disabled:bg-text-muted dark:disabled:bg-text-muted-dark disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-brand dark:bg-brand text-white py-2 px-4 hover:bg-brand-dark dark:hover:bg-brand-dark disabled:bg-text-muted dark:disabled:bg-text-muted-dark disabled:cursor-not-allowed transition-colors"
           >
             {status === 'loading' ? 'Saving...' : 'Save Changes'}
           </button>

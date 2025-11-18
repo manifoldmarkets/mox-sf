@@ -36,8 +36,8 @@ export default function PeopleContentWrapper({
           aria-checked={showFaces}
         >
           <span className="text-sm font-semibold">Show faces</span>
-          <div className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showFaces ? 'bg-secondary-600 dark:bg-secondary-700' : 'bg-secondary-300 dark:bg-primary-700'}`}>
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showFaces ? 'translate-x-6' : 'translate-x-1'}`} />
+          <div className={`relative inline-flex h-6 w-11 items-center transition-colors ${showFaces ? 'bg-secondary-600 dark:bg-secondary-700' : 'bg-secondary-300 dark:bg-primary-700'}`}>
+            <span className={`inline-block h-4 w-4 transform bg-white transition-transform ${showFaces ? 'translate-x-6' : 'translate-x-1'}`} />
           </div>
         </button>
       </div>
@@ -69,7 +69,7 @@ export default function PeopleContentWrapper({
                 return a.name.localeCompare(b.name)
               })
               .map(([orgId, { name, people }]) => (
-                <div key={orgId} className="bg-background-surface dark:bg-primary-950 border-2 border-secondary-600 dark:border-primary-700 rounded-lg p-4">
+                <div key={orgId} className="bg-background-surface dark:bg-primary-950 border-2 border-secondary-600 dark:border-primary-700 p-4">
                   <h4 className="text-sm font-bold text-brand dark:text-brand-dark-mode uppercase font-sans tracking-wide text-center mb-3">
                     {name}
                   </h4>

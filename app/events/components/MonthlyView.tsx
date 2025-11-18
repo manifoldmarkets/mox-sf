@@ -34,7 +34,7 @@ function DayCard({
         <span
           className={`${
             isDayToday
-              ? 'bg-red-800 dark:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center'
+              ? 'bg-red-800 dark:bg-red-700 text-white w-7 h-7 flex items-center justify-center'
               : ''
           }`}
         >
@@ -77,7 +77,7 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 overflow-hidden">
       <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400 mb-4 text-center">
         {format(today, 'MMMM yyyy')}
       </h3>

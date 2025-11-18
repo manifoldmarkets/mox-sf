@@ -57,7 +57,7 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
 
         {activeSection === 'profile' && (
           <div className="p-3">
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3">
+            <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3">
               <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">Profile</h1>
               <ProfileEditForm profile={profile} userId={userId} />
 

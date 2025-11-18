@@ -91,7 +91,7 @@ export default function GuestsPage() {
             </h2> */}
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center p-6">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-8 h-8 text-amber-700"
                     fill="none"
@@ -114,7 +114,7 @@ export default function GuestsPage() {
                 </p>
               </div>
               <div className="text-center p-6">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-8 h-8 text-amber-700"
                     fill="none"
@@ -137,7 +137,7 @@ export default function GuestsPage() {
                 </p>
               </div>
               <div className="text-center p-6">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-8 h-8 text-amber-700"
                     fill="none"

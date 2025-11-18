@@ -63,7 +63,7 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
           const photoUrl = getOptimizedPhotoUrl(person)
           const content = (
             <div className="flex flex-col items-center w-24 sm:w-28 md:w-32">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
                 {photoUrl ? (
                   <img
                     src={photoUrl}
@@ -114,7 +114,7 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
       {people.map((person) => {
         const isEmphasized = emphasizedIds.includes(person.id)
         const baseClasses =
-          'border-2 px-3 py-1 rounded-full transition-all duration-700 ease-in-out'
+          'border-2 px-3 py-1 transition-all duration-700 ease-in-out'
         const colorClasses = isEmphasized
           ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-600 dark:border-secondary-500 hover:bg-secondary-200 dark:hover:bg-secondary-900/50'
           : 'bg-background-surface dark:bg-transparent border-secondary-600 dark:border-primary-700'

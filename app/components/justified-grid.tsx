@@ -186,7 +186,7 @@ export default function Masonry({
                   alt=""
                   width={Math.round(width)}
                   height={Math.round(height)}
-                  className="object-cover cursor-pointer hover:opacity-80 rounded-2xl"
+                  className="object-cover cursor-pointer hover:opacity-80"
                   loading="lazy"
                   onClick={() => setSelectedImageIndex(index)}
                 />
@@ -206,7 +206,7 @@ export default function Masonry({
           {/* Back / Close Button */}
           <button
             onClick={() => setSelectedImageIndex(null)}
-            className="absolute top-4 left-4 text-white text-xl px-6 py-4 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors"
+            className="absolute top-4 left-4 text-white text-xl px-6 py-4 cursor-pointer bg-black/30 hover:bg-black/50 transition-colors"
             aria-label="Back"
           >
             ← Back
@@ -216,7 +216,7 @@ export default function Masonry({
           {selectedImageIndex > 0 && (
             <button
               onClick={() => setSelectedImageIndex(selectedImageIndex - 1)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 transform text-white text-4xl w-12 h-12 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
+              className="absolute left-4 top-1/2 -translate-y-1/2 transform text-white text-4xl w-12 h-12 cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
               aria-label="Previous image"
             >
               ‹
@@ -227,7 +227,7 @@ export default function Masonry({
           {selectedImageIndex < images.length - 1 && (
             <button
               onClick={() => setSelectedImageIndex(selectedImageIndex + 1)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 transform text-white text-4xl w-12 h-12 rounded-full cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
+              className="absolute right-4 top-1/2 -translate-y-1/2 transform text-white text-4xl w-12 h-12 cursor-pointer bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center leading-none"
               aria-label="Next image"
             >
               ›
@@ -246,7 +246,7 @@ export default function Masonry({
                 alt=""
                 width={origWidth}
                 height={origHeight}
-                className="object-contain cursor-pointer rounded-3xl"
+                className="object-contain cursor-pointer"
                 onClick={() => setSelectedImageIndex(null)}
                 priority={true} // Prioritize loading the full-size image
                 quality={100} // Use highest quality for the full-size view

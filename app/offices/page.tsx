@@ -51,7 +51,7 @@ export default function OfficesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
         {/* Private Offices */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-2xl sm:rounded-3xl overflow-hidden">
+          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden">
             <img
               src="/images/005.jpg"
               alt="Private office at Mox"
@@ -102,7 +102,7 @@ export default function OfficesPage() {
                 </li>
               </ul>
 
-              <div className="bg-background-surface dark:bg-background-subtle-dark rounded-lg p-4 mb-4">
+              <div className="bg-background-surface dark:bg-background-subtle-dark p-4 mb-4">
                 <p className="text-sm font-semibold text-text-tertiary dark:text-text-tertiary-dark mb-1">Pricing</p>
                 <p className="text-lg font-bold text-text-primary dark:text-text-primary-dark">
                   Starting at $3,200/month for 4-person capacity
@@ -121,7 +121,7 @@ export default function OfficesPage() {
 
         {/* Dedicated Desks */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-2xl sm:rounded-3xl overflow-hidden">
+          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden">
             <img
               src="/images/003.jpg"
               alt="Dedicated desks at Mox"
@@ -168,7 +168,7 @@ export default function OfficesPage() {
                 </li>
               </ul>
 
-              <div className="bg-background-surface dark:bg-background-subtle-dark rounded-lg p-4 mb-4">
+              <div className="bg-background-surface dark:bg-background-subtle-dark p-4 mb-4">
                 <p className="text-sm font-semibold text-text-tertiary dark:text-text-tertiary-dark mb-1">Pricing</p>
                 <p className="text-lg font-bold text-text-primary dark:text-text-primary-dark">
                   $800/month per desk
@@ -184,7 +184,7 @@ export default function OfficesPage() {
 
         {/* For Cohorts & Programs */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-2xl sm:rounded-3xl overflow-hidden">
+          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden">
             <img
               src="/images/021.jpg"
               alt="Cohorts and programs at Mox"
@@ -231,7 +231,7 @@ export default function OfficesPage() {
                 </li>
               </ul>
 
-              <div className="bg-white dark:bg-gray-700 rounded-lg p-4">
+              <div className="bg-white dark:bg-gray-700 p-4">
                 <p className="text-sm font-semibold text-text-tertiary dark:text-text-tertiary-dark mb-1">Pricing</p>
                 <p className="text-lg font-bold text-text-primary dark:text-text-primary-dark">
                   Custom packages based on cohort size and duration
@@ -250,7 +250,7 @@ export default function OfficesPage() {
             What Makes Mox Different
           </h2>
           <div className="space-y-6">
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-xl font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 Community over amenities
               </h3>
@@ -258,7 +258,7 @@ export default function OfficesPage() {
                 We're not trying to be WeWork. Mox is mission-driven, with subsidized pricing that prioritizes bringing together people working on important problems.
               </p>
             </div>
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-xl font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 Network effects
               </h3>
@@ -266,7 +266,7 @@ export default function OfficesPage() {
                 Being at Mox means working alongside AI safety researchers, policy experts, and ambitious founders. Regular programming, speaker events, and organic conversations create opportunities you won't find at traditional coworking spaces.
               </p>
             </div>
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-xl font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 Mission alignment
               </h3>
@@ -283,7 +283,7 @@ export default function OfficesPage() {
             FAQs
           </h2>
           <div className="space-y-4">
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-lg font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 Can I customize my office setup?
               </h3>
@@ -291,7 +291,7 @@ export default function OfficesPage() {
                 Yes, within reason. We accommodate teams working with hardware, prototyping equipment, or specialized needs. Hazardous materials require prior approval and proper storage protocols.
               </p>
             </div>
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-lg font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 What's the commitment period?
               </h3>
@@ -299,7 +299,7 @@ export default function OfficesPage() {
                 Standard agreements are month-to-month with 30 days notice. For teams interested in longer-term stability, we can discuss multi-month or annual commitments with locked pricing.
               </p>
             </div>
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-lg font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 Do you offer tours?
               </h3>
@@ -307,7 +307,7 @@ export default function OfficesPage() {
                 Yes! Schedule a tour or come to one of our open events to see the space and meet the community.
               </p>
             </div>
-            <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg p-6 shadow-md">
+            <div className="bg-background-surface dark:bg-background-surface-dark p-6 shadow-md">
               <h3 className="text-lg font-semibold text-text-primary dark:text-text-primary-dark mb-2">
                 Who should I talk to?
               </h3>
@@ -328,7 +328,7 @@ export default function OfficesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="mailto:rachel@moxsf.com?subject=Office Space Inquiry"
-              className="px-8 py-4 bg-brand dark:bg-brand text-white font-semibold hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors rounded-full text-center"
+              className="px-8 py-4 bg-brand dark:bg-brand text-white font-semibold hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors text-center"
             >
               Inquire about office space
             </a>
@@ -336,7 +336,7 @@ export default function OfficesPage() {
               href="https://calendly.com/rachelshu/mox-30m"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong text-brand dark:text-brand-dark-mode font-semibold hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors rounded-full text-center"
+              className="px-8 py-4 bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong text-brand dark:text-brand-dark-mode font-semibold hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors text-center"
             >
               Schedule a tour
             </a>

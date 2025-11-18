@@ -75,7 +75,7 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-8">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 mb-8">
         <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">Subscription</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">Loading subscription details...</p>
       </div>
@@ -84,7 +84,7 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
 
   if (!stripeCustomerId || error) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-8">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 mb-8">
         <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">Subscription</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">No active subscription found</p>
       </div>
@@ -103,13 +103,13 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
   });
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
         <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair">Subscription</h2>
         <button
           onClick={handleManageBilling}
           disabled={billingLoading}
-          className="px-4 py-2 bg-amber-800 dark:bg-amber-700 text-white text-sm font-medium rounded-lg hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto font-sans"
+          className="px-4 py-2 bg-amber-800 dark:bg-amber-700 text-white text-sm font-medium hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto font-sans"
         >
           {billingLoading ? 'Loading...' : (
             <>
@@ -123,15 +123,15 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 font-sans">
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+        <div className="bg-gray-50 dark:bg-gray-700 p-4 border border-gray-200 dark:border-gray-600">
           <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Plan</p>
           <p className="text-base font-semibold text-gray-900 dark:text-gray-100">{subscription.tier}</p>
         </div>
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+        <div className="bg-gray-50 dark:bg-gray-700 p-4 border border-gray-200 dark:border-gray-600">
           <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Rate</p>
           <p className="text-base font-semibold text-gray-900 dark:text-gray-100">{subscription.rate}</p>
         </div>
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+        <div className="bg-gray-50 dark:bg-gray-700 p-4 border border-gray-200 dark:border-gray-600">
           <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Renewal Date</p>
           <p className="text-base font-semibold text-gray-900 dark:text-gray-100">{formattedDate}</p>
         </div>
