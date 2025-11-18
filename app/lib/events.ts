@@ -13,7 +13,7 @@ interface AirtableEvent {
     Type?: string
     Status?: string
     URL?: string
-    'Host Name'?: string  // Formula field that returns a string
+    'Host Name'?: string
   }
 }
 
@@ -46,7 +46,7 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
     type: record.fields.Type,
     status: record.fields.Status,
     url: record.fields.URL,
-    host: record.fields['Host Name'] || '',  // Formula field returns a string
+    host: record.fields['Host Name'],
   }
 }
 
@@ -61,14 +61,12 @@ export async function getEvents(): Promise<Event[]> {
     }
   )
   const data = await res.json()
-  const records = data.records?.filter(
-    (event: AirtableEvent) => {
-      if (!event.fields?.['Start Date']) return false
+  const records = data.records?.filter((event: AirtableEvent) => {
+    if (!event.fields?.['Start Date']) return false
 
-      const status = event.fields.Status?.toLowerCase()
-      return status !== 'idea' && status !== 'maybe' && status !== 'cancelled'
-    }
-  )
+    const status = event.fields.Status?.toLowerCase()
+    return status !== 'idea' && status !== 'maybe' && status !== 'cancelled'
+  })
 
   return records?.map(parseAirtableEvent) || []
 }
