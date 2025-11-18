@@ -1,28 +1,170 @@
 @import 'tailwindcss';
 
 @theme {
+  /* Fonts */
   --font-playfair: var(--font-playfair);
   --font-lora: var(--font-lora);
-  --font-castoro: var(--font-castoro);
-  --font-geist: var(--font-geist);
+  --font-merriweather: var(--font-merriweather);
   --font-geist-mono: var(--font-geist-mono);
-  --color-beige-50: #f9f6f0;
+  --font-family-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* ============================================ */
+  /* PRIMARY BRAND COLORS */
+  /* Currently teal/blue-green - change these to retheme the entire site */
+  /* ============================================ */
+  --color-primary-50: #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+  --color-primary-300: #5eead4;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-primary-900: #0a3432;
+  --color-primary-950: #051f1e;
+
+  /* ============================================ */
+  /* SEMANTIC BRAND ALIASES */
+  /* ============================================ */
+  --color-brand: #115e59;
+  --color-brand-light: #0d9488;
+  --color-brand-dark: #134e4a;
+  --color-brand-dark-mode: #2dd4bf;
+
+  /* ============================================ */
+  /* SECONDARY ACCENT (ORANGE) */
+  /* ============================================ */
+  --color-secondary-50: #fff4e6;
+  --color-secondary-100: #ffe0b2;
+  --color-secondary-200: #ffcc80;
+  --color-secondary-300: #ffb74d;
+  --color-secondary-400: #ffa726;
+  --color-secondary-500: #ff9800;
+  --color-secondary-600: #fb8c00;
+  --color-secondary-700: #f57c00;
+  --color-secondary-800: #ef6c00;
+  --color-secondary-900: #e65100;
+
+  /* ============================================ */
+  /* SEMANTIC BACKGROUND COLORS */
+  /* ============================================ */
+  --color-background-page: #f8fafc;
+  --color-background-page-warm: #f8fafc;
+  --color-background-page-dark: #021716;
+  --color-background-surface: #ffffff;
+  --color-background-surface-dark: #0a3432;
+  --color-background-accent: #fff4e6;
+  --color-background-accent-dark: #0a3432;
+  --color-background-subtle: #d1d5db;
+  --color-background-subtle-dark: #115e59;
+
+  /* ============================================ */
+  /* SEMANTIC TEXT COLORS */
+  /* ============================================ */
+  --color-text-primary: #1f2937;
+  --color-text-primary-dark: #f3f4f6;
+  --color-text-secondary: #374151;
+  --color-text-secondary-dark: #e5e7eb;
+  --color-text-tertiary: #4b5563;
+  --color-text-tertiary-dark: #d1d5db;
+  --color-text-muted: #6b7280;
+  --color-text-muted-dark: #9ca3af;
+  --color-text-subtle: #9ca3af;
+  --color-text-subtle-dark: #6b7280;
+
+  /* ============================================ */
+  /* SEMANTIC BORDER COLORS */
+  /* ============================================ */
+  --color-border-light: #e5e7eb;
+  --color-border-light-dark: #374151;
+  --color-border-medium: #d1d5db;
+  --color-border-medium-dark: #4b5563;
+  --color-border-subtle: #f1f5f9;
+  --color-border-subtle-dark: #1f2937;
+  --color-border-strong: #92400e;
+  --color-border-strong-alt: #b45309;
+
+  /* ============================================ */
+  /* STATE COLORS - Success */
+  /* ============================================ */
+  --color-success-bg: #dcfce7;
+  --color-success-text: #166534;
+  --color-success-bg-dark: #14532d;
+  --color-success-text-dark: #4ade80;
+  --color-success-icon: #22c55e;
+
+  /* ============================================ */
+  /* STATE COLORS - Error */
+  /* ============================================ */
+  --color-error-bg: #fee2e2;
+  --color-error-text: #991b1b;
+  --color-error-bg-dark: #7f1d1d;
+  --color-error-text-dark: #f87171;
+  --color-error-button: #dc2626;
+  --color-error-button-hover: #b91c1c;
+
+  /* ============================================ */
+  /* STATE COLORS - Info */
+  /* ============================================ */
+  --color-info-bg: #dbeafe;
+  --color-info-text: #1e40af;
+  --color-info-bg-dark: #1e3a8a;
+  --color-info-text-dark: #60a5fa;
+  --color-info-button: #2563eb;
+  --color-info-button-hover: #1d4ed8;
+
+  /* ============================================ */
+  /* STATE COLORS - Warning */
+  /* ============================================ */
+  --color-warning-bg: #fef3c7;
+  --color-warning-text: #92400e;
+  --color-warning-bg-dark: #713f12;
+  --color-warning-text-dark: #fbbf24;
+
+  /* ============================================ */
+  /* CATEGORY COLORS - Purple */
+  /* ============================================ */
+  --color-category-purple-bg: #f3e8ff;
+  --color-category-purple-text: #6b21a8;
+  --color-category-purple-bg-dark: #581c87;
+  --color-category-purple-text-dark: #c084fc;
+
+  /* ============================================ */
+  /* CATEGORY COLORS - Teal */
+  /* ============================================ */
+  --color-category-teal-bg: #ccfbf1;
+  --color-category-teal-text: #115e59;
+  --color-category-teal-bg-dark: #134e4a;
+  --color-category-teal-text-dark: #5eead4;
+
+  /* ============================================ */
+  /* CATEGORY COLORS - Orange */
+  /* ============================================ */
+  --color-category-orange-bg: #ffedd5;
+  --color-category-orange-text: #9a3412;
+  --color-category-orange-bg-dark: #7c2d12;
+  --color-category-orange-text-dark: #fb923c;
+
+  /* ============================================ */
+  /* EXTERNAL SERVICE COLORS */
+  /* ============================================ */
+  --color-google: #4285f4;
+  --color-google-hover: #3367d6;
+  --color-outlook: #0078d4;
+  --color-outlook-hover: #106ebe;
+
+  /* ============================================ */
+  /* ANIMATIONS */
+  /* ============================================ */
+  --animate-scroll: scroll 30s linear infinite;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
   }
 }

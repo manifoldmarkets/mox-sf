@@ -1,16 +1,30 @@
 import { Metadata } from 'next'
-import { formatUrl, getPeople, Person } from './people'
+import { getPeople } from './people'
+import PeopleContentWrapper from './PeopleContentWrapper'
 
 export const metadata: Metadata = {
   title: 'People | Mox',
 }
 
-export default async function PeoplePage() {
+export async function PeopleContent() {
   const people = await getPeople()
-
-  // Sort people by name
   const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name))
 
+  // Separate people by tier
+  const staff = sortedPeople.filter((person) => person.tier === 'Staff')
+  const privateOffices = sortedPeople.filter((person) => person.tier === 'Private Office')
+  const members = sortedPeople.filter((person) => person.tier !== 'Staff' && person.tier !== 'Private Office')
+
+  return (
+    <PeopleContentWrapper
+      members={members}
+      privateOffices={privateOffices}
+      staff={staff}
+    />
+  )
+}
+
+export default async function PeoplePage() {
   /*
   // Separate people into categories
   const SELDON_PROGRAM_ID = 'recw9GcgF3DwVsxO1'
@@ -33,49 +47,17 @@ export default async function PeoplePage() {
   )
   */
 
-  const renderPeopleList = (people: Person[]) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
-      {people.map((person) => (
-        <div key={person.id}>
-          {person.website ? (
-            <a
-              href={formatUrl(person.website)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-amber-900 hover:text-amber-900 flex items-center gap-2 group hover:underline"
-            >
-              <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
-                {person.name}
-              </span>
-            </a>
-          ) : (
-            <span className="truncate whitespace-nowrap overflow-hidden block max-w-xs">
-              {person.name}
-            </span>
-          )}
-        </div>
-      ))}
-    </div>
-  )
-
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center font-playfair">
-        Humans at Mox
-      </h1>
-
-      <div className="mb-8 text-center -mt-4">
-        <a
-          href="https://billing.stripe.com/p/login/5kAbIOdVF0Oa1vq6oo"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
-        >
-         (Need to adjust? Manage your membership)
-        </a>
+    <div className="min-h-screen bg-primary-950 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-white font-playfair mb-2">
+            Humans of Mox
+          </h2>
+          <p className="text-primary-100 text-sm">The community that makes Mox special</p>
+        </div>
+        <PeopleContent />
       </div>
-
-      {renderPeopleList(sortedPeople)}
 
       {/*
       {otherPeople.length > 0 && (

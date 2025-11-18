@@ -39,7 +39,7 @@ export default function DayPassPage() {
           <h2 className="text-2xl font-bold mb-8 text-center font-playfair">
             What's included
           </h2>
-          <div className="bg-white p-8 border border-amber-200 shadow-sm">
+          <div className="bg-white p-8 border border-gray-200 shadow-sm">
             <div className="prose prose-slate">
               <ul className="list-disc pl-4 space-y-3">
                 <li>External monitors, fast wifi</li>
@@ -118,7 +118,7 @@ export default function DayPassPage() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 border-t border-amber-200 py-8">
+      <footer className="mt-24 border-t border-gray-200 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           <Link href="/">← Back to Mox homepage</Link>
           <br />

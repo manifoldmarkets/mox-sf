@@ -214,7 +214,7 @@ export function JoinContent(props: {
               ].map((tier) => (
                 <div
                   key={tier.type}
-                  className="text-center p-8 border border-amber-200"
+                  className="text-center p-8 border border-gray-200"
                 >
                   <h3 className="text-2xl font-playfair text-amber-900 mb-4">
                     {tier.type}
@@ -239,7 +239,7 @@ export function JoinContent(props: {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-amber-200 py-8">
+      <footer className="border-t border-gray-200 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           Questions? Ping{' '}
           <a
@@ -347,7 +347,7 @@ export default function JoinPage() {
                 autoComplete="given-name"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your first name"
-                className="w-full px-4 py-2 border border-amber-200 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-4 py-2 border border-gray-200 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
               />
               <button
                 type="submit"

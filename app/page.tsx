@@ -1,7 +1,8 @@
 import Gallery from './gallery'
 import PeopleGallery from './people-gallery'
-import PeoplePage from './people/page'
-import EventsPage from './events/page'
+import { PeopleContent } from './people/page'
+import EventsCardCompact from './components/EventsCardCompact'
+import { getEvents } from './lib/events'
 
 function Link({
   href,
@@ -17,171 +18,318 @@ function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2 ${className}`}
+      className={`text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2 ${className}`}
     >
       {children}
     </a>
   )
 }
 
-export default function Component() {
+export default async function Component() {
+  const events = await getEvents()
+
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800">
+    <div className="min-h-screen bg-background-page dark:bg-primary-950 text-text-primary dark:text-text-primary-dark">
+      {/* Top navigation with login */}
+      <nav className="fixed top-0 right-0 z-50 p-4">
+        <a
+          href="/portal"
+          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-secondary-200 dark:border-primary-700 rounded-full hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
+          aria-label="Login to member portal"
+        >
+          <svg className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <span className="hidden sm:inline text-sm font-semibold text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">Login</span>
+        </a>
+      </nav>
+
       {/* Open house banner */}
       {/* <a
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-amber-800 text-white text-sm font-semibold text-center py-2 hover:bg-amber-900 transition-colors"
+        className="block bg-brand text-white text-sm font-semibold text-center py-2 hover:bg-brand-dark transition-colors"
       >
         Mox is fundraising! Learn more & support us <u>here</u>
       </a> */}
 
-      {/* Hero section with dictionary definition */}
-      <div className="max-w-3xl mx-auto pt-16 px-6">
-        <div className="border-l-4 border-amber-800 pl-8 py-2">
-          <h1 className="text-4xl font-bold mb-2 font-playfair">
-            Mox <span className="italic font-normal">/mäks/</span>
-          </h1>
-          <div className="italic text-lg mb-1">noun</div>
+      {/* Hero section */}
+      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-background-page dark:bg-primary-950">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 dark:invert"
+          style={{
+            backgroundImage: 'url(/images/mox_sketch.png)',
+            maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
+          }}
+        />
+        <div className="relative z-10 max-w-7xl w-full">
+          <div className="text-center mb-12">
+            <img
+              src="/images/mox_logo_text.svg"
+              alt="Mox"
+              className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
+            />
+            <p className="text-xl mb-4 leading-relaxed text-brand-dark dark:text-primary-50">
+              An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
+            </p>
+            <p className="text-lg text-brand-dark dark:text-primary-100">
+              <Link
+                href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco"
+                className="dark:!text-primary-200 dark:hover:!text-primary-50"
+              >
+                1680 Mission Street, San Francisco
+              </Link>
+            </p>
+          </div>
 
-          <div className="space-y-2 mt-6">
-            <div>
-              1. Abbreviation for <span className="italic">moxie</span>: energy
-              and pep, or courage and determination.
+          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* Events column */}
+            <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
+              <img
+                src="/images/014.jpg"
+                alt="Mox events"
+                className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
+              />
+              <div className="p-4 sm:p-6 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+                  Events we're hosting
+                </h3>
+                <div className="flex-1">
+                  <EventsCardCompact events={events} />
+                </div>
+                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
+                  <a
+                    href="/events"
+                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                  >
+                    See all events →
+                  </a>
+                </div>
+              </div>
             </div>
 
-            <div>
-              2. Rare artifacts in{' '}
-              <span className="italic">Magic: the Gathering</span>, among the
-              most powerful in the game.
+            {/* People column */}
+            <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
+              <img
+                src="/images/023.jpg"
+                alt="Mox community"
+                className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
+              />
+              <div className="p-4 sm:p-6 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+                  Who we're gathering
+                </h3>
+
+                <div className="flex flex-wrap justify-center gap-1.5 flex-1">
+                {[
+                  'AI alignment researchers',
+                  'Startup founders',
+                  'Defensive accelerationists',
+                  'Filmmakers',
+                  'Writers',
+                  'High impact nonprofits',
+                  'Artisans',
+                  'Figgie players',
+                  'Policy advocates',
+                  'Community builders',
+                  'Members of technical and untechnical staff'
+                ].map((label) => (
+                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-primary-700 dark:border-primary-600 px-3 py-1 rounded-full flex items-center">
+                    <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">{label}</p>
+                  </div>
+                ))}
+              </div>
+
+                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
+                  <a
+                    href="#people"
+                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                  >
+                    See people →
+                  </a>
+                </div>
+              </div>
             </div>
 
-            <div>
-              3. Atypical acronym for{' '}
-              <span className="italic">Mixture Of eXperts</span>, a modern
-              machine learning technique.
-            </div>
+            {/* Membership column */}
+            <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl rounded-lg flex flex-col md:flex-row lg:flex-col overflow-hidden">
+              <img
+                src="/images/003.jpg"
+                alt="Mox space"
+                className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
+              />
+              <div className="p-4 sm:p-6 flex flex-col flex-1">
+                <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-6 text-center">
+                  Space for meaningful work
+                </h3>
 
-            <div>
-              <span className="font-bold">
-                4. An incubator & community space in San Francisco, on{' '}
-                <Link href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco">
-                  1680 Mission Street
-                </Link>{' '}
-              </span>
+                <div className="flex flex-col gap-2 flex-1">
+                  <a
+                    href="/apply"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 text-sm text-center bg-secondary-600 dark:bg-secondary-700 text-white font-semibold hover:bg-secondary-700 dark:hover:bg-secondary-600 transition-colors rounded-lg"
+                  >
+                    Apply for membership
+                  </a>
+                  <a
+                    href="/offices"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
+                  >
+                    Inquire about offices
+                  </a>
+                  <a
+                    href="/day-pass"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
+                  >
+                    Buy a day pass
+                  </a>
+                </div>
+                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
+                  <a
+                    href="/portal/login"
+                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                  >
+                    Member Portal →
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="max-w-4xl mx-auto mt-20 px-6">
-        <section className="mb-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <section id="people" className="mb-12 sm:mb-16">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
+              Humans of Mox
+            </h2>
+            <p className="text-brand-dark dark:text-primary-100 text-sm">The community that makes Mox special</p>
+          </div>
           <PeopleGallery />
         </section>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Left column */}
-          <div className="space-y-8">
-            <section>
-              <h2 className="text-2xl font-bold mb-4 font-playfair">
-                A gathering place for
-              </h2>
-              <div className="prose prose-slate">
-                <ul className="list-disc pl-4 space-y-2">
-                  <li>Startups living in the future</li>
-                  <li>EAs, and other doers of good</li>
-                  <li>AI lab folks & their safety counterparts</li>
-                  <li>Indie researchers and builders</li>
-                  <li>Writers; artists; masters of craft</li>
-                </ul>
-              </div>
-            </section>
+        <section className="mb-12 sm:mb-16">
+          <PeopleContent />
+        </section>
+      </div>
 
-            <section>
-              <h2 className="text-2xl font-bold mb-4 font-playfair">
-                Mox offers
-              </h2>
-              <div className="prose prose-slate">
-                <ul className="list-disc pl-4 space-y-2">
-                  <li>Space to work, learn, meet, and play</li>
-                  <li>Desks and monitors aplenty</li>
-                  <li>Industrial-grade wifi</li>
-                  <li>Conference rooms and phone booths</li>
-                  <li>Coffee, tea, and snacks</li>
-                </ul>
-              </div>
-            </section>
-          </div>
+      {/* Guest Programs / Partner Orgs */}
+      <div className="mb-12 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+            Partner Orgs
+          </h2>
+          <p className="text-center text-brand-dark dark:text-primary-100 text-sm mb-8">
+            Learn more about our <a
+              href="https://moxsf.com/guest-program"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2 font-semibold"
+            >guest program</a>
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <a href="https://www.tarbellfellowship.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#123c75] hover:bg-[#0f2f5c] transition-all duration-200 flex items-center justify-center overflow-hidden p-3 rounded-lg">
+              <img src="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png" alt="Tarbell logo" className="h-full w-auto object-contain scale-250" />
+            </a>
 
-          {/* Right column */}
-          <div>
-            <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-              <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
-              <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
+            <a href="https://intelligence.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#193655] hover:bg-[#142b44] transition-all duration-200 flex items-center justify-center p-3 rounded-lg">
+              <img src="https://intelligence.org/wp-content/uploads/2024/10/Group-47.svg" alt="MIRI logo" className="h-full w-auto object-contain" />
+            </a>
 
-              <div>
-                <h2 className="text-2xl font-bold mb-6 font-playfair">
-                  Become a member
-                </h2>
-                <p className="mb-8 text-gray-600">
-                  Looking for a mission-driven space to work from? We offer
-                  coworking desks, private offices, and event space.
-                </p>
+            <a href="https://far.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#071024] hover:bg-[#050b1a] transition-all duration-200 flex items-center justify-center p-3 rounded-lg">
+              <img src="https://cdn.prod.website-files.com/66f4503c3d0f4d4a75074a18/6712bf27e843ab5a68396da8_Far%20AI%20Logotype%20White.svg" alt="FAR.AI logo" className="h-full w-auto object-contain" />
+            </a>
 
-                <div className="space-y-4">
-                  <a
-                    href="/apply"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                    block w-full px-8 py-4 text-center
-                    bg-amber-800 text-white font-semibold
-                    hover:bg-amber-900
-                    transition-all duration-200
-                  "
-                  >
-                    Apply for membership
-                  </a>
+            <a href="https://elicit.com" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00666d] hover:bg-[#005259] transition-all duration-200 flex items-center justify-center p-3 gap-2 rounded-lg">
+              <img src="https://i.imgur.com/NghnGgl.jpeg" alt="Elicit logo" className="h-full w-auto object-contain rounded-md" />
+              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">Elicit</span>
+            </a>
 
-                  <p className="text-sm text-gray-500 text-center mt-2">
-                    (or buy a{' '}
-                    <a
-                      href="/day-pass"
-                      className="text-amber-800 underline hover:text-amber-900"
-                    >
-                      day pass
-                    </a>
-                    )
-                  </p>
-                </div>
-              </div>
-            </div>
+            <a href="https://aiimpacts.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#2c97cc] hover:bg-[#2383b3] transition-all duration-200 flex items-center justify-center p-3 gap-2 rounded-lg">
+              <img src="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png" alt="AI Impacts logo" className="h-full w-auto object-contain rounded-md" />
+              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">Impacts</span>
+            </a>
+
+            <a href="https://rootsofprogress.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-all duration-200 flex items-center justify-center p-1 gap-1 rounded-lg">
+              <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHZqWt1BOeRcQ/company-logo_200_200/company-logo_200_200/0/1719263296894/rootsofprogress_logo?e=2147483647&v=beta&t=ST2NF9TmGYBHrprrUCW_W1d_ZLnYFU8UCZlFC9-e9vs" alt="Roots of Progress logo" className="h-full w-auto object-contain rounded-md" />
+              <span className="text-xl font-semibold text-white uppercase font-sans tracking-tight leading-none">Roots of Progress</span>
+            </a>
+
+            <a href="https://epoch.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#eaf5f4] hover:bg-[#d5e8e6] transition-all duration-200 flex items-center justify-center p-3 gap-2 rounded-lg">
+              <img src="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg" alt="Epoch logo" className="h-full w-auto object-contain rounded-md" />
+              <span className="text-2xl font-semibold text-gray-900 uppercase font-sans tracking-wide">Epoch</span>
+            </a>
+
+            <a href="https://bluedot.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00104e] hover:bg-[#000c3d] transition-all duration-200 flex items-center justify-center p-3 rounded-lg">
+              <img src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg" alt="BlueDot Impact logo" className="h-full w-auto object-contain" />
+            </a>
+
+            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
+            </a>
+
+            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
+            </a>
+
+            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
+            </a>
+
+            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
+            </a>
+
+            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
+            </a>
+
+            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
+            </a>
+
+            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600 rounded-lg">
+              <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md" />
+              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
+            </a>
           </div>
         </div>
+      </div>
 
-        {/* Events section */}
-        <section className="mt-8 my-16">
-          <EventsPage />
-        </section>
-
-        <section className="mt-8 my-16">
-          <PeoplePage />
-        </section>
-
-        <section className="my-16">
+      {/* The Space section */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <section className="mb-12 sm:mb-16">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
+              The Space
+            </h2>
+            <p className="text-brand-dark dark:text-primary-100 text-sm">A glimpse into our home</p>
+          </div>
           <Gallery />
         </section>
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 border-t border-amber-200 py-8">
-        <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
-          A project of <Link href="https://manifund.org">Manifund</Link>
-          <br />
-          Questions? Contact{' '}
-          <Link href="mailto:austin@manifund.org">austin@manifund.org</Link>
+      <footer className="mt-16 sm:mt-24 py-8 sm:py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-text-tertiary dark:text-text-muted-dark mb-2">
+            A project of <Link href="https://manifund.org">Manifund</Link>
+          </p>
+          <p className="text-text-tertiary dark:text-text-muted-dark">
+            Questions? Contact{' '}
+            <Link href="mailto:rachel@moxsf.com">rachel@moxsf.com</Link>
+          </p>
         </div>
       </footer>
     </div>

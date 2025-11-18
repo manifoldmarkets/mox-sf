@@ -1,0 +1,1 @@
+This project uses Bun as its package manager. Use `bun install`

@@ -52,7 +52,7 @@ function PartnerCard({
           {logoPlaceholder}
         </div>
       )}
-      <h3 className="text-xl font-bold font-castoro text-gray-900">{name}</h3>
+      <h3 className="text-xl font-bold font-merriweather text-gray-900">{name}</h3>
     </a>
   )
 }

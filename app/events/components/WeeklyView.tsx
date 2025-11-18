@@ -32,7 +32,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
 
   return (
     <div
-      className="absolute left-1 right-1 bg-beige-50 border border-amber-100 overflow-hidden"
+      className="absolute left-1 right-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 overflow-hidden rounded-lg"
       style={{
         top: `${top}px`,
         height: `${clampedHeight}px`,
@@ -40,16 +40,16 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
       }}
     >
       <div className="p-2 text-xs">
-        <div className="font-medium text-amber-900 line-clamp-3">
+        <div className="font-medium text-amber-900 dark:text-amber-400 line-clamp-3">
           {event.name}
         </div>
-        <div className="text-amber-800 mt-0.5">
+        <div className="text-amber-800 dark:text-amber-500 mt-0.5">
           {format(start, 'h:mm a').replace(':00', '')}
           {event.endDate &&
             ` - ${format(end, 'h:mm a').replace(':00', '')}`}
         </div>
         {event.location && clampedHeight > 60 && (
-          <div className="text-gray-600 truncate mt-0.5">
+          <div className="text-gray-600 dark:text-gray-400 truncate mt-0.5">
             📍 {event.location}
           </div>
         )}
@@ -68,7 +68,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
   const timeLinePosition = Math.max(0, (currentHour - START_HOUR) * HOUR_HEIGHT)
 
   return (
-    <div className="bg-white border border-amber-100">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
       {/* Header row with days */}
       <div
         className="grid"
@@ -78,14 +78,14 @@ export default function WeeklyView({ events }: { events: Event[] }) {
         {days.map((day) => (
           <div
             key={day.toISOString()}
-            className={`p-4 text-center border-l border-amber-100 ${
-              isSameDay(day, today) ? 'bg-beige-50' : ''
+            className={`p-4 text-center border-l border-gray-200 dark:border-gray-700 ${
+              isSameDay(day, today) ? 'bg-red-50 dark:bg-red-900/30' : ''
             }`}
           >
-            <div className="font-medium text-amber-900">
+            <div className="font-medium text-amber-900 dark:text-amber-400">
               {format(day, 'EEE')}
             </div>
-            <div className="text-sm text-amber-800">{format(day, 'MMM d')}</div>
+            <div className="text-sm text-amber-800 dark:text-amber-500">{format(day, 'MMM d')}</div>
           </div>
         ))}
       </div>
@@ -100,7 +100,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
           {HOURS.map((hour) => (
             <div
               key={hour}
-              className="absolute w-full text-right pr-2 text-sm text-gray-500"
+              className="absolute w-full text-right pr-2 text-sm text-gray-500 dark:text-gray-400"
               style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
             >
               {format(new Date().setHours(hour, 0), 'h a')}
@@ -119,14 +119,14 @@ export default function WeeklyView({ events }: { events: Event[] }) {
           return (
             <div
               key={day.toISOString()}
-              className="relative border-l border-amber-100"
+              className="relative border-l border-gray-200"
               style={{ height: `${HOURS.length * HOUR_HEIGHT}px` }}
             >
               {/* Hour lines */}
               {HOURS.map((hour) => (
                 <div
                   key={hour}
-                  className="absolute w-full border-t border-amber-100/50"
+                  className="absolute w-full border-t border-gray-200/50"
                   style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
                 />
               ))}
@@ -136,10 +136,10 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                 currentHour >= START_HOUR &&
                 currentHour <= END_HOUR && (
                   <div
-                    className="absolute w-full border-t-2 border-amber-500 z-10"
+                    className="absolute w-full border-t-2 border-red-600 z-10"
                     style={{ top: `${timeLinePosition}px` }}
                   >
-                    <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-amber-500" />
+                    <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-red-600" />
                   </div>
                 )}
 
