@@ -172,6 +172,13 @@
 
 /* Metallophile font styling */
 .font-playfair {
-  font-weight: 500;
+  font-family: metallophile-sp8, sans-serif;
+  font-weight: 300;
   font-style: normal;
+}
+
+/* Apply metallophile globally as main font */
+body {
+  font-family: metallophile-sp8, sans-serif;
+  font-weight: 300;
 }
