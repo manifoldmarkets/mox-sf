@@ -3,7 +3,7 @@
 
 @theme {
   /* Fonts */
-  --font-display: metallophile-sp8, sans-serif;
+  --font-playfair: var(--font-playfair);
   --font-lora: var(--font-lora);
   --font-merriweather: var(--font-merriweather);
   --font-geist-mono: var(--font-geist-mono);
@@ -28,10 +28,10 @@
   /* ============================================ */
   /* SEMANTIC BRAND ALIASES */
   /* ============================================ */
-  --color-brand: #115e59;
-  --color-brand-light: #0d9488;
-  --color-brand-dark: #134e4a;
-  --color-brand-dark-mode: #2dd4bf;
+  --color-brand: #78350f;
+  --color-brand-light: #92400e;
+  --color-brand-dark: #451a03;
+  --color-brand-dark-mode: #d97706;
 
   /* ============================================ */
   /* SECONDARY ACCENT (ORANGE) */
@@ -52,13 +52,13 @@
   /* ============================================ */
   --color-background-page: #f8fafc;
   --color-background-page-warm: #f8fafc;
-  --color-background-page-dark: #021716;
+  --color-background-page-dark: #1c0f0a;
   --color-background-surface: #ffffff;
-  --color-background-surface-dark: #0a3432;
+  --color-background-surface-dark: #2d1810;
   --color-background-accent: #fff4e6;
-  --color-background-accent-dark: #0a3432;
+  --color-background-accent-dark: #2d1810;
   --color-background-subtle: #d1d5db;
-  --color-background-subtle-dark: #115e59;
+  --color-background-subtle-dark: #78350f;
 
   /* ============================================ */
   /* SEMANTIC TEXT COLORS */
@@ -170,19 +170,7 @@
   }
 }
 
-/* Metallophile font styling for headings/display text */
+/* Map font-display class to Playfair Display font */
 .font-display {
-  font-family: metallophile-sp8, sans-serif;
-  font-weight: 300;
-  font-style: normal;
-}
-
-/* Medium weight (500) for bold headings and emphasized text */
-h1.font-display,
-h2.font-display,
-h3.font-display,
-h4.font-display,
-h5.font-display,
-h6.font-display {
-  font-weight: 500;
+  font-family: var(--font-playfair);
 }

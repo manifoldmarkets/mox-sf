@@ -530,7 +530,7 @@ export default function EventHostingPage() {
             <div className="mt-8 text-center">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="text-brand dark:text-brand-dark-mode hover:text-brand-dark dark:hover:text-primary-500 underline text-sm cursor-pointer"
+                className="text-brand dark:text-brand-dark-mode hover:text-brand-dark dark:hover:text-amber-600 underline text-sm cursor-pointer"
               >
                 Clear filter to see all events
               </button>
@@ -821,7 +821,7 @@ export default function EventHostingPage() {
                 <strong>Email:</strong>{' '}
                 <a
                   href="mailto:rachel@moxsf.com"
-                  className="text-brand dark:text-brand-dark-mode hover:text-brand-dark dark:hover:text-primary-500 underline"
+                  className="text-brand dark:text-brand-dark-mode hover:text-brand-dark dark:hover:text-amber-600 underline"
                 >
                   rachel@moxsf.com
                 </a>

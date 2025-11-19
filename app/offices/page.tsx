@@ -18,7 +18,7 @@ function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-brand dark:text-brand-dark-mode hover:text-primary-600 dark:hover:text-primary-300 underline decoration-dotted underline-offset-2 ${className}`}
+      className={`text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 underline decoration-dotted underline-offset-2 ${className}`}
     >
       {children}
     </a>
@@ -35,7 +35,7 @@ export default function OfficesPage() {
           style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
         />
         <div className="relative z-10 max-w-4xl w-full text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-brand dark:text-brand-dark-mode font-display mb-6">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-gray-200 font-display mb-6">
             Office Space at Mox
           </h1>
           <p className="text-xl sm:text-2xl text-text-secondary dark:text-text-secondary-dark leading-relaxed mb-4">
@@ -51,14 +51,14 @@ export default function OfficesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
         {/* Private Offices */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden">
+          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-amber-900 dark:border-amber-800">
             <img
               src="/images/005.jpg"
               alt="Private office at Mox"
               className="w-full h-64 object-cover"
             />
             <div className="p-6 sm:p-8">
-              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-3">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-200 font-display mb-3">
                 Private Offices
               </h2>
               <p className="text-lg text-text-secondary dark:text-text-secondary-dark mb-2 font-semibold">
@@ -73,31 +73,31 @@ export default function OfficesPage() {
               </h3>
               <ul className="space-y-2 mb-6 text-text-secondary dark:text-text-secondary-dark">
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Lockable private office space</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Desks and monitors for your team</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>24/7 building access</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Shared meeting rooms and call booths</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Kitchen access with subsidized meals through Forkable</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Full member benefits (gym access, community events, coworking areas)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>High-speed internet and utilities</span>
                 </li>
               </ul>
@@ -121,14 +121,14 @@ export default function OfficesPage() {
 
         {/* Dedicated Desks */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden">
+          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-amber-900 dark:border-amber-800">
             <img
               src="/images/003.jpg"
               alt="Dedicated desks at Mox"
               className="w-full h-64 object-cover"
             />
             <div className="p-6 sm:p-8">
-              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-3">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-200 font-display mb-3">
                 Dedicated Desks
               </h2>
               <p className="text-lg text-text-secondary dark:text-text-secondary-dark mb-2 font-semibold">
@@ -143,27 +143,27 @@ export default function OfficesPage() {
               </h3>
               <ul className="space-y-2 mb-6 text-text-secondary dark:text-text-secondary-dark">
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Your own desk with monitor</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>24/7 access to your desk and coworking areas</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Shared meeting rooms and call booths</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Kitchen access with subsidized meals through Forkable</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Full member benefits (gym access, community events)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>High-speed internet</span>
                 </li>
               </ul>
@@ -184,14 +184,14 @@ export default function OfficesPage() {
 
         {/* For Cohorts & Programs */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden">
+          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-amber-900 dark:border-amber-800">
             <img
               src="/images/021.jpg"
               alt="Cohorts and programs at Mox"
               className="w-full h-64 object-cover"
             />
             <div className="p-6 sm:p-8">
-              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-3">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-200 font-display mb-3">
                 For Cohorts & Programs
               </h2>
               <p className="text-lg text-text-secondary dark:text-text-secondary-dark mb-2 font-semibold">
@@ -206,27 +206,27 @@ export default function OfficesPage() {
               </h3>
               <ul className="space-y-2 mb-6 text-text-secondary dark:text-text-secondary-dark">
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Dedicated desk space with monitors for your cohort</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Private office(s) for program staff or advisor sessions</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Shared meeting rooms for workshops and group sessions</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Lunch and dinner catering through Forkable (~$15-20 per meal)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Integration with Mox's broader community</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-brand dark:text-brand-dark-mode mt-1">•</span>
+                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
                   <span>Flexible arrangements for program duration</span>
                 </li>
               </ul>
@@ -246,7 +246,7 @@ export default function OfficesPage() {
 
         {/* What Makes Mox Different */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-200 font-display mb-6 text-center">
             What Makes Mox Different
           </h2>
           <div className="space-y-6">
@@ -279,7 +279,7 @@ export default function OfficesPage() {
 
         {/* FAQs */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-200 font-display mb-6 text-center">
             FAQs
           </h2>
           <div className="space-y-4">
@@ -328,7 +328,7 @@ export default function OfficesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="mailto:rachel@moxsf.com?subject=Office Space Inquiry"
-              className="px-8 py-4 bg-brand dark:bg-brand text-white font-semibold hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors text-center"
+              className="px-8 py-4 bg-amber-900 dark:bg-amber-900 text-white font-semibold hover:bg-amber-800 dark:hover:bg-amber-800 transition-colors text-center"
             >
               Inquire about office space
             </a>
@@ -336,7 +336,7 @@ export default function OfficesPage() {
               href="https://calendly.com/rachelshu/mox-30m"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong text-brand dark:text-brand-dark-mode font-semibold hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors text-center"
+              className="px-8 py-4 bg-background-surface dark:bg-background-subtle-dark border border-amber-900 dark:border-amber-800 text-gray-700 dark:text-gray-300 font-semibold hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors text-center"
             >
               Schedule a tour
             </a>

@@ -29,12 +29,12 @@ export default async function Component() {
   const events = await getEvents()
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-primary-950 text-text-primary dark:text-text-primary-dark">
+    <div className="min-h-screen bg-slate-50 dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark">
       {/* Top navigation with login */}
       <nav className="fixed top-0 right-0 z-50 p-4">
         <a
           href="/portal"
-          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-primary-700 hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
+          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
           aria-label="Login to member portal"
         >
           <svg className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,7 +55,7 @@ export default async function Component() {
       </a> */}
 
       {/* Hero section */}
-      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-slate-50 dark:bg-primary-950">
+      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-slate-50 dark:bg-background-page-dark">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 dark:invert"
           style={{
@@ -71,13 +71,13 @@ export default async function Component() {
               alt="Mox"
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
-            <p className="text-2xl mb-4 leading-relaxed text-gray-700 dark:text-primary-50 font-display font-light">
-              An incubator & community space for <b className="font-medium"><em>doers of good</em></b> and <b className="font-medium"><em>masters of craft</em></b>.
+            <p className="text-xl mb-4 leading-relaxed text-gray-700 dark:text-gray-200">
+              An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
             </p>
-            <p className="text-lg text-gray-700 dark:text-primary-100">
+            <p className="text-lg text-gray-700 dark:text-gray-300">
               <Link
                 href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco"
-                className="dark:!text-primary-200 dark:hover:!text-primary-50"
+                className="dark:!text-gray-300 dark:hover:!text-gray-100"
               >
                 1680 Mission Street, San Francisco
               </Link>
@@ -99,7 +99,7 @@ export default async function Component() {
                 <div className="flex-1">
                   <EventsCardCompact events={events} />
                 </div>
-                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
                     href="/events"
                     className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
@@ -136,13 +136,13 @@ export default async function Component() {
                   'Community builders',
                   'Members of technical and untechnical staff'
                 ].map((label) => (
-                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border border-primary-700 dark:border-primary-600 px-3 py-1 flex items-center">
+                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 px-3 py-1 flex items-center">
                     <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">{label}</p>
                   </div>
                 ))}
               </div>
 
-                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
                     href="#people"
                     className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
@@ -187,7 +187,7 @@ export default async function Component() {
                     Buy a day pass
                   </a>
                 </div>
-                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
                     href="/portal/login"
                     className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
@@ -208,12 +208,8 @@ export default async function Component() {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-display mb-2">
               Humans of Mox
             </h2>
-            <p className="text-gray-700 dark:text-primary-100 text-sm">The community that makes Mox special</p>
+            <p className="text-gray-700 dark:text-gray-300 text-sm">The community that makes Mox special</p>
           </div>
-          <PeopleGallery />
-        </section>
-
-        <section className="mb-12 sm:mb-16">
           <PeopleContent />
         </section>
       </div>
@@ -224,7 +220,7 @@ export default async function Component() {
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
             Partner Orgs
           </h2>
-          <p className="text-center text-gray-700 dark:text-primary-100 text-sm mb-8">
+          <p className="text-center text-gray-700 dark:text-gray-300 text-sm mb-8">
             Learn more about our <a
               href="https://moxsf.com/guest-program"
               target="_blank"
@@ -269,37 +265,37 @@ export default async function Component() {
               <img src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg" alt="BlueDot Impact logo" className="h-full w-auto object-contain" />
             </a>
 
-            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
             </a>
 
-            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
             </a>
 
-            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
             </a>
 
-            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
             </a>
 
-            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
             </a>
 
-            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
             </a>
 
-            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
+            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
             </a>
@@ -314,9 +310,13 @@ export default async function Component() {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-display mb-2">
               The Space
             </h2>
-            <p className="text-gray-700 dark:text-primary-100 text-sm">A glimpse into our home</p>
+            <p className="text-gray-700 dark:text-gray-300 text-sm">A glimpse into our home</p>
           </div>
           <Gallery />
+        </section>
+
+        <section className="mb-12 sm:mb-16">
+          <PeopleGallery />
         </section>
       </div>
 

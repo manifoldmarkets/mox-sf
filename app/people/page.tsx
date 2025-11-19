@@ -48,13 +48,13 @@ export default async function PeoplePage() {
   */
 
   return (
-    <div className="min-h-screen bg-primary-950 py-12">
+    <div className="min-h-screen bg-background-page-dark py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-white font-display mb-2">
             Humans of Mox
           </h2>
-          <p className="text-primary-100 text-sm">The community that makes Mox special</p>
+          <p className="text-gray-300 text-sm">The community that makes Mox special</p>
         </div>
         <PeopleContent />
       </div>

@@ -63,7 +63,7 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
           const photoUrl = getOptimizedPhotoUrl(person)
           const content = (
             <div className="flex flex-col items-center w-24 sm:w-28 md:w-32">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 overflow-hidden bg-secondary-100 dark:bg-amber-900 mb-1 shrink-0">
                 {photoUrl ? (
                   <img
                     src={photoUrl}
@@ -73,7 +73,7 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
                     className="w-full h-full object-cover object-center"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-primary-400">
+                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-amber-700">
                     {person.name.charAt(0)}
                   </div>
                 )}
@@ -116,8 +116,8 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
         const baseClasses =
           'border px-3 py-1 transition-all duration-700 ease-in-out'
         const colorClasses = isEmphasized
-          ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-900 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/50'
-          : 'bg-background-surface dark:bg-transparent border-amber-900 dark:border-primary-700'
+          ? 'bg-amber-50 dark:bg-amber-900/30 border-amber-900 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50'
+          : 'bg-background-surface dark:bg-transparent border-amber-900 dark:border-amber-800'
 
         const fontWeight = isEmphasized ? 'font-extrabold' : 'font-semibold'
 

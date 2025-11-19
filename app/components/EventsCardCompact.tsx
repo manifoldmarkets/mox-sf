@@ -68,9 +68,9 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
             <Link
               key={event.id}
               href="/events"
-              className="flex items-center bg-background-surface dark:bg-background-surface-dark hover:bg-secondary-50 dark:hover:bg-background-subtle-dark transition-colors border border-secondary-200 dark:border-secondary-700 overflow-hidden"
+              className="flex items-center bg-background-surface dark:bg-background-surface-dark hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors border border-amber-900 dark:border-amber-800 overflow-hidden"
             >
-              <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-secondary-600 dark:bg-secondary-700 font-sans flex flex-col items-center justify-center gap-0">
+              <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-amber-900 dark:bg-amber-900 font-sans flex flex-col items-center justify-center gap-0">
                 <div className="text-sm font-bold text-white uppercase leading-none">
                   {day}
                 </div>
@@ -81,7 +81,7 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
               <h3 className="text-sm font-semibold text-text-primary dark:text-text-primary-dark leading-tight flex-1 px-2 py-1.5 truncate">
                 {event.name}
               </h3>
-              <div className="flex-shrink-0 pr-3 text-secondary-600 dark:text-secondary-500">
+              <div className="flex-shrink-0 pr-3 text-amber-900 dark:text-amber-700">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
