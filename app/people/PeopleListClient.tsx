@@ -116,8 +116,8 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
         const baseClasses =
           'border px-3 py-1 transition-all duration-700 ease-in-out'
         const colorClasses = isEmphasized
-          ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-600 dark:border-secondary-500 hover:bg-secondary-200 dark:hover:bg-secondary-900/50'
-          : 'bg-background-surface dark:bg-transparent border-secondary-600 dark:border-primary-700'
+          ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-900 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/50'
+          : 'bg-background-surface dark:bg-transparent border-amber-900 dark:border-primary-700'
 
         const fontWeight = isEmphasized ? 'font-extrabold' : 'font-semibold'
 

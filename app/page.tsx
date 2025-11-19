@@ -18,7 +18,7 @@ function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2 ${className}`}
+      className={`text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2 ${className}`}
     >
       {children}
     </a>
@@ -34,7 +34,7 @@ export default async function Component() {
       <nav className="fixed top-0 right-0 z-50 p-4">
         <a
           href="/portal"
-          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-secondary-200 dark:border-primary-700 hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
+          className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-primary-700 hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
           aria-label="Login to member portal"
         >
           <svg className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,10 +99,10 @@ export default async function Component() {
                 <div className="flex-1">
                   <EventsCardCompact events={events} />
                 </div>
-                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-primary-700">
                   <a
                     href="/events"
-                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
                     See all events →
                   </a>
@@ -142,10 +142,10 @@ export default async function Component() {
                 ))}
               </div>
 
-                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-primary-700">
                   <a
                     href="#people"
-                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
                     See people →
                   </a>
@@ -170,27 +170,27 @@ export default async function Component() {
                     href="/apply"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 text-sm text-center bg-secondary-600 dark:bg-secondary-700 text-white font-semibold hover:bg-secondary-700 dark:hover:bg-secondary-600 transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-amber-900 dark:bg-amber-800 text-white font-semibold hover:bg-amber-800 dark:hover:bg-amber-900 transition-colors"
                   >
                     Apply for membership
                   </a>
                   <a
                     href="/offices"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 text-amber-900 dark:text-amber-700 font-semibold hover:bg-amber-50 dark:hover:bg-border-medium-dark transition-colors"
                   >
                     Inquire about offices
                   </a>
                   <a
                     href="/day-pass"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 text-amber-900 dark:text-amber-700 font-semibold hover:bg-amber-50 dark:hover:bg-border-medium-dark transition-colors"
                   >
                     Buy a day pass
                   </a>
                 </div>
-                <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
+                <div className="mt-4 pt-4 border-t border-amber-900 dark:border-primary-700">
                   <a
                     href="/portal/login"
-                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
                     Member Portal →
                   </a>
@@ -229,7 +229,7 @@ export default async function Component() {
               href="https://moxsf.com/guest-program"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2 font-semibold"
+              className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2 font-semibold"
             >guest program</a>
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -269,37 +269,37 @@ export default async function Component() {
               <img src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg" alt="BlueDot Impact logo" className="h-full w-auto object-contain" />
             </a>
 
-            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
             </a>
 
-            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
             </a>
 
-            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
             </a>
 
-            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
             </a>
 
-            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
             </a>
 
-            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
             </a>
 
-            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
+            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-primary-600">
               <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
             </a>
