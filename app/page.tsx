@@ -136,7 +136,7 @@ export default async function Component() {
                   'Community builders',
                   'Members of technical and untechnical staff'
                 ].map((label) => (
-                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border-2 border-primary-700 dark:border-primary-600 px-3 py-1 flex items-center">
+                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border border-primary-700 dark:border-primary-600 px-3 py-1 flex items-center">
                     <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">{label}</p>
                   </div>
                 ))}
@@ -176,13 +176,13 @@ export default async function Component() {
                   </a>
                   <a
                     href="/offices"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors"
                   >
                     Inquire about offices
                   </a>
                   <a
                     href="/day-pass"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors"
                   >
                     Buy a day pass
                   </a>
@@ -269,37 +269,37 @@ export default async function Component() {
               <img src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg" alt="BlueDot Impact logo" className="h-full w-auto object-contain" />
             </a>
 
-            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
             </a>
 
-            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
             </a>
 
-            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
             </a>
 
-            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
             </a>
 
-            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
             </a>
 
-            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
             </a>
 
-            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border-2 border-secondary-600 dark:border-primary-600">
+            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-secondary-600 dark:border-primary-600">
               <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
               <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
             </a>

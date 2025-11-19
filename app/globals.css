@@ -3,7 +3,7 @@
 
 @theme {
   /* Fonts */
-  --font-playfair: var(--font-playfair);
+  --font-playfair: metallophile-sp8, sans-serif;
   --font-lora: var(--font-lora);
   --font-merriweather: var(--font-merriweather);
   --font-geist-mono: var(--font-geist-mono);

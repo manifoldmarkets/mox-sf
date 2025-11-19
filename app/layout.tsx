@@ -76,6 +76,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/rte2kgi.css" />
+      </head>
       <body
         className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-merriweather`}
       >
