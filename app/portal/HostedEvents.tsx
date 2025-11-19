@@ -161,7 +161,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
   if (loading) {
     return (
       <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">{SECTION_TITLE}</h2>
         <p className="text-sm text-text-muted dark:text-text-muted-dark">Loading events...</p>
       </div>
     );
@@ -170,7 +170,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
   if (error) {
     return (
       <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">{SECTION_TITLE}</h2>
         <p className="text-sm text-error-text dark:text-error-text-dark">{error}</p>
       </div>
     );
@@ -179,7 +179,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
   if (events.length === 0) {
     return (
       <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">{SECTION_TITLE}</h2>
         <p className="text-sm text-text-muted dark:text-text-muted-dark mb-4">You don't have any upcoming events</p>
         <a
           href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
@@ -197,7 +197,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
     <>
       <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair">{SECTION_TITLE}</h2>
+          <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-display">{SECTION_TITLE}</h2>
           <a
             href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
             target="_blank"

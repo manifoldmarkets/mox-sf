@@ -51,7 +51,7 @@ export default async function PeoplePage() {
     <div className="min-h-screen bg-primary-950 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-white font-playfair mb-2">
+          <h2 className="text-3xl font-bold text-white font-display mb-2">
             Humans of Mox
           </h2>
           <p className="text-primary-100 text-sm">The community that makes Mox special</p>
@@ -68,7 +68,7 @@ export default async function PeoplePage() {
 
       {seldonPeople.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
+          <h2 className="text-lg font-display text-center font-semibold mb-4">
             Seldon Accelerator
           </h2>
           {renderPeopleList(seldonPeople)}
@@ -77,7 +77,7 @@ export default async function PeoplePage() {
 
       {pibbssPeople.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
+          <h2 className="text-lg font-display text-center font-semibold mb-4">
             PIBBSS
           </h2>
           {renderPeopleList(pibbssPeople)}
@@ -86,7 +86,7 @@ export default async function PeoplePage() {
 
       {flfPeople.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-playfair text-center font-semibold mb-4">
+          <h2 className="text-lg font-display text-center font-semibold mb-4">
             FLF Fellowship
           </h2>
           {renderPeopleList(flfPeople)}

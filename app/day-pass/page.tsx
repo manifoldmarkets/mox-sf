@@ -25,7 +25,7 @@ export default function DayPassPage() {
       {/* Hero section */}
       <div className="max-w-3xl mx-auto pt-20 px-6">
         <div className="text-center mb-20">
-          <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
+          <h1 className="text-4xl font-bold mb-6 font-display text-amber-900">
             Mox Day Passes
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -36,7 +36,7 @@ export default function DayPassPage() {
 
         {/* What's included */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-8 text-center font-playfair">
+          <h2 className="text-2xl font-bold mb-8 text-center font-display">
             What's included
           </h2>
           <div className="bg-white p-8 border border-gray-200 shadow-sm">
@@ -57,7 +57,7 @@ export default function DayPassPage() {
           {/* Full Day Pass */}
           <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
 
-            <h2 className="text-2xl font-bold mb-4 font-playfair text-amber-900">
+            <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
               Mox Day Pass
             </h2>
             <div className="text-3xl font-bold text-gray-800 mb-6">
@@ -84,7 +84,7 @@ export default function DayPassPage() {
           {/* Happy Hour Pass */}
           <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
 
-            <h2 className="text-2xl font-bold mb-4 font-playfair text-amber-900">
+            <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
               Happy Hour Pass
             </h2>
             <div className="text-3xl font-bold text-gray-800 mb-6">

@@ -92,7 +92,7 @@ function ActivatePageContent() {
               <span className="text-green-600 text-2xl">✓</span>
             </div>
 
-            <h1 className="text-3xl font-bold mb-4 font-playfair text-green-700">
+            <h1 className="text-3xl font-bold mb-4 font-display text-green-700">
               Welcome to Mox, {userName}!
             </h1>
 
@@ -156,7 +156,7 @@ function ActivatePageContent() {
               <span className="text-orange-600 text-2xl">⚠</span>
             </div>
 
-            <h1 className="text-3xl font-bold mb-4 font-playfair text-orange-700">
+            <h1 className="text-3xl font-bold mb-4 font-display text-orange-700">
               Pass Expired
             </h1>
 
@@ -185,7 +185,7 @@ function ActivatePageContent() {
               <span className="text-red-600 text-2xl">✗</span>
             </div>
 
-            <h1 className="text-3xl font-bold mb-4 font-playfair text-red-700">
+            <h1 className="text-3xl font-bold mb-4 font-display text-red-700">
               Pass Not Found
             </h1>
 
@@ -214,7 +214,7 @@ function ActivatePageContent() {
             <span className="text-red-600 text-2xl">!</span>
           </div>
 
-          <h1 className="text-3xl font-bold mb-4 font-playfair text-red-700">
+          <h1 className="text-3xl font-bold mb-4 font-display text-red-700">
             Something Went Wrong
           </h1>
 

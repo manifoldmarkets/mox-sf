@@ -42,7 +42,7 @@ export default function HacksClient({ initialProjects }: HacksClientProps) {
   return (
     <div className="min-h-screen bg-[#f9f6f0] p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 text-amber-900 font-playfair">
+        <h1 className="text-3xl font-bold mb-4 text-amber-900 font-display">
           AI for Epistemics: Hackathon Showcase
         </h1>
         {/* <h2 className="text-lg mb-6 text-amber-800">

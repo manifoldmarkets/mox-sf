@@ -35,7 +35,7 @@ export default function OfficesPage() {
           style={{ backgroundImage: 'url(/images/mox_sketch.png)' }}
         />
         <div className="relative z-10 max-w-4xl w-full text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-6">
+          <h1 className="text-4xl sm:text-5xl font-bold text-brand dark:text-brand-dark-mode font-display mb-6">
             Office Space at Mox
           </h1>
           <p className="text-xl sm:text-2xl text-text-secondary dark:text-text-secondary-dark leading-relaxed mb-4">
@@ -58,7 +58,7 @@ export default function OfficesPage() {
               className="w-full h-64 object-cover"
             />
             <div className="p-6 sm:p-8">
-              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-3">
+              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-3">
                 Private Offices
               </h2>
               <p className="text-lg text-text-secondary dark:text-text-secondary-dark mb-2 font-semibold">
@@ -128,7 +128,7 @@ export default function OfficesPage() {
               className="w-full h-64 object-cover"
             />
             <div className="p-6 sm:p-8">
-              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-3">
+              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-3">
                 Dedicated Desks
               </h2>
               <p className="text-lg text-text-secondary dark:text-text-secondary-dark mb-2 font-semibold">
@@ -191,7 +191,7 @@ export default function OfficesPage() {
               className="w-full h-64 object-cover"
             />
             <div className="p-6 sm:p-8">
-              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-3">
+              <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-3">
                 For Cohorts & Programs
               </h2>
               <p className="text-lg text-text-secondary dark:text-text-secondary-dark mb-2 font-semibold">
@@ -246,7 +246,7 @@ export default function OfficesPage() {
 
         {/* What Makes Mox Different */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-6 text-center">
+          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-6 text-center">
             What Makes Mox Different
           </h2>
           <div className="space-y-6">
@@ -279,7 +279,7 @@ export default function OfficesPage() {
 
         {/* FAQs */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-playfair mb-6 text-center">
+          <h2 className="text-3xl font-bold text-brand dark:text-brand-dark-mode font-display mb-6 text-center">
             FAQs
           </h2>
           <div className="space-y-4">
@@ -322,7 +322,7 @@ export default function OfficesPage() {
 
         {/* CTA Section */}
         <section className="text-center">
-          <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-playfair mb-6">
+          <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-400 font-display mb-6">
             Ready to Join?
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

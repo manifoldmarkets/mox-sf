@@ -70,7 +70,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background-page dark:bg-background-page-dark px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-brand dark:text-brand-dark-mode mb-2 font-playfair">Member Portal</h1>
+          <h1 className="text-3xl font-bold text-brand dark:text-brand-dark-mode mb-2 font-display">Member Portal</h1>
           <p className="text-text-tertiary dark:text-text-tertiary-dark font-sans">Sign in to edit your profile and manage your membership</p>
         </div>
 

@@ -72,7 +72,7 @@ export default function GuestsPage() {
       {/* Hero section */}
       <div className="max-w-4xl mx-auto pt-20 px-6">
         <div className="text-center mb-20">
-          <h1 className="text-5xl font-bold font-playfair mb-6">
+          <h1 className="text-5xl font-bold font-display mb-6">
             Mox Guest Program
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -86,7 +86,7 @@ export default function GuestsPage() {
             <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
             <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
 
-            {/* <h2 className="text-3xl font-bold mb-12 text-center font-playfair">
+            {/* <h2 className="text-3xl font-bold mb-12 text-center font-display">
               What Mox offers guests
             </h2> */}
             <div className="grid md:grid-cols-3 gap-8">
@@ -165,7 +165,7 @@ export default function GuestsPage() {
 
         {/* Partner organizations */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
+          <h2 className="text-3xl font-bold mb-8 text-center font-display">
             Our partners include
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-4xl mx-auto">
@@ -266,7 +266,7 @@ export default function GuestsPage() {
         <div className="grid md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
           {/* For Organizations */}
           <div className="bg-white p-8 border border-amber-700 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 font-display">
               Partner with Mox
             </h2>
             <p className="text-gray-600 mb-6">
@@ -304,7 +304,7 @@ export default function GuestsPage() {
 
           {/* For Individuals */}
           {/* <div className="bg-white p-8 border border-amber-700 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 font-display">
               For individuals
             </h2>
             <p className="text-gray-600 mb-6">
@@ -366,7 +366,7 @@ export default function GuestsPage() {
 
         {/* Testimonials section */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold mb-8 text-center font-playfair">
+          <h2 className="text-3xl font-bold mb-8 text-center font-display">
             What people say about Mox
           </h2>
 
@@ -397,7 +397,7 @@ export default function GuestsPage() {
         {/* Why this program section */}
         {/* <section className="mb-20">
           <div className="bg-amber-50 p-8 border-l-4 border-amber-800">
-            <h2 className="text-2xl font-bold mb-6 font-playfair">
+            <h2 className="text-2xl font-bold mb-6 font-display">
               Why this guest program?
             </h2>
             <div className="space-y-4 text-gray-700">
@@ -428,7 +428,7 @@ export default function GuestsPage() {
 
         {/* Resources section */}
         <section className="mb-20">
-          <h2 className="text-2xl font-bold mb-8 text-center font-playfair">
+          <h2 className="text-2xl font-bold mb-8 text-center font-display">
             Resources for guests
           </h2>
           <div className="grid md:grid-cols-2 gap-8">

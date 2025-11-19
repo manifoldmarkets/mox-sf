@@ -3,7 +3,7 @@
 
 @theme {
   /* Fonts */
-  --font-playfair: metallophile-sp8, sans-serif;
+  --font-display: metallophile-sp8, sans-serif;
   --font-lora: var(--font-lora);
   --font-merriweather: var(--font-merriweather);
   --font-geist-mono: var(--font-geist-mono);
@@ -171,7 +171,7 @@
 }
 
 /* Metallophile font styling for headings/display text */
-.font-playfair {
+.font-display {
   font-family: metallophile-sp8, sans-serif;
   font-weight: 500;
   font-style: normal;

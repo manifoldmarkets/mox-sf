@@ -76,7 +76,7 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
   if (loading) {
     return (
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 mb-8">
-        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">Subscription</h2>
+        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-display">Subscription</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">Loading subscription details...</p>
       </div>
     );
@@ -85,7 +85,7 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
   if (!stripeCustomerId || error) {
     return (
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 mb-8">
-        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-playfair">Subscription</h2>
+        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-4 font-display">Subscription</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">No active subscription found</p>
       </div>
     );
@@ -105,7 +105,7 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
   return (
     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 sm:p-6 mb-4 sm:mb-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-playfair">Subscription</h2>
+        <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 font-display">Subscription</h2>
         <button
           onClick={handleManageBilling}
           disabled={billingLoading}

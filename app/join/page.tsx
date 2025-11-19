@@ -14,7 +14,7 @@ export function JoinContent(props: {
         {/* Main intro */}
         {firstName ? (
           <div className="mb-16">
-            <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
+            <h1 className="text-4xl font-bold mb-6 font-display text-amber-900">
               Join Mox?
             </h1>
             <p className="text-lg text-gray-700">
@@ -26,7 +26,7 @@ export function JoinContent(props: {
           </div>
         ) : (
           <div className="mb-16">
-            <h1 className="text-4xl font-bold mb-6 font-playfair text-amber-900">
+            <h1 className="text-4xl font-bold mb-6 font-display text-amber-900">
               Memberships at Mox
             </h1>
           </div>
@@ -35,7 +35,7 @@ export function JoinContent(props: {
         {/* FAQ Sections */}
         <div className="space-y-12 mb-16">
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
               Which membership is right for me?
             </h2>
             <p className="text-gray-700">
@@ -67,7 +67,7 @@ export function JoinContent(props: {
 
           {specialInvite === 'friend-of-mythos' && (
             <div className="border border-amber-800 p-6 max-w-4xl mx-auto mt-8">
-              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+              <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
                 Friend of Mythos
               </h2>
               <p className="text-gray-700 mb-4">
@@ -84,7 +84,7 @@ export function JoinContent(props: {
           )}
 
           {/* <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
               Mox is in beta — what does that mean?
             </h2>
             <p className="text-gray-700">
@@ -102,7 +102,7 @@ export function JoinContent(props: {
           </section> */}
 
           {/* <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
               Why is membership so cheap?
             </h2>
             <p className="text-gray-700">
@@ -127,7 +127,7 @@ export function JoinContent(props: {
           </section> */}
 
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
               What is the guest policy?
             </h2>
             <p className="text-gray-700">
@@ -152,7 +152,7 @@ export function JoinContent(props: {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
               How do I manage my membership?
             </h2>
             <p className="text-gray-700 mb-4">
@@ -170,7 +170,7 @@ export function JoinContent(props: {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-playfair">
+            <h2 className="text-2xl font-bold mb-4 text-amber-900 font-display">
               What about private offices?
             </h2>
             <p className="text-gray-700">
@@ -216,7 +216,7 @@ export function JoinContent(props: {
                   key={tier.type}
                   className="text-center p-8 border border-gray-200"
                 >
-                  <h3 className="text-2xl font-playfair text-amber-900 mb-4">
+                  <h3 className="text-2xl font-display text-amber-900 mb-4">
                     {tier.type}
                   </h3>
                   <p className="text-3xl font-bold text-gray-800 mb-2">
@@ -335,7 +335,7 @@ export default function JoinPage() {
           <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-amber-800"></div>
 
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-8 font-playfair text-amber-900">
+            <h1 className="text-3xl font-bold mb-8 font-display text-amber-900">
               You're invited to join Mox
             </h1>
 

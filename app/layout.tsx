@@ -10,7 +10,7 @@ import { Analytics } from '@vercel/analytics/react'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-display',
 })
 
 const lora = Lora({

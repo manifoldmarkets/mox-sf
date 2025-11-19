@@ -104,7 +104,7 @@ export default async function DashboardPage() {
 
             <div id="profile" className="scroll-mt-8">
               <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-6">
-                <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">Profile</h1>
+                <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-display">Profile</h1>
                 <ProfileEditForm profile={profile} userId={session.userId} />
               </div>
             </div>

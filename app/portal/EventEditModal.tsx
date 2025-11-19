@@ -91,7 +91,7 @@ export default function EventEditModal({
         <DialogPanel className="w-full h-full lg:h-auto lg:max-w-2xl lg:rounded-lg bg-background-surface dark:bg-background-surface-dark flex flex-col lg:block lg:overflow-y-auto lg:shadow-xl lg:max-h-[90vh]">
           {/* Mobile header with close button */}
           <div className="lg:hidden flex-shrink-0 bg-background-surface dark:bg-background-surface-dark border-b border-border-light dark:border-border-light-dark px-4 py-3 flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair">
+            <DialogTitle className="text-xl font-bold text-brand dark:text-brand-dark-mode font-display">
               Edit Event
             </DialogTitle>
             <button
@@ -106,7 +106,7 @@ export default function EventEditModal({
 
           {/* Desktop header */}
           <div className="hidden lg:block p-6 sm:p-8">
-            <DialogTitle className="text-2xl sm:text-3xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">
+            <DialogTitle className="text-2xl sm:text-3xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-display">
               Edit Event
             </DialogTitle>
           </div>

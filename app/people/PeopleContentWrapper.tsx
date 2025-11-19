@@ -44,7 +44,7 @@ export default function PeopleContentWrapper({
 
       {members.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-brand dark:text-white font-display mb-4 text-center">
             Members
           </h3>
           <PeopleListClient people={members} showFaces={showFaces} />
@@ -53,7 +53,7 @@ export default function PeopleContentWrapper({
 
       {privateOffices.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-brand dark:text-white font-display mb-4 text-center">
             Private Offices
           </h3>
           <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4">
@@ -83,7 +83,7 @@ export default function PeopleContentWrapper({
 
       {staff.length > 0 && (
         <div>
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-brand dark:text-white font-display mb-4 text-center">
             Staff
           </h3>
           <PeopleListClient people={staff} showFaces={showFaces} />
