@@ -80,7 +80,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://use.typekit.net/rte2kgi.css" />
       </head>
       <body
-        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-playfair`}
+        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-merriweather`}
       >
         {children}
         <Analytics />
