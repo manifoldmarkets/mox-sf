@@ -50,9 +50,25 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
   }
 }
 
+// Explicit field selection to reduce payload size
+// Note: Only include fields that actually exist in the Events table
+const EVENT_FIELDS = [
+  'Name',
+  'Start Date',
+  'End Date',
+  'Type',
+  'Status',
+  'Host Name',
+  'Hosted by',
+]
+
 export async function getEvents(): Promise<Event[]> {
+  const fieldsParam = EVENT_FIELDS.map((field) =>
+    `fields%5B%5D=${encodeURIComponent(field)}`
+  ).join('&')
+
   const res = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB`,
+    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB&${fieldsParam}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
