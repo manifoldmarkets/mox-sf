@@ -29,7 +29,7 @@ export default async function Component() {
   const events = await getEvents()
 
   return (
-    <div className="min-h-screen bg-background-page dark:bg-primary-950 text-text-primary dark:text-text-primary-dark">
+    <div className="min-h-screen bg-slate-50 dark:bg-primary-950 text-text-primary dark:text-text-primary-dark">
       {/* Top navigation with login */}
       <nav className="fixed top-0 right-0 z-50 p-4">
         <a
@@ -55,7 +55,7 @@ export default async function Component() {
       </a> */}
 
       {/* Hero section */}
-      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-background-page dark:bg-primary-950">
+      <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-slate-50 dark:bg-primary-950">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 dark:invert"
           style={{
@@ -71,10 +71,10 @@ export default async function Component() {
               alt="Mox"
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
-            <p className="text-xl mb-4 leading-relaxed text-brand-dark dark:text-primary-50">
+            <p className="text-xl mb-4 leading-relaxed text-gray-700 dark:text-primary-50">
               An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
             </p>
-            <p className="text-lg text-brand-dark dark:text-primary-100">
+            <p className="text-lg text-gray-700 dark:text-primary-100">
               <Link
                 href="https://maps.google.com/?q=Mox+1680+Mission+St+San+Francisco"
                 className="dark:!text-primary-200 dark:hover:!text-primary-50"
@@ -93,7 +93,7 @@ export default async function Component() {
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
-                <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-playfair mb-4 text-center">
                   Events we're hosting
                 </h3>
                 <div className="flex-1">
@@ -118,7 +118,7 @@ export default async function Component() {
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
-                <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-playfair mb-4 text-center">
                   Who we're gathering
                 </h3>
 
@@ -161,7 +161,7 @@ export default async function Component() {
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
-                <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-6 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-playfair mb-6 text-center">
                   Space for meaningful work
                 </h3>
 
@@ -205,10 +205,10 @@ export default async function Component() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <section id="people" className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-playfair mb-2">
               Humans of Mox
             </h2>
-            <p className="text-brand-dark dark:text-primary-100 text-sm">The community that makes Mox special</p>
+            <p className="text-gray-700 dark:text-primary-100 text-sm">The community that makes Mox special</p>
           </div>
           <PeopleGallery />
         </section>
@@ -221,10 +221,10 @@ export default async function Component() {
       {/* Guest Programs / Partner Orgs */}
       <div className="mb-12 py-4">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-playfair mb-4 text-center">
             Partner Orgs
           </h2>
-          <p className="text-center text-brand-dark dark:text-primary-100 text-sm mb-8">
+          <p className="text-center text-gray-700 dark:text-primary-100 text-sm mb-8">
             Learn more about our <a
               href="https://moxsf.com/guest-program"
               target="_blank"
@@ -311,10 +311,10 @@ export default async function Component() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <section className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-playfair mb-2">
               The Space
             </h2>
-            <p className="text-brand-dark dark:text-primary-100 text-sm">A glimpse into our home</p>
+            <p className="text-gray-700 dark:text-primary-100 text-sm">A glimpse into our home</p>
           </div>
           <Gallery />
         </section>
