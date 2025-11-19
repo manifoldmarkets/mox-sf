@@ -71,8 +71,8 @@ export default async function Component() {
               alt="Mox"
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
-            <p className="text-xl mb-4 leading-relaxed text-gray-700 dark:text-primary-50 font-display">
-              An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
+            <p className="text-2xl mb-4 leading-relaxed text-gray-700 dark:text-primary-50 font-display font-light">
+              An incubator & community space for <b className="font-medium"><em>doers of good</em></b> and <b className="font-medium"><em>masters of craft</em></b>.
             </p>
             <p className="text-lg text-gray-700 dark:text-primary-100">
               <Link

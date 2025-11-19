@@ -173,6 +173,16 @@
 /* Metallophile font styling for headings/display text */
 .font-display {
   font-family: metallophile-sp8, sans-serif;
-  font-weight: 500;
+  font-weight: 300;
   font-style: normal;
+}
+
+/* Medium weight (500) for bold headings and emphasized text */
+h1.font-display,
+h2.font-display,
+h3.font-display,
+h4.font-display,
+h5.font-display,
+h6.font-display {
+  font-weight: 500;
 }
