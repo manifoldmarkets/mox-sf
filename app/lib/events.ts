@@ -24,7 +24,7 @@ export interface Event {
   startDate: Date
   endDate?: Date
   description?: string
-  location?: string
+  // location?: string
   notes?: string
   type?: string
   status?: string
@@ -41,7 +41,7 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
       ? parseISO(record.fields['End Date'])
       : undefined,
     description: record.fields['Event Description'],
-    location: record.fields.Location,
+    // location: record.fields.Location,
     notes: record.fields.Notes,
     type: record.fields.Type,
     status: record.fields.Status,
@@ -60,11 +60,15 @@ const EVENT_FIELDS = [
   'Status',
   'Host Name',
   'Hosted by',
+  'URL',
+  // 'Location',
+  'Notes',
+  'Event Description',
 ]
 
 export async function getEvents(): Promise<Event[]> {
-  const fieldsParam = EVENT_FIELDS.map((field) =>
-    `fields%5B%5D=${encodeURIComponent(field)}`
+  const fieldsParam = EVENT_FIELDS.map(
+    (field) => `fields%5B%5D=${encodeURIComponent(field)}`
   ).join('&')
 
   const res = await fetch(

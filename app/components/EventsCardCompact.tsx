@@ -67,7 +67,7 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
           return (
             <Link
               key={event.id}
-              href={event.url}
+              href={event.url ?? '/events'}
               className="flex items-center bg-background-surface dark:bg-background-surface-dark hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors border border-amber-900 dark:border-amber-800 overflow-hidden"
             >
               <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-amber-900 dark:bg-amber-900 font-sans flex flex-col items-center justify-center gap-0">
