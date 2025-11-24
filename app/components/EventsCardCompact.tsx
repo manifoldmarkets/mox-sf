@@ -67,7 +67,7 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
           return (
             <Link
               key={event.id}
-              href="/events"
+              href={event.url}
               className="flex items-center bg-background-surface dark:bg-background-surface-dark hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors border border-amber-900 dark:border-amber-800 overflow-hidden"
             >
               <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-amber-900 dark:bg-amber-900 font-sans flex flex-col items-center justify-center gap-0">
@@ -82,8 +82,18 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
                 {event.name}
               </h3>
               <div className="flex-shrink-0 pr-3 text-amber-900 dark:text-amber-700">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
               </div>
             </Link>
