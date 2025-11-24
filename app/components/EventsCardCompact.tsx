@@ -78,7 +78,7 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
                   {date}
                 </div>
               </div>
-              <h3 className="text-sm font-semibold text-text-primary dark:text-text-primary-dark leading-tight flex-1 px-2 py-1.5 truncate">
+              <h3 className="text-sm text-text-primary dark:text-text-primary-dark leading-tight flex-1 px-2 py-1.5 truncate">
                 {event.name}
               </h3>
               <div className="flex-shrink-0 pr-3 text-secondary-600 dark:text-secondary-500">

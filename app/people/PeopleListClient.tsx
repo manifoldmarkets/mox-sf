@@ -2,7 +2,13 @@
 import { useState, useEffect } from 'react'
 import { Person, formatUrl } from './people'
 
-export default function PeopleListClient({ people, showFaces }: { people: Person[]; showFaces: boolean }) {
+export default function PeopleListClient({
+  people,
+  showFaces,
+}: {
+  people: Person[]
+  showFaces: boolean
+}) {
   // Randomly select members with links to emphasize (client-side only to avoid hydration mismatch)
   const [emphasizedIds, setEmphasizedIds] = useState<string[]>([])
 
@@ -59,51 +65,47 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
     return (
       <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4">
         <div className="flex flex-wrap justify-center gap-8 max-w-[75vw] mx-auto">
-        {people.map((person) => {
-          const photoUrl = getOptimizedPhotoUrl(person)
-          const content = (
-            <div className="flex flex-col items-center w-24 sm:w-28 md:w-32">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
-                {photoUrl ? (
-                  <img
-                    src={photoUrl}
-                    alt={person.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover object-center"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-primary-400">
-                    {person.name.charAt(0)}
-                  </div>
-                )}
+          {people.map((person) => {
+            const photoUrl = getOptimizedPhotoUrl(person)
+            const content = (
+              <div className="flex flex-col items-center w-24 sm:w-28 md:w-32">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
+                  {photoUrl ? (
+                    <img
+                      src={photoUrl}
+                      alt={person.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-primary-400">
+                      {person.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-center text-text-primary dark:text-text-primary-dark leading-tight">
+                  {person.name}
+                </p>
               </div>
-              <p className="text-xs font-semibold text-center text-text-primary dark:text-text-primary-dark leading-tight">
-                {person.name}
-              </p>
-            </div>
-          )
+            )
 
-          if (person.website) {
-            return (
-              <a
-                key={person.id}
-                href={formatUrl(person.website)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:opacity-80 transition-opacity"
-              >
-                {content}
-              </a>
-            )
-          } else {
-            return (
-              <div key={person.id}>
-                {content}
-              </div>
-            )
-          }
-        })}
+            if (person.website) {
+              return (
+                <a
+                  key={person.id}
+                  href={formatUrl(person.website)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  {content}
+                </a>
+              )
+            } else {
+              return <div key={person.id}>{content}</div>
+            }
+          })}
         </div>
       </div>
     )
@@ -119,7 +121,7 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
           ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-600 dark:border-secondary-500 hover:bg-secondary-200 dark:hover:bg-secondary-900/50'
           : 'bg-background-surface dark:bg-transparent border-secondary-600 dark:border-primary-700'
 
-        const fontWeight = isEmphasized ? 'font-extrabold' : 'font-semibold'
+        const fontWeight = isEmphasized ? '' : ''
 
         if (person.website) {
           return (
@@ -130,7 +132,9 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
               rel="noopener noreferrer"
               className={`${baseClasses} ${colorClasses} cursor-pointer`}
             >
-              <p className={`${fontWeight} text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap`}>
+              <p
+                className={`${fontWeight} text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap`}
+              >
                 {person.name}
               </p>
             </a>
@@ -138,7 +142,9 @@ export default function PeopleListClient({ people, showFaces }: { people: Person
         } else {
           return (
             <div key={person.id} className={`${baseClasses} ${colorClasses}`}>
-              <p className={`${fontWeight} text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap`}>
+              <p
+                className={`${fontWeight} text-text-primary dark:text-text-primary-dark text-sm whitespace-nowrap`}
+              >
                 {person.name}
               </p>
             </div>

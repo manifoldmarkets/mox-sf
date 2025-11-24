@@ -50,7 +50,7 @@ export default async function Component() {
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
             />
           </svg>
-          <span className="hidden sm:inline text-sm font-semibold text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">
+          <span className="hidden sm:inline text-sm text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">
             Login
           </span>
         </a>
@@ -61,7 +61,7 @@ export default async function Component() {
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-brand text-white text-sm font-semibold text-center py-2 hover:bg-brand-dark transition-colors"
+        className="block bg-brand text-white text-sm text-center py-2 hover:bg-brand-dark transition-colors"
       >
         Mox is fundraising! Learn more & support us <u>here</u>
       </a> */}
@@ -124,7 +124,7 @@ export default async function Component() {
                 <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
                   <a
                     href="/events"
-                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
                   >
                     See all events →
                   </a>
@@ -159,7 +159,7 @@ export default async function Component() {
                       key={label}
                       className="bg-background-surface dark:bg-background-accent-dark border-2 border-primary-700 dark:border-primary-600 px-3 py-1 rounded-full flex items-center"
                     >
-                      <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">
+                      <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap leading-tight">
                         {label}
                       </p>
                     </div>
@@ -169,7 +169,7 @@ export default async function Component() {
                 <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
                   <a
                     href="#people"
-                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
                   >
                     See people →
                   </a>
@@ -194,19 +194,19 @@ export default async function Component() {
                     href="/apply"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 text-sm text-center bg-secondary-600 dark:bg-secondary-700 text-white font-semibold hover:bg-secondary-700 dark:hover:bg-secondary-600 transition-colors rounded-lg"
+                    className="px-6 py-3 text-sm text-center bg-secondary-600 dark:bg-secondary-700 text-white hover:bg-secondary-700 dark:hover:bg-secondary-600 transition-colors rounded-lg"
                   >
                     Apply for membership
                   </a>
                   <a
                     href="/offices"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
                   >
                     Inquire about offices
                   </a>
                   <a
                     href="/day-pass"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 font-semibold hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border-2 border-secondary-600 dark:border-secondary-500 text-secondary-700 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-border-medium-dark transition-colors rounded-lg"
                   >
                     Buy a day pass
                   </a>
@@ -214,7 +214,7 @@ export default async function Component() {
                 <div className="mt-4 pt-4 border-t border-secondary-200 dark:border-primary-700">
                   <a
                     href="/portal/login"
-                    className="block text-center text-sm font-semibold text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
                   >
                     Member Portal →
                   </a>
@@ -256,7 +256,7 @@ export default async function Component() {
               href="https://moxsf.com/guest-program"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2 font-semibold"
+              className="text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
             >
               guest program
             </a>
@@ -312,7 +312,7 @@ export default async function Component() {
                 alt="Elicit logo"
                 className="h-full w-auto object-contain rounded-md"
               />
-              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">
                 Elicit
               </span>
             </a>
@@ -328,7 +328,7 @@ export default async function Component() {
                 alt="AI Impacts logo"
                 className="h-full w-auto object-contain rounded-md"
               />
-              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">
                 Impacts
               </span>
             </a>
@@ -344,7 +344,7 @@ export default async function Component() {
                 alt="Roots of Progress logo"
                 className="h-full w-auto object-contain rounded-md"
               />
-              <span className="text-xl font-semibold text-white uppercase font-sans tracking-tight leading-none">
+              <span className="text-xl text-white uppercase font-sans tracking-tight leading-none">
                 Roots of Progress
               </span>
             </a>
@@ -360,7 +360,7 @@ export default async function Component() {
                 alt="Epoch logo"
                 className="h-full w-auto object-contain rounded-md"
               />
-              <span className="text-2xl font-semibold text-gray-900 uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 uppercase font-sans tracking-wide">
                 Epoch
               </span>
             </a>
@@ -389,7 +389,7 @@ export default async function Component() {
                 alt="Lightcone logo"
                 className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 Lightcone
               </span>
             </a>
@@ -405,7 +405,7 @@ export default async function Component() {
                 alt="Seldon logo"
                 className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 Seldon
               </span>
             </a>
@@ -421,7 +421,7 @@ export default async function Component() {
                 alt="GovAI logo"
                 className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 GovAI
               </span>
             </a>
@@ -437,7 +437,7 @@ export default async function Component() {
                 alt="ARC logo"
                 className="h-full w-auto object-contain dark:invert"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 ARC
               </span>
             </a>
@@ -453,7 +453,7 @@ export default async function Component() {
                 alt="Redwood logo"
                 className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 Redwood
               </span>
             </a>
@@ -469,7 +469,7 @@ export default async function Component() {
                 alt="Palisade Research logo"
                 className="h-full w-auto object-contain dark:invert"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 Palisade
               </span>
             </a>
@@ -485,7 +485,7 @@ export default async function Component() {
                 alt="Timaeus logo"
                 className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter rounded-md"
               />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 Timaeus
               </span>
             </a>
