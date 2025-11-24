@@ -50,7 +50,7 @@ export default async function Component() {
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
             />
           </svg>
-          <span className="hidden sm:inline text-sm font-semibold text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">
+          <span className="hidden sm:inline text-sm text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">
             Login
           </span>
         </a>
@@ -61,7 +61,7 @@ export default async function Component() {
         href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-brand text-white text-sm font-semibold text-center py-2 hover:bg-brand-dark transition-colors"
+        className="block bg-brand text-white text-sm text-center py-2 hover:bg-brand-dark transition-colors"
       >
         Mox is fundraising! Learn more & support us <u>here</u>
       </a> */}
@@ -116,7 +116,7 @@ export default async function Component() {
                 <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
                     href="/events"
-                    className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
                     See all events →
                   </a>
@@ -151,7 +151,7 @@ export default async function Component() {
                       key={label}
                       className="bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 px-3 py-1 flex items-center"
                     >
-                      <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">
+                      <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap leading-tight">
                         {label}
                       </p>
                     </div>
@@ -161,7 +161,7 @@ export default async function Component() {
                 <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
                     href="#people"
-                    className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
                     See people →
                   </a>
@@ -186,19 +186,19 @@ export default async function Component() {
                     href="/apply"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 text-sm text-center bg-amber-900 dark:bg-amber-800 text-white font-semibold hover:bg-amber-800 dark:hover:bg-amber-900 transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-amber-900 dark:bg-amber-800 text-white hover:bg-amber-800 dark:hover:bg-amber-900 transition-colors"
                   >
                     Apply for membership
                   </a>
                   <a
                     href="/offices"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 text-amber-900 dark:text-amber-700 font-semibold hover:bg-amber-50 dark:hover:bg-border-medium-dark transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-border-medium-dark transition-colors"
                   >
                     Inquire about offices
                   </a>
                   <a
                     href="/day-pass"
-                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 text-amber-900 dark:text-amber-700 font-semibold hover:bg-amber-50 dark:hover:bg-border-medium-dark transition-colors"
+                    className="px-6 py-3 text-sm text-center bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-border-medium-dark transition-colors"
                   >
                     Buy a day pass
                   </a>
@@ -206,7 +206,7 @@ export default async function Component() {
                 <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
                     href="/portal/login"
-                    className="block text-center text-sm font-semibold text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
+                    className="block text-center text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
                     Member Portal →
                   </a>
@@ -241,7 +241,7 @@ export default async function Component() {
               href="https://moxsf.com/guest-program"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2 font-semibold"
+              className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
             >guest program</a>
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -259,22 +259,22 @@ export default async function Component() {
 
             <a href="https://elicit.com" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00666d] hover:bg-[#005259] transition-all duration-200 flex items-center justify-center p-3 gap-2">
               <img src="https://i.imgur.com/NghnGgl.jpeg" alt="Elicit logo" className="h-full w-auto object-contain" />
-              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">Elicit</span>
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">Elicit</span>
             </a>
 
             <a href="https://aiimpacts.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#2c97cc] hover:bg-[#2383b3] transition-all duration-200 flex items-center justify-center p-3 gap-2">
               <img src="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png" alt="AI Impacts logo" className="h-full w-auto object-contain" />
-              <span className="text-2xl font-semibold text-white uppercase font-sans tracking-wide">Impacts</span>
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">Impacts</span>
             </a>
 
             <a href="https://rootsofprogress.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-all duration-200 flex items-center justify-center p-1 gap-1">
               <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHZqWt1BOeRcQ/company-logo_200_200/company-logo_200_200/0/1719263296894/rootsofprogress_logo?e=2147483647&v=beta&t=ST2NF9TmGYBHrprrUCW_W1d_ZLnYFU8UCZlFC9-e9vs" alt="Roots of Progress logo" className="h-full w-auto object-contain" />
-              <span className="text-xl font-semibold text-white uppercase font-sans tracking-tight leading-none">Roots of Progress</span>
+              <span className="text-xl text-white uppercase font-sans tracking-tight leading-none">Roots of Progress</span>
             </a>
 
             <a href="https://epoch.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#eaf5f4] hover:bg-[#d5e8e6] transition-all duration-200 flex items-center justify-center p-3 gap-2">
               <img src="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg" alt="Epoch logo" className="h-full w-auto object-contain" />
-              <span className="text-2xl font-semibold text-gray-900 uppercase font-sans tracking-wide">Epoch</span>
+              <span className="text-2xl text-gray-900 uppercase font-sans tracking-wide">Epoch</span>
             </a>
 
             <a href="https://bluedot.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00104e] hover:bg-[#000c3d] transition-all duration-200 flex items-center justify-center p-3">
@@ -283,37 +283,37 @@ export default async function Component() {
 
             <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
             </a>
 
             <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
             </a>
 
             <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
             </a>
 
             <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
             </a>
 
             <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
             </a>
 
             <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
             </a>
 
             <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-background-accent-dark hover:bg-slate-100 dark:hover:bg-background-subtle-dark transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-amber-900 dark:border-amber-800">
               <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl font-semibold text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
             </a>
           </div>
         </div>
