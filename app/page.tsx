@@ -37,10 +37,22 @@ export default async function Component() {
           className="flex items-center gap-2 p-2 sm:px-4 sm:py-2 bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors shadow-sm"
           aria-label="Login to member portal"
         >
-          <svg className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          <svg
+            className="w-5 h-5 text-text-secondary dark:text-text-tertiary-dark"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
           </svg>
-          <span className="hidden sm:inline text-sm font-semibold text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">Login</span>
+          <span className="hidden sm:inline text-sm font-semibold text-text-secondary dark:text-text-tertiary-dark uppercase font-sans">
+            Login
+          </span>
         </a>
       </nav>
 
@@ -60,8 +72,10 @@ export default async function Component() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 dark:invert"
           style={{
             backgroundImage: 'url(/images/mox_sketch.png)',
-            maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
+            maskImage:
+              'linear-gradient(to bottom, black 60%, transparent 100%)',
+            WebkitMaskImage:
+              'linear-gradient(to bottom, black 60%, transparent 100%)',
           }}
         />
         <div className="relative z-10 max-w-7xl w-full">
@@ -123,24 +137,26 @@ export default async function Component() {
                 </h3>
 
                 <div className="flex flex-wrap justify-center gap-1.5 flex-1">
-                {[
-                  'AI alignment researchers',
-                  'Startup founders',
-                  'Defensive accelerationists',
-                  'Filmmakers',
-                  'Writers',
-                  'High impact nonprofits',
-                  'Artisans',
-                  'Figgie players',
-                  'Policy advocates',
-                  'Community builders',
-                  'Members of technical and untechnical staff'
-                ].map((label) => (
-                  <div key={label} className="bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 px-3 py-1 flex items-center">
-                    <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">{label}</p>
-                  </div>
-                ))}
-              </div>
+                  {[
+                    'Startup founders',
+                    'Effective altruists',
+                    'Alignment researchers',
+                    'Filmmakers',
+                    'Writers',
+                    'Artisans',
+                    'Community builders',
+                    'Members of technical and untechnical staff',
+                  ].map((label) => (
+                    <div
+                      key={label}
+                      className="bg-background-surface dark:bg-background-accent-dark border border-amber-900 dark:border-amber-800 px-3 py-1 flex items-center"
+                    >
+                      <p className="text-text-primary dark:text-text-secondary-dark text-sm whitespace-nowrap font-semibold leading-tight">
+                        {label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
 
                 <div className="mt-4 pt-4 border-t border-amber-900 dark:border-amber-800">
                   <a
