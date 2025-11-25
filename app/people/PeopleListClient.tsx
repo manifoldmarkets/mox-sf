@@ -68,8 +68,8 @@ export default function PeopleListClient({
           {people.map((person) => {
             const photoUrl = getOptimizedPhotoUrl(person)
             const content = (
-              <div className="flex flex-col items-center w-24 sm:w-28 md:w-32">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
+              <div className="flex flex-col items-center w-20 sm:w-24 md:w-28">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
                   {photoUrl ? (
                     <img
                       src={photoUrl}
