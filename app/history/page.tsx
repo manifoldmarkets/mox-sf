@@ -4,8 +4,8 @@ import PastEventsContent from './components/PastEventsContent'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Past Events | Mox',
-  description: 'Browse past events hosted at Mox',
+  title: 'History | Mox',
+  description: 'Explore the history of events and gatherings hosted at Mox, San Francisco\'s private social club for technologists and entrepreneurs',
 }
 
 export default async function PastEventsPage() {

@@ -20,7 +20,7 @@ export default async function EventsPage() {
 
           {/* Past Events link */}
           <Link
-            href="/events/past"
+            href="/history"
             className="inline-flex items-center gap-2 text-primary-100 hover:text-white text-sm font-medium transition-colors"
           >
             View Past Events
