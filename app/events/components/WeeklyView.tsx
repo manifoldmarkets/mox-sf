@@ -32,7 +32,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
 
   return (
     <div
-      className="absolute left-1 right-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 overflow-hidden rounded-lg"
+      className="absolute left-1 right-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 overflow-hidden"
       style={{
         top: `${top}px`,
         height: `${clampedHeight}px`,
@@ -68,7 +68,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
   const timeLinePosition = Math.max(0, (currentHour - START_HOUR) * HOUR_HEIGHT)
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden">
       {/* Header row with days */}
       <div
         className="grid"
@@ -139,7 +139,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                     className="absolute w-full border-t-2 border-red-600 z-10"
                     style={{ top: `${timeLinePosition}px` }}
                   >
-                    <div className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-red-600" />
+                    <div className="absolute -left-1 -top-1 w-2 h-2 bg-red-600" />
                   </div>
                 )}
 

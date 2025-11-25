@@ -74,7 +74,7 @@ export default function DoorPage({ initialPin = '' }: { initialPin?: string }) {
     const className = props.className ?? 'bg-gray-100 hover:bg-gray-200'
     return (
       <button
-        className={`w-20 h-20 rounded-full text-2xl font-medium flex items-center justify-center
+        className={`w-20 h-20 text-2xl font-medium flex items-center justify-center
                  active:scale-95 transition-all cursor-pointer ${className} border border-gray-200`}
         onClick={onClick}
       >
@@ -131,6 +131,6 @@ export default function DoorPage({ initialPin = '' }: { initialPin?: string }) {
 // Tailwind spinner using animate-spin
 function Spinner() {
   return (
-    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900"></div>
+    <div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-gray-900"></div>
   )
 }

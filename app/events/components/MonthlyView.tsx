@@ -34,7 +34,7 @@ function DayCard({
         <span
           className={`${
             isDayToday
-              ? 'bg-red-800 dark:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center'
+              ? 'bg-red-800 dark:bg-red-700 text-white w-7 h-7 flex items-center justify-center'
               : ''
           }`}
         >
@@ -44,11 +44,11 @@ function DayCard({
       {dayEvents.map((event) => (
         <div
           key={event.id}
-          className="text-xs p-1 mb-1 bg-beige-50 dark:bg-gray-700 border border-amber-100 dark:border-gray-600"
+          className="text-xs p-1 mb-1 bg-beige-50 dark:bg-gray-700 border border-amber-900 dark:border-amber-800"
           title={event.description || event.name}
         >
-          <span className="text-amber-900 dark:text-amber-400 font-medium block">
-            <span className="text-amber-600 dark:text-amber-500 font-light">
+          <span className="text-gray-900 dark:text-gray-200 font-medium block">
+            <span className="text-gray-700 dark:text-gray-400 font-light">
               {format(event.startDate, 'h:mm a').replace(':00', '')}
             </span>{' '}
             {event.name}
@@ -77,8 +77,8 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl overflow-hidden">
-      <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400 mb-4 text-center">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 overflow-hidden">
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200 mb-4 text-center">
         {format(today, 'MMMM yyyy')}
       </h3>
 

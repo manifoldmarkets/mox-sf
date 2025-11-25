@@ -23,6 +23,12 @@ export default function PeopleContentWrapper({
       person.orgNames && person.orgNames.length > 0
         ? person.orgNames[0]
         : 'Independent'
+    const orgId =
+      person.org && person.org.length > 0 ? person.org[0] : 'Independent'
+    const orgName =
+      person.orgNames && person.orgNames.length > 0
+        ? person.orgNames[0]
+        : 'Independent'
     if (!orgGroups.has(orgId)) {
       orgGroups.set(orgId, { name: orgName, people: [] })
     }
@@ -41,10 +47,10 @@ export default function PeopleContentWrapper({
         >
           <span className="text-sm">Show faces</span>
           <div
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showFaces ? 'bg-secondary-600 dark:bg-secondary-700' : 'bg-secondary-300 dark:bg-primary-700'}`}
+            className={`relative inline-flex h-6 w-11 items-center transition-colors ${showFaces ? 'bg-amber-900 dark:bg-amber-900' : 'bg-gray-300 dark:bg-gray-700'}`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showFaces ? 'translate-x-6' : 'translate-x-1'}`}
+              className={`inline-block h-5 w-5 transform bg-white transition-transform ${showFaces ? 'translate-x-5.5' : 'translate-x-0.5'}`}
             />
           </div>
         </button>
@@ -52,7 +58,7 @@ export default function PeopleContentWrapper({
 
       {members.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-xl font-semibold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white font-display mb-4 text-center">
             Members
           </h3>
           <PeopleListClient people={members} showFaces={showFaces} />
@@ -61,7 +67,7 @@ export default function PeopleContentWrapper({
 
       {privateOffices.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
             Private Offices
           </h3>
           <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4">
@@ -79,9 +85,9 @@ export default function PeopleContentWrapper({
                 .map(([orgId, { name, people }]) => (
                   <div
                     key={orgId}
-                    className="bg-background-surface dark:bg-primary-950 border-2 border-secondary-600 dark:border-primary-700 rounded-lg p-4"
+                    className="bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 p-4"
                   >
-                    <h4 className="text-sm font-bold text-brand dark:text-brand-dark-mode uppercase font-sans tracking-wide text-center mb-3">
+                    <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase font-sans tracking-wide text-center mb-3">
                       {name}
                     </h4>
                     <PeopleListClient people={people} showFaces={showFaces} />
@@ -94,7 +100,7 @@ export default function PeopleContentWrapper({
 
       {staff.length > 0 && (
         <div>
-          <h3 className="text-xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
             Staff
           </h3>
           <PeopleListClient people={staff} showFaces={showFaces} />

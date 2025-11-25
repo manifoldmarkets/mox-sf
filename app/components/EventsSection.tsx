@@ -36,19 +36,19 @@ function AddSection() {
       <div className="flex flex-col md:flex-row gap-3 mb-6 max-w-xl mx-auto">
         <a
           href="/substack"
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors cursor-pointer"
         >
           Events newsletter
         </a>
         <a
           href="/events-hosting"
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-brand dark:text-brand-dark-mode bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-brand dark:text-brand-dark-mode bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
         >
           Host an event
         </a>
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-brand dark:text-brand-dark-mode bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors cursor-pointer rounded-full"
+          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-brand dark:text-brand-dark-mode bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
         >
           Sync to cal
         </button>
@@ -65,7 +65,7 @@ function AddSection() {
 
         {/* Full-screen container for centering */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-sm rounded-3xl bg-background-surface dark:bg-background-surface-dark p-6 shadow-xl">
+          <DialogPanel className="w-full max-w-sm bg-background-surface dark:bg-background-surface-dark p-6 shadow-xl">
             <DialogTitle className="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-2">
               Sync events to your calendar
             </DialogTitle>
@@ -75,7 +75,7 @@ function AddSection() {
                 href={GOOGLE_CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-full px-4 py-3 text-white bg-google hover:bg-google-hover rounded-full transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 text-white bg-google hover:bg-google-hover transition-colors"
               >
                 Google Calendar
               </a>
@@ -84,14 +84,14 @@ function AddSection() {
                 href={OUTLOOK_CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-full px-4 py-3 text-white bg-outlook hover:bg-outlook-hover rounded-full transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 text-white bg-outlook hover:bg-outlook-hover transition-colors"
               >
                 Outlook Calendar
               </a>
 
               <a
                 href={APPLE_CALENDAR_URL}
-                className="flex items-center justify-center w-full px-4 py-3 text-white bg-text-primary dark:bg-text-primary hover:bg-text-secondary dark:hover:bg-text-secondary rounded-full transition-colors"
+                className="flex items-center justify-center w-full px-4 py-3 text-white bg-text-primary dark:bg-text-primary hover:bg-text-secondary dark:hover:bg-text-secondary transition-colors"
               >
                 Apple Calendar
               </a>
@@ -100,7 +100,7 @@ function AddSection() {
                 onClick={() => {
                   handleCopyUrl()
                 }}
-                className="cursor-pointer flex items-center justify-center w-full px-4 py-3 text-text-secondary dark:text-text-secondary-dark bg-background-subtle dark:bg-background-subtle-dark hover:bg-border-light dark:hover:bg-border-medium-dark rounded-full transition-colors"
+                className="cursor-pointer flex items-center justify-center w-full px-4 py-3 text-text-secondary dark:text-text-secondary-dark bg-background-subtle dark:bg-background-subtle-dark hover:bg-border-light dark:hover:bg-border-medium-dark transition-colors"
               >
                 {calendarCopied ? 'Copied!' : 'Copy URL to Clipboard'}
               </button>
@@ -123,12 +123,12 @@ export default function EventsSection(props: {
       <AddSection />
 
       <TabGroup>
-        <TabList className="flex space-x-1 bg-border-light dark:bg-background-subtle-dark p-1 mb-6 max-w-xl mx-auto rounded-full">
+        <TabList className="flex space-x-1 bg-border-light dark:bg-background-subtle-dark p-1 mb-6 max-w-xl mx-auto">
           {['Events', 'Week', 'Month'].map((tab) => (
             <Tab
               key={tab}
               className={({ selected }) =>
-                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer rounded-full
+                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer
                 ${
                   selected
                     ? 'bg-background-surface dark:bg-background-surface-dark text-brand dark:text-brand-dark-mode shadow'

@@ -91,7 +91,7 @@ export default function EventEditModal({
         <DialogPanel className="w-full h-full lg:h-auto lg:max-w-2xl lg:rounded-lg bg-background-surface dark:bg-background-surface-dark flex flex-col lg:block lg:overflow-y-auto lg:shadow-xl lg:max-h-[90vh]">
           {/* Mobile header with close button */}
           <div className="lg:hidden flex-shrink-0 bg-background-surface dark:bg-background-surface-dark border-b border-border-light dark:border-border-light-dark px-4 py-3 flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair">
+            <DialogTitle className="text-xl font-bold text-brand dark:text-brand-dark-mode font-display">
               Edit Event
             </DialogTitle>
             <button
@@ -106,7 +106,7 @@ export default function EventEditModal({
 
           {/* Desktop header */}
           <div className="hidden lg:block p-6 sm:p-8">
-            <DialogTitle className="text-2xl sm:text-3xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-playfair">
+            <DialogTitle className="text-2xl sm:text-3xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-display">
               Edit Event
             </DialogTitle>
           </div>
@@ -116,7 +116,7 @@ export default function EventEditModal({
             <div className="p-4 lg:px-6 lg:pb-6 lg:pt-0 sm:lg:px-8 sm:lg:pb-8">
 
             {saveError && (
-              <div className="mb-4 p-3 bg-error-bg dark:bg-error-bg-dark border border-error-bg dark:border-error-bg-dark rounded-lg text-error-text dark:text-error-text-dark text-sm">
+              <div className="mb-4 p-3 bg-error-bg dark:bg-error-bg-dark border border-error-bg dark:border-error-bg-dark text-error-text dark:text-error-text-dark text-sm">
                 {saveError}
               </div>
             )}
@@ -131,7 +131,7 @@ export default function EventEditModal({
                   type="text"
                   value={editedEvent.name}
                   onChange={(e) => handleFieldChange('name', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
                 />
               </div>
 
@@ -144,7 +144,7 @@ export default function EventEditModal({
                   type="datetime-local"
                   value={formatDateTimeForInput(editedEvent.startDate)}
                   onChange={(e) => handleFieldChange('startDate', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 />
               </div>
 
@@ -157,7 +157,7 @@ export default function EventEditModal({
                   type="datetime-local"
                   value={formatDateTimeForInput(editedEvent.endDate)}
                   onChange={(e) => handleFieldChange('endDate', e.target.value || undefined)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 />
               </div>
 
@@ -171,7 +171,7 @@ export default function EventEditModal({
                     type="text"
                     value={editedEvent.assignedRooms}
                     disabled
-                    className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
+                    className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
                   />
                   <p className="mt-1.5 text-xs text-text-muted dark:text-text-muted-dark">Room assignment is managed by staff</p>
                 </div>
@@ -185,7 +185,7 @@ export default function EventEditModal({
                 <select
                   value={editedEvent.type || ''}
                   onChange={(e) => handleFieldChange('type', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 >
                   <option value="">Select type...</option>
                   {TYPE_OPTIONS.map((option) => (
@@ -205,7 +205,7 @@ export default function EventEditModal({
                   value={editedEvent.description || ''}
                   onChange={(e) => handleFieldChange('description', e.target.value)}
                   rows={4}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
                   placeholder="Describe your event..."
                 />
               </div>
@@ -219,7 +219,7 @@ export default function EventEditModal({
                   value={editedEvent.notes || ''}
                   onChange={(e) => handleFieldChange('notes', e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-merriweather"
                   placeholder="Internal notes (optional)"
                 />
               </div>
@@ -233,7 +233,7 @@ export default function EventEditModal({
                   type="url"
                   value={editedEvent.url || ''}
                   onChange={(e) => handleFieldChange('url', e.target.value)}
-                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+                  className="w-full px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
                 />
               </div>
 
@@ -243,7 +243,7 @@ export default function EventEditModal({
                   <label className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
                     Status
                   </label>
-                  <div className="px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark rounded-lg bg-background-subtle dark:bg-background-subtle-dark text-text-secondary dark:text-text-secondary-dark">
+                  <div className="px-3 py-2.5 lg:px-4 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-secondary dark:text-text-secondary-dark">
                     {editedEvent.status}
                   </div>
                   <p className="mt-1.5 text-xs text-text-muted dark:text-text-muted-dark">Status is managed by staff</p>
@@ -258,7 +258,7 @@ export default function EventEditModal({
                   <button
                     onClick={onReactivate}
                     disabled={isSaving}
-                    className="w-full sm:w-auto px-4 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-100 text-green-700 text-sm font-medium hover:bg-green-200 transition-colors disabled:opacity-50"
                   >
                     {isSaving ? 'Reactivating...' : 'Reactivate Event'}
                   </button>
@@ -269,14 +269,14 @@ export default function EventEditModal({
                       <button
                         onClick={handleCancelEvent}
                         disabled={isCancelling}
-                        className="flex-1 sm:flex-none px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                        className="flex-1 sm:flex-none px-3 py-1.5 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
                       >
                         {isCancelling ? 'Cancelling...' : 'Yes, cancel event'}
                       </button>
                       <button
                         onClick={() => setShowCancelConfirm(false)}
                         disabled={isCancelling}
-                        className="flex-1 sm:flex-none px-3 py-1.5 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
+                        className="flex-1 sm:flex-none px-3 py-1.5 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors disabled:opacity-50"
                       >
                         No
                       </button>
@@ -286,7 +286,7 @@ export default function EventEditModal({
                   <button
                     onClick={() => setShowCancelConfirm(true)}
                     disabled={isSaving || isCancelling}
-                    className="w-full sm:w-auto px-4 py-2 bg-red-100 text-red-700 text-sm font-medium rounded-lg hover:bg-red-200 transition-colors disabled:opacity-50"
+                    className="w-full sm:w-auto px-4 py-2 bg-red-100 text-red-700 text-sm font-medium hover:bg-red-200 transition-colors disabled:opacity-50"
                   >
                     Cancel Event
                   </button>
@@ -297,7 +297,7 @@ export default function EventEditModal({
                 <button
                   onClick={onClose}
                   disabled={isSaving || isCancelling}
-                  className="flex-1 sm:flex-none px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors disabled:opacity-50"
                 >
                   Close
                 </button>
@@ -305,7 +305,7 @@ export default function EventEditModal({
                   <button
                     onClick={handleSave}
                     disabled={isSaving || isCancelling}
-                    className="flex-1 sm:flex-none px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                    className="flex-1 sm:flex-none px-4 py-2.5 bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
                   >
                     {isSaving ? 'Saving...' : 'Save Changes'}
                   </button>
@@ -319,7 +319,7 @@ export default function EventEditModal({
                 <button
                   onClick={onReactivate}
                   disabled={isSaving}
-                  className="w-full px-4 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
+                  className="w-full px-4 py-2 bg-green-100 text-green-700 text-sm font-medium hover:bg-green-200 transition-colors disabled:opacity-50"
                 >
                   {isSaving ? 'Reactivating...' : 'Reactivate Event'}
                 </button>
@@ -330,14 +330,14 @@ export default function EventEditModal({
                     <button
                       onClick={handleCancelEvent}
                       disabled={isCancelling}
-                      className="flex-1 px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                      className="flex-1 px-3 py-2 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
                     >
                       {isCancelling ? 'Cancelling...' : 'Yes, cancel event'}
                     </button>
                     <button
                       onClick={() => setShowCancelConfirm(false)}
                       disabled={isCancelling}
-                      className="flex-1 px-3 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
+                      className="flex-1 px-3 py-2 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors disabled:opacity-50"
                     >
                       No
                     </button>
@@ -347,7 +347,7 @@ export default function EventEditModal({
                 <button
                   onClick={() => setShowCancelConfirm(true)}
                   disabled={isSaving || isCancelling}
-                  className="w-full px-4 py-2 bg-red-100 text-red-700 text-sm font-medium rounded-lg hover:bg-red-200 transition-colors disabled:opacity-50"
+                  className="w-full px-4 py-2 bg-red-100 text-red-700 text-sm font-medium hover:bg-red-200 transition-colors disabled:opacity-50"
                 >
                   Cancel Event
                 </button>
@@ -363,7 +363,7 @@ export default function EventEditModal({
                 <button
                   onClick={handleSave}
                   disabled={isSaving || isCancelling}
-                  className="flex-1 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
                 >
                   {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>

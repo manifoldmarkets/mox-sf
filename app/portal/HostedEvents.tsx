@@ -160,8 +160,8 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (loading) {
     return (
-      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+      <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">{SECTION_TITLE}</h2>
         <p className="text-sm text-text-muted dark:text-text-muted-dark">Loading events...</p>
       </div>
     );
@@ -169,8 +169,8 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (error) {
     return (
-      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+      <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">{SECTION_TITLE}</h2>
         <p className="text-sm text-error-text dark:text-error-text-dark">{error}</p>
       </div>
     );
@@ -178,14 +178,14 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   if (events.length === 0) {
     return (
-      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
-        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-playfair">{SECTION_TITLE}</h2>
+      <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">{SECTION_TITLE}</h2>
         <p className="text-sm text-text-muted dark:text-text-muted-dark mb-4">You don't have any upcoming events</p>
         <a
           href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block px-4 py-2 text-sm bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors rounded-full"
+          className="inline-block px-4 py-2 text-sm bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors"
         >
           Submit an event
         </a>
@@ -195,14 +195,14 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
 
   return (
     <>
-      <div className="bg-background-surface dark:bg-background-surface-dark rounded-lg border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
+      <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-3 sm:p-6 mb-4 sm:mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-playfair">{SECTION_TITLE}</h2>
+          <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-display">{SECTION_TITLE}</h2>
           <a
             href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-4 py-2 text-sm bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors rounded-full"
+            className="inline-block px-4 py-2 text-sm bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors"
           >
             Submit an event
           </a>
@@ -243,7 +243,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
               <button
                 key={event.id}
                 onClick={() => handleEventClick(event)}
-                className="w-full text-left p-2.5 sm:p-4 border border-border-light dark:border-border-medium-dark rounded-lg hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
+                className="w-full text-left p-2.5 sm:p-4 border border-border-light dark:border-border-medium-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex-1 min-w-0">

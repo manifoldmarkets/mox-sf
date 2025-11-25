@@ -1,0 +1,58 @@
+/* Torn/Rag Edge Effect */
+
+/* Circle clip for faces - replacement for rounded-full */
+.clip-circle {
+  clip-path: circle(50%);
+}
+
+.torn-edge {
+  position: relative;
+}
+
+.torn-edge::before,
+.torn-edge::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background-repeat: repeat-x;
+  background-size: 20px 15px;
+  z-index: 1;
+}
+
+.torn-edge-top::before {
+  top: -1px;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 15 L2 12 L4 14 L6 11 L8 13 L10 10 L12 13 L14 11 L16 14 L18 12 L20 15 Z' fill='white'/%3E%3C/svg%3E");
+}
+
+.torn-edge-bottom::after {
+  bottom: -1px;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L2 3 L4 1 L6 4 L8 2 L10 5 L12 2 L14 4 L16 1 L18 3 L20 0 Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Dark mode variants */
+.dark .torn-edge-top::before {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 15 L2 12 L4 14 L6 11 L8 13 L10 10 L12 13 L14 11 L16 14 L18 12 L20 15 Z' fill='%230a0f1e'/%3E%3C/svg%3E");
+}
+
+.dark .torn-edge-bottom::after {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L2 3 L4 1 L6 4 L8 2 L10 5 L12 2 L14 4 L16 1 L18 3 L20 0 Z' fill='%230a0f1e'/%3E%3C/svg%3E");
+}
+
+/* Section-specific torn edges with brand colors */
+.torn-edge-surface::before {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 15 L2 12 L4 14 L6 11 L8 13 L10 10 L12 13 L14 11 L16 14 L18 12 L20 15 Z' fill='%23f8f8f8'/%3E%3C/svg%3E");
+}
+
+.torn-edge-surface::after {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L2 3 L4 1 L6 4 L8 2 L10 5 L12 2 L14 4 L16 1 L18 3 L20 0 Z' fill='%23f8f8f8'/%3E%3C/svg%3E");
+}
+
+.dark .torn-edge-surface::before {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 15 L2 12 L4 14 L6 11 L8 13 L10 10 L12 13 L14 11 L16 14 L18 12 L20 15 Z' fill='%231a1f33'/%3E%3C/svg%3E");
+}
+
+.dark .torn-edge-surface::after {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='15' viewBox='0 0 20 15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L2 3 L4 1 L6 4 L8 2 L10 5 L12 2 L14 4 L16 1 L18 3 L20 0 Z' fill='%231a1f33'/%3E%3C/svg%3E");
+}

@@ -69,7 +69,7 @@ export default function PeopleListClient({
             const photoUrl = getOptimizedPhotoUrl(person)
             const content = (
               <div className="flex flex-col items-center w-20 sm:w-24 md:w-28">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden bg-secondary-100 dark:bg-primary-800 mb-1 shrink-0">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 overflow-hidden bg-secondary-100 dark:bg-amber-900 mb-1 shrink-0">
                   {photoUrl ? (
                     <img
                       src={photoUrl}
@@ -79,7 +79,7 @@ export default function PeopleListClient({
                       className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-primary-400">
+                    <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-amber-700">
                       {person.name.charAt(0)}
                     </div>
                   )}
@@ -116,10 +116,10 @@ export default function PeopleListClient({
       {people.map((person) => {
         const isEmphasized = emphasizedIds.includes(person.id)
         const baseClasses =
-          'border-2 px-3 py-1 rounded-full transition-all duration-700 ease-in-out'
+          'border px-3 py-1 transition-all duration-700 ease-in-out'
         const colorClasses = isEmphasized
-          ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-600 dark:border-secondary-500 hover:bg-secondary-200 dark:hover:bg-secondary-900/50'
-          : 'bg-background-surface dark:bg-transparent border-secondary-600 dark:border-primary-700'
+          ? 'bg-amber-50 dark:bg-amber-900/30 border-amber-900 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50'
+          : 'bg-background-surface dark:bg-transparent border-amber-900 dark:border-amber-800'
 
         const fontWeight = isEmphasized ? '' : ''
 
