@@ -24,7 +24,7 @@ export interface Event {
   startDate: Date
   endDate?: Date
   description?: string
-  // location?: string
+  location?: string
   notes?: string
   type?: string
   status?: string
@@ -41,7 +41,7 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
       ? parseISO(record.fields['End Date'])
       : undefined,
     description: record.fields['Event Description'],
-    // location: record.fields.Location,
+    location: record.fields.Location,
     notes: record.fields.Notes,
     type: record.fields.Type,
     status: record.fields.Status,
@@ -61,6 +61,7 @@ const EVENT_FIELDS = [
   'Host Name',
   'Hosted by',
   'URL',
+  // For some reason, trying to include "Location" results in no events being returned
   // 'Location',
   'Notes',
   'Event Description',
