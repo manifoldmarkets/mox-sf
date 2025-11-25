@@ -86,7 +86,7 @@ export default async function Component() {
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
             <p className="text-xl mb-4 leading-relaxed text-brand-dark dark:text-primary-50">
-              An incubator & community space for{' '}
+              For{' '}
               <b>
                 <em>doers of good</em>
               </b>{' '}
@@ -116,7 +116,7 @@ export default async function Component() {
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
                 <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
-                  Events we're hosting
+                  Upcoming events
                 </h3>
                 <div className="flex-1">
                   <EventsCardCompact events={events} />
@@ -126,7 +126,7 @@ export default async function Component() {
                     href="/events"
                     className="block text-center text-sm text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
                   >
-                    See all events →
+                    All events →
                   </a>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default async function Component() {
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
                 <h3 className="text-2xl font-bold text-brand dark:text-white font-playfair mb-4 text-center">
-                  Who we're gathering
+                  Who we gather
                 </h3>
 
                 <div className="flex flex-wrap justify-center gap-1.5 flex-1">
@@ -151,9 +151,12 @@ export default async function Component() {
                     'Alignment researchers',
                     'Filmmakers',
                     'Writers',
-                    'Artisans',
+                    'Musicians',
                     'Community builders',
-                    'Members of technical and untechnical staff',
+                    'Hackers',
+                    'Thinkers',
+                    'Players',
+                    'Members of technical (and untechnical) staff',
                   ].map((label) => (
                     <div
                       key={label}
@@ -216,7 +219,7 @@ export default async function Component() {
                     href="/portal/login"
                     className="block text-center text-sm text-secondary-700 dark:text-secondary-400 hover:text-secondary-800 dark:hover:text-secondary-300 underline decoration-dotted underline-offset-2"
                   >
-                    Member Portal →
+                    Member portal →
                   </a>
                 </div>
               </div>
@@ -232,9 +235,9 @@ export default async function Component() {
             <h2 className="text-3xl font-bold text-brand dark:text-white font-playfair mb-2">
               Humans of Mox
             </h2>
-            <p className="text-brand-dark dark:text-primary-100 text-sm">
+            {/* <p className="text-brand-dark dark:text-primary-100 text-sm">
               The community that makes Mox special
-            </p>
+            </p> */}
           </div>
           <PeopleGallery />
         </section>
