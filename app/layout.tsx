@@ -77,7 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-merriweather`}
+        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-lora`}
       >
         {children}
         <Analytics />
