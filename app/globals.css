@@ -148,6 +148,21 @@
   --color-category-orange-text-dark: #fb923c;
 
   /* ============================================ */
+  /* BROWN COLOR SCALE */
+  /* ============================================ */
+  --color-brown-50: #faf8f5;
+  --color-brown-100: #f5f1e8;
+  --color-brown-200: #e8ddc8;
+  --color-brown-300: #d4c3a3;
+  --color-brown-400: #b89d73;
+  --color-brown-500: #9d7e54;
+  --color-brown-600: #876542;
+  --color-brown-700: #6f5135;
+  --color-brown-800: #5a4129;
+  --color-brown-900: #3d2b1c;
+  --color-brown-950: #2a1d12;
+
+  /* ============================================ */
   /* EXTERNAL SERVICE COLORS */
   /* ============================================ */
   --color-google: #4285f4;
