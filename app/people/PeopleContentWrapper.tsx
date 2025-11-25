@@ -23,12 +23,6 @@ export default function PeopleContentWrapper({
       person.orgNames && person.orgNames.length > 0
         ? person.orgNames[0]
         : 'Independent'
-    const orgId =
-      person.org && person.org.length > 0 ? person.org[0] : 'Independent'
-    const orgName =
-      person.orgNames && person.orgNames.length > 0
-        ? person.orgNames[0]
-        : 'Independent'
     if (!orgGroups.has(orgId)) {
       orgGroups.set(orgId, { name: orgName, people: [] })
     }
