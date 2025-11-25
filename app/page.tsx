@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Gallery from './gallery'
 import PeopleGallery from './people-gallery'
 import { PeopleContent } from './people/page'
@@ -101,9 +102,12 @@ export default async function Component() {
           <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Events column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl flex flex-col md:flex-row lg:flex-col overflow-hidden">
-              <img
+              <Image
                 src="/images/014.jpg"
                 alt="Mox events"
+                width={2016}
+                height={1512}
+                priority
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -126,9 +130,12 @@ export default async function Component() {
 
             {/* People column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl flex flex-col md:flex-row lg:flex-col overflow-hidden">
-              <img
+              <Image
                 src="/images/023.jpg"
                 alt="Mox community"
+                width={2016}
+                height={1512}
+                priority
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -174,9 +181,12 @@ export default async function Component() {
 
             {/* Membership column */}
             <div className="bg-background-surface dark:bg-background-accent-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl flex flex-col md:flex-row lg:flex-col overflow-hidden">
-              <img
+              <Image
                 src="/images/003.jpg"
                 alt="Mox space"
+                width={2016}
+                height={1512}
+                priority
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -222,12 +232,14 @@ export default async function Component() {
 
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <section className="mb-12 sm:mb-16">
+          <PeopleGallery />
+        </section>
         <section id="people" className="mb-12 sm:mb-16">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-display mb-2">
               Humans of Mox
             </h2>
-            {/* <p className="text-gray-700 dark:text-gray-300 text-sm">The community that makes Mox special</p> */}
           </div>
           <PeopleContent />
         </section>
@@ -329,14 +341,11 @@ export default async function Component() {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-display mb-2">
               The Space
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 text-sm">A glimpse into our home</p>
           </div>
           <Gallery />
         </section>
 
-        <section className="mb-12 sm:mb-16">
-          <PeopleGallery />
-        </section>
+
       </div>
 
       {/* Footer */}

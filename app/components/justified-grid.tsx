@@ -186,6 +186,7 @@ export default function Masonry({
                   alt=""
                   width={Math.round(width)}
                   height={Math.round(height)}
+                  style={{ width: `${Math.round(width)}px`, height: `${Math.round(height)}px` }}
                   className="object-cover cursor-pointer hover:opacity-80"
                   loading="lazy"
                   onClick={() => setSelectedImageIndex(index)}
