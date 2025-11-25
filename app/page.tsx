@@ -86,7 +86,7 @@ export default async function Component() {
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
             <p className="text-xl mb-4 leading-relaxed text-gray-700 dark:text-gray-200">
-              An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
+              For <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
             </p>
             <p className="text-lg text-gray-700 dark:text-gray-300">
               <Link
@@ -108,7 +108,7 @@ export default async function Component() {
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
-                  Events we're hosting
+                  Upcoming events
                 </h3>
                 <div className="flex-1">
                   <EventsCardCompact events={events} />
@@ -118,7 +118,7 @@ export default async function Component() {
                     href="/events"
                     className="block text-center text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
-                    See all events →
+                    All events →
                   </a>
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default async function Component() {
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
-                  Who we're gathering
+                  Who we gather
                 </h3>
 
                 <div className="flex flex-wrap justify-center gap-1.5 flex-1">
@@ -143,9 +143,12 @@ export default async function Component() {
                     'Alignment researchers',
                     'Filmmakers',
                     'Writers',
-                    'Artisans',
+                    'Musicians',
                     'Community builders',
-                    'Members of technical and untechnical staff',
+                    'Hackers',
+                    'Thinkers',
+                    'Players',
+                    'Members of technical (and untechnical) staff',
                   ].map((label) => (
                     <div
                       key={label}
@@ -208,7 +211,7 @@ export default async function Component() {
                     href="/portal/login"
                     className="block text-center text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2"
                   >
-                    Member Portal →
+                    Member portal →
                   </a>
                 </div>
               </div>
@@ -224,7 +227,7 @@ export default async function Component() {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-display mb-2">
               Humans of Mox
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 text-sm">The community that makes Mox special</p>
+            {/* <p className="text-gray-700 dark:text-gray-300 text-sm">The community that makes Mox special</p> */}
           </div>
           <PeopleContent />
         </section>
