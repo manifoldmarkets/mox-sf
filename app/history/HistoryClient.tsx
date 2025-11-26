@@ -88,17 +88,17 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
   })
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
 
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-slate-50 dark:bg-background-page-dark border-b border-amber-900/20 dark:border-amber-800/20 lg:static lg:border-b-0">
+      <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 lg:static lg:border-b-0">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2 sm:py-4 lg:py-6">
           <div className="flex gap-4">
             <div className="flex-shrink-0 w-24 hidden lg:block"></div>
             <div className="flex-1 min-w-0 flex items-center justify-between gap-4">
               <Link
                 href="/events"
-                className="inline-flex items-center gap-2 text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 text-sm font-medium font-sans"
+                className="inline-flex items-center gap-2 text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 text-sm font-medium font-sans"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -107,23 +107,23 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
               </Link>
 
               {/* Mobile toggle - hidden on desktop */}
-              <div className="sm:hidden inline-flex border border-amber-900 dark:border-amber-800 overflow-hidden flex-shrink-0 font-sans">
+              <div className="sm:hidden inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden flex-shrink-0 font-sans">
                 <button
                   onClick={() => setFilterMode('featured')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
                     filterMode === 'featured'
-                      ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                      : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   Featured
                 </button>
                 <button
                   onClick={() => setFilterMode('unique')}
-                  className={`px-3 py-1.5 text-xs font-semibold transition-colors border-x border-amber-900 dark:border-amber-800 ${
+                  className={`px-3 py-1.5 text-xs font-semibold transition-colors border-x border-gray-300 dark:border-gray-600 ${
                     filterMode === 'unique'
-                      ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                      : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   Unique
@@ -132,8 +132,8 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
                   onClick={() => setFilterMode('all')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
                     filterMode === 'all'
-                      ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                      : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   All
@@ -150,28 +150,28 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
         <div className="flex gap-4 mt-6 lg:mt-2 mb-6">
           <div className="flex-shrink-0 w-24 hidden lg:block"></div>
           <div className="flex-1 min-w-0 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
-            <h1 className="text-4xl font-bold text-amber-900 dark:text-amber-700 font-display text-center sm:text-left">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 font-display text-center sm:text-left">
               Past Events
             </h1>
 
             {/* 3-way toggle - desktop only */}
-            <div ref={horizontalToggleRef} className="hidden sm:inline-flex border border-amber-900 dark:border-amber-800 overflow-hidden font-sans">
+            <div ref={horizontalToggleRef} className="hidden sm:inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
               <button
                 onClick={() => setFilterMode('featured')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
                   filterMode === 'featured'
-                    ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                    : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                 }`}
               >
                 Featured
               </button>
               <button
                 onClick={() => setFilterMode('unique')}
-                className={`px-4 py-2 text-sm font-semibold transition-colors border-x border-amber-900 dark:border-amber-800 ${
+                className={`px-4 py-2 text-sm font-semibold transition-colors border-x border-gray-300 dark:border-gray-600 ${
                   filterMode === 'unique'
-                    ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                    : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                 }`}
               >
                 Unique
@@ -180,8 +180,8 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
                 onClick={() => setFilterMode('all')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
                   filterMode === 'all'
-                    ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                    : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                 }`}
               >
                 All
@@ -194,23 +194,23 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
             <div className="space-y-6 relative">
               {/* Sticky vertical toggle - desktop only, positioned to the right */}
               <div className={`hidden lg:block sticky top-4 float-right -mr-28 z-20 transition-opacity duration-200 ${showStickyToggle ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                <div className="flex flex-col border border-amber-900 dark:border-amber-800 overflow-hidden font-sans">
+                <div className="flex flex-col border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
                   <button
                     onClick={() => setFilterMode('featured')}
                     className={`px-4 py-2 text-sm font-semibold transition-colors ${
                       filterMode === 'featured'
-                        ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                        : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                     }`}
                   >
                     Featured
                   </button>
                   <button
                     onClick={() => setFilterMode('unique')}
-                    className={`px-4 py-2 text-sm font-semibold transition-colors border-y border-amber-900 dark:border-amber-800 ${
+                    className={`px-4 py-2 text-sm font-semibold transition-colors border-y border-gray-300 dark:border-gray-600 ${
                       filterMode === 'unique'
-                        ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                        : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                     }`}
                   >
                     Unique
@@ -219,8 +219,8 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
                     onClick={() => setFilterMode('all')}
                     className={`px-4 py-2 text-sm font-semibold transition-colors ${
                       filterMode === 'all'
-                        ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                        : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                     }`}
                   >
                     All
@@ -233,10 +233,10 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
                   {/* Desktop month label */}
                   <div className="flex-shrink-0 w-24 hidden lg:block">
                     <div className="sticky top-4 text-left">
-                      <div className="font-bold text-amber-900 dark:text-amber-700 text-sm">
+                      <div className="font-bold text-gray-700 dark:text-gray-300 text-sm">
                         {format(group.events[0].startDate, 'MMMM')}
                       </div>
-                      <div className="font-bold text-amber-900 dark:text-amber-700 text-xs">
+                      <div className="font-bold text-gray-600 dark:text-gray-400 text-xs">
                         {format(group.events[0].startDate, 'yyyy')}
                       </div>
                     </div>
@@ -246,8 +246,8 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
                   <div className="flex-1 min-w-0">
                     {/* Mobile month popover */}
                     <div className="lg:hidden sticky top-15 z-[5] flex justify-center mb-4 pointer-events-none">
-                      <div className="bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 px-4 py-2 shadow-lg">
-                        <div className="font-sans font-bold text-amber-900 dark:text-amber-700 text-sm">
+                      <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 px-4 py-2 shadow-lg">
+                        <div className="font-sans font-bold text-gray-700 dark:text-gray-300 text-sm">
                           {format(group.events[0].startDate, 'MMMM yyyy')}
                         </div>
                       </div>

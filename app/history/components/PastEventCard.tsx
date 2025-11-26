@@ -15,8 +15,8 @@ export default function PastEventCard({ event }: PastEventCardProps) {
   // Check if event is recurring
   const isRecurring = event.status?.toLowerCase().includes('recurring')
   const titleColorClass = isRecurring
-    ? 'text-text-secondary dark:text-text-secondary-dark'
-    : 'text-text-primary dark:text-text-primary-dark'
+    ? 'text-gray-500 dark:text-gray-500'
+    : 'text-gray-900 dark:text-gray-100'
 
   // Validate URL
   const isValidUrl = (url: string | undefined): boolean => {
@@ -38,7 +38,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
         <div className={`flex-shrink-0 w-20 text-center font-sans flex items-center justify-center self-stretch ${
           isRecurring
             ? 'bg-gray-400 dark:bg-gray-700'
-            : 'bg-amber-900 dark:bg-amber-900'
+            : 'bg-gray-600 dark:bg-gray-600'
         }`}>
           <div className="text-s font-bold text-white leading-none uppercase">
             {month} {day}
@@ -47,7 +47,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
 
         {/* Event name */}
         <h3 className={`text-sm ${titleColorClass} leading-tight flex-1 px-2 py-1 truncate`}>
-          <span className={isRecurring ? 'font-normal' : 'font-bold'}>{event.name}</span>
+          {event.name}
           {event.host && (
             <span className="ml-1">
               | {event.host}
@@ -60,7 +60,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
           <div className={`flex-shrink-0 pr-3 ${
             isRecurring
               ? 'text-gray-400 dark:text-gray-600'
-              : 'text-amber-900 dark:text-amber-700'
+              : 'text-amber-900 dark:text-amber-400'
           }`}>
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -76,10 +76,10 @@ export default function PastEventCard({ event }: PastEventCardProps) {
           href={event.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex items-center hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors overflow-hidden ${
+          className={`flex items-center hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors overflow-hidden ${
             isRecurring
-              ? 'bg-stone-200 dark:bg-brown-950 border border-gray-300 dark:border-gray-700 opacity-75'
-              : 'bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800'
+              ? 'bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 opacity-75'
+              : 'bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600'
           }`}
         >
           {CompactContent}
@@ -90,8 +90,8 @@ export default function PastEventCard({ event }: PastEventCardProps) {
     return (
       <div className={`flex items-center overflow-hidden ${
         isRecurring
-          ? 'bg-stone-200 dark:bg-brown-950 border border-gray-300 dark:border-gray-700 opacity-75'
-          : 'bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800'
+          ? 'bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 opacity-75'
+          : 'bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600'
       }`}>
         {CompactContent}
       </div>
@@ -104,9 +104,9 @@ export default function PastEventCard({ event }: PastEventCardProps) {
     (event.poster.width / event.poster.height) < 1
 
   return (
-    <div className="bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors overflow-hidden">
+    <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors overflow-hidden">
       {/* Date bar at top */}
-      <div className="w-full bg-amber-900 dark:bg-amber-900 font-sans px-4 py-2 text-center">
+      <div className="w-full bg-gray-600 dark:bg-gray-600 font-sans px-4 py-2 text-center">
         <div className="text-s font-bold text-white leading-none">
           {formattedDate}
           {event.host && (
@@ -156,11 +156,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
                 href={event.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${
-                  isRecurring
-                    ? 'text-text-secondary dark:text-text-secondary-dark hover:text-text-primary dark:hover:text-text-primary-dark'
-                    : 'text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600'
-                } font-bold text-lg leading-tight inline-flex items-center gap-2`}
+                className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-bold text-lg leading-tight inline-flex items-center gap-2"
               >
                 {event.name}
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,11 +164,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
                 </svg>
               </a>
             ) : (
-              <h3 className={`${
-                isRecurring
-                  ? 'text-text-secondary dark:text-text-secondary-dark'
-                  : 'text-amber-900 dark:text-amber-700'
-              } font-bold text-lg leading-tight`}>
+              <h3 className="text-amber-900 dark:text-amber-400 font-bold text-lg leading-tight">
                 {event.name}
               </h3>
             )}
@@ -181,8 +173,8 @@ export default function PastEventCard({ event }: PastEventCardProps) {
           {/* Retro text - always shown in full */}
           {event.retro && (
             <div className="mb-2">
-              <div className="border-l-2 border-amber-900 dark:border-amber-800 pl-3">
-                <p className="text-text-secondary dark:text-text-secondary-dark text-sm italic leading-snug">
+              <div className="border-l-2 border-gray-400 dark:border-gray-500 pl-3">
+                <p className="text-gray-600 dark:text-gray-400 text-sm italic leading-snug">
                   {event.retro}
                 </p>
               </div>
@@ -192,7 +184,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
           {/* Description - responsive line clamping */}
           {event.description && (
             <div className="mb-2">
-              <p className="text-text-primary dark:text-text-primary-dark text-sm leading-snug whitespace-pre-line break-words line-clamp-4 sm:line-clamp-6 md:line-clamp-8 lg:line-clamp-10">
+              <p className="text-gray-700 dark:text-gray-300 text-sm leading-snug whitespace-pre-line break-words line-clamp-4 sm:line-clamp-6 md:line-clamp-8 lg:line-clamp-10">
                 {event.description}
               </p>
             </div>
