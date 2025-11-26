@@ -70,7 +70,7 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
               href={event.url ?? '/events'}
               className="flex items-center bg-gray-50 dark:bg-gray-700 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors border border-gray-200 dark:border-gray-600 overflow-hidden"
             >
-              <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-gray-600 dark:bg-gray-600 font-sans flex flex-col items-center justify-center gap-0">
+              <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-amber-900 dark:bg-gray-600 font-sans flex flex-col items-center justify-center gap-0">
                 <div className="text-sm font-bold text-white uppercase leading-none">
                   {day}
                 </div>
