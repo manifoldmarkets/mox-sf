@@ -43,7 +43,7 @@ export default function EventCard({ event }: { event: Event }) {
   }
 
   return (
-    <div className="bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors overflow-hidden">
+    <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors overflow-hidden">
       <div className="p-4">
 
         {/* Title and Type */}
@@ -54,7 +54,7 @@ export default function EventCard({ event }: { event: Event }) {
                 href={event.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 font-bold text-lg leading-tight"
+                className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-bold text-lg leading-tight"
               >
                 {event.name}{' '}
                 <svg className="w-4 h-4 inline-block align-[-0.12em]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,7 +62,7 @@ export default function EventCard({ event }: { event: Event }) {
                 </svg>
               </a>
             ) : (
-              <h3 className="text-amber-900 dark:text-amber-700 font-bold text-lg leading-tight">
+              <h3 className="text-amber-900 dark:text-amber-400 font-bold text-lg leading-tight">
                 {event.name}
               </h3>
             )}
@@ -75,24 +75,24 @@ export default function EventCard({ event }: { event: Event }) {
         </div>
 
         {/* Time and Host */}
-        <p className="text-sm mb-2 text-amber-900 dark:text-amber-700 font-sans">
+        <p className="text-sm mb-2 text-amber-800 dark:text-amber-500 font-sans">
           <span className="font-semibold">{formatEventTime(event)}</span>
           {event.host && <span>, hosted by {event.host}</span>}
         </p>
 
         {event.location && (
-          <p className="text-text-secondary dark:text-text-secondary-dark text-sm mb-2">
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
             📍 {event.location}
           </p>
         )}
 
         {event.description && (
-          <p className="text-text-primary dark:text-text-primary-dark mt-2 whitespace-pre-line text-sm leading-snug break-words">
+          <p className="text-gray-700 dark:text-gray-300 mt-2 whitespace-pre-line text-sm leading-snug break-words">
             {expanded ? event.description : getFirstLines(event.description, 3)}
             {!expanded && isLong && (
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline ml-2 cursor-pointer"
+                className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline ml-2 cursor-pointer"
               >
                 ... more
               </button>

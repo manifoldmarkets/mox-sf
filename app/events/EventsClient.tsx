@@ -45,16 +45,16 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
   })
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-slate-50 dark:bg-background-page-dark border-b border-amber-900/20 dark:border-amber-800/20 lg:static lg:border-b-0">
+      <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 lg:static lg:border-b-0">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2 sm:py-4 lg:py-6">
           <div className="flex gap-4">
             <div className="flex-shrink-0 w-24 hidden lg:block"></div>
             <div className="flex-1 min-w-0 flex items-center justify-between gap-4">
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 text-sm font-medium font-sans"
+                className="inline-flex items-center gap-2 text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 text-sm font-medium font-sans"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -63,23 +63,23 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
               </Link>
 
               {/* Mobile toggle */}
-              <div className="sm:hidden inline-flex border border-amber-900 dark:border-amber-800 overflow-hidden flex-shrink-0 font-sans">
+              <div className="sm:hidden inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden flex-shrink-0 font-sans">
                 <button
                   onClick={() => setViewMode('list')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
                     viewMode === 'list'
-                      ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                      : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   List
                 </button>
                 <button
                   onClick={() => setViewMode('week')}
-                  className={`px-3 py-1.5 text-xs font-semibold transition-colors border-x border-amber-900 dark:border-amber-800 ${
+                  className={`px-3 py-1.5 text-xs font-semibold transition-colors border-x border-gray-300 dark:border-gray-600 ${
                     viewMode === 'week'
-                      ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                      : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   Week
@@ -88,8 +88,8 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                   onClick={() => setViewMode('month')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
                     viewMode === 'month'
-                      ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                      : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                   }`}
                 >
                   Month
@@ -106,28 +106,28 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
         <div className="flex gap-4 mt-6 lg:mt-2 mb-2">
           <div className="flex-shrink-0 w-24 hidden lg:block"></div>
           <div className="flex-1 min-w-0 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
-            <h1 className="text-4xl font-bold text-amber-900 dark:text-amber-700 font-display text-center sm:text-left">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 font-display text-center sm:text-left">
               Upcoming Events
             </h1>
 
             {/* View toggle - desktop */}
-            <div className="hidden sm:inline-flex border border-amber-900 dark:border-amber-800 overflow-hidden font-sans">
+            <div className="hidden sm:inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
               <button
                 onClick={() => setViewMode('list')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
                   viewMode === 'list'
-                    ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                    : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                 }`}
               >
                 List
               </button>
               <button
                 onClick={() => setViewMode('week')}
-                className={`px-4 py-2 text-sm font-semibold transition-colors border-x border-amber-900 dark:border-amber-800 ${
+                className={`px-4 py-2 text-sm font-semibold transition-colors border-x border-gray-300 dark:border-gray-600 ${
                   viewMode === 'week'
-                    ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                    : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                 }`}
               >
                 Week
@@ -136,8 +136,8 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                 onClick={() => setViewMode('month')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
                   viewMode === 'month'
-                    ? 'bg-amber-900 dark:bg-amber-900 text-white'
-                    : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
                 }`}
               >
                 Month
@@ -152,7 +152,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
           <div className="flex-1 min-w-0 text-center sm:text-left">
             <button
               onClick={() => setIsCalendarOpen(true)}
-              className="text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2 cursor-pointer"
+              className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2 cursor-pointer"
             >
               Sync to your calendar
             </button>
@@ -167,10 +167,10 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                 {/* Desktop date label */}
                 <div className="flex-shrink-0 w-24 hidden lg:block">
                   <div className="sticky top-4 text-left">
-                    <div className="font-bold text-amber-900 dark:text-amber-700 text-sm">
+                    <div className="font-bold text-gray-700 dark:text-gray-300 text-sm">
                       {format(group.date, 'EEEE')}
                     </div>
-                    <div className="font-bold text-amber-900 dark:text-amber-700 text-xs">
+                    <div className="font-bold text-gray-600 dark:text-gray-400 text-xs">
                       {format(group.date, 'MMM d')}
                     </div>
                   </div>
@@ -180,7 +180,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                 <div className="flex-1 min-w-0">
                   {/* Mobile date header */}
                   <div className="lg:hidden mb-3 px-4">
-                    <div className="font-bold text-amber-900 dark:text-amber-700 text-sm font-sans">
+                    <div className="font-bold text-gray-700 dark:text-gray-300 text-sm font-sans">
                       {format(group.date, 'EEEE, MMMM d')}
                     </div>
                   </div>
@@ -195,7 +195,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
             ))}
 
             {initialEvents.length === 0 && (
-              <p className="text-text-secondary dark:text-text-secondary-dark text-center py-8">
+              <p className="text-gray-500 dark:text-gray-400 text-center py-8">
                 No upcoming events
               </p>
             )}
