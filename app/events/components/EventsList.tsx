@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { Event, formatEventTime } from '../../lib/events'
 import { format, isAfter, isSameDay, startOfDay } from 'date-fns'
-import { ExternalLink } from 'lucide-react'
 
 function EventTypeTag({ type }: { type: string }) {
   const colorMap = {
@@ -26,26 +25,44 @@ function EventCard({ event }: { event: Event }) {
   const isLong = event.description && event.description.length > 480
   const [expanded, setExpanded] = useState(!isLong)
 
-  return (
-    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 shadow-sm border border-slate-100 dark:border-gray-700 relative">
-      {event.url && (
-        <a
-          href={event.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute top-4 right-4 text-amber-700 dark:text-amber-500 hover:text-amber-900 dark:hover:text-amber-600 transition-colors"
-          title="Event details"
-          aria-label="Event details"
-        >
-          <ExternalLink size={18} />
-        </a>
-      )}
-      <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-400 leading-tight mb-1 pr-10">
-        {event.name}
-      </h3>
-      <p className="text-sm mb-2 text-amber-800 dark:text-amber-500 font-semibold">
+  // Validate URL
+  const isValidUrl = (url: string | undefined): boolean => {
+    if (!url) return false
+    try {
+      new URL(url)
+      return true
+    } catch {
+      return false
+    }
+  }
+  const hasValidUrl = isValidUrl(event.url)
+
+  const CardContent = (
+    <>
+      {/* Title and Link */}
+      <div className="flex items-start justify-between gap-3 mb-2">
+        {hasValidUrl ? (
+          <a
+            href={event.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 font-bold text-lg leading-tight inline-flex items-center gap-2 flex-1"
+          >
+            {event.name}
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        ) : (
+          <h3 className="text-amber-900 dark:text-amber-700 font-bold text-lg leading-tight flex-1">
+            {event.name}
+          </h3>
+        )}
+      </div>
+
+      <p className="text-sm mb-2 text-amber-900 dark:text-amber-700 font-semibold">
         {formatEventTime(event)}
-        {event.host && <span className="font-normal"> - {event.host}</span>}
+        {event.host && <span className="font-normal"> | {event.host}</span>}
       </p>
 
       {event.type && (
@@ -55,21 +72,27 @@ function EventCard({ event }: { event: Event }) {
       )}
 
       {event.location && (
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">📍 {event.location}</p>
+        <p className="text-text-secondary dark:text-text-secondary-dark text-sm mb-2">📍 {event.location}</p>
       )}
       {event.description && (
-        <p className="text-gray-700 dark:text-gray-300 mt-2 whitespace-pre-wrap text-sm break-words">
+        <p className="text-text-primary dark:text-text-primary-dark mt-2 whitespace-pre-line text-sm leading-snug break-words">
           {expanded ? event.description : event.description.slice(0, 480)}
           {!expanded && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 underline ml-2 cursor-pointer"
+              className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline ml-2 cursor-pointer"
             >
               ... more
             </button>
           )}
         </p>
       )}
+    </>
+  )
+
+  return (
+    <div className="bg-background-surface dark:bg-background-surface-dark p-4 border border-amber-900 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors overflow-hidden">
+      {CardContent}
     </div>
   )
 }
@@ -112,13 +135,13 @@ export default function EventsList({ events }: { events: Event[] }) {
   const visibleDays = showAll ? sortedDays : sortedDays.slice(0, THRESHOLD)
 
   return (
-    <div className="space-y-8 max-w-xl mx-auto">
+    <div className="space-y-6 max-w-xl mx-auto">
       {visibleDays.map(({ date, events: dayEvents }) => (
         <div key={date.toISOString()}>
-          <p className="text-sm uppercase tracking-wide text-amber-700 dark:text-amber-500 mb-3">
+          <p className="font-bold text-amber-900 dark:text-amber-700 text-sm mb-3 font-sans">
             {format(date, 'EEEE, MMMM d')}
           </p>
-          <div className="space-y-4">
+          <div className="space-y-1">
             {dayEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -128,13 +151,13 @@ export default function EventsList({ events }: { events: Event[] }) {
       {!showAll && totalEvents > THRESHOLD && (
         <button
           onClick={() => setShowAll(true)}
-          className="w-full py-2 text-sm text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 border-2 border-amber-800 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+          className="w-full py-2 text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 border border-amber-900 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
         >
           Show all upcoming events
         </button>
       )}
       {events.length === 0 && (
-        <p className="text-gray-500 dark:text-gray-400 text-center py-8">No upcoming events</p>
+        <p className="text-text-secondary dark:text-text-secondary-dark text-center py-8">No upcoming events</p>
       )}
     </div>
   )

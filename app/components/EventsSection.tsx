@@ -1,13 +1,17 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import EventsList from '../events/components/EventsList'
 import WeeklyView from '../events/components/WeeklyView'
 import MonthlyView from '../events/components/MonthlyView'
-import { Event, getEvents } from '../lib/events'
+import { Event } from '../lib/events'
 
-function AddSection() {
+export default function EventsSection(props: {
+  fullPage?: boolean
+  events?: Event[]
+}) {
+  const { fullPage = false, events = [] } = props
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [calendarCopied, setCalendarCopied] = useState(false)
 
@@ -30,29 +34,56 @@ function AddSection() {
   const OUTLOOK_CALENDAR_URL = `https://outlook.live.com/calendar/0/addcalendar?url=${encodeURIComponent('webcal://moxsf.com/api/events-cal')}`
   const APPLE_CALENDAR_URL = `webcal://moxsf.com/api/events-cal`
 
-  return (
-    <>
-      {/* Header with links */}
-      <div className="flex flex-col md:flex-row gap-3 mb-6 max-w-xl mx-auto">
-        <a
-          href="/substack"
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium bg-brand dark:bg-brand text-white hover:bg-brand-dark dark:hover:bg-brand-dark transition-colors cursor-pointer"
-        >
-          Events newsletter
-        </a>
-        <a
-          href="/events-hosting"
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-brand dark:text-brand-dark-mode bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
-        >
-          Host an event
-        </a>
+  const content = (
+    <div className={fullPage ? 'px-4 py-8' : ''}>
+      {/* Sync to cal link */}
+      <div className="text-center mb-4 max-w-xl mx-auto">
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="flex-1 inline-flex items-center justify-center px-4 py-3 text-sm font-medium text-brand dark:text-brand-dark-mode bg-background-surface dark:bg-background-subtle-dark border-2 border-strong dark:border-strong hover:bg-background-accent dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
+          className="text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2 cursor-pointer"
         >
-          Sync to cal
+          Sync to your calendar
         </button>
       </div>
+
+      <TabGroup>
+        {/* Tabs with Past as a link-styled tab */}
+        <TabList className="flex space-x-1 bg-border-light dark:bg-background-subtle-dark p-1 mb-6 max-w-xl mx-auto">
+          {['List', 'Week', 'Month'].map((tab) => (
+            <Tab
+              key={tab}
+              className={({ selected }) =>
+                `flex-1 py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer whitespace-nowrap
+                ${
+                  selected
+                    ? 'bg-background-surface dark:bg-background-surface-dark text-brand dark:text-brand-dark-mode shadow'
+                    : 'text-text-secondary dark:text-text-secondary-dark hover:bg-background-surface/60 dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode'
+                }`
+              }
+            >
+              {tab.toUpperCase()}
+            </Tab>
+          ))}
+          <a
+            href="/history"
+            className="flex-1 py-2.5 text-sm leading-5 text-center text-text-secondary dark:text-text-secondary-dark hover:bg-background-surface/60 dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-colors cursor-pointer whitespace-nowrap"
+          >
+            PAST
+          </a>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <EventsList events={events} />
+          </TabPanel>
+          <TabPanel>
+            <WeeklyView events={events} />
+          </TabPanel>
+          <TabPanel>
+            <MonthlyView events={events} />
+          </TabPanel>
+        </TabPanels>
+      </TabGroup>
 
       {/* Calendar Dialog */}
       <Dialog
@@ -108,51 +139,6 @@ function AddSection() {
           </DialogPanel>
         </div>
       </Dialog>
-    </>
-  )
-}
-
-export default function EventsSection(props: {
-  fullPage?: boolean
-  events?: Event[]
-}) {
-  const { fullPage = false, events = [] } = props
-
-  const content = (
-    <div className={fullPage ? 'px-4 py-8' : ''}>
-      <AddSection />
-
-      <TabGroup>
-        <TabList className="flex space-x-1 bg-border-light dark:bg-background-subtle-dark p-1 mb-6 max-w-xl mx-auto">
-          {['Events', 'Week', 'Month'].map((tab) => (
-            <Tab
-              key={tab}
-              className={({ selected }) =>
-                `w-full py-2.5 text-sm leading-5 ring-0 focus:outline-none focus:ring-0 cursor-pointer
-                ${
-                  selected
-                    ? 'bg-background-surface dark:bg-background-surface-dark text-brand dark:text-brand-dark-mode shadow'
-                    : 'text-text-secondary dark:text-text-secondary-dark hover:bg-background-surface/60 dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode'
-                }`
-              }
-            >
-              {tab.toUpperCase()}
-            </Tab>
-          ))}
-        </TabList>
-
-        <TabPanels>
-          <TabPanel>
-            <EventsList events={events} />
-          </TabPanel>
-          <TabPanel>
-            <WeeklyView events={events} />
-          </TabPanel>
-          <TabPanel>
-            <MonthlyView events={events} />
-          </TabPanel>
-        </TabPanels>
-      </TabGroup>
     </div>
   )
 
