@@ -51,7 +51,7 @@ export default function OfficesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
         {/* Private Offices */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-amber-900 dark:border-amber-800">
+          <div className="bg-white dark:bg-gray-700 bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-600">
             <img
               src="/images/005.jpg"
               alt="Private office at Mox"
@@ -73,31 +73,31 @@ export default function OfficesPage() {
               </h3>
               <ul className="space-y-2 mb-6 text-text-secondary dark:text-text-secondary-dark">
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Lockable private office space</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Desks and monitors for your team</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>24/7 building access</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Shared meeting rooms and call booths</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Kitchen access with subsidized meals through Forkable</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Full member benefits (gym access, community events, coworking areas)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>High-speed internet and utilities</span>
                 </li>
               </ul>
@@ -121,7 +121,7 @@ export default function OfficesPage() {
 
         {/* Dedicated Desks */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-amber-900 dark:border-amber-800">
+          <div className="bg-white dark:bg-gray-700 bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-600">
             <img
               src="/images/003.jpg"
               alt="Dedicated desks at Mox"
@@ -143,27 +143,27 @@ export default function OfficesPage() {
               </h3>
               <ul className="space-y-2 mb-6 text-text-secondary dark:text-text-secondary-dark">
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Your own desk with monitor</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>24/7 access to your desk and coworking areas</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Shared meeting rooms and call booths</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Kitchen access with subsidized meals through Forkable</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>Full member benefits (gym access, community events)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-900 dark:text-amber-700 mt-1">•</span>
+                  <span className="text-gray-600 dark:text-gray-400 mt-1">•</span>
                   <span>High-speed internet</span>
                 </li>
               </ul>
@@ -184,7 +184,7 @@ export default function OfficesPage() {
 
         {/* For Cohorts & Programs */}
         <section className="mb-16">
-          <div className="bg-background-accent dark:bg-background-surface-dark bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-amber-900 dark:border-amber-800">
+          <div className="bg-white dark:bg-gray-700 bg-opacity-95 dark:bg-opacity-95 shadow-xl sm:rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-600">
             <img
               src="/images/021.jpg"
               alt="Cohorts and programs at Mox"

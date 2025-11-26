@@ -40,7 +40,7 @@ export default function EventsSection(props: {
       <div className="text-center mb-4 max-w-xl mx-auto">
         <button
           onClick={() => setIsCalendarOpen(true)}
-          className="text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline decoration-dotted underline-offset-2 cursor-pointer"
+          className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2 cursor-pointer"
         >
           Sync to your calendar
         </button>

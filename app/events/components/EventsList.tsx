@@ -46,7 +46,7 @@ function EventCard({ event }: { event: Event }) {
             href={event.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 font-bold text-lg leading-tight inline-flex items-center gap-2 flex-1"
+            className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-bold text-lg leading-tight inline-flex items-center gap-2 flex-1"
           >
             {event.name}
             <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,13 +54,13 @@ function EventCard({ event }: { event: Event }) {
             </svg>
           </a>
         ) : (
-          <h3 className="text-amber-900 dark:text-amber-700 font-bold text-lg leading-tight flex-1">
+          <h3 className="text-amber-900 dark:text-amber-400 font-bold text-lg leading-tight flex-1">
             {event.name}
           </h3>
         )}
       </div>
 
-      <p className="text-sm mb-2 text-amber-900 dark:text-amber-700 font-semibold">
+      <p className="text-sm mb-2 text-amber-800 dark:text-amber-500 font-sans font-semibold">
         {formatEventTime(event)}
         {event.host && <span className="font-normal"> | {event.host}</span>}
       </p>
@@ -80,7 +80,7 @@ function EventCard({ event }: { event: Event }) {
           {!expanded && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 underline ml-2 cursor-pointer"
+              className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline ml-2 cursor-pointer"
             >
               ... more
             </button>
@@ -91,7 +91,7 @@ function EventCard({ event }: { event: Event }) {
   )
 
   return (
-    <div className="bg-background-surface dark:bg-background-surface-dark p-4 border border-amber-900 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors overflow-hidden">
+    <div className="bg-gray-50 dark:bg-gray-700 p-4 border border-gray-200 dark:border-gray-600 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors overflow-hidden">
       {CardContent}
     </div>
   )
@@ -138,7 +138,7 @@ export default function EventsList({ events }: { events: Event[] }) {
     <div className="space-y-6 max-w-xl mx-auto">
       {visibleDays.map(({ date, events: dayEvents }) => (
         <div key={date.toISOString()}>
-          <p className="font-bold text-amber-900 dark:text-amber-700 text-sm mb-3 font-sans">
+          <p className="font-bold text-gray-700 dark:text-gray-300 text-sm mb-3 font-sans">
             {format(date, 'EEEE, MMMM d')}
           </p>
           <div className="space-y-1">
@@ -151,7 +151,7 @@ export default function EventsList({ events }: { events: Event[] }) {
       {!showAll && totalEvents > THRESHOLD && (
         <button
           onClick={() => setShowAll(true)}
-          className="w-full py-2 text-sm text-amber-900 dark:text-amber-700 hover:text-amber-950 dark:hover:text-amber-600 border border-amber-900 dark:border-amber-800 hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors cursor-pointer"
+          className="w-full py-2 text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors cursor-pointer"
         >
           Show all upcoming events
         </button>

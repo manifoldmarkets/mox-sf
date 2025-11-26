@@ -59,9 +59,9 @@ function PartnerCard({
 
 function TestimonialCard({ name, quote }: { name: string; quote: string }) {
   return (
-    <div className="bg-white p-6 border-l-4 border-amber-800 shadow-sm break-inside-avoid">
+    <div className="bg-white p-6 border-l-4 border-gray-400 dark:border-gray-500 shadow-sm break-inside-avoid">
       <p className="text-gray-700 mb-4 leading-relaxed text-sm">{quote}</p>
-      <p className="text-amber-800 font-semibold">— {name}</p>
+      <p className="text-gray-600 font-semibold">— {name}</p>
     </div>
   )
 }
@@ -83,8 +83,8 @@ export default function GuestsPage() {
         {/* What Mox offers section */}
         <section className="mb-20">
           <div className="bg-white shadow-lg p-8 border border-slate-100 relative">
-            <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-800"></div>
-            <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-800"></div>
+            <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-gray-400"></div>
+            <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-gray-400"></div>
 
             {/* <h2 className="text-3xl font-bold mb-12 text-center font-display">
               What Mox offers guests
@@ -93,7 +93,7 @@ export default function GuestsPage() {
               <div className="text-center p-6">
                 <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6">
                   <svg
-                    className="w-8 h-8 text-amber-700"
+                    className="w-8 h-8 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -116,7 +116,7 @@ export default function GuestsPage() {
               <div className="text-center p-6">
                 <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6">
                   <svg
-                    className="w-8 h-8 text-amber-700"
+                    className="w-8 h-8 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -139,7 +139,7 @@ export default function GuestsPage() {
               <div className="text-center p-6">
                 <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6">
                   <svg
-                    className="w-8 h-8 text-amber-700"
+                    className="w-8 h-8 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

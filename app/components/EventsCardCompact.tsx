@@ -57,7 +57,7 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
   return (
     <div className="space-y-1">
       {upcomingEvents.length === 0 ? (
-        <p className="text-sm text-text-muted dark:text-text-muted-dark text-center py-2">
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-2">
           No upcoming events
         </p>
       ) : (
@@ -68,9 +68,9 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
             <Link
               key={event.id}
               href={event.url ?? '/events'}
-              className="flex items-center bg-background-surface dark:bg-background-surface-dark hover:bg-amber-50 dark:hover:bg-background-subtle-dark transition-colors border border-amber-900 dark:border-amber-800 overflow-hidden"
+              className="flex items-center bg-gray-50 dark:bg-gray-700 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors border border-gray-200 dark:border-gray-600 overflow-hidden"
             >
-              <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-amber-900 dark:bg-amber-900 font-sans flex flex-col items-center justify-center gap-0">
+              <div className="flex-shrink-0 w-14 h-full text-center py-1 bg-gray-600 dark:bg-gray-600 font-sans flex flex-col items-center justify-center gap-0">
                 <div className="text-sm font-bold text-white uppercase leading-none">
                   {day}
                 </div>
@@ -78,10 +78,10 @@ export default function EventsCardCompact({ events }: EventsCardCompactProps) {
                   {date}
                 </div>
               </div>
-              <h3 className="text-sm text-text-primary dark:text-text-primary-dark leading-tight flex-1 px-2 py-1.5 truncate">
+              <h3 className="text-sm text-gray-900 dark:text-gray-100 leading-tight flex-1 px-2 py-1.5 truncate">
                 {event.name}
               </h3>
-              <div className="flex-shrink-0 pr-3 text-amber-900 dark:text-amber-700">
+              <div className="flex-shrink-0 pr-3 text-amber-900 dark:text-amber-400">
                 <svg
                   className="w-4 h-4"
                   fill="none"

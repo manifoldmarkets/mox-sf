@@ -48,7 +48,7 @@ export default async function PeoplePage() {
   */
 
   return (
-    <div className="min-h-screen bg-background-page-dark py-12">
+    <div className="min-h-screen bg-gray-900 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-white font-display mb-2">

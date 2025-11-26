@@ -118,8 +118,8 @@ export default function PeopleListClient({
         const baseClasses =
           'border px-3 py-1 transition-all duration-700 ease-in-out'
         const colorClasses = isEmphasized
-          ? 'bg-amber-50 dark:bg-amber-900/30 border-amber-900 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50'
-          : 'bg-background-surface dark:bg-transparent border-amber-900 dark:border-amber-800'
+          ? 'bg-gray-100 dark:bg-gray-600 border-gray-400 dark:border-gray-500 hover:bg-gray-200 dark:hover:bg-gray-550'
+          : 'bg-white dark:bg-transparent border-gray-300 dark:border-gray-600'
 
         const fontWeight = isEmphasized ? '' : ''
 

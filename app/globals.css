@@ -50,15 +50,15 @@
   /* ============================================ */
   /* SEMANTIC BACKGROUND COLORS */
   /* ============================================ */
-  --color-background-page: #f8fafc;
-  --color-background-page-warm: #f8fafc;
-  --color-background-page-dark: #1c0f0a;
+  --color-background-page: #f9fafb;
+  --color-background-page-warm: #f9fafb;
+  --color-background-page-dark: #111827;
   --color-background-surface: #ffffff;
-  --color-background-surface-dark: #2d1810;
+  --color-background-surface-dark: #374151;
   --color-background-accent: #fff4e6;
-  --color-background-accent-dark: #2d1810;
+  --color-background-accent-dark: #374151;
   --color-background-subtle: #d1d5db;
-  --color-background-subtle-dark: #78350f;
+  --color-background-subtle-dark: #4b5563;
 
   /* ============================================ */
   /* SEMANTIC TEXT COLORS */

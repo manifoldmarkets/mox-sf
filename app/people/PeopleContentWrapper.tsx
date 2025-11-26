@@ -41,7 +41,7 @@ export default function PeopleContentWrapper({
         >
           <span className="text-sm">Show faces</span>
           <div
-            className={`relative inline-flex h-6 w-11 items-center transition-colors ${showFaces ? 'bg-amber-900 dark:bg-amber-900' : 'bg-gray-300 dark:bg-gray-700'}`}
+            className={`relative inline-flex h-6 w-11 items-center transition-colors ${showFaces ? 'bg-gray-600 dark:bg-gray-600' : 'bg-gray-300 dark:bg-gray-700'}`}
           >
             <span
               className={`inline-block h-5 w-5 transform bg-white transition-transform ${showFaces ? 'translate-x-5.5' : 'translate-x-0.5'}`}
@@ -79,7 +79,7 @@ export default function PeopleContentWrapper({
                 .map(([orgId, { name, people }]) => (
                   <div
                     key={orgId}
-                    className="bg-background-surface dark:bg-background-surface-dark border border-amber-900 dark:border-amber-800 p-4"
+                    className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-4"
                   >
                     <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase font-sans tracking-wide text-center mb-3">
                       {name}
