@@ -16,14 +16,19 @@ type FilterMode = 'featured' | 'unique' | 'all'
 export default function HistoryClient({ initialEvents }: HistoryClientProps) {
   const [filterMode, setFilterMode] = useState<FilterMode>('featured')
   const [displayCount, setDisplayCount] = useState(ITEMS_PER_PAGE)
+  const [showStickyToggle, setShowStickyToggle] = useState(false)
   const loadMoreRef = useRef<HTMLDivElement>(null)
+  const horizontalToggleRef = useRef<HTMLDivElement>(null)
 
   // Filter events based on mode
   let filteredEvents = initialEvents
   if (filterMode === 'featured') {
     filteredEvents = initialEvents.filter(event => event.featured)
   } else if (filterMode === 'unique') {
-    filteredEvents = initialEvents.filter(event => !event.status?.toLowerCase().includes('recurring'))
+    // Show all featured events, plus non-recurring events
+    filteredEvents = initialEvents.filter(event =>
+      event.featured || !event.status?.toLowerCase().includes('recurring')
+    )
   }
   // 'all' mode shows everything, no filtering needed
 
@@ -50,6 +55,23 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
     setDisplayCount(ITEMS_PER_PAGE)
   }, [filterMode])
 
+  // Observe horizontal toggle visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Show sticky toggle when horizontal toggle is NOT in view
+        setShowStickyToggle(!entries[0].isIntersecting)
+      },
+      { threshold: 0 }
+    )
+
+    if (horizontalToggleRef.current) {
+      observer.observe(horizontalToggleRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   // Group events by month
   const visibleEvents = filteredEvents.slice(0, displayCount)
   const groupedEvents: { monthYear: string; events: Event[] }[] = []
@@ -66,7 +88,8 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
   })
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark">
+    <div className="min-h-screen bg-slate-50 dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark relative">
+
       {/* Sticky header */}
       <div className="sticky top-0 z-10 bg-slate-50 dark:bg-background-page-dark border-b border-amber-900/20 dark:border-amber-800/20 lg:static lg:border-b-0">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2 sm:py-4 lg:py-6">
@@ -132,7 +155,7 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
             </h1>
 
             {/* 3-way toggle - desktop only */}
-            <div className="hidden sm:inline-flex border border-amber-900 dark:border-amber-800 overflow-hidden font-sans">
+            <div ref={horizontalToggleRef} className="hidden sm:inline-flex border border-amber-900 dark:border-amber-800 overflow-hidden font-sans">
               <button
                 onClick={() => setFilterMode('featured')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
@@ -168,7 +191,43 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
         </div>
 
             {/* Events */}
-            <div className="space-y-6">
+            <div className="space-y-6 relative">
+              {/* Sticky vertical toggle - desktop only, positioned to the right */}
+              <div className={`hidden lg:block sticky top-4 float-right -mr-28 z-20 transition-opacity duration-200 ${showStickyToggle ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                <div className="flex flex-col border border-amber-900 dark:border-amber-800 overflow-hidden font-sans">
+                  <button
+                    onClick={() => setFilterMode('featured')}
+                    className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                      filterMode === 'featured'
+                        ? 'bg-amber-900 dark:bg-amber-900 text-white'
+                        : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    }`}
+                  >
+                    Featured
+                  </button>
+                  <button
+                    onClick={() => setFilterMode('unique')}
+                    className={`px-4 py-2 text-sm font-semibold transition-colors border-y border-amber-900 dark:border-amber-800 ${
+                      filterMode === 'unique'
+                        ? 'bg-amber-900 dark:bg-amber-900 text-white'
+                        : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    }`}
+                  >
+                    Unique
+                  </button>
+                  <button
+                    onClick={() => setFilterMode('all')}
+                    className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                      filterMode === 'all'
+                        ? 'bg-amber-900 dark:bg-amber-900 text-white'
+                        : 'bg-background-surface dark:bg-background-surface-dark text-amber-900 dark:text-amber-700 hover:bg-amber-50 dark:hover:bg-background-subtle-dark'
+                    }`}
+                  >
+                    All
+                  </button>
+                </div>
+              </div>
+
               {groupedEvents.map((group, index) => (
                 <div key={`events-${group.monthYear}-${index}`} className="flex gap-4">
                   {/* Desktop month label */}
