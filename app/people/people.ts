@@ -29,31 +29,43 @@ const FIELDS = [
 const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
 
 async function getOrgNames(): Promise<Map<string, string>> {
-  const res = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Orgs?fields%5B%5D=Name&fields%5B%5D=Stealth`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      next: { revalidate: 60 },
-    }
-  )
-
-  if (!res.ok) {
-    console.error('Failed to fetch orgs, using empty map')
-    return new Map()
-  }
-
-  const data = await res.json()
   const orgMap = new Map<string, string>()
+  let offset: string | undefined
 
-  data.records?.forEach((record: any) => {
-    if (record.id && record.fields.Name) {
-      const isStealth = record.fields.Stealth === true
-      const displayName = isStealth ? '<stealth>' : record.fields.Name
-      orgMap.set(record.id, displayName)
+  // Filter for orgs with any non-empty Status
+  const filterFormula = encodeURIComponent('{Status}!=""')
+
+  // Fetch all pages of orgs
+  for (let i = 0; i < PAGES_TO_FETCH; i++) {
+    const offsetParam = offset ? `&offset=${offset}` : ''
+    const res = await fetch(
+      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Orgs?fields%5B%5D=Name&fields%5B%5D=Stealth&filterByFormula=${filterFormula}${offsetParam}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+        },
+        next: { revalidate: 60 },
+      }
+    )
+
+    if (!res.ok) {
+      console.error('Failed to fetch orgs, using empty map')
+      return orgMap
     }
-  })
+
+    const data = await res.json()
+
+    data.records?.forEach((record: any) => {
+      if (record.id && record.fields.Name) {
+        const isStealth = record.fields.Stealth === true
+        const displayName = isStealth ? '<stealth>' : record.fields.Name
+        orgMap.set(record.id, displayName)
+      }
+    })
+
+    offset = data.offset
+    if (!offset) break
+  }
 
   return orgMap
 }
@@ -70,7 +82,9 @@ export async function getPeople(): Promise<Person[]> {
     const offsetParam = offset ? `&offset=${offset}` : ''
     // Filter by visibility and status on the backend
     // Only fetch records where Show in directory is true AND Status is 'Joined'
-    const filterFormula = encodeURIComponent('AND({Show in directory}=TRUE(), {Status}="Joined")')
+    const filterFormula = encodeURIComponent(
+      'AND({Show in directory}=TRUE(), {Status}="Joined")'
+    )
     const res = await fetch(
       `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?view=viw9V2tzcnqvRXcV3&` +
         `filterByFormula=${filterFormula}&` +
@@ -113,7 +127,7 @@ export async function getPeople(): Promise<Person[]> {
       website: record.fields.Website || '',
       photo: record.fields.Photo || [],
       showInDirectory: true, // Always true since we filter on the backend
-    };
+    }
   })
 
   return people
