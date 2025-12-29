@@ -6,6 +6,7 @@ import SubscriptionInfo from './SubscriptionInfo';
 import HostedEvents from './HostedEvents';
 import ProfileEditForm from './profile/edit/ProfileEditForm';
 import LogoutButton from './LogoutButton';
+import VerkadaPin from './VerkadaPin';
 
 interface MobilePortalProps {
   profile: {
@@ -45,6 +46,7 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
       <div className="flex-1 overflow-y-auto pb-16">
         {activeSection === 'subscription' && (
           <div className="p-3">
+            <VerkadaPin />
             <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
           </div>
         )}

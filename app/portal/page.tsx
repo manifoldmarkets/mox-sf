@@ -6,6 +6,7 @@ import ProfileEditForm from './profile/edit/ProfileEditForm';
 import SubscriptionInfo from './SubscriptionInfo';
 import HostedEvents from './HostedEvents';
 import MobilePortal from './MobilePortal';
+import VerkadaPin from './VerkadaPin';
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -94,6 +95,8 @@ export default async function DashboardPage() {
         {/* Main Content */}
         <main className="flex-1 px-8 py-8">
           <div className="max-w-4xl mx-auto">
+            <VerkadaPin />
+
             <div id="subscription" className="scroll-mt-8">
               <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
             </div>
