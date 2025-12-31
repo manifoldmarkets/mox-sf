@@ -297,15 +297,29 @@ export default function SubscriptionInfo({ stripeCustomerId }: SubscriptionInfoP
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 When should we resume billing? (Optional)
               </label>
-              <input
-                type="date"
-                value={resumeDate}
-                onChange={(e) => handleResumeDateChange(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="date"
+                  value={resumeDate}
+                  onChange={(e) => handleResumeDateChange(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                />
+                {resumeDate && (
+                  <button
+                    type="button"
+                    onClick={() => handleResumeDateChange('')}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                    title="Clear date (pause indefinitely)"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Leave blank to pause indefinitely. You can resume anytime. Your billing will be automatically adjusted.
+                {resumeDate
+                  ? 'Billing will resume on this date (you can also resume anytime before). You can also leave this blank to pause indefinitely.'
+                  : 'No date set - pausing indefinitely. You can resume or set a date anytime.'}
               </p>
             </div>
 
