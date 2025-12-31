@@ -7,6 +7,8 @@ import SubscriptionInfo from './SubscriptionInfo';
 import HostedEvents from './HostedEvents';
 import MobilePortal from './MobilePortal';
 import VerkadaPin from './VerkadaPin';
+import AdminViewAsSelector from './AdminViewAsSelector';
+import AdminBanner from './AdminBanner';
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -15,8 +17,11 @@ export default async function DashboardPage() {
     redirect('/portal/login');
   }
 
+  // Use viewingAsUserId if staff is viewing as another user, otherwise use their own userId
+  const effectiveUserId = session.viewingAsUserId || session.userId;
+
   // Fetch user profile from Airtable
-  const profile = await getUserProfile(session.userId);
+  const profile = await getUserProfile(effectiveUserId);
 
   if (!profile) {
     return (
@@ -36,13 +41,23 @@ export default async function DashboardPage() {
   // Mobile view - separate screens for each section
   const mobileView = (
     <div className="lg:hidden">
-      <MobilePortal profile={profile} userId={session.userId} />
+      <MobilePortal
+        profile={profile}
+        userId={effectiveUserId}
+        isStaff={session.isStaff}
+        viewingAsUserId={session.viewingAsUserId}
+        viewingAsName={session.viewingAsName}
+      />
     </div>
   );
 
   // Desktop view - original layout
   const desktopView = (
     <div className="hidden lg:block min-h-screen bg-background-page dark:bg-background-page-dark font-sans">
+      {/* Admin banner when viewing as another user */}
+      {session.viewingAsUserId && session.viewingAsName && (
+        <AdminBanner viewingAsName={session.viewingAsName} />
+      )}
 
       <div className="flex">
         {/* Desktop Left Sidebar */}
@@ -95,11 +110,19 @@ export default async function DashboardPage() {
         {/* Main Content */}
         <main className="flex-1 px-8 py-8">
           <div className="max-w-4xl mx-auto">
-            <VerkadaPin />
+            {/* Admin view-as selector */}
+            {session.isStaff && (
+              <AdminViewAsSelector
+                currentViewingAsUserId={session.viewingAsUserId}
+                currentViewingAsName={session.viewingAsName}
+              />
+            )}
 
             <div id="subscription" className="scroll-mt-8">
               <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
             </div>
+
+            <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
 
             <div id="events" className="scroll-mt-8">
               <HostedEvents userName={profile.name} />
@@ -108,7 +131,7 @@ export default async function DashboardPage() {
             <div id="profile" className="scroll-mt-8">
               <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-6">
                 <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-display">Profile</h1>
-                <ProfileEditForm profile={profile} userId={session.userId} />
+                <ProfileEditForm profile={profile} userId={effectiveUserId} />
               </div>
             </div>
           </div>

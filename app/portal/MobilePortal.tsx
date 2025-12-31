@@ -7,6 +7,8 @@ import HostedEvents from './HostedEvents';
 import ProfileEditForm from './profile/edit/ProfileEditForm';
 import LogoutButton from './LogoutButton';
 import VerkadaPin from './VerkadaPin';
+import AdminViewAsSelector from './AdminViewAsSelector';
+import AdminBanner from './AdminBanner';
 
 interface MobilePortalProps {
   profile: {
@@ -18,15 +20,23 @@ interface MobilePortalProps {
     stripeCustomerId: string | null;
   };
   userId: string;
+  isStaff?: boolean;
+  viewingAsUserId?: string;
+  viewingAsName?: string;
 }
 
 type Section = 'subscription' | 'events' | 'profile';
 
-export default function MobilePortal({ profile, userId }: MobilePortalProps) {
+export default function MobilePortal({ profile, userId, isStaff, viewingAsUserId, viewingAsName }: MobilePortalProps) {
   const [activeSection, setActiveSection] = useState<Section>('subscription');
 
   return (
     <div className="min-h-screen bg-background-page dark:bg-background-page-dark font-sans flex flex-col">
+      {/* Admin banner when viewing as another user */}
+      {viewingAsUserId && viewingAsName && (
+        <AdminBanner viewingAsName={viewingAsName} />
+      )}
+
       {/* Header with Back to Home */}
       <header className="bg-background-surface dark:bg-background-surface-dark border-b border-border-light dark:border-border-light-dark sticky top-0 z-10">
         <div className="flex items-center justify-between p-3">
@@ -46,7 +56,15 @@ export default function MobilePortal({ profile, userId }: MobilePortalProps) {
       <div className="flex-1 overflow-y-auto pb-16">
         {activeSection === 'subscription' && (
           <div className="p-3">
-            <VerkadaPin />
+            {/* Admin view-as selector */}
+            {isStaff && (
+              <AdminViewAsSelector
+                currentViewingAsUserId={viewingAsUserId}
+                currentViewingAsName={viewingAsName}
+              />
+            )}
+
+            <VerkadaPin isViewingAs={!!viewingAsUserId} />
             <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
           </div>
         )}
