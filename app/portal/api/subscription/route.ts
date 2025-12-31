@@ -61,12 +61,20 @@ export async function GET(request: Request) {
     const amount = price.unit_amount ? price.unit_amount / 100 : 0;
     const interval = price.recurring?.interval || 'month';
 
+    // Check if subscription is paused
+    let pausedUntil: string | null = null;
+    if (subscription.pause_collection?.resumes_at) {
+      pausedUntil = new Date(subscription.pause_collection.resumes_at * 1000).toISOString();
+    }
+
     return Response.json({
       subscription: {
         tier: product.name,
         rate: `$${amount}/${interval}`,
         renewalDate: renewalDate.toISOString(),
         status: subscription.status,
+        pausedUntil: pausedUntil,
+        isPaused: !!subscription.pause_collection,
       },
     });
   } catch (error) {
