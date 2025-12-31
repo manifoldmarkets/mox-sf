@@ -6,6 +6,9 @@ export interface SessionData {
   email: string;
   name?: string;
   isLoggedIn: boolean;
+  isStaff?: boolean;
+  viewingAsUserId?: string;
+  viewingAsName?: string;
 }
 
 const sessionOptions: SessionOptions = {
@@ -24,12 +27,14 @@ export async function getSession(): Promise<IronSession<SessionData>> {
   return getIronSession<SessionData>(cookieStore, sessionOptions);
 }
 
-export async function createSession(userId: string, email: string, name?: string) {
+export async function createSession(userId: string, email: string, name?: string, isStaff?: boolean) {
   const session = await getSession();
   session.userId = userId;
   session.email = email;
   session.name = name;
   session.isLoggedIn = true;
+  session.isStaff = isStaff;
+  console.log('Creating session with isStaff:', isStaff); // Debug log
   await session.save();
 }
 

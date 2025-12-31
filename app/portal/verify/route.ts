@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Create session
-    await createSession(user.id, user.email, user.name);
+    await createSession(user.id, user.email, user.name, user.isStaff);
 
     // Clear the token from Airtable (one-time use)
     await clearToken(user.id);
@@ -66,10 +66,15 @@ async function verifyToken(token: string) {
     return null;
   }
 
+  // Debug: Log what we're getting from Airtable
+  console.log('User login - Tier from Airtable:', record.fields.Tier);
+  console.log('User login - isStaff will be:', record.fields.Tier === 'Staff');
+
   return {
     id: record.id,
     email: record.fields.Email,
     name: record.fields.Name,
+    isStaff: record.fields.Tier === 'Staff',
   };
 }
 

@@ -8,6 +8,9 @@ export async function GET() {
       isLoggedIn: session.isLoggedIn,
       userId: session.userId,
       email: session.email,
+      isStaff: session.isStaff,
+      viewingAsUserId: session.viewingAsUserId,
+      viewingAsName: session.viewingAsName,
     });
   } catch (error) {
     console.error('Error getting session:', error);
