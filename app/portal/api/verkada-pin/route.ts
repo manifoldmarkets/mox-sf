@@ -156,7 +156,9 @@ export async function GET() {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const email = await getUserEmail(session.userId);
+    // Use viewingAsUserId if staff is viewing as another user
+    const effectiveUserId = session.viewingAsUserId || session.userId;
+    const email = await getUserEmail(effectiveUserId);
 
     if (!email) {
       return Response.json({ pin: null, hasAccess: false });
@@ -190,6 +192,11 @@ export async function POST() {
     const session = await getSession();
     if (!session.isLoggedIn || !session.userId) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Don't allow PIN regeneration when viewing as another user
+    if (session.viewingAsUserId) {
+      return Response.json({ error: 'Cannot regenerate PIN while viewing as another user' }, { status: 403 });
     }
 
     const email = await getUserEmail(session.userId);

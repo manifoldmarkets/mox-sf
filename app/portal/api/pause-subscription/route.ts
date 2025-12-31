@@ -135,8 +135,9 @@ export async function POST(request: Request) {
       }
     }
 
-    // Get user information
-    const userInfo = await getUserInfo(session.userId);
+    // Get user information - use viewingAsUserId if staff is viewing as another user
+    const effectiveUserId = session.viewingAsUserId || session.userId;
+    const userInfo = await getUserInfo(effectiveUserId);
     if (!userInfo || !userInfo.customerId) {
       return Response.json({ error: 'User or subscription not found' }, { status: 404 });
     }
@@ -197,8 +198,9 @@ export async function DELETE() {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get user information
-    const userInfo = await getUserInfo(session.userId);
+    // Get user information - use viewingAsUserId if staff is viewing as another user
+    const effectiveUserId = session.viewingAsUserId || session.userId;
+    const userInfo = await getUserInfo(effectiveUserId);
     if (!userInfo || !userInfo.customerId) {
       return Response.json({ error: 'User or subscription not found' }, { status: 404 });
     }
