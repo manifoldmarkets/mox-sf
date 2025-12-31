@@ -154,8 +154,9 @@ export default async function Component() {
                     'Community builders',
                     'Hackers',
                     'Thinkers',
-                    'Players',
-                    'Members of technical (and untechnical) staff',
+                    'Figgie players',
+                    'd/accs',
+                    'Members of technical and untechnical staff',
                   ].map((label) => (
                     <div
                       key={label}
