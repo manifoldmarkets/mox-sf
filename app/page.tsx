@@ -87,7 +87,7 @@ export default async function Component() {
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
             <p className="text-xl mb-4 leading-relaxed text-gray-700 dark:text-gray-200">
-              For <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
+              An incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
             </p>
             <p className="text-lg text-gray-700 dark:text-gray-300">
               <Link
