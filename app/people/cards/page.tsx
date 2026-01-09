@@ -23,7 +23,7 @@ function Card({ person }: { person: Person }) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-secondary-100 dark:bg-amber-900 text-6xl font-bold text-secondary-600 dark:text-amber-700">
-            {person.name.charAt(0)}
+            {person.name.split(' ').map(n => n.charAt(0)).join('')}
           </div>
         )}
       </div>
