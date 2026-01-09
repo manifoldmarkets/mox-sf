@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import SubscriptionInfo from './SubscriptionInfo';
 import HostedEvents from './HostedEvents';
 import ProfileEditForm from './profile/edit/ProfileEditForm';
 import LogoutButton from './LogoutButton';
 import VerkadaPin from './VerkadaPin';
 import AdminViewAsSelector from './AdminViewAsSelector';
 import AdminBanner from './AdminBanner';
+import MembershipStatus from './MembershipStatus';
 
 interface MobilePortalProps {
   profile: {
@@ -23,11 +23,14 @@ interface MobilePortalProps {
   isStaff?: boolean;
   viewingAsUserId?: string;
   viewingAsName?: string;
+  status?: string | null;
+  tier?: string | null;
+  orgId?: string | null;
 }
 
 type Section = 'subscription' | 'events' | 'profile';
 
-export default function MobilePortal({ profile, userId, isStaff, viewingAsUserId, viewingAsName }: MobilePortalProps) {
+export default function MobilePortal({ profile, userId, isStaff, viewingAsUserId, viewingAsName, status, tier, orgId }: MobilePortalProps) {
   const [activeSection, setActiveSection] = useState<Section>('subscription');
 
   return (
@@ -64,8 +67,16 @@ export default function MobilePortal({ profile, userId, isStaff, viewingAsUserId
               />
             )}
 
+            {/* Unified Membership Status */}
+            <MembershipStatus
+              status={status}
+              firstName={profile.name.split(' ')[0]}
+              stripeCustomerId={profile.stripeCustomerId}
+              tier={tier}
+              orgId={orgId}
+            />
+
             <VerkadaPin isViewingAs={!!viewingAsUserId} />
-            <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
           </div>
         )}
 

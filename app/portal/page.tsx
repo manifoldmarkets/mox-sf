@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import LogoutButton from './LogoutButton';
 import ProfileEditForm from './profile/edit/ProfileEditForm';
-import SubscriptionInfo from './SubscriptionInfo';
 import HostedEvents from './HostedEvents';
 import MobilePortal from './MobilePortal';
 import VerkadaPin from './VerkadaPin';
 import AdminViewAsSelector from './AdminViewAsSelector';
 import AdminBanner from './AdminBanner';
+import MembershipStatus from './MembershipStatus';
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -47,6 +47,9 @@ export default async function DashboardPage() {
         isStaff={session.isStaff}
         viewingAsUserId={session.viewingAsUserId}
         viewingAsName={session.viewingAsName}
+        status={profile.status}
+        tier={profile.tier}
+        orgId={profile.orgId}
       />
     </div>
   );
@@ -118,8 +121,15 @@ export default async function DashboardPage() {
               />
             )}
 
+            {/* Unified Membership Status - shows either subscription info or invite flow */}
             <div id="subscription" className="scroll-mt-8">
-              <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
+              <MembershipStatus
+                status={profile.status}
+                firstName={profile.name.split(' ')[0]}
+                stripeCustomerId={profile.stripeCustomerId}
+                tier={profile.tier}
+                orgId={profile.orgId}
+              />
             </div>
 
             <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
@@ -155,6 +165,9 @@ async function getUserProfile(recordId: string): Promise<{
   photo: string | null;
   directoryVisible: boolean;
   stripeCustomerId: string | null;
+  status: string | null;
+  tier: string | null;
+  orgId: string | null;
   error?: string;
 } | null> {
   // Fetch only the fields we need for the profile edit form
@@ -191,5 +204,8 @@ async function getUserProfile(recordId: string): Promise<{
     photo: fields.Photo?.[0]?.url || null,
     directoryVisible: showInDirectory === true, // Will be false if field is undefined/unchecked
     stripeCustomerId: fields['Stripe Customer ID'] || null,
+    status: fields.Status || null,
+    tier: fields.Tier || null,
+    orgId: fields.Org?.[0] || null, // Org is a linked record array, get first one
   };
 }
