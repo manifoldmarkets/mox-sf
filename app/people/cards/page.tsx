@@ -4,6 +4,7 @@ import { formatUrl, getPeople, Person } from '../people'
 
 function Card({ person }: { person: Person }) {
   const { url, width, height } = person.photo[0]?.thumbnails.large ?? {
+    url: null,
     width: 300,
     height: 300,
   }
@@ -12,13 +13,19 @@ function Card({ person }: { person: Person }) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col sm:flex-row w-full sm:w-[400px] lg:w-[450px] h-auto sm:h-40">
       {/* Photo on the left */}
       <div className="w-full sm:w-32 md:w-40 h-40 flex-shrink-0">
-        <Image
-          src={url}
-          alt={person.name}
-          width={width}
-          height={height}
-          className="w-full h-full object-cover"
-        />
+        {url ? (
+          <Image
+            src={url}
+            alt={person.name}
+            width={width}
+            height={height}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-secondary-100 dark:bg-amber-900 text-6xl font-bold text-secondary-600 dark:text-amber-700">
+            {person.name.charAt(0)}
+          </div>
+        )}
       </div>
 
       {/* Info on the right */}
@@ -90,11 +97,9 @@ export default async function CardsPage() {
   // Create a gallery of cards, one for each person
   return (
     <div className="flex flex-wrap justify-center gap-4 my-4 md:my-8 px-4">
-      {people
-        .filter((person) => person.photo[0]?.thumbnails.large)
-        .map((person) => (
-          <Card key={person.id} person={person} />
-        ))}
+      {people.map((person) => (
+        <Card key={person.id} person={person} />
+      ))}
     </div>
   )
 }
