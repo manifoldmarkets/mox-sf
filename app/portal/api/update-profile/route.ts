@@ -27,6 +27,10 @@ export async function POST(request: Request) {
     const website = formData.get('website') as string;
     const directoryVisible = formData.get('directoryVisible') === 'true';
     const photoFile = formData.get('photo') as File | null;
+    const workThing = formData.get('workThing') as string;
+    const workThingUrl = formData.get('workThingUrl') as string;
+    const funThing = formData.get('funThing') as string;
+    const funThingUrl = formData.get('funThingUrl') as string;
 
     // Verify the user is updating their own profile
     if (userId !== session.userId) {
@@ -47,10 +51,36 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid website URL' }, { status: 400 });
     }
 
+    // Validate work thing URL
+    const trimmedWorkThingUrl = workThingUrl?.trim() || '';
+    if (trimmedWorkThingUrl && !isValidURL(trimmedWorkThingUrl)) {
+      return Response.json({ error: 'Invalid work thing URL' }, { status: 400 });
+    }
+
+    // Validate fun thing URL
+    const trimmedFunThingUrl = funThingUrl?.trim() || '';
+    if (trimmedFunThingUrl && !isValidURL(trimmedFunThingUrl)) {
+      return Response.json({ error: 'Invalid fun thing URL' }, { status: 400 });
+    }
+
+    // Validate work/fun thing lengths
+    const trimmedWorkThing = workThing?.trim() || '';
+    const trimmedFunThing = funThing?.trim() || '';
+    if (trimmedWorkThing.length > 50) {
+      return Response.json({ error: 'Work thing is too long (max 50 characters)' }, { status: 400 });
+    }
+    if (trimmedFunThing.length > 50) {
+      return Response.json({ error: 'Fun thing is too long (max 50 characters)' }, { status: 400 });
+    }
+
     // Prepare fields to update
     const fields: any = {
       Name: name.trim(),
       Website: trimmedWebsite,
+      'Work thing': trimmedWorkThing,
+      'Work thing URL': trimmedWorkThingUrl,
+      'Fun thing': trimmedFunThing,
+      'Fun thing URL': trimmedFunThingUrl,
     };
 
     // For Airtable checkboxes: explicitly set false when unchecked, true when checked

@@ -9,6 +9,10 @@ export type Person = {
   website: string
   photo: any[] | null
   showInDirectory: boolean
+  workThing: string | null
+  workThingUrl: string | null
+  funThing: string | null
+  funThingUrl: string | null
 }
 
 // Restrict down to fields we need.
@@ -23,6 +27,10 @@ const FIELDS = [
   'Website',
   'Photo',
   'Show in directory',
+  'Work thing',
+  'Work thing URL',
+  'Fun thing',
+  'Fun thing URL',
 ]
 // Hit Airtable directly from server component, rather than proxying through API route
 
@@ -127,6 +135,10 @@ export async function getPeople(): Promise<Person[]> {
       website: record.fields.Website || '',
       photo: record.fields.Photo || [],
       showInDirectory: true, // Always true since we filter on the backend
+      workThing: record.fields['Work thing'] || null,
+      workThingUrl: record.fields['Work thing URL'] || null,
+      funThing: record.fields['Fun thing'] || null,
+      funThingUrl: record.fields['Fun thing URL'] || null,
     }
   })
 

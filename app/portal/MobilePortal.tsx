@@ -18,6 +18,10 @@ interface MobilePortalProps {
     photo: string | null;
     directoryVisible: boolean;
     stripeCustomerId: string | null;
+    workThing: string;
+    workThingUrl: string;
+    funThing: string;
+    funThingUrl: string;
   };
   userId: string;
   isStaff?: boolean;

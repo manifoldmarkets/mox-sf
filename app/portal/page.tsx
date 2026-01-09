@@ -155,6 +155,10 @@ async function getUserProfile(recordId: string): Promise<{
   photo: string | null;
   directoryVisible: boolean;
   stripeCustomerId: string | null;
+  workThing: string;
+  workThingUrl: string;
+  funThing: string;
+  funThingUrl: string;
   error?: string;
 } | null> {
   // Fetch only the fields we need for the profile edit form
@@ -191,5 +195,9 @@ async function getUserProfile(recordId: string): Promise<{
     photo: fields.Photo?.[0]?.url || null,
     directoryVisible: showInDirectory === true, // Will be false if field is undefined/unchecked
     stripeCustomerId: fields['Stripe Customer ID'] || null,
+    workThing: fields['Work thing'] || '',
+    workThingUrl: fields['Work thing URL'] || '',
+    funThing: fields['Fun thing'] || '',
+    funThingUrl: fields['Fun thing URL'] || '',
   };
 }

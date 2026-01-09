@@ -10,6 +10,10 @@ interface ProfileEditFormProps {
     website: string;
     photo: string | null;
     directoryVisible: boolean;
+    workThing: string;
+    workThingUrl: string;
+    funThing: string;
+    funThingUrl: string;
   };
   userId: string;
 }
@@ -20,6 +24,10 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
     name: profile.name,
     website: profile.website,
     directoryVisible: profile.directoryVisible,
+    workThing: profile.workThing,
+    workThingUrl: profile.workThingUrl,
+    funThing: profile.funThing,
+    funThingUrl: profile.funThingUrl,
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -31,6 +39,10 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       name: profile.name,
       website: profile.website,
       directoryVisible: profile.directoryVisible,
+      workThing: profile.workThing,
+      workThingUrl: profile.workThingUrl,
+      funThing: profile.funThing,
+      funThingUrl: profile.funThingUrl,
     });
     setStatus('idle');
     setMessage('');
@@ -62,6 +74,10 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       formDataToSend.append('name', formData.name);
       formDataToSend.append('website', formData.website);
       formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
+      formDataToSend.append('workThing', formData.workThing);
+      formDataToSend.append('workThingUrl', formData.workThingUrl);
+      formDataToSend.append('funThing', formData.funThing);
+      formDataToSend.append('funThingUrl', formData.funThingUrl);
 
       if (photoFile) {
         formDataToSend.append('photo', photoFile);
@@ -137,6 +153,74 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             value={formData.website}
             onChange={handleChange}
             placeholder="https://yourwebsite.com"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+          />
+        </div>
+
+        {/* Work Thing */}
+        <div>
+          <label htmlFor="workThing" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Work Thing
+          </label>
+          <input
+            type="text"
+            id="workThing"
+            name="workThing"
+            value={formData.workThing}
+            onChange={handleChange}
+            placeholder="e.g., AI safety, Climate tech"
+            maxLength={50}
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+          />
+          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">What you work on professionally (1-3 words recommended)</p>
+        </div>
+
+        {/* Work Thing URL */}
+        <div>
+          <label htmlFor="workThingUrl" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Work Thing URL (optional)
+          </label>
+          <input
+            type="url"
+            id="workThingUrl"
+            name="workThingUrl"
+            value={formData.workThingUrl}
+            onChange={handleChange}
+            placeholder="https://example.com"
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+          />
+        </div>
+
+        {/* Fun Thing */}
+        <div>
+          <label htmlFor="funThing" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Fun Thing
+          </label>
+          <input
+            type="text"
+            id="funThing"
+            name="funThing"
+            value={formData.funThing}
+            onChange={handleChange}
+            placeholder="e.g., Rock climbing, Piano"
+            maxLength={50}
+            className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+          />
+          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Your hobbies or interests (1-3 words recommended)</p>
+        </div>
+
+        {/* Fun Thing URL */}
+        <div>
+          <label htmlFor="funThingUrl" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Fun Thing URL (optional)
+          </label>
+          <input
+            type="url"
+            id="funThingUrl"
+            name="funThingUrl"
+            value={formData.funThingUrl}
+            onChange={handleChange}
+            placeholder="https://example.com"
             className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
           />
         </div>
