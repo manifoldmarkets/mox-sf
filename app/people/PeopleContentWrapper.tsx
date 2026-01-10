@@ -52,6 +52,15 @@ export default function PeopleContentWrapper({
         </button>
       </div>
 
+      {visitingFellows.length > 0 && (
+        <div className="mb-8">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
+            Visiting Fellows
+          </h3>
+          <PeopleListClient people={visitingFellows} showFaces={showFaces} />
+        </div>
+      )}
+
       {members.length > 0 && (
         <div className="mb-8">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white font-display mb-4 text-center">
@@ -95,20 +104,11 @@ export default function PeopleContentWrapper({
       )}
 
       {staff.length > 0 && (
-        <div className="mb-8">
+        <div>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
             Staff
           </h3>
           <PeopleListClient people={staff} showFaces={showFaces} />
-        </div>
-      )}
-
-      {visitingFellows.length > 0 && (
-        <div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
-            Visiting Fellows
-          </h3>
-          <PeopleListClient people={visitingFellows} showFaces={showFaces} />
         </div>
       )}
     </>
