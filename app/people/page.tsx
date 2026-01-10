@@ -15,11 +15,28 @@ export async function PeopleContent() {
   const privateOffices = sortedPeople.filter((person) => person.tier === 'Private Office')
   const members = sortedPeople.filter((person) => person.tier !== 'Staff' && person.tier !== 'Private Office')
 
+  // Hardcoded visiting fellows (until added to Airtable)
+  const visitingFellows = [
+    {
+      id: 'vf-001',
+      name: 'Markus Strasser',
+      tier: 'Visiting Fellow',
+      org: [],
+      orgNames: [],
+      program: [],
+      status: 'Joined',
+      website: '',
+      photo: null,
+      showInDirectory: true,
+    },
+  ]
+
   return (
     <PeopleContentWrapper
       members={members}
       privateOffices={privateOffices}
       staff={staff}
+      visitingFellows={visitingFellows}
     />
   )
 }

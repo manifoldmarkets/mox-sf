@@ -7,10 +7,12 @@ export default function PeopleContentWrapper({
   members,
   privateOffices,
   staff,
+  visitingFellows,
 }: {
   members: Person[]
   privateOffices: Person[]
   staff: Person[]
+  visitingFellows: Person[]
 }) {
   const [showFaces, setShowFaces] = useState(false)
 
@@ -93,11 +95,20 @@ export default function PeopleContentWrapper({
       )}
 
       {staff.length > 0 && (
-        <div>
+        <div className="mb-8">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
             Staff
           </h3>
           <PeopleListClient people={staff} showFaces={showFaces} />
+        </div>
+      )}
+
+      {visitingFellows.length > 0 && (
+        <div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white font-display mb-4 text-center">
+            Visiting Fellows
+          </h3>
+          <PeopleListClient people={visitingFellows} showFaces={showFaces} />
         </div>
       )}
     </>
