@@ -10,15 +10,20 @@ interface DayPassPurchaseProps {
 
 export default function DayPassPurchase({ stripeCustomerId, userName, userEmail }: DayPassPurchaseProps) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handlePurchaseDayPass = async () => {
     if (!stripeCustomerId) {
-      alert('No Stripe customer ID found. Please contact support.');
+      setError('No Stripe customer ID found. Please contact support.');
       return;
     }
 
     setLoading(true);
+    setError(null);
+
     try {
+      console.log('Creating day pass checkout for:', { stripeCustomerId, userName, userEmail });
+
       const response = await fetch('/portal/api/create-day-pass-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,11 +40,14 @@ export default function DayPassPurchase({ stripeCustomerId, userName, userEmail 
         // Redirect to Stripe checkout
         window.location.href = data.url;
       } else {
-        alert('Failed to create checkout session. Please try again.');
+        const errorMsg = data.details || data.error || 'Failed to create checkout session';
+        console.error('Checkout error:', data);
+        setError(errorMsg);
         setLoading(false);
       }
     } catch (err) {
-      alert('Failed to create checkout session. Please try again.');
+      console.error('Network error:', err);
+      setError('Network error. Please check your connection and try again.');
       setLoading(false);
     }
   };
@@ -49,6 +57,12 @@ export default function DayPassPurchase({ stripeCustomerId, userName, userEmail 
       <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">Day Pass</h2>
 
       <div className="space-y-4">
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 rounded">
+            <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+          </div>
+        )}
+
         <div className="bg-background-subtle dark:bg-background-subtle-dark p-4 border border-border-light dark:border-border-light-dark">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
