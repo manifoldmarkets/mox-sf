@@ -29,10 +29,11 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Payment system not configured' }, { status: 500 });
     }
 
-    if (!process.env.NEXT_PUBLIC_BASE_URL) {
-      console.error('Day pass checkout: NEXT_PUBLIC_BASE_URL not configured');
-      return Response.json({ error: 'Base URL not configured' }, { status: 500 });
-    }
+    // Get the base URL from the request or environment variable
+    const requestUrl = new URL(request.url);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${requestUrl.protocol}//${requestUrl.host}`;
+
+    console.log('Using base URL:', baseUrl);
 
     // Create a checkout session for a $25 day pass
     // The payment intent ID will be stored in Airtable after successful payment
@@ -52,8 +53,8 @@ export async function POST(request: Request) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/day-pass/activate?payment_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/portal`,
+      success_url: `${baseUrl}/day-pass/activate?payment_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/portal`,
       metadata: {
         type: 'member_day_pass',
         userName: userName,
