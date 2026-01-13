@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const [checkingSession, setCheckingSession] = useState(true);
+  const [isComposing, setIsComposing] = useState(false);
 
   // Check if user is already logged in
   useEffect(() => {
@@ -90,7 +91,24 @@ export default function LoginPage() {
                 spellCheck="false"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  // Don't update state during composition (text replacement)
+                  if (!isComposing) {
+                    setEmail(e.target.value);
+                  }
+                }}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={(e) => {
+                  setIsComposing(false);
+                  // Update with the final composed value
+                  setEmail((e.target as HTMLInputElement).value);
+                }}
+                onInput={(e) => {
+                  // Handle input events for better text replacement support
+                  if (!isComposing) {
+                    setEmail((e.target as HTMLInputElement).value);
+                  }
+                }}
                 className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-sans"
                 placeholder="your@email.com"
                 disabled={status === 'loading' || status === 'success'}
