@@ -84,6 +84,8 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 required
+                autoComplete="email"
+                autoCorrect="on"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-sans"
