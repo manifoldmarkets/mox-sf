@@ -66,10 +66,15 @@ export async function POST(request: Request) {
     // Update user record with token
     await updateUserToken(user.id, token, expiresAt);
 
+    // Get the base URL from the request or environment variable
+    const requestUrl = new URL(request.url);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${requestUrl.protocol}//${requestUrl.host}`;
+
     // Send email with magic link
-    const magicLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/portal/verify?token=${token}`;
+    const magicLink = `${baseUrl}/portal/verify?token=${token}`;
 
     console.log('Sending email to:', normalizedEmail);
+    console.log('Magic link base URL:', baseUrl);
     const emailResult = await resend.emails.send({
       from: 'Mox SF <noreply@account.moxsf.com>',
       to: normalizedEmail,
