@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "register-discord": "bun run scripts/register-discord-commands.ts",
+    "test-discord": "bun run scripts/test-discord-bot.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
