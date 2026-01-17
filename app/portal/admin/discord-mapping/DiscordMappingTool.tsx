@@ -13,6 +13,7 @@ interface ParsedDiscordUser {
   raw: string;
   username: string;
   displayName: string | null;
+  nickname: string | null; // Server nickname - often matches real name better
 }
 
 interface Mapping {
@@ -82,16 +83,74 @@ function similarity(a: string, b: string): number {
 // - "username"
 // - "DisplayName (username)"
 // - "username#1234"
-// - Discord member export format
+// - "nickname | displayName | username" (tab or pipe separated)
+// - "nickname, username" (comma separated)
+// - "nickname \t username" (tab separated from Discord exports)
 function parseDiscordLine(line: string): ParsedDiscordUser | null {
   const trimmed = line.trim();
   if (!trimmed) return null;
+
+  // Format: "nickname | displayName | username" or "nickname | username" (pipe separated)
+  if (trimmed.includes('|')) {
+    const parts = trimmed.split('|').map(p => p.trim()).filter(Boolean);
+    if (parts.length >= 3) {
+      return {
+        raw: trimmed,
+        nickname: parts[0] || null,
+        displayName: parts[1] || null,
+        username: parts[2].replace(/^@/, ''),
+      };
+    } else if (parts.length === 2) {
+      return {
+        raw: trimmed,
+        nickname: parts[0] || null,
+        displayName: null,
+        username: parts[1].replace(/^@/, ''),
+      };
+    }
+  }
+
+  // Format: tab-separated (common in Discord bot exports)
+  if (trimmed.includes('\t')) {
+    const parts = trimmed.split('\t').map(p => p.trim()).filter(Boolean);
+    if (parts.length >= 3) {
+      return {
+        raw: trimmed,
+        nickname: parts[0] || null,
+        displayName: parts[1] || null,
+        username: parts[2].replace(/^@/, ''),
+      };
+    } else if (parts.length === 2) {
+      return {
+        raw: trimmed,
+        nickname: parts[0] || null,
+        displayName: null,
+        username: parts[1].replace(/^@/, ''),
+      };
+    }
+  }
+
+  // Format: "Nickname, username" (comma separated, nickname first)
+  const commaMatch = trimmed.match(/^([^,]+),\s*(.+)$/);
+  if (commaMatch) {
+    const first = commaMatch[1].trim();
+    const second = commaMatch[2].trim().replace(/^@/, '');
+    // If first part looks like a real name (has space or capital letters), treat as nickname
+    const looksLikeName = first.includes(' ') || /[A-Z].*[a-z]/.test(first);
+    return {
+      raw: trimmed,
+      nickname: looksLikeName ? first : null,
+      displayName: looksLikeName ? null : first,
+      username: second,
+    };
+  }
 
   // Format: "DisplayName (username)"
   const parenMatch = trimmed.match(/^(.+?)\s*\(([^)]+)\)$/);
   if (parenMatch) {
     return {
       raw: trimmed,
+      nickname: null,
       displayName: parenMatch[1].trim(),
       username: parenMatch[2].trim().replace(/^@/, ''),
     };
@@ -102,6 +161,7 @@ function parseDiscordLine(line: string): ParsedDiscordUser | null {
   if (hashMatch) {
     return {
       raw: trimmed,
+      nickname: null,
       displayName: null,
       username: hashMatch[1].trim(),
     };
@@ -110,6 +170,7 @@ function parseDiscordLine(line: string): ParsedDiscordUser | null {
   // Just username (possibly with @ prefix)
   return {
     raw: trimmed,
+    nickname: null,
     displayName: null,
     username: trimmed.replace(/^@/, ''),
   };
@@ -132,13 +193,26 @@ function findMatches(discordUser: ParsedDiscordUser, people: Person[]): { best: 
       bestScore = Math.max(bestScore, displayScore);
     }
 
+    // Compare server nickname with person name (highest priority - nicknames are often real names)
+    if (discordUser.nickname) {
+      const nicknameScore = similarity(discordUser.nickname, person.name);
+      // Give nickname matches a slight boost since they're often set to real names
+      bestScore = Math.max(bestScore, nicknameScore * 1.05);
+    }
+
     // Compare with email prefix
     const emailPrefix = person.email.split('@')[0];
     const emailScore = similarity(discordUser.username, emailPrefix) * 0.9; // Slight penalty
     bestScore = Math.max(bestScore, emailScore);
 
+    // Also try nickname against email prefix
+    if (discordUser.nickname) {
+      const nicknameEmailScore = similarity(discordUser.nickname, emailPrefix) * 0.85;
+      bestScore = Math.max(bestScore, nicknameEmailScore);
+    }
+
     if (bestScore > 0.3) {
-      candidates.push({ person, score: bestScore });
+      candidates.push({ person, score: Math.min(bestScore, 1) }); // Cap at 1.0
     }
   }
 
@@ -347,11 +421,20 @@ export default function DiscordMappingTool() {
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4">
             <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-2">Instructions</h3>
             <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
-              <li>Paste Discord usernames below (one per line)</li>
-              <li>Supported formats: <code>username</code>, <code>DisplayName (username)</code>, <code>username#1234</code></li>
-              <li>The tool will fuzzy-match names to people in Airtable</li>
-              <li>You can review and adjust matches before saving</li>
+              <li>Paste Discord members below (one per line)</li>
+              <li>Supported formats:</li>
             </ul>
+            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-0.5 list-none ml-5 mt-1 font-mono">
+              <li><code>username</code></li>
+              <li><code>DisplayName (username)</code></li>
+              <li><code>Nickname | username</code> - pipe separated</li>
+              <li><code>Nickname | DisplayName | username</code></li>
+              <li><code>Nickname, username</code> - comma separated</li>
+              <li><code>Nickname{'\t'}username</code> - tab separated</li>
+            </ul>
+            <p className="text-sm text-blue-800 dark:text-blue-200 mt-2">
+              <strong>Tip:</strong> Server nicknames often match real names better than usernames.
+            </p>
           </div>
 
           <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -361,12 +444,14 @@ export default function DiscordMappingTool() {
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder="Paste Discord usernames here, one per line...
+            placeholder="Paste Discord members here, one per line...
 
-Example:
+Examples:
 johndoe
 Jane Smith (janesmith)
-olduser#1234"
+John Doe | johndoe
+John Doe | JD | johndoe
+John Doe, johndoe"
             className="w-full h-64 px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm resize-y"
           />
 
@@ -505,7 +590,15 @@ function MappingRow({
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="font-medium text-gray-900 dark:text-gray-100">
-            {mapping.discordUser.displayName ? (
+            {mapping.discordUser.nickname ? (
+              <>
+                <span className="text-purple-600 dark:text-purple-400">{mapping.discordUser.nickname}</span>
+                {' '}
+                <span className="text-gray-500 dark:text-gray-400">
+                  ({mapping.discordUser.displayName ? `${mapping.discordUser.displayName} / ` : ''}{mapping.discordUser.username})
+                </span>
+              </>
+            ) : mapping.discordUser.displayName ? (
               <>
                 {mapping.discordUser.displayName}{' '}
                 <span className="text-gray-500 dark:text-gray-400">({mapping.discordUser.username})</span>
