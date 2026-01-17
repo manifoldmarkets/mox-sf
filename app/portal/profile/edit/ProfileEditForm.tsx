@@ -20,6 +20,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   const [formData, setFormData] = useState({
     name: profile.name,
     website: profile.website,
+    discordUsername: profile.discordUsername || '',
     directoryVisible: profile.directoryVisible,
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -31,6 +32,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
     setFormData({
       name: profile.name,
       website: profile.website,
+      discordUsername: profile.discordUsername || '',
       directoryVisible: profile.directoryVisible,
     });
     setStatus('idle');
@@ -62,6 +64,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       formDataToSend.append('userId', userId);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('website', formData.website);
+      formDataToSend.append('discordUsername', formData.discordUsername);
       formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
 
       if (photoFile) {
@@ -126,44 +129,32 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Ask a staff member if you want to update your email</p>
         </div>
 
-        {/* Discord Username (read-only) */}
+        {/* Discord Username */}
         <div>
-          <label htmlFor="discord" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Discord
+          <label htmlFor="discordUsername" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Discord Username
           </label>
-          {profile.discordUsername ? (
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                id="discord"
-                value={profile.discordUsername}
-                disabled
-                className="flex-1 px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
-              />
-              <a
-                href="https://discord.gg/jZHTRHUWy9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
-              >
-                Open Discord
-              </a>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <span className="text-text-muted dark:text-text-muted-dark text-sm italic">Not linked</span>
-              <a
-                href="https://discord.gg/jZHTRHUWy9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
-              >
-                Join our Discord →
-              </a>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              id="discordUsername"
+              name="discordUsername"
+              value={formData.discordUsername}
+              onChange={handleChange}
+              placeholder="yourname"
+              className="flex-1 px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+            />
+            <a
+              href="https://discord.gg/jZHTRHUWy9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors whitespace-nowrap"
+            >
+              Join Discord
+            </a>
+          </div>
           <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">
-            Discord usernames are linked by staff
+            Your Discord username (without the @). Find it in Discord under Settings → My Account.
           </p>
         </div>
 
