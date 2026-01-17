@@ -1,4 +1,5 @@
 import { getSession } from '@/app/lib/session';
+import { syncDiscordRole, isDiscordConfigured } from '@/app/lib/discord';
 
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif'];
@@ -13,6 +14,16 @@ function isValidURL(url: string): boolean {
   }
 }
 
+function isValidDiscordUsername(username: string): boolean {
+  if (!username) return true; // Empty is okay (unlinking)
+  // Discord usernames: 2-32 chars, lowercase letters, numbers, underscores, periods
+  // New format (2023+): no discriminator, just username
+  const trimmed = username.trim().toLowerCase();
+  if (trimmed.length < 2 || trimmed.length > 32) return false;
+  // Allow alphanumeric, underscores, periods
+  return /^[a-z0-9_.]+$/.test(trimmed);
+}
+
 export async function POST(request: Request) {
   try {
     const session = await getSession();
@@ -25,6 +36,7 @@ export async function POST(request: Request) {
     const userId = formData.get('userId') as string;
     const name = formData.get('name') as string;
     const website = formData.get('website') as string;
+    const discordUsername = formData.get('discordUsername') as string | null;
     const directoryVisible = formData.get('directoryVisible') === 'true';
     const photoFile = formData.get('photo') as File | null;
 
@@ -47,10 +59,19 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid website URL' }, { status: 400 });
     }
 
+    // Validate Discord username
+    const trimmedDiscord = discordUsername?.trim().toLowerCase() || '';
+    if (trimmedDiscord && !isValidDiscordUsername(trimmedDiscord)) {
+      return Response.json({
+        error: 'Invalid Discord username. Use 2-32 characters: lowercase letters, numbers, underscores, or periods.'
+      }, { status: 400 });
+    }
+
     // Prepare fields to update
-    const fields: any = {
+    const fields: Record<string, unknown> = {
       Name: name.trim(),
       Website: trimmedWebsite,
+      'Discord Username': trimmedDiscord || null, // null to clear if empty
     };
 
     // For Airtable checkboxes: explicitly set false when unchecked, true when checked
@@ -119,9 +140,18 @@ export async function POST(request: Request) {
 
     const data = await response.json();
 
+    // Sync Discord role if username was provided and Discord is configured
+    let discordSyncResult = null;
+    if (trimmedDiscord && isDiscordConfigured()) {
+      const tier = data.fields.Tier || null;
+      const status = data.fields.Status || null;
+      discordSyncResult = await syncDiscordRole(trimmedDiscord, tier, status);
+    }
+
     return Response.json({
       success: true,
       profile: data.fields,
+      discordSync: discordSyncResult,
     });
   } catch (error) {
     console.error('Error updating profile:', error);

@@ -10,6 +10,9 @@ interface ProfileEditFormProps {
     website: string;
     photo: string | null;
     directoryVisible: boolean;
+    discordUsername?: string | null;
+    tier?: string | null;
+    status?: string | null;
   };
   userId: string;
 }
@@ -19,17 +22,21 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
   const [formData, setFormData] = useState({
     name: profile.name,
     website: profile.website,
+    discordUsername: profile.discordUsername || '',
     directoryVisible: profile.directoryVisible,
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const [discordSyncStatus, setDiscordSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+  const [discordSyncMessage, setDiscordSyncMessage] = useState('');
 
   // Update form data when profile prop changes (e.g., after router.refresh())
   useEffect(() => {
     setFormData({
       name: profile.name,
       website: profile.website,
+      discordUsername: profile.discordUsername || '',
       directoryVisible: profile.directoryVisible,
     });
     setStatus('idle');
@@ -61,6 +68,7 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       formDataToSend.append('userId', userId);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('website', formData.website);
+      formDataToSend.append('discordUsername', formData.discordUsername);
       formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
 
       if (photoFile) {
@@ -88,6 +96,43 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
     } catch (error) {
       setStatus('error');
       setMessage('An error occurred. Please try again.');
+    }
+  };
+
+  const handleDiscordSync = async () => {
+    if (!profile.discordUsername) return;
+
+    setDiscordSyncStatus('syncing');
+    setDiscordSyncMessage('');
+
+    try {
+      const response = await fetch('/portal/api/sync-discord-role', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          discordUsername: profile.discordUsername,
+          tier: profile.tier,
+          status: profile.status,
+          userId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setDiscordSyncStatus('success');
+        setDiscordSyncMessage('Discord role synced!');
+        setTimeout(() => {
+          setDiscordSyncStatus('idle');
+          setDiscordSyncMessage('');
+        }, 3000);
+      } else {
+        setDiscordSyncStatus('error');
+        setDiscordSyncMessage(data.error || 'Failed to sync role');
+      }
+    } catch (error) {
+      setDiscordSyncStatus('error');
+      setDiscordSyncMessage('Network error. Please try again.');
     }
   };
 
@@ -123,6 +168,52 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
           />
           <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Ask a staff member if you want to update your email</p>
+        </div>
+
+        {/* Discord Username */}
+        <div>
+          <label htmlFor="discordUsername" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Discord Username
+          </label>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              id="discordUsername"
+              name="discordUsername"
+              value={formData.discordUsername}
+              onChange={handleChange}
+              placeholder="yourname"
+              className="flex-1 px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand"
+            />
+            <a
+              href="https://discord.gg/jZHTRHUWy9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors whitespace-nowrap"
+            >
+              Join Discord
+            </a>
+          </div>
+          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">
+            Your Discord username (without the @). Find it in Discord under Settings → My Account.
+          </p>
+          {profile.discordUsername && (
+            <div className="mt-2 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleDiscordSync}
+                disabled={discordSyncStatus === 'syncing'}
+                className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 disabled:opacity-50"
+              >
+                {discordSyncStatus === 'syncing' ? 'Syncing...' : 'Sync Discord Role'}
+              </button>
+              {discordSyncMessage && (
+                <span className={`text-xs ${discordSyncStatus === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                  {discordSyncMessage}
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Website */}

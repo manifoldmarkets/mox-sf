@@ -61,10 +61,21 @@ export default function MobilePortal({ profile, userId, isStaff, viewingAsUserId
           <div className="p-3">
             {/* Admin view-as selector */}
             {isStaff && (
-              <AdminViewAsSelector
-                currentViewingAsUserId={viewingAsUserId}
-                currentViewingAsName={viewingAsName}
-              />
+              <div className="space-y-4 mb-4">
+                <AdminViewAsSelector
+                  currentViewingAsUserId={viewingAsUserId}
+                  currentViewingAsName={viewingAsName}
+                />
+                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 p-4">
+                  <div className="text-sm font-medium text-purple-900 dark:text-purple-100 mb-2">Admin Tools</div>
+                  <Link
+                    href="/portal/admin/discord-mapping"
+                    className="text-sm text-purple-700 dark:text-purple-300 hover:underline"
+                  >
+                    Discord Username Mapping Tool →
+                  </Link>
+                </div>
+              </div>
             )}
 
             {/* Unified Membership Status */}

@@ -115,10 +115,21 @@ export default async function DashboardPage() {
           <div className="max-w-4xl mx-auto">
             {/* Admin view-as selector */}
             {session.isStaff && (
-              <AdminViewAsSelector
-                currentViewingAsUserId={session.viewingAsUserId}
-                currentViewingAsName={session.viewingAsName}
-              />
+              <div className="space-y-4 mb-6">
+                <AdminViewAsSelector
+                  currentViewingAsUserId={session.viewingAsUserId}
+                  currentViewingAsName={session.viewingAsName}
+                />
+                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 p-4">
+                  <div className="text-sm font-medium text-purple-900 dark:text-purple-100 mb-2">Admin Tools</div>
+                  <Link
+                    href="/portal/admin/discord-mapping"
+                    className="text-sm text-purple-700 dark:text-purple-300 hover:underline"
+                  >
+                    Discord Username Mapping Tool →
+                  </Link>
+                </div>
+              </div>
             )}
 
             {/* Unified Membership Status - shows either subscription info or invite flow */}
@@ -168,6 +179,7 @@ async function getUserProfile(recordId: string): Promise<{
   status: string | null;
   tier: string | null;
   orgId: string | null;
+  discordUsername: string | null;
   error?: string;
 } | null> {
   // Fetch only the fields we need for the profile edit form
@@ -207,5 +219,6 @@ async function getUserProfile(recordId: string): Promise<{
     status: fields.Status || null,
     tier: fields.Tier || null,
     orgId: fields.Org?.[0] || null, // Org is a linked record array, get first one
+    discordUsername: fields['Discord Username'] || null,
   };
 }
