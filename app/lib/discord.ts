@@ -5,13 +5,13 @@ const DISCORD_GUILD_ID = process.env.DISCORD_GUILD_ID;
 
 // Map Airtable tiers to Discord role IDs
 // You'll need to set these in your .env file
+// Note: Staff role is NOT auto-synced to avoid permission issues
 const TIER_TO_ROLE: Record<string, string | undefined> = {
   'Friend': process.env.DISCORD_ROLE_FRIEND,
   'Member': process.env.DISCORD_ROLE_MEMBER,
   'Resident': process.env.DISCORD_ROLE_RESIDENT,
   'Private Office': process.env.DISCORD_ROLE_PRIVATE_OFFICE,
   'Program': process.env.DISCORD_ROLE_PROGRAM,
-  'Staff': process.env.DISCORD_ROLE_STAFF,
 };
 
 // All member roles (for removing old roles when tier changes)
@@ -22,7 +22,6 @@ function getAllMemberRoleIds(): string[] {
     process.env.DISCORD_ROLE_RESIDENT,
     process.env.DISCORD_ROLE_PRIVATE_OFFICE,
     process.env.DISCORD_ROLE_PROGRAM,
-    process.env.DISCORD_ROLE_STAFF,
   ];
   return roles.filter((r): r is string => !!r);
 }
@@ -155,8 +154,8 @@ export async function syncDiscordRole(
   tier: string | null,
   status: string | null
 ): Promise<SyncResult> {
-  // Only sync for active members
-  const activeTiers = ['Friend', 'Member', 'Resident', 'Private Office', 'Program', 'Staff'];
+  // Only sync for active members (Staff excluded - managed manually)
+  const activeTiers = ['Friend', 'Member', 'Resident', 'Private Office', 'Program'];
   const isActive = status === 'Joined' && tier && activeTiers.includes(tier);
 
   if (!isActive) {
