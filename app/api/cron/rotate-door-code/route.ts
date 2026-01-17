@@ -150,7 +150,7 @@ export async function GET(request: Request) {
 
     // Step 2: Generate new 4-digit code
     const newCode = generateSecure4DigitCode();
-    console.log('[Cron rotate-door-code] Generated new code');
+    console.log(`[Cron rotate-door-code] Generated new code: ${newCode}`);
 
     // Step 3: Move old code to "Old Weekly Access" user
     if (oldCode) {
@@ -179,10 +179,9 @@ export async function GET(request: Request) {
     console.log('[Cron rotate-door-code] Set new code on Weekly Access user');
 
     // Step 5: Update Discord channel name
-    // Discord channel names can only contain alphanumeric, hyphens, underscores, and emojis
     const channelRenamed = await renameDiscordChannel(
       DOOR_CODE_CHANNEL_ID,
-      `🚪-${newCode}`
+      `🚪 Code: ${newCode}#`
     );
     if (!channelRenamed) {
       // Log error but don't fail - Verkada changes succeeded
@@ -218,6 +217,8 @@ export async function GET(request: Request) {
 
     return Response.json({
       success: true,
+      newCode,
+      oldCode: oldCode || null,
       discordUpdated: channelRenamed,
       messageSent,
       durationMs: duration,
