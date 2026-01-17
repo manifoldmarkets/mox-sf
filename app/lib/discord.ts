@@ -26,6 +26,37 @@ function getAllMemberRoleIds(): string[] {
   return roles.filter((r): r is string => !!r);
 }
 
+/**
+ * Helper to make Discord API requests with rate limit handling
+ */
+async function discordFetch(
+  url: string,
+  options: RequestInit = {},
+  maxRetries = 3
+): Promise<Response> {
+  const headers = {
+    Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+    ...options.headers,
+  };
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const response = await fetch(url, { ...options, headers });
+
+    if (response.status === 429) {
+      // Rate limited - wait and retry
+      const retryAfter = parseFloat(response.headers.get('retry-after') || '5');
+      console.log(`Rate limited, waiting ${retryAfter}s before retry...`);
+      await new Promise(resolve => setTimeout(resolve, (retryAfter + 0.5) * 1000));
+      continue;
+    }
+
+    return response;
+  }
+
+  // If we exhausted retries, return the last response
+  return fetch(url, { ...options, headers });
+}
+
 interface DiscordMember {
   user: {
     id: string;
@@ -59,11 +90,7 @@ export async function findDiscordMember(username: string): Promise<DiscordMember
     // Search for member by query (Discord API v10)
     const searchUrl = `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/search?query=${encodeURIComponent(normalizedUsername)}&limit=10`;
 
-    const response = await fetch(searchUrl, {
-      headers: {
-        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-      },
-    });
+    const response = await discordFetch(searchUrl);
 
     if (!response.ok) {
       console.error('Discord search failed:', response.status, await response.text());
@@ -93,14 +120,9 @@ export async function assignRole(discordUserId: string, roleId: string): Promise
   }
 
   try {
-    const response = await fetch(
+    const response = await discordFetch(
       `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-        },
-      }
+      { method: 'PUT' }
     );
 
     if (!response.ok && response.status !== 204) {
@@ -124,14 +146,9 @@ export async function removeRole(discordUserId: string, roleId: string): Promise
   }
 
   try {
-    const response = await fetch(
+    const response = await discordFetch(
       `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-        },
-      }
+      { method: 'DELETE' }
     );
 
     if (!response.ok && response.status !== 204) {

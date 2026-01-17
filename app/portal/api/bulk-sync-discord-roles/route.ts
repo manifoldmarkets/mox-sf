@@ -83,8 +83,8 @@ export async function POST() {
     };
 
     for (const person of people) {
-      // Add a small delay to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Add delay to avoid Discord rate limiting (they allow ~5-10 req/sec)
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       const result = await syncDiscordRole(person.discordUsername, person.tier, person.status);
 
