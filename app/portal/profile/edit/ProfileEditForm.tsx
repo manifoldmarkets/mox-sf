@@ -10,6 +10,7 @@ interface ProfileEditFormProps {
     website: string;
     photo: string | null;
     directoryVisible: boolean;
+    discordUsername?: string | null;
   };
   userId: string;
 }
@@ -123,6 +124,47 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
           />
           <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Ask a staff member if you want to update your email</p>
+        </div>
+
+        {/* Discord Username (read-only) */}
+        <div>
+          <label htmlFor="discord" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Discord
+          </label>
+          {profile.discordUsername ? (
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                id="discord"
+                value={profile.discordUsername}
+                disabled
+                className="flex-1 px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
+              />
+              <a
+                href="https://discord.gg/jZHTRHUWy9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
+              >
+                Open Discord
+              </a>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <span className="text-text-muted dark:text-text-muted-dark text-sm italic">Not linked</span>
+              <a
+                href="https://discord.gg/jZHTRHUWy9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
+              >
+                Join our Discord →
+              </a>
+            </div>
+          )}
+          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">
+            Discord usernames are linked by staff
+          </p>
         </div>
 
         {/* Website */}

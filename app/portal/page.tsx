@@ -179,6 +179,7 @@ async function getUserProfile(recordId: string): Promise<{
   status: string | null;
   tier: string | null;
   orgId: string | null;
+  discordUsername: string | null;
   error?: string;
 } | null> {
   // Fetch only the fields we need for the profile edit form
@@ -218,5 +219,6 @@ async function getUserProfile(recordId: string): Promise<{
     status: fields.Status || null,
     tier: fields.Tier || null,
     orgId: fields.Org?.[0] || null, // Org is a linked record array, get first one
+    discordUsername: fields['Discord Username'] || null,
   };
 }
