@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/app/lib/session';
 import DiscordMappingTool from './DiscordMappingTool';
+import BulkRoleSync from './BulkRoleSync';
 import Link from 'next/link';
 
 export const metadata = {
@@ -39,6 +40,8 @@ export default async function DiscordMappingPage() {
           </p>
 
           <DiscordMappingTool />
+
+          <BulkRoleSync />
         </div>
       </div>
     </div>

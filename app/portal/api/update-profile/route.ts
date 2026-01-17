@@ -1,4 +1,5 @@
 import { getSession } from '@/app/lib/session';
+import { syncDiscordRole, isDiscordConfigured } from '@/app/lib/discord';
 
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif'];
@@ -139,9 +140,18 @@ export async function POST(request: Request) {
 
     const data = await response.json();
 
+    // Sync Discord role if username was provided and Discord is configured
+    let discordSyncResult = null;
+    if (trimmedDiscord && isDiscordConfigured()) {
+      const tier = data.fields.Tier || null;
+      const status = data.fields.Status || null;
+      discordSyncResult = await syncDiscordRole(trimmedDiscord, tier, status);
+    }
+
     return Response.json({
       success: true,
       profile: data.fields,
+      discordSync: discordSyncResult,
     });
   } catch (error) {
     console.error('Error updating profile:', error);

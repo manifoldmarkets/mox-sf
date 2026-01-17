@@ -1,0 +1,220 @@
+// Discord API integration for role management
+
+const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
+const DISCORD_GUILD_ID = process.env.DISCORD_GUILD_ID;
+
+// Map Airtable tiers to Discord role IDs
+// You'll need to set these in your .env file
+const TIER_TO_ROLE: Record<string, string | undefined> = {
+  'Friend': process.env.DISCORD_ROLE_FRIEND,
+  'Member': process.env.DISCORD_ROLE_MEMBER,
+  'Resident': process.env.DISCORD_ROLE_RESIDENT,
+  'Private Office': process.env.DISCORD_ROLE_PRIVATE_OFFICE,
+  'Program': process.env.DISCORD_ROLE_PROGRAM,
+  'Staff': process.env.DISCORD_ROLE_STAFF,
+};
+
+// All member roles (for removing old roles when tier changes)
+function getAllMemberRoleIds(): string[] {
+  const roles = [
+    process.env.DISCORD_ROLE_FRIEND,
+    process.env.DISCORD_ROLE_MEMBER,
+    process.env.DISCORD_ROLE_RESIDENT,
+    process.env.DISCORD_ROLE_PRIVATE_OFFICE,
+    process.env.DISCORD_ROLE_PROGRAM,
+    process.env.DISCORD_ROLE_STAFF,
+  ];
+  return roles.filter((r): r is string => !!r);
+}
+
+interface DiscordMember {
+  user: {
+    id: string;
+    username: string;
+    global_name: string | null;
+  };
+  nick: string | null;
+  roles: string[];
+}
+
+interface SyncResult {
+  success: boolean;
+  error?: string;
+  discordUserId?: string;
+  roleAssigned?: string;
+  previousRoles?: string[];
+}
+
+/**
+ * Find a Discord member by username in the guild
+ */
+export async function findDiscordMember(username: string): Promise<DiscordMember | null> {
+  if (!DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
+    console.error('Discord bot token or guild ID not configured');
+    return null;
+  }
+
+  const normalizedUsername = username.toLowerCase().trim();
+
+  try {
+    // Search for member by query (Discord API v10)
+    const searchUrl = `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/search?query=${encodeURIComponent(normalizedUsername)}&limit=10`;
+
+    const response = await fetch(searchUrl, {
+      headers: {
+        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Discord search failed:', response.status, await response.text());
+      return null;
+    }
+
+    const members: DiscordMember[] = await response.json();
+
+    // Find exact username match
+    const exactMatch = members.find(m =>
+      m.user.username.toLowerCase() === normalizedUsername
+    );
+
+    return exactMatch || null;
+  } catch (error) {
+    console.error('Error searching Discord member:', error);
+    return null;
+  }
+}
+
+/**
+ * Assign a role to a Discord member
+ */
+export async function assignRole(discordUserId: string, roleId: string): Promise<boolean> {
+  if (!DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+        },
+      }
+    );
+
+    if (!response.ok && response.status !== 204) {
+      console.error('Failed to assign role:', response.status, await response.text());
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error assigning Discord role:', error);
+    return false;
+  }
+}
+
+/**
+ * Remove a role from a Discord member
+ */
+export async function removeRole(discordUserId: string, roleId: string): Promise<boolean> {
+  if (!DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+        },
+      }
+    );
+
+    if (!response.ok && response.status !== 204) {
+      console.error('Failed to remove role:', response.status, await response.text());
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error removing Discord role:', error);
+    return false;
+  }
+}
+
+/**
+ * Sync a member's Discord role based on their Airtable tier
+ */
+export async function syncDiscordRole(
+  discordUsername: string,
+  tier: string | null,
+  status: string | null
+): Promise<SyncResult> {
+  // Only sync for active members
+  const activeTiers = ['Friend', 'Member', 'Resident', 'Private Office', 'Program', 'Staff'];
+  const isActive = status === 'Joined' && tier && activeTiers.includes(tier);
+
+  if (!isActive) {
+    return {
+      success: false,
+      error: 'User is not an active member',
+    };
+  }
+
+  // Find the Discord member
+  const member = await findDiscordMember(discordUsername);
+  if (!member) {
+    return {
+      success: false,
+      error: `Discord user "${discordUsername}" not found in server`,
+    };
+  }
+
+  // Get the target role for this tier
+  const targetRoleId = TIER_TO_ROLE[tier];
+  if (!targetRoleId) {
+    return {
+      success: false,
+      error: `No Discord role configured for tier: ${tier}`,
+    };
+  }
+
+  // Remove any existing member roles (except the one we're assigning)
+  const allMemberRoles = getAllMemberRoleIds();
+  const rolesToRemove = allMemberRoles.filter(r => r !== targetRoleId && member.roles.includes(r));
+
+  for (const roleId of rolesToRemove) {
+    await removeRole(member.user.id, roleId);
+  }
+
+  // Assign the new role if they don't already have it
+  if (!member.roles.includes(targetRoleId)) {
+    const assigned = await assignRole(member.user.id, targetRoleId);
+    if (!assigned) {
+      return {
+        success: false,
+        error: 'Failed to assign Discord role',
+        discordUserId: member.user.id,
+      };
+    }
+  }
+
+  return {
+    success: true,
+    discordUserId: member.user.id,
+    roleAssigned: targetRoleId,
+    previousRoles: rolesToRemove,
+  };
+}
+
+/**
+ * Check if Discord integration is configured
+ */
+export function isDiscordConfigured(): boolean {
+  return !!(DISCORD_BOT_TOKEN && DISCORD_GUILD_ID);
+}
