@@ -234,3 +234,79 @@ export async function syncDiscordRole(
 export function isDiscordConfigured(): boolean {
   return !!(DISCORD_BOT_TOKEN && DISCORD_GUILD_ID);
 }
+
+/**
+ * Rename a Discord channel
+ */
+export async function renameDiscordChannel(
+  channelId: string,
+  newName: string
+): Promise<boolean> {
+  if (!DISCORD_BOT_TOKEN) {
+    console.error('[Discord] Bot token not configured');
+    return false;
+  }
+
+  try {
+    const response = await discordFetch(
+      `https://discord.com/api/v10/channels/${channelId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: newName,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error('[Discord] Failed to rename channel:', response.status, await response.text());
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('[Discord] Rename channel error:', error);
+    return false;
+  }
+}
+
+/**
+ * Send a message to a Discord channel
+ */
+export async function sendChannelMessage(
+  channelId: string,
+  content: string
+): Promise<boolean> {
+  if (!DISCORD_BOT_TOKEN) {
+    console.error('[Discord] Bot token not configured');
+    return false;
+  }
+
+  try {
+    const response = await discordFetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error('[Discord] Failed to send message:', response.status, await response.text());
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('[Discord] Send message error:', error);
+    return false;
+  }
+}
