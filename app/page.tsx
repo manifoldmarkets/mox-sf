@@ -283,8 +283,8 @@ export default async function Component() {
               <span className="text-2xl text-white uppercase font-sans tracking-wide">Impacts</span>
             </a>
 
-            <a href="https://rootsofprogress.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-all duration-200 flex items-center justify-center p-1 gap-1">
-              <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHZqWt1BOeRcQ/company-logo_200_200/company-logo_200_200/0/1719263296894/rootsofprogress_logo?e=2147483647&v=beta&t=ST2NF9TmGYBHrprrUCW_W1d_ZLnYFU8UCZlFC9-e9vs" alt="Roots of Progress logo" className="h-full w-auto object-contain" />
+            <a href="https://rootsofprogress.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-all duration-200 flex items-center justify-center p-3 gap-2">
+              <img src="/ROP7594_Profile-Picture.webp" alt="Roots of Progress logo" className="h-4/5 w-auto object-contain" />
               <span className="text-xl text-white uppercase font-sans tracking-tight leading-none">Roots of Progress</span>
             </a>
 

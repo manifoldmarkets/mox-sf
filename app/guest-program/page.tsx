@@ -66,7 +66,7 @@ function TestimonialCard({ name, quote }: { name: string; quote: string }) {
   )
 }
 
-export default function GuestsPage() {
+export default function GuestProgramPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-gray-800">
       {/* Hero section */}
