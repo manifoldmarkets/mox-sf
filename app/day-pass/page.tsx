@@ -112,8 +112,20 @@ export default function DayPassPage() {
           </div>
         </div>
 
-
-
+        {/* Donation option */}
+        <div className="text-center mb-16">
+          <p className="text-gray-600 mb-4">
+            Already have access? Support Mox with a contribution.
+          </p>
+          <a
+            href="https://donate.stripe.com/7sY7sN1MQdUJ8Jx126bbG07"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-6 py-2 border border-amber-800 text-amber-800 font-semibold hover:bg-amber-50 transition-all duration-200 text-sm"
+          >
+            Make a Donation
+          </a>
+        </div>
 
 
 
