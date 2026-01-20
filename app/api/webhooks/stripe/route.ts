@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { Resend } from 'resend';
+import { getDayPassActivationEmail } from '@/app/lib/emails/day-pass-activation';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-10-29.clover',
@@ -174,42 +175,19 @@ async function sendActivationEmail({
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://moxsf.com';
   const activationLink = `${baseUrl}/day-pass/activate?id=${paymentId}`;
 
+  const { subject, text } = getDayPassActivationEmail({
+    customerName,
+    passType,
+    passDescription,
+    activationLink,
+  });
+
   try {
     const result = await resend.emails.send({
       from: 'Mox SF <noreply@account.moxsf.com>',
       to: customerEmail,
-      subject: `Your Mox ${passType} is Ready!`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #92400e;">Welcome to Mox SF!</h2>
-          <p>Hi ${customerName},</p>
-          <p>Thank you for purchasing a <strong>${passType}</strong>.</p>
-          <p style="color: #666;">${passDescription}</p>
-
-          <p>When you're ready to visit, click the button below to get your door code:</p>
-
-          <p style="margin: 30px 0;">
-            <a href="${activationLink}" style="background-color: #92400e; color: white; padding: 14px 28px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: 600;">
-              Activate Your Pass
-            </a>
-          </p>
-
-          <div style="background-color: #fef3c7; border: 1px solid #fcd34d; padding: 16px; margin: 20px 0;">
-            <p style="margin: 0; font-size: 14px;">
-              <strong>📍 Address:</strong> 525 Brannan St, San Francisco, CA 94107<br/>
-              <strong>🚪 Entry:</strong> Use the door code on the keypad to enter
-            </p>
-          </div>
-
-          <p style="color: #666; font-size: 14px;">
-            Questions? Reply to this email or contact us at team@moxsf.com
-          </p>
-
-          <p style="color: #999; font-size: 12px; margin-top: 30px;">
-            Or copy and paste this link: ${activationLink}
-          </p>
-        </div>
-      `,
+      subject,
+      text,
     });
 
     console.log('[Stripe Webhook] Sent activation email:', result);
