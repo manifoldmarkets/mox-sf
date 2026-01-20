@@ -22,11 +22,11 @@ Thanks for getting a ${passType}!
 
 ${passDescription}
 
-When you're ready to visit, click here to get your door code:
+On the day you're planning to visit, click here to get your door code:
 ${activationLink}
 
 ADDRESS
-525 Brannan St, San Francisco, CA 94107
+1680 Mission St, San Francisco, CA 94103
 
 ENTRY
 Use the door code on the keypad to enter. The code will be displayed after you click the activation link above.

@@ -127,12 +127,13 @@ export async function POST(request: Request) {
     // }
     // // TODO: Consider storing pass type directly in Airtable for more robust classification
 
-    console.log(`Activated pass for ${fields.Username}, door code: ${doorCode}`)
+    const passType = fields['Pass Type'] || 'Day Pass'
+    console.log(`Activated ${passType} for ${fields.Username}, door code: ${doorCode}`)
 
     return Response.json({
       success: true,
       doorCode,
-      // passType,
+      passType,
       userName: fields.Username || 'Guest'
     })
 

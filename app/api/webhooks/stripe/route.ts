@@ -9,10 +9,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Map Stripe product IDs to pass types
-const DAY_PASS_PRODUCTS: Record<string, { type: string; description: string }> = {
-  'prod_T5NXc8MwPn1ZIl': { type: 'Day Pass', description: 'Full day access (9 AM - 11 PM)' },
-  'prod_T5NXlD25uP8tnI': { type: 'Happy Hour Pass', description: 'Evening access (after 4 PM)' },
-  'prod_SqejoSJqKlR4A5': { type: 'Week Pass', description: 'Full week access' },
+const DAY_PASS_PRODUCTS: Record<string, { type: string; description: string; durationDays: number }> = {
+  'prod_T5NXc8MwPn1ZIl': { type: 'Day Pass', description: 'Full day access (9 AM - 11 PM)', durationDays: 1 },
+  'prod_T5NXlD25uP8tnI': { type: 'Happy Hour Pass', description: 'Evening access (after 4 PM)', durationDays: 1 },
+  'prod_SqejoSJqKlR4A5': { type: 'Week Pass', description: 'Full week of access', durationDays: 7 },
 };
 
 export async function POST(request: Request) {

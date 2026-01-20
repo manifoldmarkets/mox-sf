@@ -53,12 +53,11 @@ export default function DayPassPage() {
         </section>
 
         {/* Pass options */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
           {/* Full Day Pass */}
           <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-
             <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
-              Mox Day Pass
+              Day Pass
             </h2>
             <div className="text-3xl font-bold text-gray-800 mb-6">
               $70
@@ -81,9 +80,34 @@ export default function DayPassPage() {
             </a>
           </div>
 
+          {/* Week Pass */}
+          <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
+            <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
+              Week Pass
+            </h2>
+            <div className="text-3xl font-bold text-gray-800 mb-6">
+              $250
+            </div>
+            <p className="text-gray-600 mb-6">
+              Full week of access. Great for visitors in town for a bit.
+            </p>
+            <a
+              href="https://buy.stripe.com/5kQ7sNezC5od8JxcKObbG01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                inline-block px-6 py-3 w-full text-center
+                bg-amber-800 text-white font-semibold
+                hover:bg-amber-900
+                transition-all duration-200
+              "
+            >
+              Purchase Week Pass
+            </a>
+          </div>
+
           {/* Happy Hour Pass */}
           <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-
             <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
               Happy Hour Pass
             </h2>

@@ -10,7 +10,7 @@ function ActivatePageContent() {
   const id = searchParams.get('id')
   const [state, setState] = useState<ActivationState>('loading')
   const [doorCode, setDoorCode] = useState<string>('')
-  // const [passType, setPassType] = useState<string>('')
+  const [passType, setPassType] = useState<string>('Day Pass')
   const [userName, setUserName] = useState<string>('')
   const [unlocking, setUnlocking] = useState(false)
   const [unlockSuccess, setUnlockSuccess] = useState(false)
@@ -33,7 +33,7 @@ function ActivatePageContent() {
       if (data.success) {
         setState('success')
         setDoorCode(data.doorCode)
-        // setPassType(data.passType)
+        setPassType(data.passType || 'Day Pass')
         setUserName(data.userName)
       } else if (data.status === 'expired') {
         setState('expired')
@@ -97,8 +97,7 @@ function ActivatePageContent() {
             </h1>
 
             <p className="text-gray-600 mb-8">
-              {/* Your {passType} has been activated, and will expire at midnight. Here's your door code: */}
-              Your pass has been activated, and will expire at midnight. Here's your door code:
+              Your {passType} is activated. Here's your door code:
             </p>
 
             <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-6 mb-8">
