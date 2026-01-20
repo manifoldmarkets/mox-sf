@@ -85,7 +85,9 @@ export async function POST(request: Request) {
     }
 
     // If status is "Unused", activate it and update the record
+    let dateActivated = fields['Date Activated']
     if (fields.Status === 'Unused') {
+      dateActivated = new Date().toISOString().split('T')[0] // YYYY-MM-DD format
       // Update the record to mark as activated
       const updateResponse = await fetch(
         `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Day%20Passes/${record.id}`,
@@ -98,7 +100,7 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             fields: {
               Status: 'Activated',
-              'Date Activated': new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+              'Date Activated': dateActivated,
             }
           })
         }
@@ -130,11 +132,24 @@ export async function POST(request: Request) {
     const passType = fields['Pass Type'] || 'Day Pass'
     console.log(`Activated ${passType} for ${fields.Username}, door code: ${doorCode}`)
 
+    // Calculate expiration date based on pass type
+    // All passes expire at 11pm on the last day
+    let expiresAt: string | null = null
+    if (dateActivated) {
+      const activatedDate = new Date(dateActivated)
+      if (passType === 'Week Pass') {
+        activatedDate.setDate(activatedDate.getDate() + 6) // 7 days total including activation day
+      }
+      // Day Pass and Happy Hour Pass expire same day at 11pm
+      expiresAt = activatedDate.toISOString().split('T')[0]
+    }
+
     return Response.json({
       success: true,
       doorCode,
       passType,
-      userName: fields.Username || 'Guest'
+      userName: fields.Username || 'Guest',
+      expiresAt,
     })
 
   } catch (error) {

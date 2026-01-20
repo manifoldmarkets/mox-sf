@@ -75,7 +75,7 @@ async function handleDayPassPurchase(session: Stripe.Checkout.Session) {
   const passInfo = DAY_PASS_PRODUCTS[product.id];
   const customerEmail = session.customer_details?.email;
   const customerName = session.customer_details?.name || 'Guest';
-  const paymentId = session.payment_intent as string;
+  const paymentId = session.id;
 
   if (!customerEmail) {
     console.error('[Stripe Webhook] No customer email found');
@@ -109,6 +109,73 @@ async function handleDayPassPurchase(session: Stripe.Checkout.Session) {
   console.log(`[Stripe Webhook] Successfully processed ${passInfo.type} for ${customerEmail}`);
 }
 
+// Find or create a person in the People table by email
+async function findOrCreatePerson({
+  customerName,
+  customerEmail,
+}: {
+  customerName: string;
+  customerEmail: string;
+}): Promise<string | null> {
+  const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+
+  try {
+    // Search for existing person by email
+    const searchResponse = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/People?filterByFormula={Email}="${customerEmail}"`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+        },
+      }
+    );
+
+    if (!searchResponse.ok) {
+      console.error('[Stripe Webhook] Failed to search People table:', searchResponse.status);
+      return null;
+    }
+
+    const searchData = await searchResponse.json();
+
+    // If person exists, return their record ID
+    if (searchData.records && searchData.records.length > 0) {
+      console.log('[Stripe Webhook] Found existing person:', searchData.records[0].id);
+      return searchData.records[0].id;
+    }
+
+    // Create new person
+    const createResponse = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/People`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_WRITE_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fields: {
+            Name: customerName,
+            Email: customerEmail,
+          },
+        }),
+      }
+    );
+
+    if (!createResponse.ok) {
+      const errorData = await createResponse.json();
+      console.error('[Stripe Webhook] Failed to create person:', errorData);
+      return null;
+    }
+
+    const newPerson = await createResponse.json();
+    console.log('[Stripe Webhook] Created new person:', newPerson.id);
+    return newPerson.id;
+  } catch (error) {
+    console.error('[Stripe Webhook] Error in findOrCreatePerson:', error);
+    return null;
+  }
+}
+
 async function createAirtableRecord({
   paymentId,
   customerName,
@@ -123,6 +190,20 @@ async function createAirtableRecord({
   const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
 
   try {
+    // Find or create the person first
+    const personId = await findOrCreatePerson({ customerName, customerEmail });
+
+    const fields: Record<string, unknown> = {
+      Name: paymentId,
+      'Pass Type': passType,
+      Status: 'Unused',
+    };
+
+    // Link to person if we have their ID
+    if (personId) {
+      fields['User'] = [personId];
+    }
+
     const response = await fetch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Day%20Passes`,
       {
@@ -131,16 +212,7 @@ async function createAirtableRecord({
           Authorization: `Bearer ${process.env.AIRTABLE_WRITE_KEY}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          fields: {
-            Name: paymentId,
-            Username: customerName,
-            Email: customerEmail,
-            'Pass Type': passType,
-            Status: 'Unused',
-            'Date Purchased': new Date().toISOString().split('T')[0],
-          },
-        }),
+        body: JSON.stringify({ fields }),
       }
     );
 

@@ -12,6 +12,7 @@ function ActivatePageContent() {
   const [doorCode, setDoorCode] = useState<string>('')
   const [passType, setPassType] = useState<string>('Day Pass')
   const [userName, setUserName] = useState<string>('')
+  const [expiresAt, setExpiresAt] = useState<string>('')
   const [unlocking, setUnlocking] = useState(false)
   const [unlockSuccess, setUnlockSuccess] = useState(false)
   const [unlockError, setUnlockError] = useState(false)
@@ -34,6 +35,7 @@ function ActivatePageContent() {
         setDoorCode(data.doorCode)
         setPassType(data.passType || 'Day Pass')
         setUserName(data.userName)
+        setExpiresAt(data.expiresAt || '')
       } else if (data.status === 'expired') {
         setState('expired')
       } else if (data.status === 'not-found') {
@@ -118,6 +120,11 @@ function ActivatePageContent() {
           <div className="text-center mb-6">
             <div className="text-lg font-semibold text-gray-800">Welcome, {userName}!</div>
             <div className="text-sm text-gray-500">{passType} activated</div>
+            {expiresAt && (
+              <div className="text-sm text-gray-500 mt-1">
+                Expires 11pm {new Date(expiresAt + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+              </div>
+            )}
           </div>
 
           {/* Location */}
