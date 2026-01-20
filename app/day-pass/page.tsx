@@ -53,82 +53,61 @@ export default function DayPassPage() {
         </section>
 
         {/* Pass options */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {/* Full Day Pass */}
-          <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-            <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
+        <div className="grid md:grid-cols-3 gap-4 mb-16">
+          {/* Day Pass */}
+          <div className="bg-white shadow-xl p-6 border border-slate-100">
+            <h2 className="text-xl font-bold mb-2 font-display text-amber-900">
               Day Pass
             </h2>
-            <div className="text-3xl font-bold text-gray-800 mb-6">
-              $70
-            </div>
-            <p className="text-gray-600 mb-6">
-              Full day access to our workspace and amenities.
+            <div className="text-2xl font-bold text-gray-800 mb-3">$70</div>
+            <p className="text-gray-600 text-sm mb-4">
+              Full day access to workspace and amenities.
             </p>
             <a
               href="https://buy.stripe.com/00weVf3UY3g5f7V7qubbG02"
               target="_blank"
               rel="noopener noreferrer"
-              className="
-                inline-block px-6 py-3 w-full text-center
-                bg-amber-800 text-white font-semibold
-                hover:bg-amber-900
-                transition-all duration-200
-              "
+              className="inline-block px-4 py-2 w-full text-center bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all duration-200 text-sm"
             >
-              Purchase Day Pass
-            </a>
-          </div>
-
-          {/* Week Pass */}
-          <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-            <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
-              Week Pass
-            </h2>
-            <div className="text-3xl font-bold text-gray-800 mb-6">
-              $250
-            </div>
-            <p className="text-gray-600 mb-6">
-              Full week of access. Great for visitors in town for a bit.
-            </p>
-            <a
-              href="https://buy.stripe.com/5kQ7sNezC5od8JxcKObbG01"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                inline-block px-6 py-3 w-full text-center
-                bg-amber-800 text-white font-semibold
-                hover:bg-amber-900
-                transition-all duration-200
-              "
-            >
-              Purchase Week Pass
+              Purchase
             </a>
           </div>
 
           {/* Happy Hour Pass */}
-          <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-            <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
-              Happy Hour Pass
+          <div className="bg-white shadow-xl p-6 border border-slate-100">
+            <h2 className="text-xl font-bold mb-2 font-display text-amber-900">
+              Happy Hour
             </h2>
-            <div className="text-3xl font-bold text-gray-800 mb-6">
-              $40
-            </div>
-            <p className="text-gray-600 mb-6">
-              Evening access to wind down or catch up on work. Valid after 4pm.
+            <div className="text-2xl font-bold text-gray-800 mb-3">$40</div>
+            <p className="text-gray-600 text-sm mb-4">
+              Evening access after 4pm. Wind down or catch up on work.
             </p>
             <a
               href="https://buy.stripe.com/dRm9AV636cQF8Jx26abbG03"
               target="_blank"
               rel="noopener noreferrer"
-              className="
-                inline-block px-6 py-3 w-full text-center
-                bg-amber-800 text-white font-semibold
-                hover:bg-amber-900
-                transition-all duration-200
-              "
+              className="inline-block px-4 py-2 w-full text-center bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all duration-200 text-sm"
             >
-              Purchase Happy Hour Pass
+              Purchase
+            </a>
+          </div>
+
+          {/* Week Pass */}
+          <div className="bg-white shadow-xl p-6 border border-slate-100">
+            <h2 className="text-xl font-bold mb-2 font-display text-amber-900">
+              Week Pass
+            </h2>
+            <div className="text-2xl font-bold text-gray-800 mb-3">$250</div>
+            <p className="text-gray-600 text-sm mb-4">
+              Full week of access. Great for visitors in town.
+            </p>
+            <a
+              href="https://buy.stripe.com/5kQ7sNezC5od8JxcKObbG01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 w-full text-center bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all duration-200 text-sm"
+            >
+              Purchase
             </a>
           </div>
         </div>
