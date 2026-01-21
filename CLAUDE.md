@@ -1,5 +1,12 @@
 This project uses Bun as its package manager. Use `bun install`
 
+## Chrome DevTools MCP
+
+If Chrome DevTools MCP gives errors about "browser is already running", run:
+```bash
+pkill -f "chrome-devtools-mcp" || true
+```
+
 ## Git Workflow
 
 When starting a new feature or task:

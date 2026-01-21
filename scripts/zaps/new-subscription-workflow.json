@@ -1,0 +1,113 @@
+{
+  "id": "283145125",
+  "title": "On new Mox subscription, ping Discord & update Airtable",
+  "description": "Notify Discord of new Stripe subscriptions",
+  "version": 9,
+  "version_description": "Add tier tracking",
+  "timezone": "America/Los_Angeles",
+  "extracted_at": "2026-01-20",
+  "source_url": "https://zapier.com/editor/283145125/published",
+  "steps": [
+    {
+      "id": "283145125",
+      "step": 1,
+      "app": "Stripe",
+      "type": "trigger",
+      "action": "new_customer_subscription",
+      "params": {}
+    },
+    {
+      "id": "283145126",
+      "step": 2,
+      "app": "Discord",
+      "type": "action",
+      "action": "send_channel_message",
+      "params": {
+        "channel_id": "1339404215700947000",
+        "channel_name": "bots",
+        "content": "{{customer.name}} just started their Mox membership",
+        "ping_usernames": false,
+        "tts": false,
+        "username": "Stripe",
+        "avatar_url": "https://i.imgur.com/fm9tEIH.png"
+      }
+    },
+    {
+      "id": "286999830",
+      "step": 3,
+      "app": "ZapierMail",
+      "type": "action",
+      "action": "send_outbound_email",
+      "params": {
+        "to": "{{customer.email}}",
+        "subject": "Thanks for joining Mox!",
+        "body": "Hey {{customer.name}},\n\nThanks for joining Mox, excited to have you! Jump in our Discord for access instructions for your first day: https://moxsf.com/discord\n\nIf you'd like to cancel your membership or change tiers, you can do so here: https://moxsf.com/portal\n\nAnd check out more onboarding info here: https://moxsf.notion.site/new-member-onboarding\n",
+        "from_name": "Rachel Shu",
+        "reply_to": "rachel@moxsf.com"
+      }
+    },
+    {
+      "id": "342557651",
+      "step": 4,
+      "app": "ZapierTables",
+      "type": "search",
+      "action": "find_record",
+      "params": {
+        "table_id": "01KEGKD0E06J4R5JQ7391SSAFQ",
+        "table_name": "Pricing Sheet",
+        "search_field": "Cost",
+        "lookup_value": "{{plan.amount}}",
+        "returns": "tier_name"
+      }
+    },
+    {
+      "id": "284946408",
+      "step": 5,
+      "app": "Airtable",
+      "type": "search_or_create",
+      "action": "find_or_create_record",
+      "params": {
+        "base_id": "appkHZ2UvU6SouT5y",
+        "base_name": "Mox",
+        "table_id": "tbl3mg59vE4hyDveG",
+        "table_name": "People",
+        "search_by_field": "Email",
+        "search_value": "{{customer.email}}",
+        "fields": {
+          "fldMfOEqaIEXecvyh": { "name": "Name", "value": "{{customer.name}}" },
+          "fldNHfH4CR0N6Yqqz": { "name": "Email", "value": "{{customer.email}}" },
+          "fldt0eKG6HHMjGEQD": { "name": "Tier", "value": "{{tier_from_pricing_sheet}}" },
+          "fldciow7SdTyKoaQy": { "name": "Date Joined", "value": "{{current_timestamp}}" },
+          "fldHhbqf6qAkgTpzY": { "name": "Status", "value": "Joined" },
+          "fldHnScqSoaG74sQ9": { "name": "Stripe Customer ID", "value": "{{customer.id}}" }
+        }
+      }
+    },
+    {
+      "id": "284946409",
+      "step": 6,
+      "app": "Airtable",
+      "type": "action",
+      "action": "update_record",
+      "params": {
+        "base_id": "appkHZ2UvU6SouT5y",
+        "base_name": "Mox",
+        "table_id": "tbl3mg59vE4hyDveG",
+        "table_name": "People",
+        "record_id": "{{found_record_id}}",
+        "fields": {
+          "fldHhbqf6qAkgTpzY": { "name": "Status", "value": "Joined" },
+          "fldt0eKG6HHMjGEQD": { "name": "Tier", "value": "{{tier_from_pricing_sheet}}" },
+          "fldHnScqSoaG74sQ9": { "name": "Stripe Customer ID", "value": "{{customer.id}}" }
+        }
+      }
+    }
+  ],
+  "raw_zdl": {
+    "app": "EngineAPI",
+    "type": "run",
+    "action": "series_skip_errors",
+    "id": "series_283145125",
+    "zdl_version": "0.4"
+  }
+}
