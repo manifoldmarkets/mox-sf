@@ -35,6 +35,7 @@ export default function MembershipStatus({
     }
   }, [tier, orgId])
   const isInvited = status === 'Invited' || status === 'To Invite'
+  const isCancelled = status === 'Cancelled'
   const hasSubscription = !!stripeCustomerId
   const isPrivateOffice = tier === 'Private Office'
 
@@ -87,7 +88,7 @@ export default function MembershipStatus({
     )
   }
 
-  // Otherwise, show the status and invite flow
+  // Otherwise, show the status and invite/renewal flow
   return (
     <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-6 mb-6">
       <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-4 font-display">
@@ -110,10 +111,30 @@ export default function MembershipStatus({
               Join Mox
             </a>
           )}
+          {isCancelled && (
+            <a
+              href="/portal/renew"
+              className="inline-block px-6 py-2 bg-brand hover:bg-brand-dark transition-colors text-white font-semibold"
+            >
+              Renew Membership
+            </a>
+          )}
         </div>
 
         {/* Show private office info if tier is "Private Office" */}
         {privateOfficeCard}
+
+        {/* Show cancelled message */}
+        {isCancelled && (
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 p-4 mt-4">
+            <p className="font-semibold text-amber-900 dark:text-amber-200 mb-1">
+              Your subscription has been cancelled
+            </p>
+            <p className="text-sm text-amber-800 dark:text-amber-300">
+              We'd love to have you back! Click "Renew Membership" to rejoin.
+            </p>
+          </div>
+        )}
       </div>
 
       {isInvited && (
@@ -141,6 +162,7 @@ export default function MembershipStatus({
           </stripe-pricing-table>
         </div>
       )}
+
     </div>
   )
 }

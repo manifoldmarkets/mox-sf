@@ -316,30 +316,39 @@ export default function ProfileEditForm({
           </label>
           <div className="flex items-center gap-6">
             <div className="flex-shrink-0 relative group">
-              <img
-                src={
-                  photoFile
-                    ? URL.createObjectURL(photoFile)
-                    : profile.photo || '/default-avatar.png'
-                }
-                alt="Profile"
-                className="w-32 h-32 object-cover border-2 border-border-light dark:border-border-medium-dark"
-              />
-              {(photoFile || profile.photo) && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (photoFile) {
-                      setImageToCrop(URL.createObjectURL(photoFile))
-                    } else if (profile.photo) {
-                      setImageToCrop(profile.photo)
+              {photoFile || profile.photo ? (
+                <>
+                  <img
+                    src={
+                      photoFile
+                        ? URL.createObjectURL(photoFile)
+                        : profile.photo!
                     }
-                    setShowCropper(true)
-                  }}
-                  className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-sm font-medium"
-                >
-                  Crop
-                </button>
+                    alt="Profile"
+                    className="w-32 h-32 object-cover border-2 border-border-light dark:border-border-medium-dark"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (photoFile) {
+                        setImageToCrop(URL.createObjectURL(photoFile))
+                      } else if (profile.photo) {
+                        setImageToCrop(profile.photo)
+                      }
+                      setShowCropper(true)
+                    }}
+                    className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-sm font-medium"
+                  >
+                    Crop
+                  </button>
+                </>
+              ) : (
+                <div className="w-32 h-32 flex items-center justify-center bg-secondary-100 dark:bg-gray-700 text-4xl font-bold text-secondary-600 dark:text-gray-300 border-2 border-border-light dark:border-border-medium-dark">
+                  {profile.name
+                    .split(' ')
+                    .map((n) => n.charAt(0))
+                    .join('')}
+                </div>
               )}
             </div>
             <div className="flex-1 space-y-2">

@@ -15,12 +15,18 @@ interface SubscriptionData {
   isPaused?: boolean
 }
 
+interface CancelledData {
+  cancelled: true
+  customerEmail: string | null
+}
+
 export default function SubscriptionInfo({
   stripeCustomerId,
 }: SubscriptionInfoProps) {
   const [subscription, setSubscription] = useState<SubscriptionData | null>(
     null
   )
+  const [cancelledData, setCancelledData] = useState<CancelledData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [billingLoading, setBillingLoading] = useState(false)
@@ -78,6 +84,11 @@ export default function SubscriptionInfo({
 
         if (response.ok && data.subscription) {
           setSubscription(data.subscription)
+        } else if (data.cancelled) {
+          setCancelledData({
+            cancelled: true,
+            customerEmail: data.customerEmail,
+          })
         } else {
           setError(data.message || 'No active subscription')
         }
@@ -220,6 +231,33 @@ export default function SubscriptionInfo({
         <p className="text-text-secondary dark:text-text-secondary-dark">
           No active subscription found
         </p>
+      </div>
+    )
+  }
+
+  // Show cancelled subscription with renewal option
+  if (cancelledData) {
+    return (
+      <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-6 mb-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4 mb-4">
+          <h2 className="text-xl font-bold text-brand dark:text-brand-dark-mode font-display">
+            Subscription
+          </h2>
+          <a
+            href="/portal/renew"
+            className="px-4 py-2 bg-brand dark:bg-brand-dark-mode text-white text-sm font-medium hover:bg-brand-dark dark:hover:bg-brand transition-colors text-center"
+          >
+            Renew Membership
+          </a>
+        </div>
+        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 p-4">
+          <p className="font-semibold text-amber-900 dark:text-amber-200 mb-1">
+            Your subscription has been cancelled
+          </p>
+          <p className="text-sm text-amber-800 dark:text-amber-300">
+            We'd love to have you back! Click "Renew Membership" to rejoin.
+          </p>
+        </div>
       </div>
     )
   }

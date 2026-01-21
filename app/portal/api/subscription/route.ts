@@ -31,8 +31,17 @@ export async function GET(request: Request) {
     })
 
     if (subscriptions.data.length === 0) {
+      // No subscriptions at all - get customer email for prefilling renewal form
+      const customer = await stripe.customers.retrieve(stripeCustomerId)
+      const customerEmail =
+        typeof customer !== 'string' && !customer.deleted
+          ? customer.email
+          : null
+
       return Response.json({
         subscription: null,
+        cancelled: true,
+        customerEmail,
         message: 'No subscription found',
       })
     }
@@ -43,8 +52,38 @@ export async function GET(request: Request) {
     )
 
     if (!activeSubscription) {
+      // Check for cancelled subscriptions to show cancelled status
+      const cancelledSubscription = subscriptions.data.find(
+        (s) => s.status === 'canceled'
+      )
+
+      if (cancelledSubscription) {
+        // Get the customer email for prefilling the renewal form
+        const customer = await stripe.customers.retrieve(stripeCustomerId)
+        const customerEmail =
+          typeof customer !== 'string' && !customer.deleted
+            ? customer.email
+            : null
+
+        return Response.json({
+          subscription: null,
+          cancelled: true,
+          customerEmail,
+          message: 'Subscription cancelled',
+        })
+      }
+
+      // No active or cancelled subscription found - still allow renewal
+      const customer = await stripe.customers.retrieve(stripeCustomerId)
+      const customerEmail =
+        typeof customer !== 'string' && !customer.deleted
+          ? customer.email
+          : null
+
       return Response.json({
         subscription: null,
+        cancelled: true,
+        customerEmail,
         message: `No active subscription found. Found ${subscriptions.data.length} subscription(s) with status: ${subscriptions.data.map((s) => s.status).join(', ')}`,
       })
     }
