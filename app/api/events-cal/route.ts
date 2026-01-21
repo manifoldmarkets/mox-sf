@@ -3,9 +3,10 @@ import { Event, parseAirtableEvent } from '@/app/lib/events'
 import { format } from 'date-fns'
 import { getRecords, Tables } from '@/app/lib/airtable'
 
+// Use the same EventFields interface that parseAirtableEvent expects
 interface EventFields {
-  Name?: string
-  'Start Date'?: string
+  Name: string
+  'Start Date': string
   'End Date'?: string
   Status?: string
   'Event Description'?: string

@@ -10,7 +10,7 @@ export default function MembershipStatus({
   tier,
   orgId,
 }: {
-  status: string | null
+  status?: string | null
   firstName: string
   stripeCustomerId: string | null
   tier?: string | null

@@ -22,7 +22,7 @@ async function fetchVerkadaUserPin(): Promise<string | null> {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_MEMBER_KEY,
+        'x-api-key': process.env.VERKADA_MEMBER_KEY || '',
       },
     })
 

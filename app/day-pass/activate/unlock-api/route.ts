@@ -22,7 +22,7 @@ async function unlockDoor() {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_API_KEY,
+        'x-api-key': process.env.VERKADA_API_KEY || '',
       },
     })
 
