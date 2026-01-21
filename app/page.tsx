@@ -87,7 +87,15 @@ export default async function Component() {
               className="mx-auto mb-8 w-full max-w-md dark:invert dark:opacity-90"
             />
             <p className="text-xl mb-4 leading-relaxed text-gray-700 dark:text-gray-200">
-              A research-focused incubator & community space for <b><em>doers of good</em></b> and <b><em>masters of craft</em></b>.
+              A research-focused incubator & community space for{' '}
+              <b>
+                <em>doers of good</em>
+              </b>{' '}
+              and{' '}
+              <b>
+                <em>masters of craft</em>
+              </b>
+              .
             </p>
             <p className="text-lg text-gray-700 dark:text-gray-300">
               <Link
@@ -253,83 +261,243 @@ export default async function Component() {
             Partner Orgs
           </h2>
           <p className="text-center text-gray-700 dark:text-gray-300 text-sm mb-8">
-            Learn more about our <a
+            Learn more about our{' '}
+            <a
               href="https://moxsf.com/guest-program"
               target="_blank"
               rel="noopener noreferrer"
               className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
-            >guest program</a>
+            >
+              guest program
+            </a>
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            <a href="https://www.tarbellfellowship.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#123c75] hover:bg-[#0f2f5c] transition-all duration-200 flex items-center justify-center overflow-hidden p-3">
-              <img src="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png" alt="Tarbell logo" className="h-full w-auto object-contain scale-250" />
+            <a
+              href="https://www.tarbellfellowship.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#123c75] hover:bg-[#0f2f5c] transition-all duration-200 flex items-center justify-center overflow-hidden p-3"
+            >
+              <img
+                src="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png"
+                alt="Tarbell logo"
+                className="h-full w-auto object-contain scale-250"
+              />
             </a>
 
-            <a href="https://intelligence.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#193655] hover:bg-[#142b44] transition-all duration-200 flex items-center justify-center p-3">
-              <img src="https://intelligence.org/wp-content/uploads/2024/10/Group-47.svg" alt="MIRI logo" className="h-full w-auto object-contain" />
+            <a
+              href="https://intelligence.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#193655] hover:bg-[#142b44] transition-all duration-200 flex items-center justify-center p-3"
+            >
+              <img
+                src="https://intelligence.org/wp-content/uploads/2024/10/Group-47.svg"
+                alt="MIRI logo"
+                className="h-full w-auto object-contain"
+              />
             </a>
 
-            <a href="https://far.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#071024] hover:bg-[#050b1a] transition-all duration-200 flex items-center justify-center p-3">
-              <img src="https://cdn.prod.website-files.com/66f4503c3d0f4d4a75074a18/6712bf27e843ab5a68396da8_Far%20AI%20Logotype%20White.svg" alt="FAR.AI logo" className="h-full w-auto object-contain" />
+            <a
+              href="https://far.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#071024] hover:bg-[#050b1a] transition-all duration-200 flex items-center justify-center p-3"
+            >
+              <img
+                src="https://cdn.prod.website-files.com/66f4503c3d0f4d4a75074a18/6712bf27e843ab5a68396da8_Far%20AI%20Logotype%20White.svg"
+                alt="FAR.AI logo"
+                className="h-full w-auto object-contain"
+              />
             </a>
 
-            <a href="https://elicit.com" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00666d] hover:bg-[#005259] transition-all duration-200 flex items-center justify-center p-3 gap-2">
-              <img src="https://i.imgur.com/NghnGgl.jpeg" alt="Elicit logo" className="h-full w-auto object-contain" />
-              <span className="text-2xl text-white uppercase font-sans tracking-wide">Elicit</span>
+            <a
+              href="https://elicit.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#00666d] hover:bg-[#005259] transition-all duration-200 flex items-center justify-center p-3 gap-2"
+            >
+              <img
+                src="https://i.imgur.com/NghnGgl.jpeg"
+                alt="Elicit logo"
+                className="h-full w-auto object-contain"
+              />
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">
+                Elicit
+              </span>
             </a>
 
-            <a href="https://aiimpacts.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#2c97cc] hover:bg-[#2383b3] transition-all duration-200 flex items-center justify-center p-3 gap-2">
-              <img src="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png" alt="AI Impacts logo" className="h-full w-auto object-contain" />
-              <span className="text-2xl text-white uppercase font-sans tracking-wide">Impacts</span>
+            <a
+              href="https://aiimpacts.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#2c97cc] hover:bg-[#2383b3] transition-all duration-200 flex items-center justify-center p-3 gap-2"
+            >
+              <img
+                src="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png"
+                alt="AI Impacts logo"
+                className="h-full w-auto object-contain"
+              />
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">
+                Impacts
+              </span>
             </a>
 
-            <a href="https://rootsofprogress.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-all duration-200 flex items-center justify-center p-3 gap-2">
-              <img src="/ROP7594_Profile-Picture.webp" alt="Roots of Progress logo" className="h-4/5 w-auto object-contain" />
-              <span className="text-xl text-white uppercase font-sans tracking-tight leading-none">Roots of Progress</span>
+            <a
+              href="https://rootsofprogress.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#5e6f60] hover:bg-[#4d5c4f] transition-all duration-200 flex items-center justify-center p-3 gap-2"
+            >
+              <img
+                src="/ROP7594_Profile-Picture.webp"
+                alt="Roots of Progress logo"
+                className="h-4/5 w-auto object-contain"
+              />
+              <span className="text-xl text-white uppercase font-sans tracking-tight leading-none">
+                Roots of Progress
+              </span>
             </a>
 
-            <a href="https://epoch.ai/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#eaf5f4] hover:bg-[#d5e8e6] transition-all duration-200 flex items-center justify-center p-3 gap-2">
-              <img src="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg" alt="Epoch logo" className="h-full w-auto object-contain" />
-              <span className="text-2xl text-gray-900 uppercase font-sans tracking-wide">Epoch</span>
+            <a
+              href="https://epoch.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#eaf5f4] hover:bg-[#d5e8e6] transition-all duration-200 flex items-center justify-center p-3 gap-2"
+            >
+              <img
+                src="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
+                alt="Epoch logo"
+                className="h-full w-auto object-contain"
+              />
+              <span className="text-2xl text-gray-900 uppercase font-sans tracking-wide">
+                Epoch
+              </span>
             </a>
 
-            <a href="https://bluedot.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-[#00104e] hover:bg-[#000c3d] transition-all duration-200 flex items-center justify-center p-3">
-              <img src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg" alt="BlueDot Impact logo" className="h-full w-auto object-contain" />
+            <a
+              href="https://bluedot.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-[#00104e] hover:bg-[#000c3d] transition-all duration-200 flex items-center justify-center p-3"
+            >
+              <img
+                src="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg"
+                alt="BlueDot Impact logo"
+                className="h-full w-auto object-contain"
+              />
             </a>
 
-            <a href="https://www.lightconeinfrastructure.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s" alt="Lightcone logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Lightcone</span>
+            <a
+              href="https://www.lightconeinfrastructure.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhOH11gCJ3CAw29-65rmtWj5zxTvRWPxNqaw&s"
+                alt="Lightcone logo"
+                className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                Lightcone
+              </span>
             </a>
 
-            <a href="https://seldonlab.com/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png" alt="Seldon logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Seldon</span>
+            <a
+              href="https://seldonlab.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://framerusercontent.com/images/3A382BHGbO43XAm4KL9Av9HtAQ.png"
+                alt="Seldon logo"
+                className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                Seldon
+              </span>
             </a>
 
-            <a href="https://governance.ai" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg" alt="GovAI logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">GovAI</span>
+            <a
+              href="https://governance.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg"
+                alt="GovAI logo"
+                className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                GovAI
+              </span>
             </a>
 
-            <a href="https://www.alignment.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://www.alignment.org/assets/img/arc-logo.svg" alt="ARC logo" className="h-full w-auto object-contain dark:invert" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">ARC</span>
+            <a
+              href="https://www.alignment.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://www.alignment.org/assets/img/arc-logo.svg"
+                alt="ARC logo"
+                className="h-full w-auto object-contain dark:invert"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                ARC
+              </span>
             </a>
 
-            <a href="https://redwoodresearch.org" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg" alt="Redwood logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Redwood</span>
+            <a
+              href="https://redwoodresearch.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg"
+                alt="Redwood logo"
+                className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                Redwood
+              </span>
             </a>
 
-            <a href="https://palisaderesearch.org/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://palisaderesearch.org/assets/images/logos/palisade.svg" alt="Palisade Research logo" className="h-full w-auto object-contain dark:invert" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Palisade</span>
+            <a
+              href="https://palisaderesearch.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://palisaderesearch.org/assets/images/logos/palisade.svg"
+                alt="Palisade Research logo"
+                className="h-full w-auto object-contain dark:invert"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                Palisade
+              </span>
             </a>
 
-            <a href="https://timaeus.co/" target="_blank" rel="noopener noreferrer" className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600">
-              <img src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp" alt="Timaeus logo" className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter" />
-              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">Timaeus</span>
+            <a
+              href="https://timaeus.co/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
+                alt="Timaeus logo"
+                className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter"
+              />
+              <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
+                Timaeus
+              </span>
             </a>
           </div>
         </div>
@@ -345,8 +513,6 @@ export default async function Component() {
           </div>
           <Gallery />
         </section>
-
-
       </div>
 
       {/* Footer */}

@@ -26,24 +26,24 @@ function ActivatePageContent() {
     fetch('/day-pass/activate/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ paymentId: id })
+      body: JSON.stringify({ paymentId: id }),
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        setState('success')
-        setDoorCode(data.doorCode)
-        // setPassType(data.passType)
-        setUserName(data.userName)
-      } else if (data.status === 'expired') {
-        setState('expired')
-      } else if (data.status === 'not-found') {
-        setState('not-found')
-      } else {
-        setState('error')
-      }
-    })
-    .catch(() => setState('error'))
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setState('success')
+          setDoorCode(data.doorCode)
+          // setPassType(data.passType)
+          setUserName(data.userName)
+        } else if (data.status === 'expired') {
+          setState('expired')
+        } else if (data.status === 'not-found') {
+          setState('not-found')
+        } else {
+          setState('error')
+        }
+      })
+      .catch(() => setState('error'))
   }, [id])
 
   const handleUnlockDoor = async () => {
@@ -55,7 +55,7 @@ function ActivatePageContent() {
       const response = await fetch('/day-pass/activate/unlock-api', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentId: id })
+        body: JSON.stringify({ paymentId: id }),
       })
 
       const data = await response.json()
@@ -98,12 +98,15 @@ function ActivatePageContent() {
 
             <p className="text-gray-600 mb-8">
               {/* Your {passType} has been activated, and will expire at midnight. Here's your door code: */}
-              Your pass has been activated, and will expire at midnight. Here's your door code:
+              Your pass has been activated, and will expire at midnight. Here's
+              your door code:
             </p>
 
             <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-6 mb-8">
               <p className="text-sm text-amber-700 mb-2">Door Code</p>
-              <p className="text-4xl font-bold text-amber-800 tracking-wider">{doorCode}#</p>
+              <p className="text-4xl font-bold text-amber-800 tracking-wider">
+                {doorCode}#
+              </p>
             </div>
 
             <div className="mb-8">
@@ -114,11 +117,15 @@ function ActivatePageContent() {
                   unlocking
                     ? 'bg-gray-400 cursor-not-allowed'
                     : unlockSuccess
-                    ? 'bg-green-600 hover:bg-green-700'
-                    : 'bg-amber-800 hover:bg-amber-900'
+                      ? 'bg-green-600 hover:bg-green-700'
+                      : 'bg-amber-800 hover:bg-amber-900'
                 } text-white`}
               >
-                {unlocking ? 'Unlocking...' : unlockSuccess ? '✓ Door Unlocked!' : 'Unlock Door Now'}
+                {unlocking
+                  ? 'Unlocking...'
+                  : unlockSuccess
+                    ? '✓ Door Unlocked!'
+                    : 'Unlock Door Now'}
               </button>
               {unlockError && (
                 <p className="mt-2 text-sm text-red-600 text-center">
@@ -130,15 +137,26 @@ function ActivatePageContent() {
             <div className="space-y-4 text-left bg-gray-50 p-6 rounded-lg">
               <h3 className="font-semibold text-gray-800">Getting to Mox:</h3>
               <div className="space-y-2 text-sm text-gray-600">
-                <p><strong>Address:</strong> 1680 Mission Street, San Francisco</p>
-                <p><strong>Entry:</strong> Use the door code above at the main entrance</p>
+                <p>
+                  <strong>Address:</strong> 1680 Mission Street, San Francisco
+                </p>
+                <p>
+                  <strong>Entry:</strong> Use the door code above at the main
+                  entrance
+                </p>
                 {/* <p><strong>Hours:</strong> {passType === 'Happy Hour Pass' ? '4:00 PM - 11:00 PM' : '9:00 AM - 11:00 PM'}</p> */}
               </div>
             </div>
 
             <div className="mt-8 pt-6 border-t border-gray-200">
               <p className="text-sm text-gray-500">
-                Questions? Contact <a href="mailto:rachel@moxsf.com" className="text-amber-800 hover:text-amber-600">rachel@moxsf.com</a>
+                Questions? Contact{' '}
+                <a
+                  href="mailto:rachel@moxsf.com"
+                  className="text-amber-800 hover:text-amber-600"
+                >
+                  rachel@moxsf.com
+                </a>
               </p>
             </div>
           </div>
@@ -161,7 +179,8 @@ function ActivatePageContent() {
             </h1>
 
             <p className="text-gray-600 mb-8">
-              This day pass has already been used or has expired. Please purchase a new pass if you'd like to visit Mox.
+              This day pass has already been used or has expired. Please
+              purchase a new pass if you'd like to visit Mox.
             </p>
 
             <a
@@ -190,7 +209,8 @@ function ActivatePageContent() {
             </h1>
 
             <p className="text-gray-600 mb-8">
-              We couldn't find a day pass with this ID. Please check your email for the correct activation link.
+              We couldn't find a day pass with this ID. Please check your email
+              for the correct activation link.
             </p>
 
             <a
@@ -219,7 +239,8 @@ function ActivatePageContent() {
           </h1>
 
           <p className="text-gray-600 mb-8">
-            We're having trouble processing your request. Please try again or contact support.
+            We're having trouble processing your request. Please try again or
+            contact support.
           </p>
 
           <div className="space-y-4">
@@ -244,14 +265,16 @@ function ActivatePageContent() {
 
 export default function ActivatePage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <ActivatePageContent />
     </Suspense>
   )

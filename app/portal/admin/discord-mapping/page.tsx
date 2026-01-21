@@ -1,22 +1,22 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/app/lib/session';
-import DiscordMappingTool from './DiscordMappingTool';
-import BulkRoleSync from './BulkRoleSync';
-import Link from 'next/link';
+import { redirect } from 'next/navigation'
+import { getSession } from '@/app/lib/session'
+import DiscordMappingTool from './DiscordMappingTool'
+import BulkRoleSync from './BulkRoleSync'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Discord Mapping | Admin | Mox',
-};
+}
 
 export default async function DiscordMappingPage() {
-  const session = await getSession();
+  const session = await getSession()
 
   if (!session.isLoggedIn) {
-    redirect('/portal/login');
+    redirect('/portal/login')
   }
 
   if (!session.isStaff) {
-    redirect('/portal');
+    redirect('/portal')
   }
 
   return (
@@ -45,5 +45,5 @@ export default async function DiscordMappingPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

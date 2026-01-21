@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
-import { getPastEvents, sortPastEventsByPriorityAndDate } from '@/app/lib/events'
+import {
+  getPastEvents,
+  sortPastEventsByPriorityAndDate,
+} from '@/app/lib/events'
 import HistoryClient from './HistoryClient'
 
 export const metadata: Metadata = {

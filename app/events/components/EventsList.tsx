@@ -5,12 +5,14 @@ import { format, isAfter, isSameDay, startOfDay } from 'date-fns'
 
 function EventTypeTag({ type }: { type: string }) {
   const colorMap = {
-    public: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    public:
+      'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
     private: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
     members: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   }
   const colorClasses =
-    colorMap[type.toLowerCase()] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+    colorMap[type.toLowerCase()] ||
+    'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
 
   return (
     <span
@@ -49,8 +51,18 @@ function EventCard({ event }: { event: Event }) {
             className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-bold text-lg leading-tight inline-flex items-center gap-2 flex-1"
           >
             {event.name}
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            <svg
+              className="w-4 h-4 flex-shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
             </svg>
           </a>
         ) : (
@@ -72,7 +84,9 @@ function EventCard({ event }: { event: Event }) {
       )}
 
       {event.location && (
-        <p className="text-text-secondary dark:text-text-secondary-dark text-sm mb-2">📍 {event.location}</p>
+        <p className="text-text-secondary dark:text-text-secondary-dark text-sm mb-2">
+          📍 {event.location}
+        </p>
       )}
       {event.description && (
         <p className="text-text-primary dark:text-text-primary-dark mt-2 whitespace-pre-line text-sm leading-snug break-words">
@@ -157,7 +171,9 @@ export default function EventsList({ events }: { events: Event[] }) {
         </button>
       )}
       {events.length === 0 && (
-        <p className="text-text-secondary dark:text-text-secondary-dark text-center py-8">No upcoming events</p>
+        <p className="text-text-secondary dark:text-text-secondary-dark text-center py-8">
+          No upcoming events
+        </p>
       )}
     </div>
   )

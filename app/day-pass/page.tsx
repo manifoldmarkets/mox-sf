@@ -29,8 +29,9 @@ export default function DayPassPage() {
             Mox Day Passes
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Perfect for visitors from out of town or anyone who needs a great place to work for the day.
-            You are also invited to stop by Mox at no cost at the invitation of any current member!
+            Perfect for visitors from out of town or anyone who needs a great
+            place to work for the day. You are also invited to stop by Mox at no
+            cost at the invitation of any current member!
           </p>
         </div>
 
@@ -56,13 +57,10 @@ export default function DayPassPage() {
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           {/* Full Day Pass */}
           <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-
             <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
               Mox Day Pass
             </h2>
-            <div className="text-3xl font-bold text-gray-800 mb-6">
-              $70
-            </div>
+            <div className="text-3xl font-bold text-gray-800 mb-6">$70</div>
             <p className="text-gray-600 mb-6">
               Full day access to our workspace and amenities.
             </p>
@@ -83,13 +81,10 @@ export default function DayPassPage() {
 
           {/* Happy Hour Pass */}
           <div className="bg-white shadow-xl p-8 border border-slate-100 relative">
-
             <h2 className="text-2xl font-bold mb-4 font-display text-amber-900">
               Happy Hour Pass
             </h2>
-            <div className="text-3xl font-bold text-gray-800 mb-6">
-              $40
-            </div>
+            <div className="text-3xl font-bold text-gray-800 mb-6">$40</div>
             <p className="text-gray-600 mb-6">
               Evening access to wind down or catch up on work. Valid after 4pm.
             </p>
@@ -108,13 +103,6 @@ export default function DayPassPage() {
             </a>
           </div>
         </div>
-
-
-
-
-
-
-
       </div>
 
       {/* Footer */}
