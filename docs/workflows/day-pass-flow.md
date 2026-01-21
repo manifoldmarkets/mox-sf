@@ -45,13 +45,15 @@ flowchart TD
     end
 ```
 
-## Product IDs
+## Products
 
-| Product | Stripe Product ID | Price |
-|---------|------------------|-------|
-| Day Pass | `prod_T5NXc8MwPn1ZIl` | $70 |
-| Happy Hour Pass | `prod_T5NXlD25uP8tnI` | $40 |
-| Week Pass | `prod_SqejoSJqKlR4A5` | TBD |
+| Product | Price |
+|---------|-------|
+| Day Pass | $70 |
+| Happy Hour Pass | $40 |
+| Week Pass | TBD |
+
+Product IDs are configured in the Stripe webhook handler.
 
 ## Key Components
 
@@ -77,27 +79,12 @@ flowchart TD
 
 ## Environment Variables Required
 
-```bash
-# Stripe
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+See [deployment.md](../deployment.md) for the full list. Key variables for this flow:
 
-# Airtable
-AIRTABLE_BASE_ID=appXXXXXX
-AIRTABLE_API_KEY=patXXXXXX        # Read access
-AIRTABLE_WRITE_KEY=patXXXXXX      # Write access
-
-# Verkada (door access)
-VERKADA_UUID=...                   # Day pass user UUID
-VERKADA_MEMBER_KEY=...             # API key for user lookup
-VERKADA_API_KEY=...                # API key for door unlock
-
-# Email
-RESEND_API_KEY=re_...
-
-# App
-NEXT_PUBLIC_BASE_URL=https://moxsf.com
-```
+- `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` - Stripe API
+- `AIRTABLE_BASE_ID` / `AIRTABLE_API_KEY` - Airtable access
+- `VERKADA_*` - Door access control
+- `RESEND_API_KEY` - Email delivery
 
 ## Stripe Webhook Setup
 
