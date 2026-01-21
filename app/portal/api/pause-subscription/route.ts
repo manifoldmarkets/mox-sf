@@ -1,9 +1,16 @@
-import { getSession } from '@/app/lib/session';
-import Stripe from 'stripe';
+import { getSession } from '@/app/lib/session'
+import { getRecord, Tables } from '@/app/lib/airtable'
+import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-10-29.clover',
-});
+})
+
+interface PersonFields {
+  Email?: string
+  Name?: string
+  'Stripe Customer ID'?: string
+}
 
 // Send email notification to staff
 async function notifyStaff(userEmail: string, userName: string, resumeDate: string | null, reason: string) {
@@ -88,26 +95,17 @@ This is an automated notification from the member portal.
 
 // Get user info from Airtable
 async function getUserInfo(userId: string) {
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      cache: 'no-store',
-    }
-  );
+  const record = await getRecord<PersonFields>(Tables.People, userId, { revalidate: false })
 
-  if (!response.ok) {
-    return null;
+  if (!record) {
+    return null
   }
 
-  const data = await response.json();
   return {
-    email: data.fields?.['Email'] || '',
-    name: data.fields?.['Name'] || '',
-    customerId: data.fields?.['Stripe Customer ID'] || '',
-  };
+    email: record.fields.Email || '',
+    name: record.fields.Name || '',
+    customerId: record.fields['Stripe Customer ID'] || '',
+  }
 }
 
 export async function POST(request: Request) {

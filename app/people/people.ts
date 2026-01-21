@@ -1,3 +1,5 @@
+import { getRecords, findRecords, Tables } from '../lib/airtable'
+
 export type Person = {
   id: string
   name: string
@@ -24,47 +26,44 @@ const FIELDS = [
   'Photo',
   'Show in directory',
 ]
-// Hit Airtable directly from server component, rather than proxying through API route
 
-const PAGES_TO_FETCH = 3 // Number of pages to fetch (100 records per page)
+interface OrgFields {
+  Name?: string
+  Status?: string
+  Stealth?: boolean
+}
+
+interface PersonFields {
+  Name?: string
+  Tier?: string
+  Org?: string[]
+  Program?: string[]
+  Status?: string
+  Website?: string
+  Photo?: any[]
+  'Show in directory'?: boolean
+}
 
 async function getOrgNames(): Promise<Map<string, string>> {
   const orgMap = new Map<string, string>()
-  let offset: string | undefined
 
-  // Filter for orgs with any non-empty Status
-  const filterFormula = encodeURIComponent('{Status}!=""')
-
-  // Fetch all pages of orgs
-  for (let i = 0; i < PAGES_TO_FETCH; i++) {
-    const offsetParam = offset ? `&offset=${offset}` : ''
-    const res = await fetch(
-      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Orgs?fields%5B%5D=Name&fields%5B%5D=Stealth&filterByFormula=${filterFormula}${offsetParam}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-        },
-        next: { revalidate: 60 },
-      }
+  try {
+    const records = await findRecords<OrgFields>(
+      Tables.Orgs,
+      '{Status}!=""',
+      { fields: ['Name', 'Stealth'] },
+      { revalidate: 60 }
     )
 
-    if (!res.ok) {
-      console.error('Failed to fetch orgs, using empty map')
-      return orgMap
-    }
-
-    const data = await res.json()
-
-    data.records?.forEach((record: any) => {
+    for (const record of records) {
       if (record.id && record.fields.Name) {
         const isStealth = record.fields.Stealth === true
         const displayName = isStealth ? '<stealth>' : record.fields.Name
         orgMap.set(record.id, displayName)
       }
-    })
-
-    offset = data.offset
-    if (!offset) break
+    }
+  } catch (error) {
+    console.error('Failed to fetch orgs, using empty map')
   }
 
   return orgMap
@@ -74,45 +73,18 @@ export async function getPeople(): Promise<Person[]> {
   // Fetch org names first
   const orgMap = await getOrgNames()
 
-  let allRecords: any[] = []
-  let offset: string | undefined
-
-  // Fetch pages serially using the offset from previous response
-  for (let i = 0; i < PAGES_TO_FETCH; i++) {
-    const offsetParam = offset ? `&offset=${offset}` : ''
-    // Filter by visibility and status on the backend
-    // Only fetch records where Show in directory is true AND Status is 'Joined'
-    const filterFormula = encodeURIComponent(
-      'AND({Show in directory}=TRUE(), {Status}="Joined")'
-    )
-    const res = await fetch(
-      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?view=viw9V2tzcnqvRXcV3&` +
-        `filterByFormula=${filterFormula}&` +
-        FIELDS.map((field) => `fields%5B%5D=${encodeURIComponent(field)}`).join(
-          '&'
-        ) +
-        offsetParam,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-        },
-        next: { revalidate: 60 },
-      }
-    )
-
-    if (!res.ok) throw new Error('Failed to fetch people')
-    const data = await res.json()
-
-    allRecords = [...allRecords, ...data.records]
-
-    // Get offset for next page, or break if no more pages
-    offset = data.offset
-    if (!offset) break
-  }
+  const records = await findRecords<PersonFields>(
+    Tables.People,
+    'AND({Show in directory}=TRUE(), {Status}="Joined")',
+    {
+      fields: FIELDS,
+      view: 'viw9V2tzcnqvRXcV3',
+    },
+    { revalidate: 60 }
+  )
 
   // Parse the data into the Person type
-  // Note: All records already have Show in directory=true due to backend filtering
-  const people: Person[] = allRecords.map((record: any) => {
+  const people: Person[] = records.map((record) => {
     const orgIds = record.fields.Org || []
     const orgNames = orgIds.map((id: string) => orgMap.get(id) || id)
 
@@ -126,7 +98,7 @@ export async function getPeople(): Promise<Person[]> {
       status: record.fields.Status || null,
       website: record.fields.Website || '',
       photo: record.fields.Photo || [],
-      showInDirectory: true, // Always true since we filter on the backend
+      showInDirectory: true,
     }
   })
 

@@ -1,4 +1,9 @@
-import { getSession } from '@/app/lib/session';
+import { getSession } from '@/app/lib/session'
+import { getRecord, Tables } from '@/app/lib/airtable'
+
+interface PersonFields {
+  Email?: string
+}
 
 // Generate a cryptographically secure random 6-digit PIN
 function generateSecurePin(): string {
@@ -59,22 +64,19 @@ async function fetchVerkadaPinForUser(userIdentifier: string): Promise<string | 
 }
 
 async function getUserEmail(userId: string): Promise<string | null> {
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-    },
-    cache: 'no-store',
-  });
+  try {
+    const record = await getRecord<PersonFields>(Tables.People, userId, { revalidate: false })
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error('[Verkada PIN] Failed to fetch user from Airtable:', response.status, errorText);
-    return null;
+    if (!record) {
+      console.error('[Verkada PIN] User not found in Airtable:', userId)
+      return null
+    }
+
+    return record.fields.Email || null
+  } catch (error) {
+    console.error('[Verkada PIN] Failed to fetch user from Airtable:', error)
+    return null
   }
-
-  const data = await response.json();
-  return data.fields?.['Email'] || null;
 }
 
 async function setVerkadaPin(email: string, pin: string): Promise<boolean> {

@@ -1,8 +1,16 @@
-import { Resend } from 'resend';
-import crypto from 'crypto';
-import { isValidEmail, escapeAirtableString } from '@/app/lib/airtable-helpers';
+import { Resend } from 'resend'
+import crypto from 'crypto'
+import { isValidEmail, escapeAirtableString } from '@/app/lib/airtable-helpers'
+import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+interface PersonFields {
+  Name?: string
+  Email?: string
+  magic_link_token?: string
+  token_expires?: string
+}
 
 // Simple in-memory rate limiting (replace with Redis in production)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -110,57 +118,27 @@ export async function POST(request: Request) {
 
 async function findUserByEmail(email: string) {
   // Use escapeAirtableString to prevent formula injection
-  const escapedEmail = escapeAirtableString(email);
-  const formula = `{Email} = '${escapedEmail}'`;
+  const escapedEmail = escapeAirtableString(email)
+  const formula = `{Email} = '${escapedEmail}'`
 
-  console.log('Looking for user with email:', email);
+  console.log('Looking for user with email:', email)
 
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?filterByFormula=${encodeURIComponent(formula)}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-    }
-  );
+  const record = await findRecord<PersonFields>(Tables.People, formula, {}, { revalidate: false })
 
-  const data = await response.json();
-
-  if (data.records && data.records.length > 0) {
-    const record = data.records[0];
-    return {
-      id: record.id,
-      name: record.fields.Name,
-      email: record.fields.Email,
-    };
+  if (!record) {
+    return null
   }
 
-  return null;
+  return {
+    id: record.id,
+    name: record.fields.Name,
+    email: record.fields.Email,
+  }
 }
 
 async function updateUserToken(recordId: string, token: string, expiresAt: Date) {
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}`,
-    {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_WRITE_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        fields: {
-          magic_link_token: token,
-          token_expires: expiresAt.toISOString(),
-        },
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Airtable update error:', errorData);
-    throw new Error(`Failed to update user token: ${JSON.stringify(errorData)}`);
-  }
-
-  return await response.json();
+  await updateRecord<PersonFields>(Tables.People, recordId, {
+    magic_link_token: token,
+    token_expires: expiresAt.toISOString(),
+  })
 }

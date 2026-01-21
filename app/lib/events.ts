@@ -1,35 +1,41 @@
 import { format, parseISO, isSameDay, startOfDay } from 'date-fns'
+import { getRecords, Tables, AirtableRecord } from './airtable'
 
-// The raw event data from Airtable
-interface AirtableEvent {
+// The raw event fields from Airtable
+interface EventFields {
+  Name: string
+  'Start Date': string
+  'End Date'?: string
+  'Event Description'?: string
+  Location?: string
+  Notes?: string
+  Type?: string
+  Status?: string
+  URL?: string
+  'Host Name'?: string
+  Featured?: boolean
+  Priority?: string
+  'Event Poster'?: {
+    id: string
+    url: string
+    filename: string
+    width?: number
+    height?: number
+    thumbnails?: {
+      small?: { url: string; width: number; height: number }
+      large?: { url: string; width: number; height: number }
+      full?: { url: string; width: number; height: number }
+    }
+  }[]
+  'Event Retro'?: string
+}
+
+type AirtableEvent = AirtableRecord<EventFields>
+
+// Keep compatibility with old type name used in parseAirtableEvent
+interface LegacyAirtableEvent {
   id: string
-  fields: {
-    Name: string
-    'Start Date': string
-    'End Date'?: string
-    'Event Description'?: string
-    Location?: string
-    Notes?: string
-    Type?: string
-    Status?: string
-    URL?: string
-    'Host Name'?: string
-    Featured?: boolean
-    Priority?: string
-    'Event Poster'?: {
-      id: string
-      url: string
-      filename: string
-      width?: number
-      height?: number
-      thumbnails?: {
-        small?: { url: string; width: number; height: number }
-        large?: { url: string; width: number; height: number }
-        full?: { url: string; width: number; height: number }
-      }
-    }[]
-    'Event Retro'?: string
-  }
+  fields: EventFields
 }
 
 // Our cleaned up event interface
@@ -111,28 +117,24 @@ const EVENT_FIELDS = [
 ]
 
 export async function getEvents(): Promise<Event[]> {
-  const fieldsParam = EVENT_FIELDS.map(
-    (field) => `fields%5B%5D=${encodeURIComponent(field)}`
-  ).join('&')
-
-  const res = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB&${fieldsParam}`,
+  const records = await getRecords<EventFields>(
+    Tables.Events,
     {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      next: { revalidate: 60 },
-    }
+      fields: EVENT_FIELDS,
+      view: 'viwSk5Z39fSwtPGaB',
+      maxRecords: 100,
+    },
+    { revalidate: 60 }
   )
-  const data = await res.json()
-  const records = data.records?.filter((event: AirtableEvent) => {
+
+  const filtered = records.filter((event) => {
     if (!event.fields?.['Start Date']) return false
 
     const status = event.fields.Status?.toLowerCase()
     return status !== 'idea' && status !== 'maybe' && status !== 'cancelled'
   })
 
-  return records?.map(parseAirtableEvent) || []
+  return filtered.map(parseAirtableEvent)
 }
 
 export function formatEventTime(event: Event, showDate = false): string {
@@ -159,42 +161,19 @@ export function filterEventsByDay(events: Event[], day: Date): Event[] {
 }
 
 export async function getPastEvents(): Promise<Event[]> {
-  const fieldsParam = EVENT_FIELDS.map(
-    (field) => `fields%5B%5D=${encodeURIComponent(field)}`
-  ).join('&')
-
-  let allRecords: AirtableEvent[] = []
-  let offset: string | undefined
-  let pageCount = 0
-
-  // Fetch all records using pagination (without view filter to get ALL events)
-  // Sort by Start Date descending to get most recent first
-  const sortParam = 'sort%5B0%5D%5Bfield%5D=Start%20Date&sort%5B0%5D%5Bdirection%5D=desc'
-
-  do {
-    pageCount++
-    const url = offset
-      ? `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?${fieldsParam}&${sortParam}&offset=${offset}`
-      : `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?${fieldsParam}&${sortParam}`
-
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      next: { revalidate: 60 },
-    })
-    const data = await res.json()
-
-    if (data.records) {
-      allRecords = allRecords.concat(data.records)
-    }
-
-    offset = data.offset
-  } while (offset)
+  // Pagination is handled automatically by getRecords
+  const allRecords = await getRecords<EventFields>(
+    Tables.Events,
+    {
+      fields: EVENT_FIELDS,
+      sort: [{ field: 'Start Date', direction: 'desc' }],
+    },
+    { revalidate: 60 }
+  )
 
   // Filter for past events only (Start Date < today)
   const today = startOfDay(new Date())
-  const records = allRecords.filter((event: AirtableEvent) => {
+  const filtered = allRecords.filter((event) => {
     if (!event.fields?.['Start Date']) return false
 
     const status = event.fields.Status?.toLowerCase()
@@ -206,7 +185,7 @@ export async function getPastEvents(): Promise<Event[]> {
     return eventDate < today
   })
 
-  return records.map(parseAirtableEvent)
+  return filtered.map(parseAirtableEvent)
 }
 
 export function sortPastEventsByPriorityAndDate(events: Event[]): Event[] {

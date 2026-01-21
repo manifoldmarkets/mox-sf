@@ -1,8 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import { updateRecord, Tables } from '@/app/lib/airtable'
+
+interface EventFields {
+  Name?: string
+  'Start Date'?: string
+  'End Date'?: string
+  'Event Description'?: string
+  Notes?: string
+  Type?: string
+  Status?: string
+  URL?: string
+}
 
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json()
     const {
       id,
       name,
@@ -14,63 +26,35 @@ export async function PATCH(request: NextRequest) {
       status,
       url,
       // assignedRooms is not included - it's managed by staff only
-    } = body;
+    } = body
 
     if (!id) {
-      return NextResponse.json(
-        { message: 'Event ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: 'Event ID is required' }, { status: 400 })
     }
 
-    // Prepare the fields to update in Airtable
-    const fields: Record<string, any> = {};
+    // Prepare the fields to update
+    const fields: Partial<EventFields> = {}
 
-    if (name !== undefined) fields.Name = name;
-    if (startDate !== undefined) fields['Start Date'] = startDate;
+    if (name !== undefined) fields.Name = name
+    if (startDate !== undefined) fields['Start Date'] = startDate
     if (endDate !== undefined && endDate !== '') {
-      fields['End Date'] = endDate;
+      fields['End Date'] = endDate
     }
-    if (description !== undefined) fields['Event Description'] = description;
-    // Note: Assigned Rooms is not editable by users
-    if (notes !== undefined) fields.Notes = notes;
-    if (type !== undefined) fields.Type = type;
-    if (status !== undefined) fields.Status = status;
-    if (url !== undefined) fields.URL = url;
+    if (description !== undefined) fields['Event Description'] = description
+    if (notes !== undefined) fields.Notes = notes
+    if (type !== undefined) fields.Type = type
+    if (status !== undefined) fields.Status = status
+    if (url !== undefined) fields.URL = url
 
     // Update the event in Airtable
-    const response = await fetch(
-      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_WRITE_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fields }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Airtable error:', errorData);
-      return NextResponse.json(
-        { message: 'Failed to update event in Airtable' },
-        { status: response.status }
-      );
-    }
-
-    const data = await response.json();
+    const data = await updateRecord<EventFields>(Tables.Events, id, fields)
 
     return NextResponse.json({
       message: 'Event updated successfully',
       event: data,
-    });
+    })
   } catch (error) {
-    console.error('Error updating event:', error);
-    return NextResponse.json(
-      { message: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Error updating event:', error)
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
   }
 }

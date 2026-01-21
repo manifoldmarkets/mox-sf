@@ -1,5 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/app/lib/session';
+import { NextRequest, NextResponse } from 'next/server'
+import { getSession } from '@/app/lib/session'
+import { getRecord, Tables } from '@/app/lib/airtable'
+
+interface PersonFields {
+  Name?: string
+  Email?: string
+  Tier?: string
+}
 
 export async function POST(request: NextRequest) {
   const session = await getSession();
@@ -46,25 +53,16 @@ export async function POST(request: NextRequest) {
 }
 
 async function fetchUser(recordId: string) {
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      cache: 'no-store',
-    }
-  );
+  const record = await getRecord<PersonFields>(Tables.People, recordId, { revalidate: false })
 
-  if (!response.ok) {
-    return null;
+  if (!record) {
+    return null
   }
 
-  const data = await response.json();
   return {
-    id: data.id,
-    name: data.fields.Name,
-    email: data.fields.Email,
-    tier: data.fields.Tier,
-  };
+    id: record.id,
+    name: record.fields.Name,
+    email: record.fields.Email,
+    tier: record.fields.Tier,
+  }
 }

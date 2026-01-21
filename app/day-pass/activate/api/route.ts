@@ -1,3 +1,13 @@
+import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
+import { escapeAirtableString } from '@/app/lib/airtable-helpers'
+
+interface DayPassFields {
+  Name?: string
+  Status?: string
+  Username?: string
+  'Date Activated'?: string
+}
+
 async function fetchVerkadaUserPin(): Promise<string | null> {
   try {
     const UUID = process.env.VERKADA_UUID
@@ -54,29 +64,19 @@ export async function POST(request: Request) {
       return Response.json({ success: false, status: 'not-found' })
     }
 
-    // Fetch day pass records from Airtable
-    const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || 'appkHZ2UvU6SouT5y'
-    const airtableResponse = await fetch(
-      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Day%20Passes?filterByFormula={Name}="${paymentId}"`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-        },
-      }
+    // Fetch day pass record from Airtable
+    const escapedPaymentId = escapeAirtableString(paymentId)
+    const record = await findRecord<DayPassFields>(
+      Tables.DayPasses,
+      `{Name}='${escapedPaymentId}'`,
+      {},
+      { revalidate: false }
     )
 
-    if (!airtableResponse.ok) {
-      console.error('Airtable API error:', airtableResponse.status)
-      return Response.json({ success: false, status: 'error' })
-    }
-
-    const data = await airtableResponse.json()
-
-    if (!data.records || data.records.length === 0) {
+    if (!record) {
       return Response.json({ success: false, status: 'not-found' })
     }
 
-    const record = data.records[0]
     const fields = record.fields
 
     // Check if pass is expired or already used
@@ -86,26 +86,13 @@ export async function POST(request: Request) {
 
     // If status is "Unused", activate it and update the record
     if (fields.Status === 'Unused') {
-      // Update the record to mark as activated
-      const updateResponse = await fetch(
-        `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Day%20Passes/${record.id}`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${process.env.AIRTABLE_WRITE_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            fields: {
-              Status: 'Activated',
-              'Date Activated': new Date().toISOString().split('T')[0], // YYYY-MM-DD format
-            }
-          })
-        }
-      )
-
-      if (!updateResponse.ok) {
-        console.error('Failed to update Airtable record:', updateResponse.status)
+      try {
+        await updateRecord<DayPassFields>(Tables.DayPasses, record.id, {
+          Status: 'Activated',
+          'Date Activated': new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+        })
+      } catch (error) {
+        console.error('Failed to update Airtable record:', error)
         // Continue anyway - we can still provide the door code
       }
     }
