@@ -189,3 +189,9 @@
 .font-display {
   font-family: var(--font-playfair);
 }
+
+/* Half-hour dotted line for weekly calendar */
+.border-dashed-spaced {
+  background-image: linear-gradient(to right, #d1d5db 2px, transparent 2px);
+  background-size: 5px 1px;
+}

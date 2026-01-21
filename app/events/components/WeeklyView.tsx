@@ -204,18 +204,23 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                 style={{ height: `${gridHeight}px` }}
               >
                 {/* Hour lines */}
-                {HOURS.map((hour) => (
-                  <div key={hour}>
-                    <div
-                      className="absolute w-full border-t border-gray-200"
-                      style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
-                    />
-                    <div
-                      className="absolute w-full border-t border-dotted border-gray-300"
-                      style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT + HOUR_HEIGHT / 2}px` }}
-                    />
-                  </div>
-                ))}
+                {HOURS.map((hour) => {
+                  const isMarkerHour = TIME_MARKERS.includes(hour)
+                  return (
+                    <div key={hour}>
+                      <div
+                        className={`absolute w-full ${isMarkerHour ? 'border-t-[1.5px] border-gray-300' : 'border-t-[1.5px] border-gray-200'}`}
+                        style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
+                      />
+                      <div
+                        className="absolute w-full h-px border-dashed-spaced"
+                        style={{
+                          top: `${(hour - START_HOUR) * HOUR_HEIGHT + HOUR_HEIGHT / 2}px`,
+                        }}
+                      />
+                    </div>
+                  )
+                })}
 
                 {/* Current time indicator */}
                 {isToday &&
