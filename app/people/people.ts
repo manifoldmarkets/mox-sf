@@ -122,3 +122,43 @@ export function formatUrl(url: string): string {
   if (url.startsWith('http://') || url.startsWith('https://')) return url
   return `https://${url}`
 }
+
+// Helper functions for filtering and sorting people
+
+export function hasPhoto(person: Person): boolean {
+  return !!person.photo?.[0]?.thumbnails?.large
+}
+
+export function hasText(person: Person): boolean {
+  return !!(person.workThing || person.funThing)
+}
+
+export function filterPeople(
+  people: Person[],
+  filter?: string
+): Person[] {
+  if (filter === 'with-info') {
+    return people.filter(hasText)
+  } else if (filter === 'with-photo') {
+    return people.filter(hasPhoto)
+  } else if (filter === 'complete') {
+    return people.filter((p) => hasText(p) && hasPhoto(p))
+  }
+  return people
+}
+
+export function sortPeopleByCompleteness(people: Person[]): Person[] {
+  return [...people].sort((a, b) => {
+    const aHasPhoto = hasPhoto(a)
+    const bHasPhoto = hasPhoto(b)
+    const aHasText = hasText(a)
+    const bHasText = hasText(b)
+
+    // Score: 2 = both, 1 = photo only, 0 = neither
+    const aScore = aHasPhoto && aHasText ? 2 : aHasPhoto ? 1 : 0
+    const bScore = bHasPhoto && bHasText ? 2 : bHasPhoto ? 1 : 0
+
+    if (aScore !== bScore) return bScore - aScore // Higher score first
+    return a.name.localeCompare(b.name) // Then alphabetically
+  })
+}

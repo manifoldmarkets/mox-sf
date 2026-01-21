@@ -39,7 +39,7 @@ const geistMono = Geist_Mono({
 const handwriting = Kalam({
   subsets: ['latin'],
   variable: '--font-handwriting',
-  weight: '400',
+  weight: ['400', '700'],
 })
 
 export const metadata = {

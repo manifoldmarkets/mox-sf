@@ -79,6 +79,9 @@ export const env = {
   // Forkable
   get FORKABLE_SESSION_COOKIE() { return optional('FORKABLE_SESSION_COOKIE') },
 
+  // ImgBB
+  get IMGBB_API_KEY() { return optional('IMGBB_API_KEY') },
+
   // Shared/public
   NODE_ENV,
   NEXT_PUBLIC_BASE_URL,

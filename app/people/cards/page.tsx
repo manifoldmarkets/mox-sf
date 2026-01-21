@@ -1,8 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatUrl, getPeople, Person } from '../people'
+import {
+  formatUrl,
+  getPeople,
+  Person,
+  hasText,
+  filterPeople,
+  sortPeopleByCompleteness,
+} from '../people'
 
-function Card({ person }: { person: Person }) {
+function PolaroidCard({ person }: { person: Person }) {
   const { url, width, height } = person.photo?.[0]?.thumbnails?.large ?? {
     url: null,
     width: 300,
@@ -18,7 +25,10 @@ function Card({ person }: { person: Person }) {
   // Random slight rotation for polaroid effect
   const rotation = Math.floor(Math.random() * 7) - 3 // -3 to 3 degrees
   // Random tape rotation
-  const tapeRotation = Math.floor(Math.random() * 11) - 5 // -5 to 5 degrees
+  const tapeRotation = Math.floor(Math.random() * 7) - 3 // -3 to 3 degrees
+
+  // Cards without much text get less space below
+  const hasLittleText = !hasText(person)
 
   return (
     <div
@@ -28,7 +38,7 @@ function Card({ person }: { person: Person }) {
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), inset 0 0 40px rgba(0, 0, 0, 0.02)',
       }}
     >
-      {/* Photo area with tape overlay */}
+      {/* Photo area */}
       <div className="w-full aspect-square bg-gray-100 relative">
         {/* Photo container with overflow hidden */}
         <div className="absolute inset-0 overflow-hidden">
@@ -58,7 +68,7 @@ function Card({ person }: { person: Person }) {
             }}
           >
             <p
-              className="text-lg text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis"
+              className="text-xl text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis font-bold"
               style={{ fontFamily: 'var(--font-handwriting)' }}
             >
               {person.website ? (
@@ -77,39 +87,38 @@ function Card({ person }: { person: Person }) {
         </div>
       </div>
 
-      {/* Caption area with "is into X and Y" - flows naturally below photo */}
-      <div className="mt-5 px-1 text-center min-h-[1.5rem]">
+      {/* Caption area with "is into X and Y" - smaller when no text */}
+      <div className={`px-1 text-center ${hasLittleText ? 'mt-3' : 'mt-5 min-h-[1.5rem]'}`}>
         {(person.workThing || person.funThing) && (
           <p
-            className="text-base text-gray-700 leading-tight"
-            style={{ fontFamily: 'var(--font-handwriting)' }}
+            className="text-base text-gray-700 leading-tight font-sans"
           >
-            <span className="text-gray-500">is into </span>
+            <span className="text-gray-400">is into </span>
             {person.workThing && (
               person.workThingUrl ? (
                 <Link
                   href={formatUrl(person.workThingUrl)}
                   target="_blank"
-                  className="text-teal-700 underline decoration-teal-700/40 hover:decoration-current"
+                  className="font-bold text-teal-600 underline decoration-teal-600/40 hover:decoration-current"
                 >
                   {person.workThing}
                 </Link>
               ) : (
-                <span className="text-teal-700">{person.workThing}</span>
+                <span className="font-bold text-teal-600">{person.workThing}</span>
               )
             )}
-            {person.workThing && person.funThing && <span className="text-gray-500"> and </span>}
+            {person.workThing && person.funThing && <span className="text-gray-400"> and </span>}
             {person.funThing && (
               person.funThingUrl ? (
                 <Link
                   href={formatUrl(person.funThingUrl)}
                   target="_blank"
-                  className="text-orange-700 underline decoration-orange-700/40 hover:decoration-current"
+                  className="font-bold text-orange-600 underline decoration-orange-600/40 hover:decoration-current"
                 >
                   {person.funThing}
                 </Link>
               ) : (
-                <span className="text-orange-700">{person.funThing}</span>
+                <span className="font-bold text-orange-600">{person.funThing}</span>
               )
             )}
           </p>
@@ -128,22 +137,21 @@ export default async function CardsPage({
   const params = await searchParams
   const filter = params.filter
 
-  let filteredPeople = people
-  if (filter === 'with-info') {
-    filteredPeople = people.filter((p) => p.workThing || p.funThing)
-  } else if (filter === 'with-photo') {
-    filteredPeople = people.filter((p) => p.photo?.[0]?.thumbnails?.large)
-  } else if (filter === 'complete') {
-    filteredPeople = people.filter(
-      (p) => (p.workThing || p.funThing) && p.photo?.[0]?.thumbnails?.large
-    )
-  }
+  const filteredPeople = sortPeopleByCompleteness(filterPeople(people, filter))
 
   return (
-    <div className="flex flex-wrap justify-center gap-6 py-12 px-6 min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 dark:from-gray-900 dark:to-gray-800">
-      {filteredPeople.map((person) => (
-        <Card key={person.id} person={person} />
-      ))}
+    <div className="py-12 px-6 min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 dark:from-gray-900 dark:to-gray-800 relative">
+      <Link
+        href="/portal/login"
+        className="fixed top-4 right-4 text-md px-3 pt-2 pb-1 bg-amber-400 hover:bg-amber-500 text-amber-900 rounded-full shadow-md hover:shadow-lg transition-all z-10 font-sans font-bold"
+      >
+        edit your info!
+      </Link>
+      <div className="flex flex-wrap justify-center items-center gap-6">
+        {filteredPeople.map((person) => (
+          <PolaroidCard key={person.id} person={person} />
+        ))}
+      </div>
     </div>
   )
 }

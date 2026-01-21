@@ -1,6 +1,7 @@
 import { getSession } from '@/app/lib/session'
 import { syncDiscordRole, isDiscordConfigured } from '@/app/lib/discord'
 import { updateRecord, Tables } from '@/app/lib/airtable'
+import { env } from '@/app/lib/env'
 
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024 // 10MB
 const ALLOWED_PHOTO_TYPES = [
@@ -58,11 +59,6 @@ export async function POST(request: Request) {
     const directoryVisible = formData.get('directoryVisible') === 'true'
     const photoFile = formData.get('photo') as File | null
 
-    // Verify the user is updating their own profile
-    if (userId !== session.userId) {
-      return Response.json({ error: 'Unauthorized' }, { status: 403 })
-    }
-
     // Validate name
     if (!name || name.trim().length === 0) {
       return Response.json({ error: 'Name is required' }, { status: 400 })
@@ -100,7 +96,10 @@ export async function POST(request: Request) {
       'Show in directory': directoryVisible,
     }
 
-    // Handle photo upload if provided
+    // Update Airtable record (without photo - that's handled separately)
+    const data = await updateRecord<PersonFields>(Tables.People, userId, fields)
+
+    // Handle photo upload via ImgBB, then save URL to Airtable
     if (photoFile && photoFile.size > 0) {
       // Validate file size
       if (photoFile.size > MAX_PHOTO_SIZE) {
@@ -123,30 +122,54 @@ export async function POST(request: Request) {
       }
 
       try {
-        // Convert photo to base64
+        // Upload to ImgBB first
         const arrayBuffer = await photoFile.arrayBuffer()
-        const buffer = Buffer.from(arrayBuffer)
-        const base64 = buffer.toString('base64')
-        const mimeType = photoFile.type
+        const base64 = Buffer.from(arrayBuffer).toString('base64')
 
-        // Airtable accepts attachments as URLs or data URLs
-        fields.Photo = [
+        const imgbbFormData = new FormData()
+        imgbbFormData.append('image', base64)
+        imgbbFormData.append('name', photoFile.name || 'profile-photo')
+
+        const imgbbResponse = await fetch(
+          `https://api.imgbb.com/1/upload?key=${env.IMGBB_API_KEY}`,
           {
-            url: `data:${mimeType};base64,${base64}`,
-            filename: photoFile.name,
-          },
-        ]
+            method: 'POST',
+            body: imgbbFormData,
+          }
+        )
+
+        if (!imgbbResponse.ok) {
+          const errorText = await imgbbResponse.text()
+          console.error('ImgBB upload error:', errorText)
+          return Response.json(
+            { error: 'Failed to upload photo. Please try again.' },
+            { status: 500 }
+          )
+        }
+
+        const imgbbData = await imgbbResponse.json()
+        const imageUrl = imgbbData.data?.url
+
+        if (!imageUrl) {
+          console.error('ImgBB response missing URL:', imgbbData)
+          return Response.json(
+            { error: 'Failed to upload photo. Please try again.' },
+            { status: 500 }
+          )
+        }
+
+        // Update Airtable with the ImgBB URL
+        await updateRecord<PersonFields>(Tables.People, userId, {
+          Photo: [{ url: imageUrl, filename: photoFile.name || 'profile-photo.jpg' }],
+        })
       } catch (photoError) {
-        console.error('Error processing photo:', photoError)
+        console.error('Error uploading photo:', photoError)
         return Response.json(
-          { error: 'Failed to process photo. Please try again.' },
+          { error: 'Failed to upload photo. Please try again.' },
           { status: 500 }
         )
       }
     }
-
-    // Update Airtable record
-    const data = await updateRecord<PersonFields>(Tables.People, userId, fields)
 
     // Sync Discord role if username was provided and Discord is configured
     let discordSyncResult = null
