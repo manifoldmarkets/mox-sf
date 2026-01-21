@@ -13,6 +13,8 @@ export async function getAirtableData() {
     fields: ['Name'],
   })
 
-  // Map responses to an array
-  return records.map((record) => record.fields.Name)
+  // Map responses to an array, filtering out any undefined names
+  return records
+    .map((record) => record.fields.Name)
+    .filter((name): name is string => !!name)
 }

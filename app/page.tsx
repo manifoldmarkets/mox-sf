@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Gallery from './gallery'
+import Gallery from './venue-gallery'
 import PeopleGallery from './people-gallery'
 import { PeopleContent } from './people/page'
 import EventsCardCompact from './components/EventsCardCompact'

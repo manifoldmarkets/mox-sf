@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
+import { env } from '@/app/lib/env'
 
 export async function GET() {
   try {
     const res = await fetch(
-      `https://api.airtable.com/v0/${process.env.AI4E_AIRTABLE_BASE_ID}/Projects?view=Grid%20view`,
+      `https://api.airtable.com/v0/${env.AI4E_AIRTABLE_BASE_ID}/Projects?view=Grid%20view`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.AI4E_API_KEY}`,
+          Authorization: `Bearer ${env.AI4E_API_KEY}`,
         },
         next: { revalidate: 60 },
       }

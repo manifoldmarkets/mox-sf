@@ -1,5 +1,6 @@
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
+import { env } from '@/app/lib/env'
 
 interface PersonFields {
   Email?: string
@@ -28,7 +29,7 @@ async function fetchVerkadaPinForUser(
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_MEMBER_KEY || '',
+        'x-api-key': env.VERKADA_MEMBER_KEY,
       },
     })
 
@@ -96,7 +97,7 @@ async function setVerkadaPin(email: string, pin: string): Promise<boolean> {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_MEMBER_KEY || '',
+        'x-api-key': env.VERKADA_MEMBER_KEY,
       },
     })
 

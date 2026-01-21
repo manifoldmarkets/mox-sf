@@ -1,8 +1,9 @@
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 import Stripe from 'stripe'
+import { env } from '@/app/lib/env'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2025-10-29.clover',
 })
 
@@ -24,7 +25,7 @@ async function notifyStaff(
     : 'Paused indefinitely'
 
   try {
-    const resendApiKey = process.env.RESEND_API_KEY
+    const resendApiKey = env.RESEND_API_KEY
 
     if (!resendApiKey) {
       console.error('[Pause Subscription] No Resend API key found')
@@ -53,12 +54,10 @@ This is an automated notification from the member portal.
       }),
     })
 
-    const responseData = await response.json()
-    console.log(
-      '[Pause Subscription] Resend API response:',
-      response.status,
-      responseData
-    )
+    if (!response.ok) {
+      const responseData = await response.json()
+      console.error('[Pause Subscription] Resend API error:', response.status, responseData)
+    }
   } catch (error) {
     console.error(
       '[Pause Subscription] Failed to send notification email:',
@@ -79,7 +78,7 @@ async function notifyUserPause(
     : 'Your subscription is paused indefinitely. You can resume it anytime from your member portal.'
 
   try {
-    const resendApiKey = process.env.RESEND_API_KEY
+    const resendApiKey = env.RESEND_API_KEY
 
     if (!resendApiKey) {
       console.error('[Pause Subscription] No Resend API key found')
@@ -143,7 +142,7 @@ async function notifyAdminPause(
     : 'Paused indefinitely'
 
   try {
-    const resendApiKey = process.env.RESEND_API_KEY
+    const resendApiKey = env.RESEND_API_KEY
 
     if (!resendApiKey) {
       console.error('[Pause Subscription] No Resend API key found')
@@ -195,7 +194,7 @@ The Mox Team
 // Send email notification to staff when subscription is resumed
 async function notifyStaffResume(userEmail: string, userName: string) {
   try {
-    const resendApiKey = process.env.RESEND_API_KEY
+    const resendApiKey = env.RESEND_API_KEY
 
     if (!resendApiKey) {
       console.error('[Resume Subscription] No Resend API key found')
@@ -239,7 +238,7 @@ This is an automated notification from the member portal.
 // Send confirmation email to the user about their subscription resuming
 async function notifyUserResume(userEmail: string, userName: string) {
   try {
-    const resendApiKey = process.env.RESEND_API_KEY
+    const resendApiKey = env.RESEND_API_KEY
 
     if (!resendApiKey) {
       console.error('[Resume Subscription] No Resend API key found')
@@ -295,7 +294,7 @@ async function notifyAdminResume(
   userName: string
 ) {
   try {
-    const resendApiKey = process.env.RESEND_API_KEY
+    const resendApiKey = env.RESEND_API_KEY
 
     if (!resendApiKey) {
       console.error('[Resume Subscription] No Resend API key found')

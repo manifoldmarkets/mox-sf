@@ -1,5 +1,6 @@
 import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
 import { escapeAirtableString } from '@/app/lib/airtable-helpers'
+import { env } from '@/app/lib/env'
 
 interface DayPassFields {
   Name?: string
@@ -11,7 +12,7 @@ interface DayPassFields {
 
 async function fetchVerkadaUserPin(): Promise<string | null> {
   try {
-    const UUID = process.env.VERKADA_UUID
+    const UUID = env.VERKADA_UUID
     if (!UUID) {
       console.error('VERKADA_UUID environment variable not set')
       return null
@@ -22,7 +23,7 @@ async function fetchVerkadaUserPin(): Promise<string | null> {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_MEMBER_KEY,
+        'x-api-key': env.VERKADA_MEMBER_KEY,
       },
     })
 

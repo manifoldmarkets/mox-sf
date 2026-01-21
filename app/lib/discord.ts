@@ -1,27 +1,28 @@
 // Discord API integration for role management
 
-const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN
-const DISCORD_GUILD_ID = process.env.DISCORD_GUILD_ID
+import { env } from './env'
 
 // Map Airtable tiers to Discord role IDs
 // You'll need to set these in your .env file
 // Note: Staff role is NOT auto-synced to avoid permission issues
-const TIER_TO_ROLE: Record<string, string | undefined> = {
-  Friend: process.env.DISCORD_ROLE_FRIEND,
-  Member: process.env.DISCORD_ROLE_MEMBER,
-  Resident: process.env.DISCORD_ROLE_RESIDENT,
-  'Private Office': process.env.DISCORD_ROLE_PRIVATE_OFFICE,
-  Program: process.env.DISCORD_ROLE_PROGRAM,
+function getTierToRole(): Record<string, string> {
+  const roles: Record<string, string> = {}
+  if (env.DISCORD_ROLE_FRIEND) roles['Friend'] = env.DISCORD_ROLE_FRIEND
+  if (env.DISCORD_ROLE_MEMBER) roles['Member'] = env.DISCORD_ROLE_MEMBER
+  if (env.DISCORD_ROLE_RESIDENT) roles['Resident'] = env.DISCORD_ROLE_RESIDENT
+  if (env.DISCORD_ROLE_PRIVATE_OFFICE) roles['Private Office'] = env.DISCORD_ROLE_PRIVATE_OFFICE
+  if (env.DISCORD_ROLE_PROGRAM) roles['Program'] = env.DISCORD_ROLE_PROGRAM
+  return roles
 }
 
 // All member roles (for removing old roles when tier changes)
 function getAllMemberRoleIds(): string[] {
   const roles = [
-    process.env.DISCORD_ROLE_FRIEND,
-    process.env.DISCORD_ROLE_MEMBER,
-    process.env.DISCORD_ROLE_RESIDENT,
-    process.env.DISCORD_ROLE_PRIVATE_OFFICE,
-    process.env.DISCORD_ROLE_PROGRAM,
+    env.DISCORD_ROLE_FRIEND,
+    env.DISCORD_ROLE_MEMBER,
+    env.DISCORD_ROLE_RESIDENT,
+    env.DISCORD_ROLE_PRIVATE_OFFICE,
+    env.DISCORD_ROLE_PROGRAM,
   ]
   return roles.filter((r): r is string => !!r)
 }
@@ -35,7 +36,7 @@ async function discordFetch(
   maxRetries = 3
 ): Promise<Response> {
   const headers = {
-    Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+    Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
     ...options.headers,
   }
 
@@ -83,7 +84,7 @@ interface SyncResult {
 export async function findDiscordMember(
   username: string
 ): Promise<DiscordMember | null> {
-  if (!DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
+  if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID) {
     console.error('Discord bot token or guild ID not configured')
     return null
   }
@@ -92,7 +93,7 @@ export async function findDiscordMember(
 
   try {
     // Search for member by query (Discord API v10)
-    const searchUrl = `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/search?query=${encodeURIComponent(normalizedUsername)}&limit=10`
+    const searchUrl = `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/members/search?query=${encodeURIComponent(normalizedUsername)}&limit=10`
 
     const response = await discordFetch(searchUrl)
 
@@ -126,13 +127,13 @@ export async function assignRole(
   discordUserId: string,
   roleId: string
 ): Promise<boolean> {
-  if (!DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
+  if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID) {
     return false
   }
 
   try {
     const response = await discordFetch(
-      `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
+      `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
       { method: 'PUT' }
     )
 
@@ -159,13 +160,13 @@ export async function removeRole(
   discordUserId: string,
   roleId: string
 ): Promise<boolean> {
-  if (!DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
+  if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID) {
     return false
   }
 
   try {
     const response = await discordFetch(
-      `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
+      `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
       { method: 'DELETE' }
     )
 
@@ -220,7 +221,8 @@ export async function syncDiscordRole(
   }
 
   // Get the target role for this tier
-  const targetRoleId = TIER_TO_ROLE[tier]
+  const tierToRole = getTierToRole()
+  const targetRoleId = tierToRole[tier]
   if (!targetRoleId) {
     return {
       success: false,
@@ -262,7 +264,7 @@ export async function syncDiscordRole(
  * Check if Discord integration is configured
  */
 export function isDiscordConfigured(): boolean {
-  return !!(DISCORD_BOT_TOKEN && DISCORD_GUILD_ID)
+  return !!(env.DISCORD_BOT_TOKEN && env.DISCORD_GUILD_ID)
 }
 
 /**
@@ -272,7 +274,7 @@ export async function renameDiscordChannel(
   channelId: string,
   newName: string
 ): Promise<boolean> {
-  if (!DISCORD_BOT_TOKEN) {
+  if (!env.DISCORD_BOT_TOKEN) {
     console.error('[Discord] Bot token not configured')
     return false
   }
@@ -314,7 +316,7 @@ export async function sendChannelMessage(
   channelId: string,
   content: string
 ): Promise<boolean> {
-  if (!DISCORD_BOT_TOKEN) {
+  if (!env.DISCORD_BOT_TOKEN) {
     console.error('[Discord] Bot token not configured')
     return false
   }

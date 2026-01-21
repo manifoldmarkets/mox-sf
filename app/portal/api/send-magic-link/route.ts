@@ -2,8 +2,9 @@ import { Resend } from 'resend'
 import crypto from 'crypto'
 import { isValidEmail, escapeAirtableString } from '@/app/lib/airtable-helpers'
 import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
+import { env } from '@/app/lib/env'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(env.RESEND_API_KEY)
 
 interface PersonFields {
   Name?: string
@@ -82,14 +83,12 @@ export async function POST(request: Request) {
     // Get the base URL from the request or environment variable
     const requestUrl = new URL(request.url)
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
+      env.NEXT_PUBLIC_BASE_URL ||
       `${requestUrl.protocol}//${requestUrl.host}`
 
     // Send email with magic link
     const magicLink = `${baseUrl}/portal/verify?token=${token}`
 
-    console.log('Sending email to:', normalizedEmail)
-    console.log('Magic link base URL:', baseUrl)
     const emailResult = await resend.emails.send({
       from: 'Mox SF <noreply@account.moxsf.com>',
       to: normalizedEmail,
@@ -114,8 +113,6 @@ export async function POST(request: Request) {
       `,
     })
 
-    console.log('Resend API response:', emailResult)
-
     return Response.json({
       success: true,
       message: 'Login link sent! Check your email.',
@@ -135,8 +132,6 @@ async function findUserByEmail(email: string) {
   // Use escapeAirtableString to prevent formula injection
   const escapedEmail = escapeAirtableString(email)
   const formula = `{Email} = '${escapedEmail}'`
-
-  console.log('Looking for user with email:', email)
 
   const record = await findRecord<PersonFields>(Tables.People, formula)
 

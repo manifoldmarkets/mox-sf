@@ -65,6 +65,11 @@ async function verifyToken(token: string) {
     return null
   }
 
+  // Email is required for login
+  if (!record.fields.Email) {
+    return null
+  }
+
   const expiresAt = new Date(record.fields.token_expires || '')
 
   // Check if token is expired
