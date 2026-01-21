@@ -123,7 +123,7 @@ async function findUserByEmail(email: string) {
 
   console.log('Looking for user with email:', email)
 
-  const record = await findRecord<PersonFields>(Tables.People, formula, {}, { revalidate: false })
+  const record = await findRecord<PersonFields>(Tables.People, formula)
 
   if (!record) {
     return null

@@ -117,15 +117,10 @@ const EVENT_FIELDS = [
 ]
 
 export async function getEvents(): Promise<Event[]> {
-  const records = await getRecords<EventFields>(
-    Tables.Events,
-    {
-      fields: EVENT_FIELDS,
-      view: 'viwSk5Z39fSwtPGaB',
-      maxRecords: 100,
-    },
-    { revalidate: 60 }
-  )
+  const records = await getRecords<EventFields>(Tables.Events, {
+    fields: EVENT_FIELDS,
+    view: 'viwSk5Z39fSwtPGaB',
+  })
 
   const filtered = records.filter((event) => {
     if (!event.fields?.['Start Date']) return false
@@ -162,14 +157,10 @@ export function filterEventsByDay(events: Event[], day: Date): Event[] {
 
 export async function getPastEvents(): Promise<Event[]> {
   // Pagination is handled automatically by getRecords
-  const allRecords = await getRecords<EventFields>(
-    Tables.Events,
-    {
-      fields: EVENT_FIELDS,
-      sort: [{ field: 'Start Date', direction: 'desc' }],
-    },
-    { revalidate: 60 }
-  )
+  const allRecords = await getRecords<EventFields>(Tables.Events, {
+    fields: EVENT_FIELDS,
+    sort: [{ field: 'Start Date', direction: 'desc' }],
+  })
 
   // Filter for past events only (Start Date < today)
   const today = startOfDay(new Date())

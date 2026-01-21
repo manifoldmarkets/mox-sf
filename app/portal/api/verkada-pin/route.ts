@@ -65,7 +65,7 @@ async function fetchVerkadaPinForUser(userIdentifier: string): Promise<string | 
 
 async function getUserEmail(userId: string): Promise<string | null> {
   try {
-    const record = await getRecord<PersonFields>(Tables.People, userId, { revalidate: false })
+    const record = await getRecord<PersonFields>(Tables.People, userId)
 
     if (!record) {
       console.error('[Verkada PIN] User not found in Airtable:', userId)

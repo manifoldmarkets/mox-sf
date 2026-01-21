@@ -29,15 +29,9 @@ export async function GET(request: NextRequest) {
     const today = new Date().toISOString().split('T')[0]
     const formula = `AND(SEARCH("${userName.replace(/"/g, '\\"')}", ARRAYJOIN({Hosted by}, ", ")), IS_AFTER({Start Date}, "${today}"))`
 
-    const records = await findRecords<EventFields>(
-      Tables.Events,
-      formula,
-      {
-        sort: [{ field: 'Start Date', direction: 'asc' }],
-        maxRecords: 100,
-      },
-      { revalidate: false }
-    )
+    const records = await findRecords<EventFields>(Tables.Events, formula, {
+      sort: [{ field: 'Start Date', direction: 'asc' }],
+    })
 
     // Transform the events to match our EventData interface
     const events = records.map((record) => {

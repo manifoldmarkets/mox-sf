@@ -74,11 +74,9 @@ function sanitize(str: string): string {
 export async function GET() {
   try {
     // Fetch events from Airtable
-    const records = await getRecords<EventFields>(
-      Tables.Events,
-      { maxRecords: 100, view: 'viwSk5Z39fSwtPGaB' },
-      { revalidate: 60 }
-    )
+    const records = await getRecords<EventFields>(Tables.Events, {
+      view: 'viwSk5Z39fSwtPGaB',
+    })
 
     // Transform Airtable records to Event objects
     const events: Event[] = records

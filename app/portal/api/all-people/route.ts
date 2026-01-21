@@ -29,8 +29,7 @@ export async function GET() {
       {
         fields: ['Name', 'Email', 'Discord Username'],
         sort: [{ field: 'Name', direction: 'asc' }],
-      },
-      { revalidate: false } // no cache for admin endpoints
+      }
     )
 
     const allPeople: PersonForMapping[] = records.map((record) => ({

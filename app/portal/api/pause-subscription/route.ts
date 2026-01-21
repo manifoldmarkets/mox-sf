@@ -95,7 +95,7 @@ This is an automated notification from the member portal.
 
 // Get user info from Airtable
 async function getUserInfo(userId: string) {
-  const record = await getRecord<PersonFields>(Tables.People, userId, { revalidate: false })
+  const record = await getRecord<PersonFields>(Tables.People, userId)
 
   if (!record) {
     return null

@@ -54,16 +54,10 @@ export async function GET(request: NextRequest) {
       OR(${searchConditions})
     )`
 
-    const records = await findRecords<PersonFields>(
-      Tables.People,
-      formula,
-      {
-        fields: ['Name', 'Email'],
-        sort: [{ field: 'Name', direction: 'asc' }],
-        maxRecords: 100,
-      },
-      { revalidate: false }
-    )
+    const records = await findRecords<PersonFields>(Tables.People, formula, {
+      fields: ['Name', 'Email'],
+      sort: [{ field: 'Name', direction: 'asc' }],
+    })
 
     // Now filter with normalized string matching and rank by relevance
     const normalizedQuery = normalizeString(query.toLowerCase())

@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function fetchUser(recordId: string) {
-  const record = await getRecord<PersonFields>(Tables.People, recordId, { revalidate: false })
+  const record = await getRecord<PersonFields>(Tables.People, recordId)
 
   if (!record) {
     return null

@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const record = await getRecord<OrgFields>(Tables.Orgs, orgId, { revalidate: false })
+    const record = await getRecord<OrgFields>(Tables.Orgs, orgId)
 
     if (!record) {
       return NextResponse.json({ error: 'Org not found' }, { status: 404 })

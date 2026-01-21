@@ -1,5 +1,4 @@
 import Airtable, { FieldSet, Records } from 'airtable'
-import { unstable_cache } from 'next/cache'
 
 // Lazily initialize Airtable base to allow for testing with mocks
 let _base: ReturnType<Airtable['base']> | null = null
@@ -40,59 +39,31 @@ export interface QueryOptions {
   view?: string
 }
 
-/**
- * Cache options for Airtable queries
- * - revalidate: number of seconds to cache, or false to skip caching entirely
- * - tags: cache tags for invalidation
- */
-export interface CacheOptions {
-  revalidate?: number | false
-  tags?: string[]
-}
-
 export async function getRecords<T = Record<string, unknown>>(
   table: TableName,
-  options: QueryOptions = {},
-  cacheOptions: CacheOptions = { revalidate: 60 }
+  options: QueryOptions = {}
 ): Promise<AirtableRecord<T>[]> {
-  const fetchRecords = async (): Promise<AirtableRecord<T>[]> => {
-    const query = getBase()(table).select({
-      ...(options.filterByFormula && { filterByFormula: options.filterByFormula }),
-      ...(options.fields && { fields: options.fields }),
-      ...(options.sort && { sort: options.sort }),
-      ...(options.maxRecords && { maxRecords: options.maxRecords }),
-      ...(options.view && { view: options.view }),
-    })
-
-    const records: AirtableRecord<T>[] = []
-
-    await query.eachPage((pageRecords: Records<FieldSet>, fetchNextPage: () => void) => {
-      for (const record of pageRecords) {
-        records.push({
-          id: record.id,
-          fields: record.fields as T,
-        })
-      }
-      fetchNextPage()
-    })
-
-    return records
-  }
-
-  // If revalidate is false, skip caching entirely
-  if (cacheOptions.revalidate === false) {
-    return fetchRecords()
-  }
-
-  const cacheKey = ['airtable', table, JSON.stringify(options)]
-
-  // Use unstable_cache to cache the results
-  const cachedFetch = unstable_cache(fetchRecords, cacheKey, {
-    revalidate: cacheOptions.revalidate ?? 60,
-    tags: cacheOptions.tags,
+  const query = getBase()(table).select({
+    ...(options.filterByFormula && { filterByFormula: options.filterByFormula }),
+    ...(options.fields && { fields: options.fields }),
+    ...(options.sort && { sort: options.sort }),
+    ...(options.maxRecords && { maxRecords: options.maxRecords }),
+    ...(options.view && { view: options.view }),
   })
 
-  return cachedFetch()
+  const records: AirtableRecord<T>[] = []
+
+  await query.eachPage((pageRecords: Records<FieldSet>, fetchNextPage: () => void) => {
+    for (const record of pageRecords) {
+      records.push({
+        id: record.id,
+        fields: record.fields as T,
+      })
+    }
+    fetchNextPage()
+  })
+
+  return records
 }
 
 /**
@@ -100,40 +71,22 @@ export async function getRecords<T = Record<string, unknown>>(
  *
  * @param table - Table name
  * @param recordId - Airtable record ID
- * @param cacheOptions - Cache configuration
  * @returns The record or null if not found
  */
 export async function getRecord<T = Record<string, unknown>>(
   table: TableName,
-  recordId: string,
-  cacheOptions: CacheOptions = { revalidate: 60 }
+  recordId: string
 ): Promise<AirtableRecord<T> | null> {
-  const fetchRecord = async (): Promise<AirtableRecord<T> | null> => {
-    try {
-      const record = await getBase()(table).find(recordId)
-      return {
-        id: record.id,
-        fields: record.fields as T,
-      }
-    } catch (error) {
-      console.error(`Error fetching record ${recordId} from ${table}:`, error)
-      return null
+  try {
+    const record = await getBase()(table).find(recordId)
+    return {
+      id: record.id,
+      fields: record.fields as T,
     }
+  } catch (error) {
+    console.error(`Error fetching record ${recordId} from ${table}:`, error)
+    return null
   }
-
-  // If revalidate is false, skip caching entirely
-  if (cacheOptions.revalidate === false) {
-    return fetchRecord()
-  }
-
-  const cacheKey = ['airtable', table, recordId]
-
-  const cachedFetch = unstable_cache(fetchRecord, cacheKey, {
-    revalidate: cacheOptions.revalidate ?? 60,
-    tags: cacheOptions.tags,
-  })
-
-  return cachedFetch()
 }
 
 /**
@@ -181,16 +134,14 @@ export async function createRecord<T = Record<string, unknown>>(
  * @param table - Table name
  * @param filterByFormula - Airtable formula
  * @param options - Additional query options
- * @param cacheOptions - Cache configuration
  * @returns Array of matching records
  */
 export async function findRecords<T = Record<string, unknown>>(
   table: TableName,
   filterByFormula: string,
-  options: Omit<QueryOptions, 'filterByFormula'> = {},
-  cacheOptions: CacheOptions = { revalidate: 60 }
+  options: Omit<QueryOptions, 'filterByFormula'> = {}
 ): Promise<AirtableRecord<T>[]> {
-  return getRecords<T>(table, { ...options, filterByFormula }, cacheOptions)
+  return getRecords<T>(table, { ...options, filterByFormula })
 }
 
 /**
@@ -199,21 +150,17 @@ export async function findRecords<T = Record<string, unknown>>(
  * @param table - Table name
  * @param filterByFormula - Airtable formula
  * @param options - Additional query options
- * @param cacheOptions - Cache configuration
  * @returns The first matching record or null
  */
 export async function findRecord<T = Record<string, unknown>>(
   table: TableName,
   filterByFormula: string,
-  options: Omit<QueryOptions, 'filterByFormula'> = {},
-  cacheOptions: CacheOptions = { revalidate: 60 }
+  options: Omit<QueryOptions, 'filterByFormula'> = {}
 ): Promise<AirtableRecord<T> | null> {
-  const records = await findRecords<T>(
-    table,
-    filterByFormula,
-    { ...options, maxRecords: 1 },
-    cacheOptions
-  )
+  const records = await findRecords<T>(table, filterByFormula, {
+    ...options,
+    maxRecords: 1,
+  })
   return records[0] || null
 }
 

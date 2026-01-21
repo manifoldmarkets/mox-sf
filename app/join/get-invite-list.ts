@@ -9,12 +9,9 @@ export async function getAirtableData() {
   // New formula: anyone invited or to invite
   const formula = `OR(Status="Invited",Status="To Invite")`
 
-  const records = await findRecords<PersonFields>(
-    Tables.People,
-    formula,
-    { fields: ['Name'] },
-    { revalidate: 60 }
-  )
+  const records = await findRecords<PersonFields>(Tables.People, formula, {
+    fields: ['Name'],
+  })
 
   // Map responses to an array
   return records.map((record) => record.fields.Name)

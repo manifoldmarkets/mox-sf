@@ -1,14 +1,28 @@
-import { getSession } from '@/app/lib/session';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import LogoutButton from './LogoutButton';
-import ProfileEditForm from './profile/edit/ProfileEditForm';
-import HostedEvents from './HostedEvents';
-import MobilePortal from './MobilePortal';
-import VerkadaPin from './VerkadaPin';
-import AdminViewAsSelector from './AdminViewAsSelector';
-import AdminBanner from './AdminBanner';
-import MembershipStatus from './MembershipStatus';
+import { getSession } from '@/app/lib/session'
+import { getRecord, Tables } from '@/app/lib/airtable'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import LogoutButton from './LogoutButton'
+import ProfileEditForm from './profile/edit/ProfileEditForm'
+import HostedEvents from './HostedEvents'
+import MobilePortal from './MobilePortal'
+import VerkadaPin from './VerkadaPin'
+import AdminViewAsSelector from './AdminViewAsSelector'
+import AdminBanner from './AdminBanner'
+import MembershipStatus from './MembershipStatus'
+
+interface ProfileFields {
+  Name?: string
+  Email?: string
+  Website?: string
+  Photo?: Array<{ url: string }>
+  'Show in directory'?: boolean
+  'Stripe Customer ID'?: string
+  Status?: string
+  Tier?: string
+  Org?: string[]
+  'Discord Username'?: string
+}
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -170,44 +184,28 @@ export default async function DashboardPage() {
 }
 
 async function getUserProfile(recordId: string): Promise<{
-  name: string;
-  email: string;
-  website: string;
-  photo: string | null;
-  directoryVisible: boolean;
-  stripeCustomerId: string | null;
-  status: string | null;
-  tier: string | null;
-  orgId: string | null;
-  discordUsername: string | null;
-  error?: string;
+  name: string
+  email: string
+  website: string
+  photo: string | null
+  directoryVisible: boolean
+  stripeCustomerId: string | null
+  status: string | null
+  tier: string | null
+  orgId: string | null
+  discordUsername: string | null
+  error?: string
 } | null> {
-  // Fetch only the fields we need for the profile edit form
-  // Note: We can't filter for 'Show in directory' because Airtable omits it when unchecked
-  // So we fetch all fields and handle missing fields in the response
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      cache: 'no-store',
-    }
-  );
+  const record = await getRecord<ProfileFields>(Tables.People, recordId)
 
-  if (!response.ok) {
-    return null;
+  if (!record) {
+    return null
   }
 
-  const data = await response.json();
-  const fields = data.fields;
-
-  if (!fields) {
-    return null;
-  }
+  const fields = record.fields
 
   // Airtable omits checkbox fields when unchecked, so we need to handle undefined
-  const showInDirectory = fields['Show in directory'];
+  const showInDirectory = fields['Show in directory']
 
   return {
     name: fields.Name || '',
@@ -220,5 +218,5 @@ async function getUserProfile(recordId: string): Promise<{
     tier: fields.Tier || null,
     orgId: fields.Org?.[0] || null, // Org is a linked record array, get first one
     discordUsername: fields['Discord Username'] || null,
-  };
+  }
 }

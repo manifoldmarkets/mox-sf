@@ -68,9 +68,7 @@ export async function POST(request: Request) {
     const escapedPaymentId = escapeAirtableString(paymentId)
     const record = await findRecord<DayPassFields>(
       Tables.DayPasses,
-      `{Name}='${escapedPaymentId}'`,
-      {},
-      { revalidate: false }
+      `{Name}='${escapedPaymentId}'`
     )
 
     if (!record) {

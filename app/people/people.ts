@@ -51,8 +51,7 @@ async function getOrgNames(): Promise<Map<string, string>> {
     const records = await findRecords<OrgFields>(
       Tables.Orgs,
       '{Status}!=""',
-      { fields: ['Name', 'Stealth'] },
-      { revalidate: 60 }
+      { fields: ['Name', 'Stealth'] }
     )
 
     for (const record of records) {
@@ -79,8 +78,7 @@ export async function getPeople(): Promise<Person[]> {
     {
       fields: FIELDS,
       view: 'viw9V2tzcnqvRXcV3',
-    },
-    { revalidate: 60 }
+    }
   )
 
   // Parse the data into the Person type

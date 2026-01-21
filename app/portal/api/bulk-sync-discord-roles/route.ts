@@ -40,8 +40,7 @@ export async function POST() {
       'AND({Discord Username} != "", {Status} = "Joined")',
       {
         fields: ['Name', 'Discord Username', 'Tier', 'Status'],
-      },
-      { revalidate: false }
+      }
     )
 
     const people: PersonWithDiscord[] = records

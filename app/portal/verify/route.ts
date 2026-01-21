@@ -1,6 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createSession } from '@/app/lib/session';
-import { isValidToken, escapeAirtableString } from '@/app/lib/airtable-helpers';
+import { NextRequest, NextResponse } from 'next/server'
+import { createSession } from '@/app/lib/session'
+import { isValidToken, escapeAirtableString } from '@/app/lib/airtable-helpers'
+import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
+
+interface PersonFields {
+  Email?: string
+  Name?: string
+  Tier?: string
+  magic_link_token?: string
+  token_expires?: string
+}
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -39,60 +48,37 @@ export async function GET(request: NextRequest) {
 
 async function verifyToken(token: string) {
   // Use escapeAirtableString to prevent formula injection
-  const escapedToken = escapeAirtableString(token);
-  const formula = `{magic_link_token} = '${escapedToken}'`;
+  const escapedToken = escapeAirtableString(token)
+  const formula = `{magic_link_token} = '${escapedToken}'`
 
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People?filterByFormula=${encodeURIComponent(formula)}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      cache: 'no-store',
-    }
-  );
+  const record = await findRecord<PersonFields>(Tables.People, formula)
 
-  const data = await response.json();
-
-  if (!data.records || data.records.length === 0) {
-    return null;
+  if (!record) {
+    return null
   }
 
-  const record = data.records[0];
-  const expiresAt = new Date(record.fields.token_expires);
+  const expiresAt = new Date(record.fields.token_expires || '')
 
   // Check if token is expired
   if (expiresAt < new Date()) {
-    return null;
+    return null
   }
 
   // Debug: Log what we're getting from Airtable
-  console.log('User login - Tier from Airtable:', record.fields.Tier);
-  console.log('User login - isStaff will be:', record.fields.Tier === 'Staff');
+  console.log('User login - Tier from Airtable:', record.fields.Tier)
+  console.log('User login - isStaff will be:', record.fields.Tier === 'Staff')
 
   return {
     id: record.id,
     email: record.fields.Email,
     name: record.fields.Name,
     isStaff: record.fields.Tier === 'Staff',
-  };
+  }
 }
 
 async function clearToken(recordId: string) {
-  await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}`,
-    {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_WRITE_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        fields: {
-          magic_link_token: '',
-          token_expires: null,
-        },
-      }),
-    }
-  );
+  await updateRecord<PersonFields>(Tables.People, recordId, {
+    magic_link_token: '',
+    token_expires: undefined,
+  })
 }
