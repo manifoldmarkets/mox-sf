@@ -48,11 +48,9 @@ async function getOrgNames(): Promise<Map<string, string>> {
   const orgMap = new Map<string, string>()
 
   try {
-    const records = await findRecords<OrgFields>(
-      Tables.Orgs,
-      '{Status}!=""',
-      { fields: ['Name', 'Stealth'] }
-    )
+    const records = await findRecords<OrgFields>(Tables.Orgs, '{Status}!=""', {
+      fields: ['Name', 'Stealth'],
+    })
 
     for (const record of records) {
       if (record.id && record.fields.Name) {

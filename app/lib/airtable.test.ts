@@ -146,11 +146,17 @@ describe('airtable client', () => {
   describe('findRecords', () => {
     it('is a convenience wrapper for getRecords with filter', async () => {
       mockEachPage.mockImplementation((callback) => {
-        callback([{ id: 'rec1', fields: { Email: 'test@example.com' } }], () => {})
+        callback(
+          [{ id: 'rec1', fields: { Email: 'test@example.com' } }],
+          () => {}
+        )
         return Promise.resolve()
       })
 
-      const result = await findRecords(Tables.People, '{Email} = "test@example.com"')
+      const result = await findRecords(
+        Tables.People,
+        '{Email} = "test@example.com"'
+      )
 
       expect(mockSelect).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -164,11 +170,17 @@ describe('airtable client', () => {
   describe('findRecord', () => {
     it('returns the first matching record', async () => {
       mockEachPage.mockImplementation((callback) => {
-        callback([{ id: 'rec1', fields: { Email: 'test@example.com' } }], () => {})
+        callback(
+          [{ id: 'rec1', fields: { Email: 'test@example.com' } }],
+          () => {}
+        )
         return Promise.resolve()
       })
 
-      const result = await findRecord(Tables.People, '{Email} = "test@example.com"')
+      const result = await findRecord(
+        Tables.People,
+        '{Email} = "test@example.com"'
+      )
 
       expect(mockSelect).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -176,7 +188,10 @@ describe('airtable client', () => {
           maxRecords: 1,
         })
       )
-      expect(result).toEqual({ id: 'rec1', fields: { Email: 'test@example.com' } })
+      expect(result).toEqual({
+        id: 'rec1',
+        fields: { Email: 'test@example.com' },
+      })
     })
 
     it('returns null when no records match', async () => {
@@ -185,7 +200,10 @@ describe('airtable client', () => {
         return Promise.resolve()
       })
 
-      const result = await findRecord(Tables.People, '{Email} = "nonexistent@example.com"')
+      const result = await findRecord(
+        Tables.People,
+        '{Email} = "nonexistent@example.com"'
+      )
 
       expect(result).toBeNull()
     })

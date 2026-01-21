@@ -3,7 +3,14 @@ import { syncDiscordRole, isDiscordConfigured } from '@/app/lib/discord'
 import { updateRecord, Tables } from '@/app/lib/airtable'
 
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024 // 10MB
-const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif']
+const ALLOWED_PHOTO_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/heic',
+  'image/heif',
+]
 
 function isValidURL(url: string): boolean {
   if (!url) return true // Empty is okay
@@ -61,7 +68,10 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Name is required' }, { status: 400 })
     }
     if (name.length > 200) {
-      return Response.json({ error: 'Name is too long (max 200 characters)' }, { status: 400 })
+      return Response.json(
+        { error: 'Name is too long (max 200 characters)' },
+        { status: 400 }
+      )
     }
 
     // Validate website URL
@@ -95,7 +105,9 @@ export async function POST(request: Request) {
       // Validate file size
       if (photoFile.size > MAX_PHOTO_SIZE) {
         return Response.json(
-          { error: `Photo is too large (max ${MAX_PHOTO_SIZE / 1024 / 1024}MB)` },
+          {
+            error: `Photo is too large (max ${MAX_PHOTO_SIZE / 1024 / 1024}MB)`,
+          },
           { status: 400 }
         )
       }
@@ -103,7 +115,9 @@ export async function POST(request: Request) {
       // Validate file type
       if (!ALLOWED_PHOTO_TYPES.includes(photoFile.type)) {
         return Response.json(
-          { error: 'Invalid photo format. Allowed: JPEG, PNG, WebP, GIF, HEIC' },
+          {
+            error: 'Invalid photo format. Allowed: JPEG, PNG, WebP, GIF, HEIC',
+          },
           { status: 400 }
         )
       }
@@ -124,7 +138,10 @@ export async function POST(request: Request) {
         ]
       } catch (photoError) {
         console.error('Error processing photo:', photoError)
-        return Response.json({ error: 'Failed to process photo. Please try again.' }, { status: 500 })
+        return Response.json(
+          { error: 'Failed to process photo. Please try again.' },
+          { status: 500 }
+        )
       }
     }
 
@@ -146,6 +163,9 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     console.error('Error updating profile:', error)
-    return Response.json({ error: 'An error occurred while updating your profile' }, { status: 500 })
+    return Response.json(
+      { error: 'An error occurred while updating your profile' },
+      { status: 500 }
+    )
   }
 }

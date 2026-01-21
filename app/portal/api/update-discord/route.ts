@@ -23,11 +23,17 @@ export async function POST(request: NextRequest) {
     const mappings: UpdateMapping[] = body.mappings
 
     if (!Array.isArray(mappings) || mappings.length === 0) {
-      return NextResponse.json({ error: 'No mappings provided' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'No mappings provided' },
+        { status: 400 }
+      )
     }
 
     if (mappings.length > 50) {
-      return NextResponse.json({ error: 'Maximum 50 mappings per request' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Maximum 50 mappings per request' },
+        { status: 400 }
+      )
     }
 
     // Validate all mappings
@@ -35,19 +41,33 @@ export async function POST(request: NextRequest) {
       if (!mapping.personId || typeof mapping.personId !== 'string') {
         return NextResponse.json({ error: 'Invalid personId' }, { status: 400 })
       }
-      if (!mapping.discordUsername || typeof mapping.discordUsername !== 'string') {
-        return NextResponse.json({ error: 'Invalid discordUsername' }, { status: 400 })
+      if (
+        !mapping.discordUsername ||
+        typeof mapping.discordUsername !== 'string'
+      ) {
+        return NextResponse.json(
+          { error: 'Invalid discordUsername' },
+          { status: 400 }
+        )
       }
       // Basic Discord username validation (2-32 chars, allows letters, numbers, underscores, periods)
-      if (mapping.discordUsername.length < 2 || mapping.discordUsername.length > 32) {
+      if (
+        mapping.discordUsername.length < 2 ||
+        mapping.discordUsername.length > 32
+      ) {
         return NextResponse.json(
-          { error: `Invalid Discord username length: ${mapping.discordUsername}` },
+          {
+            error: `Invalid Discord username length: ${mapping.discordUsername}`,
+          },
           { status: 400 }
         )
       }
     }
 
-    const results: { success: string[]; failed: string[] } = { success: [], failed: [] }
+    const results: { success: string[]; failed: string[] } = {
+      success: [],
+      failed: [],
+    }
 
     // Update each record
     for (const mapping of mappings) {
@@ -70,6 +90,9 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error updating Discord usernames:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }

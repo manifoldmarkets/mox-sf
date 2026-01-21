@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
   const userName = searchParams.get('userName')
 
   if (!userName) {
-    return NextResponse.json({ message: 'User name is required' }, { status: 400 })
+    return NextResponse.json(
+      { message: 'User name is required' },
+      { status: 400 }
+    )
   }
 
   try {
@@ -44,7 +47,9 @@ export async function GET(request: NextRequest) {
         startDate: record.fields['Start Date'] || '',
         endDate: record.fields['End Date'] || undefined,
         description: record.fields['Event Description'] || undefined,
-        assignedRooms: Array.isArray(assignedRooms) ? assignedRooms.join(', ') : assignedRooms || undefined,
+        assignedRooms: Array.isArray(assignedRooms)
+          ? assignedRooms.join(', ')
+          : assignedRooms || undefined,
         notes: record.fields.Notes || undefined,
         type: record.fields.Type || undefined,
         status: record.fields.Status || undefined,
@@ -56,6 +61,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ events })
   } catch (error) {
     console.error('Error fetching hosted events:', error)
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }

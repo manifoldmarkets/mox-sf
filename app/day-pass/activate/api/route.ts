@@ -118,9 +118,8 @@ export async function POST(request: Request) {
       success: true,
       doorCode,
       // passType,
-      userName: fields.Username || 'Guest'
+      userName: fields.Username || 'Guest',
     })
-
   } catch (error) {
     console.error('Error processing day pass activation:', error)
     return Response.json({ success: false, status: 'error' })

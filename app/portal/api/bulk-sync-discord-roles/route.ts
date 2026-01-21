@@ -30,7 +30,10 @@ export async function POST() {
   }
 
   if (!isDiscordConfigured()) {
-    return NextResponse.json({ error: 'Discord integration not configured' }, { status: 503 })
+    return NextResponse.json(
+      { error: 'Discord integration not configured' },
+      { status: 503 }
+    )
   }
 
   try {
@@ -68,7 +71,11 @@ export async function POST() {
       // Add delay to avoid Discord rate limiting (they allow ~5-10 req/sec)
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      const result = await syncDiscordRole(person.discordUsername, person.tier, person.status)
+      const result = await syncDiscordRole(
+        person.discordUsername,
+        person.tier,
+        person.status
+      )
 
       if (result.success) {
         results.success.push({
@@ -101,6 +108,9 @@ export async function POST() {
     })
   } catch (error) {
     console.error('Error bulk syncing Discord roles:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }

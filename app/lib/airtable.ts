@@ -44,7 +44,9 @@ export async function getRecords<T = Record<string, unknown>>(
   options: QueryOptions = {}
 ): Promise<AirtableRecord<T>[]> {
   const query = getBase()(table).select({
-    ...(options.filterByFormula && { filterByFormula: options.filterByFormula }),
+    ...(options.filterByFormula && {
+      filterByFormula: options.filterByFormula,
+    }),
     ...(options.fields && { fields: options.fields }),
     ...(options.sort && { sort: options.sort }),
     ...(options.maxRecords && { maxRecords: options.maxRecords }),
@@ -53,15 +55,17 @@ export async function getRecords<T = Record<string, unknown>>(
 
   const records: AirtableRecord<T>[] = []
 
-  await query.eachPage((pageRecords: Records<FieldSet>, fetchNextPage: () => void) => {
-    for (const record of pageRecords) {
-      records.push({
-        id: record.id,
-        fields: record.fields as T,
-      })
+  await query.eachPage(
+    (pageRecords: Records<FieldSet>, fetchNextPage: () => void) => {
+      for (const record of pageRecords) {
+        records.push({
+          id: record.id,
+          fields: record.fields as T,
+        })
+      }
+      fetchNextPage()
     }
-    fetchNextPage()
-  })
+  )
 
   return records
 }
@@ -102,7 +106,10 @@ export async function updateRecord<T = Record<string, unknown>>(
   recordId: string,
   fields: Partial<T>
 ): Promise<AirtableRecord<T>> {
-  const record = await getBase()(table).update(recordId, fields as Partial<FieldSet>)
+  const record = await getBase()(table).update(
+    recordId,
+    fields as Partial<FieldSet>
+  )
   return {
     id: record.id,
     fields: record.fields as T,

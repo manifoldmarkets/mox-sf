@@ -12,8 +12,12 @@ export async function PeopleContent() {
 
   // Separate people by tier
   const staff = sortedPeople.filter((person) => person.tier === 'Staff')
-  const privateOffices = sortedPeople.filter((person) => person.tier === 'Private Office')
-  const members = sortedPeople.filter((person) => person.tier !== 'Staff' && person.tier !== 'Private Office')
+  const privateOffices = sortedPeople.filter(
+    (person) => person.tier === 'Private Office'
+  )
+  const members = sortedPeople.filter(
+    (person) => person.tier !== 'Staff' && person.tier !== 'Private Office'
+  )
 
   // Hardcoded visiting fellows (until added to Airtable)
   const visitingFellows = [
@@ -71,7 +75,9 @@ export default async function PeoplePage() {
           <h2 className="text-3xl font-bold text-white font-display mb-2">
             Humans of Mox
           </h2>
-          <p className="text-gray-300 text-sm">The community that makes Mox special</p>
+          <p className="text-gray-300 text-sm">
+            The community that makes Mox special
+          </p>
         </div>
         <PeopleContent />
       </div>

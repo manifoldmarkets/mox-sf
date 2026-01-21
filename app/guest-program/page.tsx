@@ -52,7 +52,9 @@ function PartnerCard({
           {logoPlaceholder}
         </div>
       )}
-      <h3 className="text-xl font-bold font-merriweather text-gray-900">{name}</h3>
+      <h3 className="text-xl font-bold font-merriweather text-gray-900">
+        {name}
+      </h3>
     </a>
   )
 }
@@ -236,29 +238,29 @@ export default function GuestProgramPage() {
               bgColor="bg-[#2c97cc]"
             />
             <PartnerCard
-                name="Roots of Progress"
-                url="https://rootsofprogress.org/"
-                logoUrl="/ROP7594_Profile-Picture.webp"
-                bgColor="bg-white"
-              />
-              <PartnerCard
-                name="Epoch"
-                url="https://epoch.ai/"
-                logoUrl="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
-                bgColor="bg-[#eaf5f4]"
-              />
-              <PartnerCard
-                name="Timaeus"
-                url="https://timaeus.co/"
-                logoUrl="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
-                bgColor="bg-white"
-              />
-              <PartnerCard
-                name="BlueDot Impact"
-                url="https://bluedot.org/"
-                logoUrl="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg"
-                bgColor="bg-[#00104e]"
-              />
+              name="Roots of Progress"
+              url="https://rootsofprogress.org/"
+              logoUrl="/ROP7594_Profile-Picture.webp"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="Epoch"
+              url="https://epoch.ai/"
+              logoUrl="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
+              bgColor="bg-[#eaf5f4]"
+            />
+            <PartnerCard
+              name="Timaeus"
+              url="https://timaeus.co/"
+              logoUrl="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
+              bgColor="bg-white"
+            />
+            <PartnerCard
+              name="BlueDot Impact"
+              url="https://bluedot.org/"
+              logoUrl="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg"
+              bgColor="bg-[#00104e]"
+            />
           </div>
         </section>
 

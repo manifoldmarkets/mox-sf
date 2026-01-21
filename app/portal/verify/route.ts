@@ -12,37 +12,45 @@ interface PersonFields {
 }
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const token = searchParams.get('token');
+  const searchParams = request.nextUrl.searchParams
+  const token = searchParams.get('token')
 
   if (!token) {
-    return NextResponse.redirect(new URL('/portal/login?error=invalid', request.url));
+    return NextResponse.redirect(
+      new URL('/portal/login?error=invalid', request.url)
+    )
   }
 
   // Validate token format (should be 64-char hex string from randomBytes(32))
   if (!isValidToken(token, 64)) {
-    return NextResponse.redirect(new URL('/portal/login?error=invalid', request.url));
+    return NextResponse.redirect(
+      new URL('/portal/login?error=invalid', request.url)
+    )
   }
 
   try {
     // Verify token and get user
-    const user = await verifyToken(token);
+    const user = await verifyToken(token)
 
     if (!user) {
-      return NextResponse.redirect(new URL('/portal/login?error=expired', request.url));
+      return NextResponse.redirect(
+        new URL('/portal/login?error=expired', request.url)
+      )
     }
 
     // Create session
-    await createSession(user.id, user.email, user.name, user.isStaff);
+    await createSession(user.id, user.email, user.name, user.isStaff)
 
     // Clear the token from Airtable (one-time use)
-    await clearToken(user.id);
+    await clearToken(user.id)
 
     // Redirect to portal
-    return NextResponse.redirect(new URL('/portal', request.url));
+    return NextResponse.redirect(new URL('/portal', request.url))
   } catch (error) {
-    console.error('Error verifying token:', error);
-    return NextResponse.redirect(new URL('/portal/login?error=server', request.url));
+    console.error('Error verifying token:', error)
+    return NextResponse.redirect(
+      new URL('/portal/login?error=server', request.url)
+    )
   }
 }
 

@@ -29,7 +29,10 @@ export async function PATCH(request: NextRequest) {
     } = body
 
     if (!id) {
-      return NextResponse.json({ message: 'Event ID is required' }, { status: 400 })
+      return NextResponse.json(
+        { message: 'Event ID is required' },
+        { status: 400 }
+      )
     }
 
     // Prepare the fields to update
@@ -55,6 +58,9 @@ export async function PATCH(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error updating event:', error)
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }

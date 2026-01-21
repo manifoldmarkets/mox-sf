@@ -45,7 +45,7 @@ describe('escapeAirtableString', () => {
 
   it('escapes multiple special characters', () => {
     expect(escapeAirtableString('it\'s a "test"\nwith\\path')).toBe(
-      "it\\'s a \\\"test\\\"\\nwith\\\\path"
+      'it\\\'s a \\"test\\"\\nwith\\\\path'
     )
   })
 })
