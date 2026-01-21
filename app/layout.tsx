@@ -5,6 +5,7 @@ import {
   Merriweather,
   Fira_Sans,
   Geist_Mono,
+  Kalam,
 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 
@@ -33,6 +34,12 @@ const firaSans = Fira_Sans({
 const geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',
+})
+
+const handwriting = Kalam({
+  subsets: ['latin'],
+  variable: '--font-handwriting',
+  weight: '400',
 })
 
 export const metadata = {
@@ -77,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} font-lora`}
+        className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} ${handwriting.variable} font-lora`}
       >
         {children}
         <Analytics />

@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "Read(//var/folders/96/k6xfbzbs5wg6yc7j0l84fp4h0000gn/T/chrome-devtools-mcp-owTmBG/**)",
+      "Read(//private/var/folders/96/k6xfbzbs5wg6yc7j0l84fp4h0000gn/T/chrome-devtools-mcp-owTmBG/**)"
+    ],
     "additionalDirectories": [
       "/Users/rachelshu/code/mox-sf/app/door"
     ]
