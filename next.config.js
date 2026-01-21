@@ -13,7 +13,8 @@ const redirects = {
     'https://moxsf.notion.site/Mox-Fund-for-massive-public-good-24e54492ea7a80a78e10d9dd9c149619',
   '/populi':
     'https://moxsf.notion.site/Mox-Populi-26954492ea7a80f7820ec2f5c237b212',
-  '/guest': '/guests',
+  '/guests': '/guest-program',
+  '/guest': '/guest-program',
 
   // Endpoints mostly for admin/staff
   '/eventz':

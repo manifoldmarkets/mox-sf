@@ -5,7 +5,7 @@ import { getAirtableData } from './get-invite-list'
 
 export function JoinContent(props: {
   firstName?: string
-  specialInvite?: string
+  specialInvite?: string | null
 }) {
   const { firstName, specialInvite } = props
   return (

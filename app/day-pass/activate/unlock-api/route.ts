@@ -1,3 +1,5 @@
+import { env } from '@/app/lib/env'
+
 export async function POST(request: Request) {
   try {
     const { paymentId } = await request.json()
@@ -9,7 +11,6 @@ export async function POST(request: Request) {
     // Simple validation: just check that a payment ID was provided
     // Anyone with a valid activate link can unlock
     return await unlockDoor()
-
   } catch (error) {
     console.error('Error processing door unlock:', error)
     return Response.json({ success: false, error: 'Server error' })
@@ -23,13 +24,16 @@ async function unlockDoor() {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_API_KEY,
+        'x-api-key': env.VERKADA_API_KEY,
       },
     })
 
     if (!tokenRes.ok) {
       console.error('Failed to get Verkada token:', tokenRes.status)
-      return Response.json({ success: false, error: 'Failed to authenticate with door system' })
+      return Response.json({
+        success: false,
+        error: 'Failed to authenticate with door system',
+      })
     }
 
     const { token } = await tokenRes.json()

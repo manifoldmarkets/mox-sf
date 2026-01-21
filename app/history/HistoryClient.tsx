@@ -23,11 +23,12 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
   // Filter events based on mode
   let filteredEvents = initialEvents
   if (filterMode === 'featured') {
-    filteredEvents = initialEvents.filter(event => event.featured)
+    filteredEvents = initialEvents.filter((event) => event.featured)
   } else if (filterMode === 'unique') {
     // Show all featured events, plus non-recurring events
-    filteredEvents = initialEvents.filter(event =>
-      event.featured || !event.status?.toLowerCase().includes('recurring')
+    filteredEvents = initialEvents.filter(
+      (event) =>
+        event.featured || !event.status?.toLowerCase().includes('recurring')
     )
   }
   // 'all' mode shows everything, no filtering needed
@@ -37,7 +38,9 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && displayCount < filteredEvents.length) {
-          setDisplayCount((prev) => Math.min(prev + ITEMS_PER_PAGE, filteredEvents.length))
+          setDisplayCount((prev) =>
+            Math.min(prev + ITEMS_PER_PAGE, filteredEvents.length)
+          )
         }
       },
       { threshold: 0.1 }
@@ -89,7 +92,6 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
-
       {/* Sticky header */}
       <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 lg:static lg:border-b-0">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2 sm:py-4 lg:py-6">
@@ -100,8 +102,18 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
                 href="/events"
                 className="inline-flex items-center gap-2 text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 text-sm font-medium font-sans"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
                 </svg>
                 Upcoming Events
               </Link>
@@ -155,7 +167,10 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
             </h1>
 
             {/* 3-way toggle - desktop only */}
-            <div ref={horizontalToggleRef} className="hidden sm:inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
+            <div
+              ref={horizontalToggleRef}
+              className="hidden sm:inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden font-sans"
+            >
               <button
                 onClick={() => setFilterMode('featured')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
@@ -190,82 +205,90 @@ export default function HistoryClient({ initialEvents }: HistoryClientProps) {
           </div>
         </div>
 
-            {/* Events */}
-            <div className="space-y-6 relative">
-              {/* Sticky vertical toggle - desktop only, positioned to the right */}
-              <div className={`hidden lg:block sticky top-4 float-right -mr-28 z-20 transition-opacity duration-200 ${showStickyToggle ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                <div className="flex flex-col border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
-                  <button
-                    onClick={() => setFilterMode('featured')}
-                    className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                      filterMode === 'featured'
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
-                    }`}
-                  >
-                    Featured
-                  </button>
-                  <button
-                    onClick={() => setFilterMode('unique')}
-                    className={`px-4 py-2 text-sm font-semibold transition-colors border-y border-gray-300 dark:border-gray-600 ${
-                      filterMode === 'unique'
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
-                    }`}
-                  >
-                    Unique
-                  </button>
-                  <button
-                    onClick={() => setFilterMode('all')}
-                    className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                      filterMode === 'all'
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
-                    }`}
-                  >
-                    All
-                  </button>
+        {/* Events */}
+        <div className="space-y-6 relative">
+          {/* Sticky vertical toggle - desktop only, positioned to the right */}
+          <div
+            className={`hidden lg:block sticky top-4 float-right -mr-28 z-20 transition-opacity duration-200 ${showStickyToggle ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          >
+            <div className="flex flex-col border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
+              <button
+                onClick={() => setFilterMode('featured')}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                  filterMode === 'featured'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
+                }`}
+              >
+                Featured
+              </button>
+              <button
+                onClick={() => setFilterMode('unique')}
+                className={`px-4 py-2 text-sm font-semibold transition-colors border-y border-gray-300 dark:border-gray-600 ${
+                  filterMode === 'unique'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
+                }`}
+              >
+                Unique
+              </button>
+              <button
+                onClick={() => setFilterMode('all')}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                  filterMode === 'all'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750'
+                }`}
+              >
+                All
+              </button>
+            </div>
+          </div>
+
+          {groupedEvents.map((group, index) => (
+            <div
+              key={`events-${group.monthYear}-${index}`}
+              className="flex gap-4"
+            >
+              {/* Desktop month label */}
+              <div className="flex-shrink-0 w-24 hidden lg:block">
+                <div className="sticky top-4 text-left">
+                  <div className="font-bold text-gray-700 dark:text-gray-300 text-sm">
+                    {format(group.events[0].startDate, 'MMMM')}
+                  </div>
+                  <div className="font-bold text-gray-600 dark:text-gray-400 text-xs">
+                    {format(group.events[0].startDate, 'yyyy')}
+                  </div>
                 </div>
               </div>
 
-              {groupedEvents.map((group, index) => (
-                <div key={`events-${group.monthYear}-${index}`} className="flex gap-4">
-                  {/* Desktop month label */}
-                  <div className="flex-shrink-0 w-24 hidden lg:block">
-                    <div className="sticky top-4 text-left">
-                      <div className="font-bold text-gray-700 dark:text-gray-300 text-sm">
-                        {format(group.events[0].startDate, 'MMMM')}
-                      </div>
-                      <div className="font-bold text-gray-600 dark:text-gray-400 text-xs">
-                        {format(group.events[0].startDate, 'yyyy')}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Events column */}
-                  <div className="flex-1 min-w-0">
-                    {/* Mobile month popover */}
-                    <div className="lg:hidden sticky top-15 z-[5] flex justify-center mb-4 pointer-events-none">
-                      <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 px-4 py-2 shadow-lg">
-                        <div className="font-sans font-bold text-gray-700 dark:text-gray-300 text-sm">
-                          {format(group.events[0].startDate, 'MMMM yyyy')}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      {group.events.map((event) => (
-                        <PastEventCard key={event.id} event={event} />
-                      ))}
+              {/* Events column */}
+              <div className="flex-1 min-w-0">
+                {/* Mobile month popover */}
+                <div className="lg:hidden sticky top-15 z-[5] flex justify-center mb-4 pointer-events-none">
+                  <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 px-4 py-2 shadow-lg">
+                    <div className="font-sans font-bold text-gray-700 dark:text-gray-300 text-sm">
+                      {format(group.events[0].startDate, 'MMMM yyyy')}
                     </div>
                   </div>
                 </div>
-              ))}
+
+                <div className="space-y-1">
+                  {group.events.map((event) => (
+                    <PastEventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </div>
             </div>
+          ))}
+        </div>
 
         {/* Load more trigger */}
         {displayCount < filteredEvents.length && (
-          <div ref={loadMoreRef} className="h-20 flex items-center justify-center mt-4">
+          <div
+            ref={loadMoreRef}
+            className="h-20 flex items-center justify-center mt-4"
+          >
             <p className="text-text-muted dark:text-text-muted-dark text-sm">
               Loading more events...
             </p>

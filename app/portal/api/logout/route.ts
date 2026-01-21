@@ -1,6 +1,6 @@
-import { destroySession } from '@/app/lib/session';
+import { destroySession } from '@/app/lib/session'
 
 export async function POST() {
-  await destroySession();
-  return Response.json({ success: true });
+  await destroySession()
+  return Response.json({ success: true })
 }

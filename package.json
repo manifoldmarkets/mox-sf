@@ -6,29 +6,36 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "@headlessui/react": "^2.2.1",
     "@vercel/analytics": "^1.5.0",
+    "airtable": "^0.12.2",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "iron-session": "^8.0.4",
     "lucide-react": "^0.503.0",
-    "next": "15.0.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "^16.1.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "resend": "^6.4.2",
     "stripe": "^19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.10.1",
-    "@types/react": "^18.2.0",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.0.17",
     "postcss": "^8.4.35",
     "prettier": "^3.3.3",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^4.0.17"
   }
 }

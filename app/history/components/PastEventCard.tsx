@@ -35,35 +35,47 @@ export default function PastEventCard({ event }: PastEventCardProps) {
     const CompactContent = (
       <>
         {/* Left date sidebar */}
-        <div className={`flex-shrink-0 w-20 text-center font-sans flex items-center justify-center self-stretch ${
-          isRecurring
-            ? 'bg-gray-400 dark:bg-gray-700'
-            : 'bg-gray-600 dark:bg-gray-600'
-        }`}>
+        <div
+          className={`flex-shrink-0 w-20 text-center font-sans flex items-center justify-center self-stretch ${
+            isRecurring
+              ? 'bg-gray-400 dark:bg-gray-700'
+              : 'bg-gray-600 dark:bg-gray-600'
+          }`}
+        >
           <div className="text-s font-bold text-white leading-none uppercase">
             {month} {day}
           </div>
         </div>
 
         {/* Event name */}
-        <h3 className={`text-sm ${titleColorClass} leading-tight flex-1 px-2 py-1 truncate`}>
+        <h3
+          className={`text-sm ${titleColorClass} leading-tight flex-1 px-2 py-1 truncate`}
+        >
           {event.name}
-          {event.host && (
-            <span className="ml-1">
-              | {event.host}
-            </span>
-          )}
+          {event.host && <span className="ml-1">| {event.host}</span>}
         </h3>
 
         {/* External link icon - only show if valid URL */}
         {hasValidUrl && (
-          <div className={`flex-shrink-0 pr-3 ${
-            isRecurring
-              ? 'text-gray-400 dark:text-gray-600'
-              : 'text-amber-900 dark:text-amber-400'
-          }`}>
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          <div
+            className={`flex-shrink-0 pr-3 ${
+              isRecurring
+                ? 'text-gray-400 dark:text-gray-600'
+                : 'text-amber-900 dark:text-amber-400'
+            }`}
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
             </svg>
           </div>
         )}
@@ -88,11 +100,13 @@ export default function PastEventCard({ event }: PastEventCardProps) {
     }
 
     return (
-      <div className={`flex items-center overflow-hidden ${
-        isRecurring
-          ? 'bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 opacity-75'
-          : 'bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600'
-      }`}>
+      <div
+        className={`flex items-center overflow-hidden ${
+          isRecurring
+            ? 'bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 opacity-75'
+            : 'bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600'
+        }`}
+      >
         {CompactContent}
       </div>
     )
@@ -100,8 +114,11 @@ export default function PastEventCard({ event }: PastEventCardProps) {
 
   // Featured: Responsive layout with poster and content
   // Portrait posters on left, landscape posters on right
-  const isPortraitPoster = event.poster && event.poster.width && event.poster.height &&
-    (event.poster.width / event.poster.height) < 1
+  const isPortraitPoster =
+    event.poster &&
+    event.poster.width &&
+    event.poster.height &&
+    event.poster.width / event.poster.height < 1
 
   return (
     <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors overflow-hidden">
@@ -109,11 +126,7 @@ export default function PastEventCard({ event }: PastEventCardProps) {
       <div className="w-full bg-gray-600 dark:bg-gray-600 font-sans px-4 py-2 text-center">
         <div className="text-s font-bold text-white leading-none">
           {formattedDate}
-          {event.host && (
-            <span className="ml-1">
-              | {event.host}
-            </span>
-          )}
+          {event.host && <span className="ml-1">| {event.host}</span>}
         </div>
       </div>
 
@@ -132,10 +145,14 @@ export default function PastEventCard({ event }: PastEventCardProps) {
       )}
 
       {/* Responsive layout: side-by-side on desktop only */}
-      <div className={`flex flex-col sm:flex-row gap-4 p-4 ${isPortraitPoster ? '' : 'sm:flex-row-reverse'}`}>
+      <div
+        className={`flex flex-col sm:flex-row gap-4 p-4 ${isPortraitPoster ? '' : 'sm:flex-row-reverse'}`}
+      >
         {/* Event Poster - desktop only */}
         {event.poster && (
-          <div className={`hidden sm:flex flex-shrink-0 justify-center sm:justify-start ${!isPortraitPoster ? 'sm:sticky sm:top-4 sm:self-start' : ''}`}>
+          <div
+            className={`hidden sm:flex flex-shrink-0 justify-center sm:justify-start ${!isPortraitPoster ? 'sm:sticky sm:top-4 sm:self-start' : ''}`}
+          >
             <Image
               src={event.poster.url}
               alt={`${event.name} poster`}
@@ -159,8 +176,18 @@ export default function PastEventCard({ event }: PastEventCardProps) {
                 className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-bold text-lg leading-tight inline-flex items-center gap-2"
               >
                 {event.name}
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  className="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
               </a>
             ) : (

@@ -4,15 +4,19 @@ import { useState } from 'react'
 
 function EventTypeTag({ type }: { type: string }) {
   const colorMap: Record<string, string> = {
-    public: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    public:
+      'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
     private: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
     members: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   }
   const colorClasses =
-    colorMap[type.toLowerCase()] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+    colorMap[type.toLowerCase()] ||
+    'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
 
   return (
-    <span className={`inline-block px-2 py-1 text-xs font-medium ${colorClasses}`}>
+    <span
+      className={`inline-block px-2 py-1 text-xs font-medium ${colorClasses}`}
+    >
       {type.toLowerCase()}
     </span>
   )
@@ -20,7 +24,9 @@ function EventTypeTag({ type }: { type: string }) {
 
 export default function EventCard({ event }: { event: Event }) {
   // Check if description has more than 3 lines
-  const descriptionLines = event.description ? event.description.split('\n').length : 0
+  const descriptionLines = event.description
+    ? event.description.split('\n').length
+    : 0
   const isLong = descriptionLines > 3
   const [expanded, setExpanded] = useState(!isLong)
 
@@ -45,7 +51,6 @@ export default function EventCard({ event }: { event: Event }) {
   return (
     <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100/50 dark:hover:bg-gray-700/80 transition-colors overflow-hidden">
       <div className="p-4">
-
         {/* Title and Type */}
         <div className="flex items-start gap-2 mb-1">
           <div className="flex-1 min-w-0">
@@ -57,8 +62,18 @@ export default function EventCard({ event }: { event: Event }) {
                 className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-bold text-lg leading-tight"
               >
                 {event.name}{' '}
-                <svg className="w-4 h-4 inline-block align-[-0.12em]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  className="w-4 h-4 inline-block align-[-0.12em]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
               </a>
             ) : (
@@ -100,7 +115,6 @@ export default function EventCard({ event }: { event: Event }) {
           </p>
         )}
       </div>
-
     </div>
   )
 }

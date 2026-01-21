@@ -9,24 +9,24 @@
  */
 export function escapeAirtableString(value: string): string {
   if (!value || typeof value !== 'string') {
-    return '';
+    return ''
   }
 
   // Escape backslashes first (must be done before escaping other characters)
-  let escaped = value.replace(/\\/g, '\\\\');
+  let escaped = value.replace(/\\/g, '\\\\')
 
   // Escape single quotes (used to delimit strings in formulas)
-  escaped = escaped.replace(/'/g, "\\'");
+  escaped = escaped.replace(/'/g, "\\'")
 
   // Escape double quotes
-  escaped = escaped.replace(/"/g, '\\"');
+  escaped = escaped.replace(/"/g, '\\"')
 
   // Escape newlines and other control characters
-  escaped = escaped.replace(/\n/g, '\\n');
-  escaped = escaped.replace(/\r/g, '\\r');
-  escaped = escaped.replace(/\t/g, '\\t');
+  escaped = escaped.replace(/\n/g, '\\n')
+  escaped = escaped.replace(/\r/g, '\\r')
+  escaped = escaped.replace(/\t/g, '\\t')
 
-  return escaped;
+  return escaped
 }
 
 /**
@@ -37,12 +37,12 @@ export function escapeAirtableString(value: string): string {
  */
 export function isValidEmail(email: string): boolean {
   if (!email || typeof email !== 'string') {
-    return false;
+    return false
   }
 
   // Basic email validation regex
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email) && email.length <= 254; // RFC 5321
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email) && email.length <= 254 // RFC 5321
 }
 
 /**
@@ -52,12 +52,15 @@ export function isValidEmail(email: string): boolean {
  * @param expectedLength - Expected length of hex string (default 64 for 32 bytes)
  * @returns true if valid token format
  */
-export function isValidToken(token: string, expectedLength: number = 64): boolean {
+export function isValidToken(
+  token: string,
+  expectedLength: number = 64
+): boolean {
   if (!token || typeof token !== 'string') {
-    return false;
+    return false
   }
 
   // Token should be hex string of expected length
-  const hexRegex = new RegExp(`^[a-f0-9]{${expectedLength}}$`, 'i');
-  return hexRegex.test(token);
+  const hexRegex = new RegExp(`^[a-f0-9]{${expectedLength}}$`, 'i')
+  return hexRegex.test(token)
 }

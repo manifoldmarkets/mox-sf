@@ -84,7 +84,8 @@ export default function Masonry({
       let calculationRatios = [...rowRatios]
       if (isLastRow && isIncompleteRow) {
         // Add average ratio placeholders to fill the row
-        const avgRatio = rowRatios.reduce((sum, r) => sum + r, 0) / rowRatios.length
+        const avgRatio =
+          rowRatios.reduce((sum, r) => sum + r, 0) / rowRatios.length
         while (calculationRatios.length < imagesPerRow) {
           calculationRatios.push(avgRatio)
         }
@@ -93,7 +94,9 @@ export default function Masonry({
       const availableWidth = containerWidth - spacing * (imagesPerRow - 1)
 
       // Initial widths using the target row height
-      const initialWidths = calculationRatios.map((ratio) => targetRowHeight * ratio)
+      const initialWidths = calculationRatios.map(
+        (ratio) => targetRowHeight * ratio
+      )
       const totalWidth = initialWidths.reduce((sum, w) => sum + w, 0)
 
       // Scale images so they exactly fill the row
@@ -186,7 +189,10 @@ export default function Masonry({
                   alt=""
                   width={Math.round(width)}
                   height={Math.round(height)}
-                  style={{ width: `${Math.round(width)}px`, height: `${Math.round(height)}px` }}
+                  style={{
+                    width: `${Math.round(width)}px`,
+                    height: `${Math.round(height)}px`,
+                  }}
                   className="object-cover cursor-pointer hover:opacity-80"
                   loading="lazy"
                   onClick={() => setSelectedImageIndex(index)}

@@ -1,19 +1,14 @@
-import { renameDiscordChannel, sendChannelMessage } from '@/app/lib/discord';
-
-// Environment variables for Verkada user UUIDs and Discord channels
-const WEEKLY_ACCESS_USER_ID = process.env.VERKADA_WEEKLY_ACCESS_USER_ID || '';
-const OLD_WEEKLY_ACCESS_USER_ID = process.env.VERKADA_OLD_WEEKLY_ACCESS_USER_ID || '';
-const DOOR_CODE_CHANNEL_ID = process.env.DISCORD_DOOR_CODE_CHANNEL_ID || '';
-const PACKAGES_CHANNEL_ID = process.env.DISCORD_PACKAGES_CHANNEL_ID || '';
+import { renameDiscordChannel, sendChannelMessage } from '@/app/lib/discord'
+import { env } from '@/app/lib/env'
 
 /**
  * Generate a cryptographically secure random 4-digit code
  */
 function generateSecure4DigitCode(): string {
-  const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
+  const array = new Uint32Array(1)
+  crypto.getRandomValues(array)
   // Generate a number between 1000 and 9999 (4 digits, no leading zero)
-  return ((array[0] % 9000) + 1000).toString();
+  return ((array[0] % 9000) + 1000).toString()
 }
 
 /**
@@ -25,26 +20,26 @@ async function getVerkadaToken(): Promise<string | null> {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_MEMBER_KEY || '',
+        'x-api-key': env.VERKADA_MEMBER_KEY,
       },
-    });
+    })
 
     if (!tokenRes.ok) {
-      console.error('[Verkada API] Failed to get token:', tokenRes.status);
-      return null;
+      console.error('[Verkada API] Failed to get token:', tokenRes.status)
+      return null
     }
 
-    const { token } = await tokenRes.json();
-    return token;
+    const { token } = await tokenRes.json()
+    return token
   } catch (error) {
-    console.error('[Verkada API] Token error:', error);
-    return null;
+    console.error('[Verkada API] Token error:', error)
+    return null
   }
 }
 
 interface VerkadaUser {
-  user_id: string;
-  entry_code?: string;
+  user_id: string
+  entry_code?: string
 }
 
 /**
@@ -63,17 +58,17 @@ async function getVerkadaUserById(
           'x-verkada-auth': token,
         },
       }
-    );
+    )
 
     if (!response.ok) {
-      console.error('[Verkada API] Failed to get user:', response.status);
-      return null;
+      console.error('[Verkada API] Failed to get user:', response.status)
+      return null
     }
 
-    return await response.json();
+    return await response.json()
   } catch (error) {
-    console.error('[Verkada API] Get user error:', error);
-    return null;
+    console.error('[Verkada API] Get user error:', error)
+    return null
   }
 }
 
@@ -99,121 +94,127 @@ async function setVerkadaEntryCode(
           entry_code: entryCode,
         }),
       }
-    );
+    )
 
     if (!response.ok) {
-      const errorText = await response.text();
+      const errorText = await response.text()
       console.error(
         '[Verkada API] Failed to set entry code:',
         response.status,
         errorText
-      );
-      return false;
+      )
+      return false
     }
 
-    return true;
+    return true
   } catch (error) {
-    console.error('[Verkada API] Set entry code error:', error);
-    return false;
+    console.error('[Verkada API] Set entry code error:', error)
+    return false
   }
 }
 
 export async function GET(request: Request) {
-  const startTime = Date.now();
+  const startTime = Date.now()
 
   // Validate cron secret
-  const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    console.error('[Cron rotate-door-code] Unauthorized request');
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  const authHeader = request.headers.get('authorization')
+  if (authHeader !== `Bearer ${env.CRON_SECRET}`) {
+    console.error('[Cron rotate-door-code] Unauthorized request')
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  console.log('[Cron rotate-door-code] Starting weekly door code rotation...');
+  console.log('[Cron rotate-door-code] Starting weekly door code rotation...')
 
   try {
     // Get Verkada API token
-    const token = await getVerkadaToken();
+    const token = await getVerkadaToken()
     if (!token) {
-      throw new Error('Failed to get Verkada API token');
+      throw new Error('Failed to get Verkada API token')
     }
 
     // Step 1: Get current code from "Weekly Access" user
-    const weeklyUser = await getVerkadaUserById(WEEKLY_ACCESS_USER_ID, token);
+    const weeklyUser = await getVerkadaUserById(env.VERKADA_WEEKLY_ACCESS_USER_ID, token)
     if (!weeklyUser) {
-      throw new Error('Failed to fetch Weekly Access user');
+      throw new Error('Failed to fetch Weekly Access user')
     }
 
-    const oldCode = weeklyUser.entry_code;
+    const oldCode = weeklyUser.entry_code
     if (!oldCode) {
-      console.warn('[Cron rotate-door-code] Weekly Access user has no entry code');
+      console.warn(
+        '[Cron rotate-door-code] Weekly Access user has no entry code'
+      )
     }
 
     // Step 2: Generate new 4-digit code
-    const newCode = generateSecure4DigitCode();
-    console.log(`[Cron rotate-door-code] Generated new code: ${newCode}`);
+    const newCode = generateSecure4DigitCode()
+    console.log(`[Cron rotate-door-code] Generated new code: ${newCode}`)
 
     // Step 3: Move old code to "Old Weekly Access" user
     if (oldCode) {
       const movedOldCode = await setVerkadaEntryCode(
-        OLD_WEEKLY_ACCESS_USER_ID,
+        env.VERKADA_OLD_WEEKLY_ACCESS_USER_ID,
         oldCode,
         token
-      );
+      )
       if (!movedOldCode) {
-        throw new Error('Failed to set old code on Old Weekly Access user');
+        throw new Error('Failed to set old code on Old Weekly Access user')
       }
       console.log(
         '[Cron rotate-door-code] Moved old code to Old Weekly Access user'
-      );
+      )
     }
 
     // Step 4: Set new code on "Weekly Access" user
     const setNewCode = await setVerkadaEntryCode(
-      WEEKLY_ACCESS_USER_ID,
+      env.VERKADA_WEEKLY_ACCESS_USER_ID,
       newCode,
       token
-    );
+    )
     if (!setNewCode) {
-      throw new Error('Failed to set new code on Weekly Access user');
+      throw new Error('Failed to set new code on Weekly Access user')
     }
-    console.log('[Cron rotate-door-code] Set new code on Weekly Access user');
+    console.log('[Cron rotate-door-code] Set new code on Weekly Access user')
 
     // Step 5: Update Discord channel name
     const channelRenamed = await renameDiscordChannel(
-      DOOR_CODE_CHANNEL_ID,
+      env.DISCORD_DOOR_CODE_CHANNEL_ID,
       `🚪 Code: ${newCode}#`
-    );
+    )
     if (!channelRenamed) {
       // Log error but don't fail - Verkada changes succeeded
-      console.error('[Cron rotate-door-code] Failed to rename Discord channel');
+      console.error('[Cron rotate-door-code] Failed to rename Discord channel')
     } else {
-      console.log('[Cron rotate-door-code] Updated Discord channel name');
+      console.log('[Cron rotate-door-code] Updated Discord channel name')
     }
 
     // Step 6: Post message to #packages channel
-    const nextMonday = new Date();
-    nextMonday.setDate(nextMonday.getDate() + 7);
+    const nextMonday = new Date()
+    nextMonday.setDate(nextMonday.getDate() + 7)
     const expiryDate = nextMonday.toLocaleDateString('en-US', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
-    });
+    })
 
-    let messageSent = false;
+    let messageSent = false
     if (oldCode) {
       messageSent = await sendChannelMessage(
-        PACKAGES_CHANNEL_ID,
+        env.DISCORD_PACKAGES_CHANNEL_ID,
         `🔄 **Door code rotated!**\n\nThe old code **${oldCode}#** will continue to work until ${expiryDate}.`
-      );
+      )
       if (!messageSent) {
-        console.error('[Cron rotate-door-code] Failed to send message to #packages');
+        console.error(
+          '[Cron rotate-door-code] Failed to send message to #packages'
+        )
       } else {
-        console.log('[Cron rotate-door-code] Posted rotation message to #packages');
+        console.log(
+          '[Cron rotate-door-code] Posted rotation message to #packages'
+        )
       }
     }
 
-    const duration = Date.now() - startTime;
-    console.log(`[Cron rotate-door-code] Completed in ${duration}ms`);
+    const duration = Date.now() - startTime
+    console.log(`[Cron rotate-door-code] Completed in ${duration}ms`)
 
     return Response.json({
       success: true,
@@ -222,15 +223,15 @@ export async function GET(request: Request) {
       discordUpdated: channelRenamed,
       messageSent,
       durationMs: duration,
-    });
+    })
   } catch (error) {
-    console.error('[Cron rotate-door-code] Error:', error);
+    console.error('[Cron rotate-door-code] Error:', error)
     return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
-    );
+    )
   }
 }

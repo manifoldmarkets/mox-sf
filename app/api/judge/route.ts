@@ -1,8 +1,9 @@
 import { Anthropic } from '@anthropic-ai/sdk'
 import { NextResponse } from 'next/server'
+import { env } from '@/app/lib/env'
 
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: env.ANTHROPIC_API_KEY,
 })
 
 const ABOUT_HACKATHON = `
@@ -72,8 +73,6 @@ ${ABOUT_HACKATHON}`,
         },
       ],
     })
-
-    console.log('response', response)
 
     return NextResponse.json({
       // @ts-ignore
