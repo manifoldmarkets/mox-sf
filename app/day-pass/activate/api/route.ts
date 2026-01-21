@@ -6,6 +6,7 @@ interface DayPassFields {
   Status?: string
   Username?: string
   'Date Activated'?: string
+  'Pass Type'?: string
 }
 
 async function fetchVerkadaUserPin(): Promise<string | null> {
@@ -83,11 +84,13 @@ export async function POST(request: Request) {
     }
 
     // If status is "Unused", activate it and update the record
+    let dateActivated = fields['Date Activated']
     if (fields.Status === 'Unused') {
+      dateActivated = new Date().toISOString().split('T')[0] // YYYY-MM-DD format
       try {
         await updateRecord<DayPassFields>(Tables.DayPasses, record.id, {
           Status: 'Activated',
-          'Date Activated': new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+          'Date Activated': dateActivated,
         })
       } catch (error) {
         console.error('Failed to update Airtable record:', error)
@@ -102,23 +105,29 @@ export async function POST(request: Request) {
       return Response.json({ success: false, status: 'error' })
     }
 
-    // // Determine pass type based on the Stripe payment links
-    // let passType = 'Day Pass'
-    // const stripeLink = fields['Stripe link (from User)'] || ''
-    // if (stripeLink.includes('dRm9AV636cQF8Jx26a')) {
-    //   passType = 'Happy Hour Pass'
-    // } else if (stripeLink.includes('00weVf3UY3g5f7V7qu')) {
-    //   passType = 'Day Pass'
-    // }
-    // // TODO: Consider storing pass type directly in Airtable for more robust classification
+    const passType = fields['Pass Type'] || 'Day Pass'
+    console.log(
+      `Activated ${passType} for ${fields.Username}, door code: ${doorCode}`
+    )
 
-    console.log(`Activated pass for ${fields.Username}, door code: ${doorCode}`)
+    // Calculate expiration date based on pass type
+    // All passes expire at 11pm on the last day
+    let expiresAt: string | null = null
+    if (dateActivated) {
+      const activatedDate = new Date(dateActivated)
+      if (passType === 'Week Pass') {
+        activatedDate.setDate(activatedDate.getDate() + 6) // 7 days total including activation day
+      }
+      // Day Pass and Happy Hour Pass expire same day at 11pm
+      expiresAt = activatedDate.toISOString().split('T')[0]
+    }
 
     return Response.json({
       success: true,
       doorCode,
-      // passType,
+      passType,
       userName: fields.Username || 'Guest',
+      expiresAt,
     })
   } catch (error) {
     console.error('Error processing day pass activation:', error)
