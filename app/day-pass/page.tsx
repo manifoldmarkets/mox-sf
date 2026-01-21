@@ -28,9 +28,7 @@ export default function DayPassPage() {
           <h1 className="text-3xl font-bold mb-2 font-display text-amber-900">
             Mox Day Passes
           </h1>
-          <p className="text-gray-600">
-            Drop in for a day, evening, or week.
-          </p>
+          <p className="text-gray-600">Drop in for a day, evening, or week.</p>
         </div>
 
         {/* Free guest option - emphasized */}
@@ -73,7 +71,9 @@ export default function DayPassPage() {
             rel="noopener noreferrer"
             className="bg-white p-4 border-2 border-slate-200 hover:border-amber-400 hover:shadow-md transition-all text-center group"
           >
-            <div className="text-lg font-bold text-amber-900 mb-1">Happy Hour</div>
+            <div className="text-lg font-bold text-amber-900 mb-1">
+              Happy Hour
+            </div>
             <div className="text-2xl font-bold text-gray-800">$40</div>
             <div className="text-xs text-gray-500 mt-1 mb-2">After 4pm</div>
             <div className="text-xs font-semibold text-amber-800 bg-amber-100 py-1 px-2 group-hover:bg-amber-200 transition-all">
@@ -101,7 +101,9 @@ export default function DayPassPage() {
           <div className="flex items-start gap-3">
             <span className="text-xl">📍</span>
             <div>
-              <div className="font-semibold text-gray-800">1680 Mission St, San Francisco</div>
+              <div className="font-semibold text-gray-800">
+                1680 Mission St, San Francisco
+              </div>
               <div className="text-sm text-gray-500">Between 12th & 13th St</div>
             </div>
           </div>
@@ -109,7 +111,8 @@ export default function DayPassPage() {
 
         {/* What you get */}
         <div className="text-center text-sm text-gray-600 mb-8">
-          <span className="font-medium">Includes:</span> Monitors • Fast wifi • Coffee & snacks • Meeting rooms • Member events
+          <span className="font-medium">Includes:</span> Monitors • Fast wifi •
+          Coffee & snacks • Meeting rooms • Member events
         </div>
 
         {/* Footer */}

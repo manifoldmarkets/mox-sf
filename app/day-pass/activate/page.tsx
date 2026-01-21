@@ -26,25 +26,25 @@ function ActivatePageContent() {
     fetch('/day-pass/activate/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ paymentId: id })
+      body: JSON.stringify({ paymentId: id }),
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        setState('success')
-        setDoorCode(data.doorCode)
-        setPassType(data.passType || 'Day Pass')
-        setUserName(data.userName)
-        setExpiresAt(data.expiresAt || '')
-      } else if (data.status === 'expired') {
-        setState('expired')
-      } else if (data.status === 'not-found') {
-        setState('not-found')
-      } else {
-        setState('error')
-      }
-    })
-    .catch(() => setState('error'))
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setState('success')
+          setDoorCode(data.doorCode)
+          setPassType(data.passType || 'Day Pass')
+          setUserName(data.userName)
+          setExpiresAt(data.expiresAt || '')
+        } else if (data.status === 'expired') {
+          setState('expired')
+        } else if (data.status === 'not-found') {
+          setState('not-found')
+        } else {
+          setState('error')
+        }
+      })
+      .catch(() => setState('error'))
   }, [id])
 
   const handleUnlockDoor = async () => {
@@ -56,7 +56,7 @@ function ActivatePageContent() {
       const response = await fetch('/day-pass/activate/unlock-api', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentId: id })
+        body: JSON.stringify({ paymentId: id }),
       })
 
       const data = await response.json()
@@ -104,11 +104,15 @@ function ActivatePageContent() {
               unlockSuccess
                 ? 'bg-green-600 text-white'
                 : unlocking
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-white border border-slate-200 text-gray-700 hover:border-amber-300'
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-white border border-slate-200 text-gray-700 hover:border-amber-300'
             }`}
           >
-            {unlocking ? 'Unlocking...' : unlockSuccess ? '✓ Door Unlocked' : 'Unlock Door Remotely'}
+            {unlocking
+              ? 'Unlocking...'
+              : unlockSuccess
+                ? '✓ Door Unlocked'
+                : 'Unlock Door Remotely'}
           </button>
           {unlockError && (
             <p className="text-sm text-red-600 text-center -mt-4 mb-4">
@@ -118,11 +122,18 @@ function ActivatePageContent() {
 
           {/* Confirmation */}
           <div className="text-center mb-6">
-            <div className="text-lg font-semibold text-gray-800">Welcome, {userName}!</div>
+            <div className="text-lg font-semibold text-gray-800">
+              Welcome, {userName}!
+            </div>
             <div className="text-sm text-gray-500">{passType} activated</div>
             {expiresAt && (
               <div className="text-sm text-gray-500 mt-1">
-                Expires 11pm {new Date(expiresAt + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                Expires 11pm{' '}
+                {new Date(expiresAt + 'T00:00:00').toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  month: 'short',
+                  day: 'numeric',
+                })}
               </div>
             )}
           </div>
@@ -133,14 +144,22 @@ function ActivatePageContent() {
               <span className="text-xl">📍</span>
               <div>
                 <div className="font-semibold text-gray-800">1680 Mission St</div>
-                <div className="text-sm text-gray-500">Enter code on keypad at front door</div>
+                <div className="text-sm text-gray-500">
+                  Enter code on keypad at front door
+                </div>
               </div>
             </div>
           </div>
 
           {/* Footer */}
           <div className="text-center text-sm text-gray-400">
-            Questions? <a href="mailto:team@moxsf.com" className="text-amber-800 hover:text-amber-600">team@moxsf.com</a>
+            Questions?{' '}
+            <a
+              href="mailto:team@moxsf.com"
+              className="text-amber-800 hover:text-amber-600"
+            >
+              team@moxsf.com
+            </a>
           </div>
         </div>
       </div>
@@ -172,7 +191,9 @@ function ActivatePageContent() {
       <div className="min-h-screen bg-slate-50 text-gray-800">
         <div className="max-w-md mx-auto pt-16 pb-8 px-6 text-center">
           <div className="text-4xl mb-4">🔍</div>
-          <h1 className="text-2xl font-bold mb-2 text-gray-800">Pass Not Found</h1>
+          <h1 className="text-2xl font-bold mb-2 text-gray-800">
+            Pass Not Found
+          </h1>
           <p className="text-gray-600 mb-6">
             Check your email for the correct link, or get a new pass.
           </p>
@@ -192,7 +213,9 @@ function ActivatePageContent() {
     <div className="min-h-screen bg-slate-50 text-gray-800">
       <div className="max-w-md mx-auto pt-16 pb-8 px-6 text-center">
         <div className="text-4xl mb-4">😕</div>
-        <h1 className="text-2xl font-bold mb-2 text-gray-800">Something Went Wrong</h1>
+        <h1 className="text-2xl font-bold mb-2 text-gray-800">
+          Something Went Wrong
+        </h1>
         <p className="text-gray-600 mb-6">
           Try refreshing, or contact us for help.
         </p>
@@ -217,14 +240,16 @@ function ActivatePageContent() {
 
 export default function ActivatePage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <ActivatePageContent />
     </Suspense>
   )

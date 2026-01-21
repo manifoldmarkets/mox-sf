@@ -1,27 +1,42 @@
-import { getSession } from '@/app/lib/session';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import LogoutButton from './LogoutButton';
-import ProfileEditForm from './profile/edit/ProfileEditForm';
-import HostedEvents from './HostedEvents';
-import MobilePortal from './MobilePortal';
-import VerkadaPin from './VerkadaPin';
-import AdminViewAsSelector from './AdminViewAsSelector';
-import AdminBanner from './AdminBanner';
-import MembershipStatus from './MembershipStatus';
+import { getSession } from '@/app/lib/session'
+import { getRecord, Tables } from '@/app/lib/airtable'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import LogoutButton from './LogoutButton'
+import ProfileEditForm from './profile/edit/ProfileEditForm'
+import HostedEvents from './HostedEvents'
+import MobilePortal from './MobilePortal'
+import VerkadaPin from './VerkadaPin'
+import AdminViewAsSelector from './AdminViewAsSelector'
+import AdminBanner from './AdminBanner'
+import MembershipStatus from './MembershipStatus'
+import DayPassPurchase from './DayPassPurchase'
+
+interface ProfileFields {
+  Name?: string
+  Email?: string
+  Website?: string
+  Photo?: Array<{ url: string }>
+  'Show in directory'?: boolean
+  'Stripe Customer ID'?: string
+  Status?: string
+  Tier?: string
+  Org?: string[]
+  'Discord Username'?: string
+}
 
 export default async function DashboardPage() {
-  const session = await getSession();
+  const session = await getSession()
 
   if (!session.isLoggedIn) {
-    redirect('/portal/login');
+    redirect('/portal/login')
   }
 
   // Use viewingAsUserId if staff is viewing as another user, otherwise use their own userId
-  const effectiveUserId = session.viewingAsUserId || session.userId;
+  const effectiveUserId = session.viewingAsUserId || session.userId
 
   // Fetch user profile from Airtable
-  const profile = await getUserProfile(effectiveUserId);
+  const profile = await getUserProfile(effectiveUserId)
 
   if (!profile) {
     return (
@@ -31,11 +46,18 @@ export default async function DashboardPage() {
           <p className="text-gray-600 mb-4">Unable to load your profile.</p>
           <p className="text-gray-500 text-sm">
             Your session is valid but we couldn't fetch your profile data.
-            Please try <Link href="/portal/login" className="text-blue-600 hover:underline">logging in again</Link> or contact support if the issue persists.
+            Please try{' '}
+            <Link
+              href="/portal/login"
+              className="text-blue-600 hover:underline"
+            >
+              logging in again
+            </Link>{' '}
+            or contact support if the issue persists.
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   // Mobile view - separate screens for each section
@@ -52,7 +74,7 @@ export default async function DashboardPage() {
         orgId={profile.orgId}
       />
     </div>
-  );
+  )
 
   // Desktop view - original layout
   const desktopView = (
@@ -66,9 +88,22 @@ export default async function DashboardPage() {
         {/* Desktop Left Sidebar */}
         <aside className="w-64 bg-background-surface dark:bg-background-surface-dark border-r border-border-light dark:border-border-light-dark sticky top-0 h-screen">
           <div className="px-4 py-6 h-full flex flex-col">
-            <Link href="/" className="text-text-tertiary dark:text-text-tertiary-dark hover:text-brand dark:hover:text-brand-dark-mode text-sm flex items-center gap-2 mb-8 transition-colors px-4 py-2">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <Link
+              href="/"
+              className="text-text-tertiary dark:text-text-tertiary-dark hover:text-brand dark:hover:text-brand-dark-mode text-sm flex items-center gap-2 mb-8 transition-colors px-4 py-2"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               <span>Back to Home</span>
             </Link>
@@ -79,8 +114,18 @@ export default async function DashboardPage() {
                 href="#subscription"
                 className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-all group"
               >
-                <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                <svg
+                  className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
                 </svg>
                 <span>Subscription</span>
               </a>
@@ -88,8 +133,18 @@ export default async function DashboardPage() {
                 href="#events"
                 className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-all group"
               >
-                <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 <span>Events</span>
               </a>
@@ -97,8 +152,18 @@ export default async function DashboardPage() {
                 href="#profile"
                 className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-text-secondary dark:text-text-secondary-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark hover:text-brand dark:hover:text-brand-dark-mode transition-all group"
               >
-                <svg className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <svg
+                  className="w-5 h-5 text-text-muted dark:text-text-muted-dark group-hover:text-brand dark:group-hover:text-brand-dark-mode"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
                 </svg>
                 <span>Profile</span>
               </a>
@@ -121,7 +186,9 @@ export default async function DashboardPage() {
                   currentViewingAsName={session.viewingAsName}
                 />
                 <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 p-4">
-                  <div className="text-sm font-medium text-purple-900 dark:text-purple-100 mb-2">Admin Tools</div>
+                  <div className="text-sm font-medium text-purple-900 dark:text-purple-100 mb-2">
+                    Admin Tools
+                  </div>
                   <Link
                     href="/portal/admin/discord-mapping"
                     className="text-sm text-purple-700 dark:text-purple-300 hover:underline"
@@ -143,6 +210,13 @@ export default async function DashboardPage() {
               />
             </div>
 
+            {/* Day Pass Purchase - available to all existing members */}
+            <DayPassPurchase
+              stripeCustomerId={profile.stripeCustomerId}
+              userName={profile.name}
+              userEmail={profile.email}
+            />
+
             <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
 
             <div id="events" className="scroll-mt-8">
@@ -151,7 +225,9 @@ export default async function DashboardPage() {
 
             <div id="profile" className="scroll-mt-8">
               <div className="bg-background-surface dark:bg-background-surface-dark border border-border-light dark:border-border-light-dark p-6">
-                <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-display">Profile</h1>
+                <h1 className="text-xl font-bold text-brand dark:text-brand-dark-mode mb-6 font-display">
+                  Profile
+                </h1>
                 <ProfileEditForm profile={profile} userId={effectiveUserId} />
               </div>
             </div>
@@ -159,55 +235,39 @@ export default async function DashboardPage() {
         </main>
       </div>
     </div>
-  );
+  )
 
   return (
     <>
       {mobileView}
       {desktopView}
     </>
-  );
+  )
 }
 
 async function getUserProfile(recordId: string): Promise<{
-  name: string;
-  email: string;
-  website: string;
-  photo: string | null;
-  directoryVisible: boolean;
-  stripeCustomerId: string | null;
-  status: string | null;
-  tier: string | null;
-  orgId: string | null;
-  discordUsername: string | null;
-  error?: string;
+  name: string
+  email: string
+  website: string
+  photo: string | null
+  directoryVisible: boolean
+  stripeCustomerId: string | null
+  status: string | null
+  tier: string | null
+  orgId: string | null
+  discordUsername: string | null
+  error?: string
 } | null> {
-  // Fetch only the fields we need for the profile edit form
-  // Note: We can't filter for 'Show in directory' because Airtable omits it when unchecked
-  // So we fetch all fields and handle missing fields in the response
-  const response = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/People/${recordId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      },
-      cache: 'no-store',
-    }
-  );
+  const record = await getRecord<ProfileFields>(Tables.People, recordId)
 
-  if (!response.ok) {
-    return null;
+  if (!record) {
+    return null
   }
 
-  const data = await response.json();
-  const fields = data.fields;
-
-  if (!fields) {
-    return null;
-  }
+  const fields = record.fields
 
   // Airtable omits checkbox fields when unchecked, so we need to handle undefined
-  const showInDirectory = fields['Show in directory'];
+  const showInDirectory = fields['Show in directory']
 
   return {
     name: fields.Name || '',
@@ -220,5 +280,5 @@ async function getUserProfile(recordId: string): Promise<{
     tier: fields.Tier || null,
     orgId: fields.Org?.[0] || null, // Org is a linked record array, get first one
     discordUsername: fields['Discord Username'] || null,
-  };
+  }
 }

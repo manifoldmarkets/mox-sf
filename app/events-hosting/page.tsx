@@ -71,8 +71,12 @@ function GeneralAmenities() {
 function AmenityItem({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="text-brand dark:text-brand-dark-mode text-xl mt-0.5">✓</span>
-      <span className="text-text-secondary dark:text-text-secondary-dark">{text}</span>
+      <span className="text-brand dark:text-brand-dark-mode text-xl mt-0.5">
+        ✓
+      </span>
+      <span className="text-text-secondary dark:text-text-secondary-dark">
+        {text}
+      </span>
     </div>
   )
 }
@@ -89,7 +93,10 @@ function AreaGallery({ images, name }: AreaGalleryProps) {
       {/* Top row: 2 large square-ish photos */}
       <div className="grid grid-cols-2 gap-1">
         {images.slice(0, 2).map((image, index) => (
-          <div key={index} className="relative aspect-square bg-gray-300 overflow-hidden">
+          <div
+            key={index}
+            className="relative aspect-square bg-gray-300 overflow-hidden"
+          >
             {image.startsWith('/images/') ? (
               <NextImage
                 src={image}
@@ -108,7 +115,10 @@ function AreaGallery({ images, name }: AreaGalleryProps) {
       {/* Bottom row: 4 smaller photos */}
       <div className="grid grid-cols-4 gap-1">
         {images.slice(2, 6).map((image, index) => (
-          <div key={index + 2} className="relative aspect-video bg-gray-300 overflow-hidden">
+          <div
+            key={index + 2}
+            className="relative aspect-video bg-gray-300 overflow-hidden"
+          >
             {image.startsWith('/images/') ? (
               <NextImage
                 src={image}
@@ -137,7 +147,14 @@ interface AreaSectionProps {
   features?: string[]
 }
 
-function AreaSection({ name, capacity, floor, description, images, features }: AreaSectionProps) {
+function AreaSection({
+  name,
+  capacity,
+  floor,
+  description,
+  images,
+  features,
+}: AreaSectionProps) {
   return (
     <div className="bg-white dark:bg-gray-800 p-8 shadow-lg border border-slate-200 dark:border-gray-700">
       <div className="grid lg:grid-cols-[1fr_2fr] gap-8">
@@ -157,8 +174,13 @@ function AreaSection({ name, capacity, floor, description, images, features }: A
           {features && features.length > 0 && (
             <ul className="space-y-2">
               {features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-text-tertiary dark:text-text-tertiary-dark">
-                  <span className="text-brand dark:text-brand-dark-mode">•</span>
+                <li
+                  key={index}
+                  className="flex items-start gap-2 text-sm text-text-tertiary dark:text-text-tertiary-dark"
+                >
+                  <span className="text-brand dark:text-brand-dark-mode">
+                    •
+                  </span>
                   {feature}
                 </li>
               ))}
@@ -396,7 +418,7 @@ const testimonials: Testimonial[] = [
     organization: 'METR',
     eventType: 'hackathon',
     quote:
-      "Mox provided the perfect environment for our AI safety hackathon. The 24/7 access, excellent AV setup, and dedicated workspace made it easy for participants to stay focused and productive throughout the weekend. The staff was incredibly supportive and responsive to our needs.",
+      'Mox provided the perfect environment for our AI safety hackathon. The 24/7 access, excellent AV setup, and dedicated workspace made it easy for participants to stay focused and productive throughout the weekend. The staff was incredibly supportive and responsive to our needs.',
   },
   {
     name: 'James Rodriguez',
@@ -410,14 +432,14 @@ const testimonials: Testimonial[] = [
     organization: 'Open Philanthropy',
     eventType: 'small',
     quote:
-      "For intimate workshops, Mox strikes the perfect balance between professional and comfortable. The breakout rooms were ideal for small group discussions, and the overall atmosphere fostered exactly the kind of thoughtful conversation we were hoping for.",
+      'For intimate workshops, Mox strikes the perfect balance between professional and comfortable. The breakout rooms were ideal for small group discussions, and the overall atmosphere fostered exactly the kind of thoughtful conversation we were hoping for.',
   },
   {
     name: 'Alex Kim',
     organization: 'Independent Organizer',
     eventType: 'large',
     quote:
-      "What sets Mox apart is the community. Beyond just renting a space, we felt supported by a network of mission-aligned people who genuinely cared about the success of our event.",
+      'What sets Mox apart is the community. Beyond just renting a space, we felt supported by a network of mission-aligned people who genuinely cared about the success of our event.',
   },
   {
     name: 'David Park',
@@ -449,13 +471,14 @@ export default function EventHostingPage() {
       : testimonials.filter((t) => t.eventType === selectedCategory)
 
   // Determine which amenities component to show
-  const AmenitiesComponent = selectedCategory === 'small'
-    ? SmallEventAmenities
-    : selectedCategory === 'large'
-    ? LargeEventAmenities
-    : selectedCategory === 'hackathon'
-    ? HackathonAmenities
-    : GeneralAmenities
+  const AmenitiesComponent =
+    selectedCategory === 'small'
+      ? SmallEventAmenities
+      : selectedCategory === 'large'
+        ? LargeEventAmenities
+        : selectedCategory === 'hackathon'
+          ? HackathonAmenities
+          : GeneralAmenities
 
   return (
     <div className="min-h-screen bg-background-page dark:bg-background-page-dark text-text-primary dark:text-text-primary-dark">
@@ -514,7 +537,9 @@ export default function EventHostingPage() {
                     {type.capacity}
                   </span>
                 </div>
-                <p className="text-text-secondary dark:text-text-secondary-dark">{type.description}</p>
+                <p className="text-text-secondary dark:text-text-secondary-dark">
+                  {type.description}
+                </p>
                 {selectedCategory === type.id && (
                   <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-700">
                     <span className="text-sm text-brand dark:text-brand-dark-mode font-semibold">
@@ -576,7 +601,9 @@ export default function EventHostingPage() {
                   <p className="text-sm text-brand dark:text-brand-dark-mode font-semibold mb-2">
                     {event.organizer} • {event.attendees} attendees
                   </p>
-                  <p className="text-text-secondary dark:text-text-secondary-dark text-sm">{event.description}</p>
+                  <p className="text-text-secondary dark:text-text-secondary-dark text-sm">
+                    {event.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -702,22 +729,21 @@ export default function EventHostingPage() {
             <LibraryArea />
 
             {/* Dining Hall - shown for large events and hackathons */}
-            {(selectedCategory === null || selectedCategory === 'large' || selectedCategory === 'hackathon') && (
-              <DiningHallArea />
-            )}
+            {(selectedCategory === null ||
+              selectedCategory === 'large' ||
+              selectedCategory === 'hackathon') && <DiningHallArea />}
 
             {/* Lounge - shown for all event types */}
             <LoungeArea />
 
             {/* Auditorium - shown for large events and hackathons */}
-            {(selectedCategory === null || selectedCategory === 'large' || selectedCategory === 'hackathon') && (
-              <AuditoriumArea />
-            )}
+            {(selectedCategory === null ||
+              selectedCategory === 'large' ||
+              selectedCategory === 'hackathon') && <AuditoriumArea />}
 
             {/* Coworking Space - shown only for hackathons */}
-            {(selectedCategory === null || selectedCategory === 'hackathon') && (
-              <CoworkingArea />
-            )}
+            {(selectedCategory === null ||
+              selectedCategory === 'hackathon') && <CoworkingArea />}
 
             {/* Breakout Rooms - shown for all event types */}
             <BreakoutRoomsArea />
@@ -733,8 +759,7 @@ export default function EventHostingPage() {
                 <strong>Address:</strong> 1680 Mission Street, San Francisco
               </p>
               <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <strong>Transit:</strong> Near 16th St BART, multiple Muni
-                lines
+                <strong>Transit:</strong> Near 16th St BART, multiple Muni lines
               </p>
               <p className="text-text-secondary dark:text-text-secondary-dark">
                 <strong>Parking:</strong> Street parking and nearby garages
@@ -886,4 +911,3 @@ export default function EventHostingPage() {
     </div>
   )
 }
-

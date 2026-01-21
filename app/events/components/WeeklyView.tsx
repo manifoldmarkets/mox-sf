@@ -45,8 +45,7 @@ function EventBlock({ event, index }: { event: Event; index: number }) {
         </div>
         <div className="text-amber-800 dark:text-amber-500 mt-0.5">
           {format(start, 'h:mm a').replace(':00', '')}
-          {event.endDate &&
-            ` - ${format(end, 'h:mm a').replace(':00', '')}`}
+          {event.endDate && ` - ${format(end, 'h:mm a').replace(':00', '')}`}
         </div>
         {event.location && clampedHeight > 60 && (
           <div className="text-gray-600 dark:text-gray-400 truncate mt-0.5">
@@ -85,7 +84,9 @@ export default function WeeklyView({ events }: { events: Event[] }) {
             <div className="font-medium text-amber-900 dark:text-amber-400">
               {format(day, 'EEE')}
             </div>
-            <div className="text-sm text-amber-800 dark:text-amber-500">{format(day, 'MMM d')}</div>
+            <div className="text-sm text-amber-800 dark:text-amber-500">
+              {format(day, 'MMM d')}
+            </div>
           </div>
         ))}
       </div>

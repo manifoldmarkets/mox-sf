@@ -30,7 +30,9 @@ function DayCard({
         isDayToday ? 'bg-red-50 dark:bg-red-900/30' : ''
       }`}
     >
-      <div className={`font-medium text-gray-700 dark:text-gray-300 mb-1 flex justify-center`}>
+      <div
+        className={`font-medium text-gray-700 dark:text-gray-300 mb-1 flex justify-center`}
+      >
         <span
           className={`${
             isDayToday

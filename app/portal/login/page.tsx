@@ -1,83 +1,94 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
-  const [checkingSession, setCheckingSession] = useState(true);
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle')
+  const [message, setMessage] = useState('')
+  const [checkingSession, setCheckingSession] = useState(true)
 
   // Check if user is already logged in
   useEffect(() => {
     async function checkSession() {
       try {
-        const response = await fetch('/portal/api/session');
+        const response = await fetch('/portal/api/session')
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json()
           if (data.isLoggedIn) {
-            router.push('/portal');
-            return;
+            router.push('/portal')
+            return
           }
         }
       } catch (error) {
-        console.error('Error checking session:', error);
+        console.error('Error checking session:', error)
       } finally {
-        setCheckingSession(false);
+        setCheckingSession(false)
       }
     }
-    checkSession();
-  }, [router]);
+    checkSession()
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setMessage('');
+    e.preventDefault()
+    setStatus('loading')
+    setMessage('')
 
     try {
       const response = await fetch('/portal/api/send-magic-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        setStatus('success');
-        setMessage('Check your email! We sent you a login link.');
+        setStatus('success')
+        setMessage('Check your email! We sent you a login link.')
       } else {
-        setStatus('error');
-        setMessage(data.error || 'Something went wrong. Please try again.');
+        setStatus('error')
+        setMessage(data.error || 'Something went wrong. Please try again.')
       }
     } catch (error) {
-      setStatus('error');
-      setMessage('Failed to send email. Please try again.');
+      setStatus('error')
+      setMessage('Failed to send email. Please try again.')
     }
-  };
+  }
 
   if (checkingSession) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background-page dark:bg-background-page-dark px-4">
-        <div className="text-text-tertiary dark:text-text-tertiary-dark">Checking session...</div>
+        <div className="text-text-tertiary dark:text-text-tertiary-dark">
+          Checking session...
+        </div>
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background-page dark:bg-background-page-dark px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-brand dark:text-brand-dark-mode mb-2 font-display">Member Portal</h1>
-          <p className="text-text-tertiary dark:text-text-tertiary-dark font-sans">Sign in to edit your profile and manage your membership</p>
+          <h1 className="text-3xl font-bold text-brand dark:text-brand-dark-mode mb-2 font-display">
+            Member Portal
+          </h1>
+          <p className="text-text-tertiary dark:text-text-tertiary-dark font-sans">
+            Sign in to edit your profile and manage your membership
+          </p>
         </div>
 
         <div className="bg-background-surface dark:bg-background-surface-dark shadow-md p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2 font-sans">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2 font-sans"
+              >
                 Email Address
               </label>
               <input
@@ -120,5 +131,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

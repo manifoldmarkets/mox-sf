@@ -1,35 +1,42 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface ProfileEditFormProps {
   profile: {
-    name: string;
-    email: string;
-    website: string;
-    photo: string | null;
-    directoryVisible: boolean;
-    discordUsername?: string | null;
-    tier?: string | null;
-    status?: string | null;
-  };
-  userId: string;
+    name: string
+    email: string
+    website: string
+    photo: string | null
+    directoryVisible: boolean
+    discordUsername?: string | null
+    tier?: string | null
+    status?: string | null
+  }
+  userId: string
 }
 
-export default function ProfileEditForm({ profile, userId }: ProfileEditFormProps) {
-  const router = useRouter();
+export default function ProfileEditForm({
+  profile,
+  userId,
+}: ProfileEditFormProps) {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: profile.name,
     website: profile.website,
     discordUsername: profile.discordUsername || '',
     directoryVisible: profile.directoryVisible,
-  });
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
-  const [discordSyncStatus, setDiscordSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
-  const [discordSyncMessage, setDiscordSyncMessage] = useState('');
+  })
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle')
+  const [message, setMessage] = useState('')
+  const [discordSyncStatus, setDiscordSyncStatus] = useState<
+    'idle' | 'syncing' | 'success' | 'error'
+  >('idle')
+  const [discordSyncMessage, setDiscordSyncMessage] = useState('')
 
   // Update form data when profile prop changes (e.g., after router.refresh())
   useEffect(() => {
@@ -38,72 +45,80 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
       website: profile.website,
       discordUsername: profile.discordUsername || '',
       directoryVisible: profile.directoryVisible,
-    });
-    setStatus('idle');
-    setMessage('');
-    setPhotoFile(null);
-  }, [profile]);
+    })
+    setStatus('idle')
+    setMessage('')
+    setPhotoFile(null)
+  }, [profile])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const value =
+      e.target.type === 'checkbox'
+        ? (e.target as HTMLInputElement).checked
+        : e.target.value
     setFormData({
       ...formData,
       [e.target.name]: value,
-    });
-  };
+    })
+  }
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setPhotoFile(e.target.files[0]);
+      setPhotoFile(e.target.files[0])
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setMessage('');
+    e.preventDefault()
+    setStatus('loading')
+    setMessage('')
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('userId', userId);
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('website', formData.website);
-      formDataToSend.append('discordUsername', formData.discordUsername);
-      formDataToSend.append('directoryVisible', formData.directoryVisible.toString());
+      const formDataToSend = new FormData()
+      formDataToSend.append('userId', userId)
+      formDataToSend.append('name', formData.name)
+      formDataToSend.append('website', formData.website)
+      formDataToSend.append('discordUsername', formData.discordUsername)
+      formDataToSend.append(
+        'directoryVisible',
+        formData.directoryVisible.toString()
+      )
 
       if (photoFile) {
-        formDataToSend.append('photo', photoFile);
+        formDataToSend.append('photo', photoFile)
       }
 
       const response = await fetch('/portal/api/update-profile', {
         method: 'POST',
         body: formDataToSend,
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        setStatus('success');
-        setMessage('Profile updated successfully!');
+        setStatus('success')
+        setMessage('Profile updated successfully!')
         // Refresh the page to show updated data (useEffect will clear state)
         setTimeout(() => {
-          router.refresh();
-        }, 1500);
+          router.refresh()
+        }, 1500)
       } else {
-        setStatus('error');
-        setMessage(data.error || 'Failed to update profile. Please try again.');
+        setStatus('error')
+        setMessage(data.error || 'Failed to update profile. Please try again.')
       }
     } catch (error) {
-      setStatus('error');
-      setMessage('An error occurred. Please try again.');
+      setStatus('error')
+      setMessage('An error occurred. Please try again.')
     }
-  };
+  }
 
   const handleDiscordSync = async () => {
-    if (!profile.discordUsername) return;
+    if (!profile.discordUsername) return
 
-    setDiscordSyncStatus('syncing');
-    setDiscordSyncMessage('');
+    setDiscordSyncStatus('syncing')
+    setDiscordSyncMessage('')
 
     try {
       const response = await fetch('/portal/api/sync-discord-role', {
@@ -115,33 +130,36 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           status: profile.status,
           userId,
         }),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok && data.success) {
-        setDiscordSyncStatus('success');
-        setDiscordSyncMessage('Discord role synced!');
+        setDiscordSyncStatus('success')
+        setDiscordSyncMessage('Discord role synced!')
         setTimeout(() => {
-          setDiscordSyncStatus('idle');
-          setDiscordSyncMessage('');
-        }, 3000);
+          setDiscordSyncStatus('idle')
+          setDiscordSyncMessage('')
+        }, 3000)
       } else {
-        setDiscordSyncStatus('error');
-        setDiscordSyncMessage(data.error || 'Failed to sync role');
+        setDiscordSyncStatus('error')
+        setDiscordSyncMessage(data.error || 'Failed to sync role')
       }
     } catch (error) {
-      setDiscordSyncStatus('error');
-      setDiscordSyncMessage('Network error. Please try again.');
+      setDiscordSyncStatus('error')
+      setDiscordSyncMessage('Network error. Please try again.')
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="space-y-6">
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2"
+          >
             Name *
           </label>
           <input
@@ -157,7 +175,10 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
 
         {/* Email (read-only) */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Email
           </label>
           <input
@@ -167,12 +188,17 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             disabled
             className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-subtle dark:bg-background-subtle-dark text-text-tertiary dark:text-text-tertiary-dark cursor-not-allowed"
           />
-          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">Ask a staff member if you want to update your email</p>
+          <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">
+            Ask a staff member if you want to update your email
+          </p>
         </div>
 
         {/* Discord Username */}
         <div>
-          <label htmlFor="discordUsername" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            htmlFor="discordUsername"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Discord Username
           </label>
           <div className="flex items-center gap-2">
@@ -195,7 +221,8 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
             </a>
           </div>
           <p className="text-xs text-text-muted dark:text-text-muted-dark mt-1">
-            Your Discord username (without the @). Find it in Discord under Settings → My Account.
+            Your Discord username (without the @). Find it in Discord under
+            Settings → My Account.
           </p>
           {profile.discordUsername && (
             <div className="mt-2 flex items-center gap-2">
@@ -205,10 +232,14 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
                 disabled={discordSyncStatus === 'syncing'}
                 className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 disabled:opacity-50"
               >
-                {discordSyncStatus === 'syncing' ? 'Syncing...' : 'Sync Discord Role'}
+                {discordSyncStatus === 'syncing'
+                  ? 'Syncing...'
+                  : 'Sync Discord Role'}
               </button>
               {discordSyncMessage && (
-                <span className={`text-xs ${discordSyncStatus === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                <span
+                  className={`text-xs ${discordSyncStatus === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+                >
                   {discordSyncMessage}
                 </span>
               )}
@@ -218,7 +249,10 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
 
         {/* Website */}
         <div>
-          <label htmlFor="website" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            htmlFor="website"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Website
           </label>
           <input
@@ -240,7 +274,11 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
           <div className="flex items-center gap-6">
             <div className="flex-shrink-0">
               <img
-                src={photoFile ? URL.createObjectURL(photoFile) : profile.photo || '/default-avatar.png'}
+                src={
+                  photoFile
+                    ? URL.createObjectURL(photoFile)
+                    : profile.photo || '/default-avatar.png'
+                }
                 alt="Profile"
                 className="w-32 h-32 object-cover border-2 border-border-light dark:border-border-medium-dark"
               />
@@ -280,13 +318,21 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
               />
             </div>
             <div className="ml-3">
-              <label htmlFor="directoryVisible" className="font-medium text-text-secondary dark:text-text-secondary-dark">
+              <label
+                htmlFor="directoryVisible"
+                className="font-medium text-text-secondary dark:text-text-secondary-dark"
+              >
                 Show my profile in the member directory
               </label>
               <p className="text-sm text-text-muted dark:text-text-muted-dark">
                 When enabled, other members can see your profile in the{' '}
-                <a href="/people" className="text-brand dark:text-brand-dark-mode hover:underline">member directory</a>.
-                You can change this setting at any time.
+                <a
+                  href="/people"
+                  className="text-brand dark:text-brand-dark-mode hover:underline"
+                >
+                  member directory
+                </a>
+                . You can change this setting at any time.
               </p>
             </div>
           </div>
@@ -317,5 +363,5 @@ export default function ProfileEditForm({ profile, userId }: ProfileEditFormProp
         </div>
       </div>
     </form>
-  );
+  )
 }
