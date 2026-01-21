@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import ProjectCard from '../components/ProjectCard'
-import { Project } from '../lib/projects'
+import ProjectCard from '../../components/ProjectCard'
+import { Project } from '../../lib/projects'
 
 interface HacksClientProps {
   initialProjects: Project[]
