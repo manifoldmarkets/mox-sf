@@ -6,7 +6,7 @@ let _base: ReturnType<Airtable['base']> | null = null
 function getBase() {
   if (!_base) {
     _base = new Airtable({
-      apiKey: process.env.AIRTABLE_WRITE_KEY,
+      apiKey: process.env.AIRTABLE_API_KEY,
     }).base(process.env.AIRTABLE_BASE_ID!)
   }
   return _base
