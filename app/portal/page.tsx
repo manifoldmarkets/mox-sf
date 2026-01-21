@@ -10,6 +10,7 @@ import VerkadaPin from './VerkadaPin'
 import AdminViewAsSelector from './AdminViewAsSelector'
 import AdminBanner from './AdminBanner'
 import MembershipStatus from './MembershipStatus'
+import DayPassPurchase from './DayPassPurchase'
 
 interface ProfileFields {
   Name?: string
@@ -208,6 +209,13 @@ export default async function DashboardPage() {
                 orgId={profile.orgId}
               />
             </div>
+
+            {/* Day Pass Purchase - available to all existing members */}
+            <DayPassPurchase
+              stripeCustomerId={profile.stripeCustomerId}
+              userName={profile.name}
+              userEmail={profile.email}
+            />
 
             <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
 
