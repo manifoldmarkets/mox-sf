@@ -11,6 +11,10 @@ export type Person = {
   website: string
   photo: any[] | null
   showInDirectory: boolean
+  workThing: string | null
+  workThingUrl: string | null
+  funThing: string | null
+  funThingUrl: string | null
 }
 
 // Restrict down to fields we need.
@@ -25,6 +29,10 @@ const FIELDS = [
   'Website',
   'Photo',
   'Show in directory',
+  'Work thing',
+  'Work thing URL',
+  'Fun thing',
+  'Fun thing URL',
 ]
 
 interface OrgFields {
@@ -42,6 +50,10 @@ interface PersonFields {
   Website?: string
   Photo?: any[]
   'Show in directory'?: boolean
+  'Work thing'?: string
+  'Work thing URL'?: string
+  'Fun thing'?: string
+  'Fun thing URL'?: string
 }
 
 async function getOrgNames(): Promise<Map<string, string>> {
@@ -95,6 +107,10 @@ export async function getPeople(): Promise<Person[]> {
       website: record.fields.Website || '',
       photo: record.fields.Photo || [],
       showInDirectory: true,
+      workThing: record.fields['Work thing'] || null,
+      workThingUrl: record.fields['Work thing URL'] || null,
+      funThing: record.fields['Fun thing'] || null,
+      funThingUrl: record.fields['Fun thing URL'] || null,
     }
   })
 
