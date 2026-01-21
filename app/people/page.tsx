@@ -32,6 +32,10 @@ export async function PeopleContent() {
       website: '',
       photo: null,
       showInDirectory: true,
+      workThing: null,
+      workThingUrl: null,
+      funThing: null,
+      funThingUrl: null,
     },
   ]
 
