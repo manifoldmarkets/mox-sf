@@ -1,4 +1,4 @@
-import { getProjects } from '../lib/projects'
+import { getProjects } from '../../lib/projects'
 import HacksClient from './client'
 import { Metadata } from 'next'
 
