@@ -56,8 +56,18 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                 href="/"
                 className="inline-flex items-center gap-2 text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 text-sm font-medium font-sans"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
                 </svg>
                 Home
               </Link>
@@ -163,7 +173,10 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
         {viewMode === 'list' && (
           <div className="space-y-6 relative">
             {groupedEvents.map((group, index) => (
-              <div key={`events-${format(group.date, 'yyyy-MM-dd')}-${index}`} className="flex gap-4">
+              <div
+                key={`events-${format(group.date, 'yyyy-MM-dd')}-${index}`}
+                className="flex gap-4"
+              >
                 {/* Desktop date label */}
                 <div className="flex-shrink-0 w-24 hidden lg:block">
                   <div className="sticky top-4 text-left">
@@ -224,7 +237,10 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
       {/* Calendar Dialog */}
       {isCalendarOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-black/30" onClick={() => setIsCalendarOpen(false)} />
+          <div
+            className="fixed inset-0 bg-black/30"
+            onClick={() => setIsCalendarOpen(false)}
+          />
           <div className="relative w-full max-w-sm bg-background-surface dark:bg-background-surface-dark p-6 shadow-xl">
             <h2 className="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-2">
               Sync events to your calendar

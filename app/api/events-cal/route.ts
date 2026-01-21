@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server'
 import { Event, parseAirtableEvent } from '@/app/lib/events'
 import { format } from 'date-fns'
+import { getRecords, Tables } from '@/app/lib/airtable'
+
+interface EventFields {
+  Name?: string
+  'Start Date'?: string
+  'End Date'?: string
+  Status?: string
+  'Event Description'?: string
+  Notes?: string
+  URL?: string
+  Type?: string
+  'Host Name'?: string
+  'Name (from Assigned Rooms)'?: string[]
+}
 
 // Convert a date to iCal format (e.g., "20240315T100000Z")
 function formatICalDate(date: Date): string {
@@ -60,27 +74,15 @@ function sanitize(str: string): string {
 export async function GET() {
   try {
     // Fetch events from Airtable
-    const res = await fetch(
-      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Events?maxRecords=100&view=viwSk5Z39fSwtPGaB`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-        },
-        next: { revalidate: 60 },
-      }
-    )
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch events')
-    }
-
-    const data = await res.json()
+    const records = await getRecords<EventFields>(Tables.Events, {
+      view: 'viwSk5Z39fSwtPGaB',
+    })
 
     // Transform Airtable records to Event objects
-    const events: Event[] = data.records
-      .filter((record: any) => {
-        if (!record.fields?.['Start Date']) return false
-        
+    const events: Event[] = records
+      .filter((record) => {
+        if (!record.fields['Start Date']) return false
+
         const status = record.fields.Status?.toLowerCase()
         return status !== 'idea' && status !== 'maybe' && status !== 'cancelled'
       })

@@ -3,9 +3,13 @@
 // If you need programmatic door access, please contact the admin team.
 
 export async function POST(request: Request) {
-  return Response.json({
-    success: false,
-    error: 'This endpoint has been deprecated. Please use the Verkada mobile app or contact admin for access.',
-    deprecated: true
-  }, { status: 410 }) // 410 Gone
+  return Response.json(
+    {
+      success: false,
+      error:
+        'This endpoint has been deprecated. Please use the Verkada mobile app or contact admin for access.',
+      deprecated: true,
+    },
+    { status: 410 }
+  ) // 410 Gone
 }
