@@ -9,6 +9,7 @@ import VerkadaPin from './VerkadaPin';
 import AdminViewAsSelector from './AdminViewAsSelector';
 import AdminBanner from './AdminBanner';
 import MembershipStatus from './MembershipStatus';
+import DayPassPurchase from './DayPassPurchase';
 
 interface MobilePortalProps {
   profile: {
@@ -85,6 +86,13 @@ export default function MobilePortal({ profile, userId, isStaff, viewingAsUserId
               stripeCustomerId={profile.stripeCustomerId}
               tier={tier}
               orgId={orgId}
+            />
+
+            {/* Day Pass Purchase */}
+            <DayPassPurchase
+              stripeCustomerId={profile.stripeCustomerId}
+              userName={profile.name}
+              userEmail={profile.email}
             />
 
             <VerkadaPin isViewingAs={!!viewingAsUserId} />
