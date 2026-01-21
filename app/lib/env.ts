@@ -76,6 +76,9 @@ export const env = {
   // Cron
   get CRON_SECRET() { return optional('CRON_SECRET') },
 
+  // Forkable
+  get FORKABLE_SESSION_COOKIE() { return optional('FORKABLE_SESSION_COOKIE') },
+
   // Shared/public
   NODE_ENV,
   NEXT_PUBLIC_BASE_URL,

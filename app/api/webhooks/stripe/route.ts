@@ -8,6 +8,11 @@ import {
   escapeAirtableString,
 } from '@/app/lib/airtable';
 import { env } from '@/app/lib/env';
+import {
+  addMemberToForkable,
+  FORKABLE_CLUBS,
+  parseFullName,
+} from '@/app/lib/forkable';
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2025-10-29.clover',
@@ -37,6 +42,22 @@ const DAY_PASS_PRODUCTS: Record<
   },
 };
 
+// Map Stripe product IDs to membership tiers
+const MEMBERSHIP_PRODUCTS: Record<
+  string,
+  { tier: string; forkableClubIds: number[] }
+> = {
+  prod_RpkYg9EMJoi5oi: {
+    tier: 'Member',
+    forkableClubIds: [FORKABLE_CLUBS.MOX_MEMBERS],
+  },
+  prod_RpkufjD9E3esG5: {
+    tier: 'Resident',
+    forkableClubIds: [FORKABLE_CLUBS.MOX_RESIDENTS],
+  },
+  prod_Rq9VzfM9QoJwPD: { tier: 'Friend', forkableClubIds: [] }, // No Forkable access
+};
+
 export async function POST(request: Request) {
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
@@ -59,21 +80,35 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
-  // Handle checkout.session.completed for day pass purchases
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
+  console.log(`[Stripe Webhook] Received event: ${event.type}`);
 
-    try {
-      await handleDayPassPurchase(session);
-    } catch (error) {
-      console.error('[Stripe Webhook] Error handling day pass purchase:', error);
-      // Return 200 to prevent Stripe from retrying - we'll log the error
-      return Response.json({ received: true, error: 'Processing failed' });
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed':
+        await handleDayPassPurchase(
+          event.data.object as Stripe.Checkout.Session
+        );
+        break;
+
+      case 'customer.subscription.created':
+        await handleNewSubscription(event.data.object as Stripe.Subscription);
+        break;
+
+      default:
+        console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`);
     }
+  } catch (error) {
+    console.error(`[Stripe Webhook] Error handling ${event.type}:`, error);
+    // Return 200 to prevent Stripe from retrying - we'll log the error
+    return Response.json({ received: true, error: 'Processing failed' });
   }
 
   return Response.json({ received: true });
 }
+
+// ============================================================================
+// Day Pass Handlers
+// ============================================================================
 
 async function handleDayPassPurchase(session: Stripe.Checkout.Session) {
   // Check if this is a member day pass purchase (from portal)
@@ -95,7 +130,9 @@ async function handleMemberDayPass(session: Stripe.Checkout.Session) {
     return;
   }
 
-  console.log(`[Stripe Webhook] Processing member day pass for ${userName} (${userEmail})`);
+  console.log(
+    `[Stripe Webhook] Processing member day pass for ${userName} (${userEmail})`
+  );
 
   try {
     await createRecord(Tables.DayPasses, {
@@ -277,5 +314,155 @@ async function sendActivationEmail({
   } catch (error) {
     console.error('[Stripe Webhook] Error sending email:', error);
     return null;
+  }
+}
+
+// ============================================================================
+// Subscription / Forkable Handlers
+// ============================================================================
+
+async function handleNewSubscription(subscription: Stripe.Subscription) {
+  // Get the product ID from the subscription
+  const item = subscription.items.data[0];
+  if (!item) {
+    console.log('[Stripe Webhook] No subscription items found');
+    return;
+  }
+
+  const priceId = typeof item.price === 'string' ? item.price : item.price.id;
+  const price = await stripe.prices.retrieve(priceId, { expand: ['product'] });
+  const product = price.product as Stripe.Product;
+
+  const membershipConfig = MEMBERSHIP_PRODUCTS[product.id];
+  if (!membershipConfig) {
+    console.log(
+      '[Stripe Webhook] Not a membership product:',
+      product.id,
+      product.name
+    );
+    return;
+  }
+
+  // Get customer details
+  const customerId =
+    typeof subscription.customer === 'string'
+      ? subscription.customer
+      : subscription.customer.id;
+
+  const customerResponse = await stripe.customers.retrieve(customerId);
+
+  if (customerResponse.deleted) {
+    console.error('[Stripe Webhook] Customer has been deleted');
+    return;
+  }
+
+  const customer = customerResponse as Stripe.Customer;
+  const customerEmail = customer.email;
+  const customerName = customer.name || '';
+
+  if (!customerEmail) {
+    console.error('[Stripe Webhook] No customer email found');
+    return;
+  }
+
+  console.log(
+    `[Stripe Webhook] Processing new ${membershipConfig.tier} subscription for ${customerEmail}`
+  );
+
+  // Skip Forkable if no club IDs configured for this tier
+  if (membershipConfig.forkableClubIds.length === 0) {
+    console.log(
+      `[Stripe Webhook] No Forkable clubs configured for ${membershipConfig.tier}, skipping`
+    );
+    return;
+  }
+
+  // Parse name into first/last
+  const { firstName, lastName } = parseFullName(customerName);
+
+  // Add member to Forkable
+  const result = await addMemberToForkable({
+    email: customerEmail,
+    firstName: firstName || customerEmail.split('@')[0], // Fallback to email prefix
+    lastName,
+    clubIds: membershipConfig.forkableClubIds as typeof FORKABLE_CLUBS[keyof typeof FORKABLE_CLUBS][],
+  });
+
+  if (!result.success) {
+    console.error(
+      `[Stripe Webhook] Failed to add ${customerEmail} to Forkable:`,
+      result.errors
+    );
+    // Send failure notification
+    await sendForkableNotification({
+      customerEmail,
+      customerName,
+      tier: membershipConfig.tier,
+      success: false,
+      errors: result.errors,
+    });
+  } else {
+    console.log(
+      `[Stripe Webhook] Successfully added ${customerEmail} to Forkable`
+    );
+    // Send success notification
+    await sendForkableNotification({
+      customerEmail,
+      customerName,
+      tier: membershipConfig.tier,
+      success: true,
+    });
+  }
+}
+
+async function sendForkableNotification({
+  customerEmail,
+  customerName,
+  tier,
+  success,
+  errors,
+}: {
+  customerEmail: string;
+  customerName: string;
+  tier: string;
+  success: boolean;
+  errors?: string[];
+}) {
+  const subject = success
+    ? `Forkable: ${customerName || customerEmail} added successfully`
+    : `Forkable: Failed to add ${customerName || customerEmail}`;
+
+  const body = success
+    ? `New ${tier} member added to Forkable meal club.
+
+Name: ${customerName || '(not provided)'}
+Email: ${customerEmail}
+Tier: ${tier}
+
+They should receive an invite from Forkable shortly.`
+    : `Failed to add new ${tier} member to Forkable.
+
+Name: ${customerName || '(not provided)'}
+Email: ${customerEmail}
+Tier: ${tier}
+
+Errors:
+${errors?.join('\n') || 'Unknown error'}
+
+Please add them manually at https://forkable.com`;
+
+  try {
+    await resend.emails.send({
+      from: 'Mox Notifications <noreply@account.moxsf.com>',
+      to: 'team@moxsf.com',
+      subject,
+      text: body,
+    });
+    console.log('[Stripe Webhook] Sent Forkable notification email');
+  } catch (error) {
+    console.error(
+      '[Stripe Webhook] Failed to send Forkable notification:',
+      error
+    );
   }
 }
