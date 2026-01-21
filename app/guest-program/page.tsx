@@ -1,4 +1,4 @@
-import Gallery from '../gallery'
+import Gallery from '../venue-gallery'
 
 function Link({
   href,
