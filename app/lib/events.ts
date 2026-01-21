@@ -195,3 +195,45 @@ export function sortPastEventsByPriorityAndDate(events: Event[]): Event[] {
     return b.startDate.getTime() - a.startDate.getTime()
   })
 }
+
+// Color schemes for event cards by type
+export interface EventColors {
+  bg: string
+  border: string
+  text: string
+  hover: string
+}
+
+export function getEventColors(type?: string): EventColors {
+  const eventType = type?.toLowerCase()
+  switch (eventType) {
+    case 'public':
+      return {
+        bg: 'bg-emerald-100 dark:bg-emerald-950',
+        border: 'border-emerald-600',
+        text: 'text-emerald-900 dark:text-emerald-100',
+        hover: 'hover:bg-emerald-200 dark:hover:bg-emerald-900',
+      }
+    case 'members':
+      return {
+        bg: 'bg-blue-100 dark:bg-blue-950',
+        border: 'border-blue-600',
+        text: 'text-blue-900 dark:text-blue-100',
+        hover: 'hover:bg-blue-200 dark:hover:bg-blue-900',
+      }
+    case 'private':
+      return {
+        bg: 'bg-rose-100 dark:bg-rose-950',
+        border: 'border-rose-600',
+        text: 'text-rose-900 dark:text-rose-100',
+        hover: 'hover:bg-rose-200 dark:hover:bg-rose-900',
+      }
+    default:
+      return {
+        bg: 'bg-gray-100 dark:bg-gray-800',
+        border: 'border-gray-500',
+        text: 'text-gray-900 dark:text-gray-100',
+        hover: 'hover:bg-gray-200 dark:hover:bg-gray-700',
+      }
+  }
+}

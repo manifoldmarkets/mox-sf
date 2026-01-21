@@ -1,65 +1,154 @@
 'use client'
-import { Event, filterEventsByDay } from '../../lib/events'
-import {
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  format,
-  isToday,
-  isSameMonth,
-} from 'date-fns'
+import { Event, filterEventsByDay, getEventColors } from '../../lib/events'
+import { startOfWeek, addDays, format, isToday } from 'date-fns'
+import { useGridSnappedWidth } from '../hooks/useGridSnappedWidth'
 
-function DayCard({
-  day,
-  events,
-  isToday: isDayToday,
-}: {
-  day: Date | null
-  events: Event[]
-  isToday: boolean
-}) {
-  if (!day) {
-    return <div className="bg-white dark:bg-gray-800 p-2 h-32" />
+const NUM_WEEKS = 4
+const WEEKDAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+
+function EventCard({ event, gridSize }: { event: Event; gridSize: number }) {
+  const colors = getEventColors(event.type)
+
+  const content = (
+    <div
+      className="px-1 text-xs min-[816px]:text-sm overflow-hidden"
+      style={{ lineHeight: `${gridSize}px` }}
+    >
+      <span className={`font-medium ${colors.text} font-sans`}>
+        {event.name}
+      </span>
+    </div>
+  )
+
+  const cardClass = `block ${colors.bg} border-l min-[816px]:border-l-2 ${colors.border} shadow-[inset_0_-1px_0_rgba(0,0,0,0.15)] dark:shadow-[inset_0_-1px_0_rgba(255,255,255,0.15)] ${colors.hover} transition-colors overflow-hidden`
+  const style = { minHeight: `${gridSize}px`, width: `calc(100% - 4px)` }
+
+  if (event.url) {
+    return (
+      <a
+        href={event.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cardClass}
+        style={style}
+      >
+        {content}
+      </a>
+    )
   }
 
+  return <div className={cardClass} style={style}>{content}</div>
+}
+
+function DayCell({
+  day,
+  events,
+  isDayToday,
+  isSunday,
+  isFirstDay,
+  gridSize,
+  gridHeight,
+}: {
+  day: Date
+  events: Event[]
+  isDayToday: boolean
+  isSunday: boolean
+  isFirstDay: boolean
+  gridSize: number
+  gridHeight: number
+}) {
   const dayEvents = filterEventsByDay(events, day)
 
   return (
     <div
-      className={`bg-white dark:bg-gray-800 p-1 h-32 overflow-y-auto ${
-        isDayToday ? 'bg-red-50 dark:bg-red-900/30' : ''
-      }`}
+      className={`flex flex-col ${!isFirstDay ? 'shadow-[-1.5px_0_0_0_rgb(209,213,219)] dark:shadow-[-1.5px_0_0_0_rgb(75,85,99)]' : ''} ${isDayToday ? 'bg-slate-50 dark:bg-slate-800/50' : ''}`}
     >
-      <div
-        className={`font-medium text-gray-700 dark:text-gray-300 mb-1 flex justify-center`}
-      >
+      {/* Date header row */}
+      <div className="relative flex items-center px-1 h-5 min-[816px]:h-7">
+        {isDayToday && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 min-[816px]:w-7 min-[816px]:h-7 bg-red-600 rounded-full" />
+        )}
         <span
-          className={`${
+          className={`relative z-10 text-xs min-[816px]:text-base font-light tabular-nums ${
             isDayToday
-              ? 'bg-red-800 dark:bg-red-700 text-white w-7 h-7 flex items-center justify-center'
-              : ''
+              ? 'text-white font-medium'
+              : isSunday
+                ? 'text-red-600 dark:text-red-500'
+                : 'text-gray-800 dark:text-gray-200'
           }`}
         >
           {format(day, 'd')}
         </span>
       </div>
-      {dayEvents.map((event) => (
+
+      {/* Grid area with events */}
+      <div
+        style={{
+          height: gridHeight,
+          backgroundImage: `
+            linear-gradient(to right, rgb(209 213 219 / 0.4) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(209 213 219 / 0.4) 1px, transparent 1px)
+          `,
+          backgroundSize: `${gridSize}px ${gridSize}px`,
+          backgroundPosition: '-0.5px 0',
+        }}
+      >
+        <div className="flex flex-col overflow-y-auto h-full">
+          {dayEvents.map((event) => (
+            <EventCard key={event.id} event={event} gridSize={gridSize} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function WeekdayHeader({ day, index }: { day: string; index: number }) {
+  const textColor =
+    index === 6
+      ? 'text-red-600 dark:text-red-500'
+      : index === 5
+        ? 'text-gray-500 dark:text-gray-400'
+        : 'text-gray-700 dark:text-gray-300'
+
+  return (
+    <div
+      className={`py-1 min-[816px]:py-2 px-1 text-center first:shadow-none shadow-[-1.5px_0_0_0_rgb(209,213,219)] dark:shadow-[-1.5px_0_0_0_rgb(75,85,99)] ${textColor}`}
+    >
+      <span className="font-medium text-[10px] min-[816px]:text-xs tracking-wider">{day}</span>
+    </div>
+  )
+}
+
+function CalendarWeek({
+  week,
+  weekIndex,
+  events,
+  gridSize,
+  gridHeight,
+}: {
+  week: Date[]
+  weekIndex: number
+  events: Event[]
+  gridSize: number
+  gridHeight: number
+}) {
+  return (
+    <div className="grid grid-cols-7 border-b border-gray-300 dark:border-gray-600 last:border-b-0">
+      {week.map((day, dayIndex) => (
         <div
-          key={event.id}
-          className="text-xs p-1 mb-1 bg-beige-50 dark:bg-gray-700 border border-amber-900 dark:border-amber-800"
-          title={event.description || event.name}
+          key={`${weekIndex}-${dayIndex}`}
+          className="first:border-l-0"
         >
-          <span className="text-gray-900 dark:text-gray-200 font-medium block">
-            <span className="text-gray-700 dark:text-gray-400 font-light">
-              {format(event.startDate, 'h:mm a').replace(':00', '')}
-            </span>{' '}
-            {event.name}
-          </span>
-          {event.location && (
-            <div className="text-gray-600 dark:text-gray-400 truncate mt-0.5">
-              📍 {event.location}
-            </div>
-          )}
+          <DayCell
+            day={day}
+            events={events}
+            isDayToday={isToday(day)}
+            isSunday={dayIndex === 6}
+            isFirstDay={dayIndex === 0}
+            gridSize={gridSize}
+            gridHeight={gridHeight}
+          />
         </div>
       ))}
     </div>
@@ -68,40 +157,54 @@ function DayCard({
 
 export default function MonthlyView({ events }: { events: Event[] }) {
   const today = new Date()
-  const monthStart = startOfMonth(today)
-  const monthEnd = endOfMonth(today)
-  const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
-  const emptyCells = Array(monthStart.getDay()).fill(null)
-  const allCells = [...emptyCells, ...days]
-  // Add cells until multiple of 7
-  while (allCells.length % 7 !== 0) {
-    allCells.push(null)
+  const { containerRef, snappedWidth, gridSize, gridHeight } = useGridSnappedWidth()
+
+  const weekStart = startOfWeek(today, { weekStartsOn: 1 })
+  const weeks: Date[][] = []
+  for (let week = 0; week < NUM_WEEKS; week++) {
+    const weekDays: Date[] = []
+    for (let day = 0; day < 7; day++) {
+      weekDays.push(addDays(weekStart, week * 7 + day))
+    }
+    weeks.push(weekDays)
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 overflow-hidden">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200 mb-4 text-center">
-        {format(today, 'MMMM yyyy')}
-      </h3>
+    <div ref={containerRef} className="bg-white dark:bg-gray-900">
+      {/* Month header - centered relative to viewport, outside scroll container */}
+      <div className="px-3 py-3 text-center bg-white dark:bg-gray-900">
+        <span className="text-lg min-[816px]:text-xl text-gray-600 dark:text-gray-300 uppercase tracking-wider font-light">
+          {format(today, 'MMMM yyyy')}
+        </span>
+      </div>
 
-      <div className="grid grid-cols-7 bg-gray-100 dark:bg-gray-700">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div
-            key={day}
-            className="p-2 text-center text-gray-700 dark:text-gray-300 font-medium bg-white dark:bg-gray-800"
-          >
-            {day}
+      {/* Scrollable calendar grid */}
+      <div className="overflow-x-auto">
+        <div
+          className="border-gray-300 dark:border-gray-600 mx-auto"
+          style={{
+            borderWidth: '1.5px',
+            borderStyle: 'solid',
+            ...(snappedWidth ? { width: snappedWidth } : {})
+          }}
+        >
+          <div className="grid grid-cols-7 border-b border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50">
+            {WEEKDAYS.map((day, index) => (
+              <WeekdayHeader key={day} day={day} index={index} />
+            ))}
           </div>
-        ))}
 
-        {allCells.map((day, index) => (
-          <DayCard
-            key={day ? day.toISOString() : `empty-${index}`}
-            day={day}
-            events={events}
-            isToday={day ? isToday(day) : false}
-          />
-        ))}
+          {weeks.map((week, weekIndex) => (
+            <CalendarWeek
+              key={weekIndex}
+              week={week}
+              weekIndex={weekIndex}
+              events={events}
+              gridSize={gridSize}
+              gridHeight={gridHeight}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )

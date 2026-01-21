@@ -1,6 +1,6 @@
 'use client'
 import { Event } from '@/app/lib/events'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import EventCard from './components/EventCard'
 import WeeklyView from './components/WeeklyView'
@@ -13,8 +13,40 @@ interface EventsClientProps {
 
 type ViewMode = 'list' | 'week' | 'month'
 
+const VIEW_MODE_COOKIE = 'mox-events-view'
+
+function getStoredViewMode(): ViewMode {
+  if (typeof document === 'undefined') return 'list'
+  const match = document.cookie.match(new RegExp(`${VIEW_MODE_COOKIE}=([^;]+)`))
+  const stored = match?.[1] as ViewMode | undefined
+  if (stored && ['list', 'week', 'month'].includes(stored)) {
+    return stored
+  }
+  return 'list'
+}
+
+function setStoredViewMode(mode: ViewMode) {
+  // Set cookie to expire in 1 year
+  const expires = new Date()
+  expires.setFullYear(expires.getFullYear() + 1)
+  document.cookie = `${VIEW_MODE_COOKIE}=${mode};expires=${expires.toUTCString()};path=/`
+}
+
 export default function EventsClient({ initialEvents }: EventsClientProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('list')
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  // Load stored view mode on mount
+  useEffect(() => {
+    setViewMode(getStoredViewMode())
+    setIsHydrated(true)
+  }, [])
+
+  // Save view mode when it changes
+  const handleSetViewMode = (mode: ViewMode) => {
+    setViewMode(mode)
+    setStoredViewMode(mode)
+  }
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [calendarCopied, setCalendarCopied] = useState(false)
 
@@ -75,7 +107,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
               {/* Mobile toggle */}
               <div className="sm:hidden inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden flex-shrink-0 font-sans">
                 <button
-                  onClick={() => setViewMode('list')}
+                  onClick={() => handleSetViewMode('list')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
                     viewMode === 'list'
                       ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
@@ -85,7 +117,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                   List
                 </button>
                 <button
-                  onClick={() => setViewMode('week')}
+                  onClick={() => handleSetViewMode('week')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors border-x border-gray-300 dark:border-gray-600 ${
                     viewMode === 'week'
                       ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
@@ -95,7 +127,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                   Week
                 </button>
                 <button
-                  onClick={() => setViewMode('month')}
+                  onClick={() => handleSetViewMode('month')}
                   className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
                     viewMode === 'month'
                       ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
@@ -123,7 +155,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
             {/* View toggle - desktop */}
             <div className="hidden sm:inline-flex border border-gray-300 dark:border-gray-600 overflow-hidden font-sans">
               <button
-                onClick={() => setViewMode('list')}
+                onClick={() => handleSetViewMode('list')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
                   viewMode === 'list'
                     ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
@@ -133,7 +165,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                 List
               </button>
               <button
-                onClick={() => setViewMode('week')}
+                onClick={() => handleSetViewMode('week')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors border-x border-gray-300 dark:border-gray-600 ${
                   viewMode === 'week'
                     ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
@@ -143,7 +175,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                 Week
               </button>
               <button
-                onClick={() => setViewMode('month')}
+                onClick={() => handleSetViewMode('month')}
                 className={`px-4 py-2 text-sm font-semibold transition-colors ${
                   viewMode === 'month'
                     ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
@@ -224,15 +256,14 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
           </div>
         )}
 
-        {viewMode === 'month' && (
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-24 hidden lg:block"></div>
-            <div className="flex-1 min-w-0">
-              <MonthlyView events={initialEvents} />
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Month view - outside container for full width */}
+      {viewMode === 'month' && (
+        <div className="px-4 sm:px-6 pb-6">
+          <MonthlyView events={initialEvents} />
+        </div>
+      )}
 
       {/* Calendar Dialog */}
       {isCalendarOpen && (
