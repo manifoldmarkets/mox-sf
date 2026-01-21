@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import ImageCropper from '@/app/components/ImageCropper'
 
 interface ProfileEditFormProps {
   profile: {
@@ -29,6 +30,8 @@ export default function ProfileEditForm({
     directoryVisible: profile.directoryVisible,
   })
   const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [showCropper, setShowCropper] = useState(false)
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null)
   const [status, setStatus] = useState<
     'idle' | 'loading' | 'success' | 'error'
   >('idle')
@@ -49,6 +52,8 @@ export default function ProfileEditForm({
     setStatus('idle')
     setMessage('')
     setPhotoFile(null)
+    setShowCropper(false)
+    setImageToCrop(null)
   }, [profile])
 
   const handleChange = (
@@ -66,7 +71,37 @@ export default function ProfileEditForm({
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setPhotoFile(e.target.files[0])
+      const file = e.target.files[0]
+      const imageUrl = URL.createObjectURL(file)
+      setImageToCrop(imageUrl)
+      setShowCropper(true)
+    }
+  }
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    const croppedFile = new File([croppedBlob], 'profile-photo.jpg', {
+      type: 'image/jpeg',
+    })
+    setPhotoFile(croppedFile)
+    setShowCropper(false)
+    if (imageToCrop) {
+      URL.revokeObjectURL(imageToCrop)
+    }
+    setImageToCrop(null)
+  }
+
+  const handleCropCancel = () => {
+    setShowCropper(false)
+    if (imageToCrop) {
+      URL.revokeObjectURL(imageToCrop)
+    }
+    setImageToCrop(null)
+  }
+
+  const handleEditExistingPhoto = () => {
+    if (profile.photo) {
+      setImageToCrop(profile.photo)
+      setShowCropper(true)
     }
   }
 
@@ -152,6 +187,14 @@ export default function ProfileEditForm({
   }
 
   return (
+    <>
+      {showCropper && imageToCrop && (
+        <ImageCropper
+          imageSrc={imageToCrop}
+          onCropComplete={handleCropComplete}
+          onCancel={handleCropCancel}
+        />
+      )}
     <form onSubmit={handleSubmit}>
       <div className="space-y-6">
         {/* Name */}
@@ -272,7 +315,7 @@ export default function ProfileEditForm({
             Profile Photo
           </label>
           <div className="flex items-center gap-6">
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 relative group">
               <img
                 src={
                   photoFile
@@ -282,22 +325,56 @@ export default function ProfileEditForm({
                 alt="Profile"
                 className="w-32 h-32 object-cover border-2 border-border-light dark:border-border-medium-dark"
               />
+              {(photoFile || profile.photo) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (photoFile) {
+                      setImageToCrop(URL.createObjectURL(photoFile))
+                    } else if (profile.photo) {
+                      setImageToCrop(profile.photo)
+                    }
+                    setShowCropper(true)
+                  }}
+                  className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-sm font-medium"
+                >
+                  Crop
+                </button>
+              )}
             </div>
-            <div className="flex-1">
-              <label
-                htmlFor="photo"
-                className="inline-flex items-center px-4 py-2 border border-border-medium dark:border-border-medium-dark shadow-sm text-sm font-medium text-text-secondary dark:text-text-secondary-dark bg-background-surface dark:bg-background-subtle-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark cursor-pointer transition-colors"
-              >
-                Choose File
-                <input
-                  type="file"
-                  id="photo"
-                  accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
-                  onChange={handlePhotoChange}
-                  className="sr-only"
-                />
-              </label>
-              <p className="text-xs text-text-muted dark:text-text-muted-dark mt-2">
+            <div className="flex-1 space-y-2">
+              <div className="flex gap-2">
+                <label
+                  htmlFor="photo"
+                  className="inline-flex items-center px-4 py-2 border border-border-medium dark:border-border-medium-dark shadow-sm text-sm font-medium text-text-secondary dark:text-text-secondary-dark bg-background-surface dark:bg-background-subtle-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark cursor-pointer transition-colors"
+                >
+                  Choose File
+                  <input
+                    type="file"
+                    id="photo"
+                    accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
+                    onChange={handlePhotoChange}
+                    className="sr-only"
+                  />
+                </label>
+                {(photoFile || profile.photo) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (photoFile) {
+                        setImageToCrop(URL.createObjectURL(photoFile))
+                      } else if (profile.photo) {
+                        setImageToCrop(profile.photo)
+                      }
+                      setShowCropper(true)
+                    }}
+                    className="inline-flex items-center px-4 py-2 border border-border-medium dark:border-border-medium-dark shadow-sm text-sm font-medium text-text-secondary dark:text-text-secondary-dark bg-background-surface dark:bg-background-subtle-dark hover:bg-background-subtle dark:hover:bg-background-subtle-dark transition-colors"
+                  >
+                    Crop
+                  </button>
+                )}
+              </div>
+              <p className="text-xs text-text-muted dark:text-text-muted-dark">
                 JPG, PNG, WebP, GIF, or HEIC. Max size 10MB.
               </p>
             </div>
@@ -363,5 +440,6 @@ export default function ProfileEditForm({
         </div>
       </div>
     </form>
+    </>
   )
 }

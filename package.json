@@ -23,6 +23,7 @@
     "next": "^16.1.4",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-image-crop": "^11.0.10",
     "resend": "^6.4.2",
     "stripe": "^19.3.1"
   },
