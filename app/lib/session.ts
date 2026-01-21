@@ -1,5 +1,6 @@
 import { getIronSession, IronSession, SessionOptions } from 'iron-session'
 import { cookies } from 'next/headers'
+import { env } from './env'
 
 export interface SessionData {
   userId: string
@@ -12,11 +13,11 @@ export interface SessionData {
 }
 
 const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_SECRET!,
+  password: env.SESSION_SECRET,
   cookieName: 'mox-session',
   cookieOptions: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: env.isProduction,
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
   },
@@ -39,7 +40,6 @@ export async function createSession(
   session.name = name
   session.isLoggedIn = true
   session.isStaff = isStaff
-  console.log('Creating session with isStaff:', isStaff) // Debug log
   await session.save()
 }
 

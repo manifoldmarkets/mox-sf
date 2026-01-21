@@ -1,7 +1,8 @@
 import { getSession } from '@/app/lib/session';
 import Stripe from 'stripe';
+import { env } from '@/app/lib/env';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2025-10-29.clover',
 });
 
@@ -10,30 +11,19 @@ export async function POST(request: Request) {
     const session = await getSession();
 
     if (!session.isLoggedIn) {
-      console.error('Day pass checkout: User not logged in');
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
     const { stripeCustomerId, userName, userEmail } = body;
 
-    console.log('Day pass checkout request:', { stripeCustomerId, userName, userEmail });
-
     if (!stripeCustomerId || !userName || !userEmail) {
-      console.error('Day pass checkout: Missing required fields', { stripeCustomerId, userName, userEmail });
       return Response.json({ error: 'Missing required information' }, { status: 400 });
-    }
-
-    if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('Day pass checkout: STRIPE_SECRET_KEY not configured');
-      return Response.json({ error: 'Payment system not configured' }, { status: 500 });
     }
 
     // Get the base URL from the request or environment variable
     const requestUrl = new URL(request.url);
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${requestUrl.protocol}//${requestUrl.host}`;
-
-    console.log('Using base URL:', baseUrl);
+    const baseUrl = env.NEXT_PUBLIC_BASE_URL || `${requestUrl.protocol}//${requestUrl.host}`;
 
     // Create a checkout session for a $25 day pass
     // The payment intent ID will be stored in Airtable after successful payment
@@ -62,7 +52,6 @@ export async function POST(request: Request) {
       },
     });
 
-    console.log('Day pass checkout session created:', checkoutSession.id);
     return Response.json({ url: checkoutSession.url });
   } catch (error) {
     console.error('Error creating day pass checkout session:', error);

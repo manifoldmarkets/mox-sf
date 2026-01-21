@@ -1,11 +1,5 @@
 import { renameDiscordChannel, sendChannelMessage } from '@/app/lib/discord'
-
-// Environment variables for Verkada user UUIDs and Discord channels
-const WEEKLY_ACCESS_USER_ID = process.env.VERKADA_WEEKLY_ACCESS_USER_ID || ''
-const OLD_WEEKLY_ACCESS_USER_ID =
-  process.env.VERKADA_OLD_WEEKLY_ACCESS_USER_ID || ''
-const DOOR_CODE_CHANNEL_ID = process.env.DISCORD_DOOR_CODE_CHANNEL_ID || ''
-const PACKAGES_CHANNEL_ID = process.env.DISCORD_PACKAGES_CHANNEL_ID || ''
+import { env } from '@/app/lib/env'
 
 /**
  * Generate a cryptographically secure random 4-digit code
@@ -26,7 +20,7 @@ async function getVerkadaToken(): Promise<string | null> {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_MEMBER_KEY || '',
+        'x-api-key': env.VERKADA_MEMBER_KEY,
       },
     })
 
@@ -124,7 +118,7 @@ export async function GET(request: Request) {
 
   // Validate cron secret
   const authHeader = request.headers.get('authorization')
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (authHeader !== `Bearer ${env.CRON_SECRET}`) {
     console.error('[Cron rotate-door-code] Unauthorized request')
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -139,7 +133,7 @@ export async function GET(request: Request) {
     }
 
     // Step 1: Get current code from "Weekly Access" user
-    const weeklyUser = await getVerkadaUserById(WEEKLY_ACCESS_USER_ID, token)
+    const weeklyUser = await getVerkadaUserById(env.VERKADA_WEEKLY_ACCESS_USER_ID, token)
     if (!weeklyUser) {
       throw new Error('Failed to fetch Weekly Access user')
     }
@@ -158,7 +152,7 @@ export async function GET(request: Request) {
     // Step 3: Move old code to "Old Weekly Access" user
     if (oldCode) {
       const movedOldCode = await setVerkadaEntryCode(
-        OLD_WEEKLY_ACCESS_USER_ID,
+        env.VERKADA_OLD_WEEKLY_ACCESS_USER_ID,
         oldCode,
         token
       )
@@ -172,7 +166,7 @@ export async function GET(request: Request) {
 
     // Step 4: Set new code on "Weekly Access" user
     const setNewCode = await setVerkadaEntryCode(
-      WEEKLY_ACCESS_USER_ID,
+      env.VERKADA_WEEKLY_ACCESS_USER_ID,
       newCode,
       token
     )
@@ -183,7 +177,7 @@ export async function GET(request: Request) {
 
     // Step 5: Update Discord channel name
     const channelRenamed = await renameDiscordChannel(
-      DOOR_CODE_CHANNEL_ID,
+      env.DISCORD_DOOR_CODE_CHANNEL_ID,
       `🚪 Code: ${newCode}#`
     )
     if (!channelRenamed) {
@@ -205,7 +199,7 @@ export async function GET(request: Request) {
     let messageSent = false
     if (oldCode) {
       messageSent = await sendChannelMessage(
-        PACKAGES_CHANNEL_ID,
+        env.DISCORD_PACKAGES_CHANNEL_ID,
         `🔄 **Door code rotated!**\n\nThe old code **${oldCode}#** will continue to work until ${expiryDate}.`
       )
       if (!messageSent) {

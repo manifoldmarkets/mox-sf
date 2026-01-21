@@ -1,4 +1,5 @@
 import Airtable, { FieldSet, Records } from 'airtable'
+import { env } from './env'
 
 // Lazily initialize Airtable base to allow for testing with mocks
 let _base: ReturnType<Airtable['base']> | null = null
@@ -6,8 +7,8 @@ let _base: ReturnType<Airtable['base']> | null = null
 function getBase() {
   if (!_base) {
     _base = new Airtable({
-      apiKey: process.env.AIRTABLE_API_KEY,
-    }).base(process.env.AIRTABLE_BASE_ID!)
+      apiKey: env.AIRTABLE_API_KEY,
+    }).base(env.AIRTABLE_BASE_ID)
   }
   return _base
 }

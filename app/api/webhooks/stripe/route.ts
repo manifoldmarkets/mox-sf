@@ -7,12 +7,13 @@ import {
   findRecord,
   escapeAirtableString,
 } from '@/app/lib/airtable';
+import { env } from '@/app/lib/env';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2025-10-29.clover',
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(env.RESEND_API_KEY);
 
 // Map Stripe product IDs to pass types
 const DAY_PASS_PRODUCTS: Record<
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET || ''
+      env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
     console.error('[Stripe Webhook] Signature verification failed:', err);
@@ -253,7 +254,7 @@ async function sendActivationEmail({
   passDescription: string;
   paymentId: string;
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://moxsf.com';
+  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
   const activationLink = `${baseUrl}/day-pass/activate?id=${paymentId}`;
 
   const { subject, text } = getDayPassActivationEmail({

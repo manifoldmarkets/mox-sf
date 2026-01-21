@@ -1,3 +1,5 @@
+import { env } from '@/app/lib/env'
+
 export async function POST(request: Request) {
   try {
     const { paymentId } = await request.json()
@@ -22,7 +24,7 @@ async function unlockDoor() {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'x-api-key': process.env.VERKADA_API_KEY || '',
+        'x-api-key': env.VERKADA_API_KEY,
       },
     })
 

@@ -1,0 +1,85 @@
+/**
+ * Centralized environment variable validation and access.
+ *
+ * Usage:
+ *   import { env } from '@/app/lib/env'
+ *   const stripe = new Stripe(env.STRIPE_SECRET_KEY, { ... })
+ */
+
+// Cache for lazy-loaded values
+const cache = new Map<string, string>()
+
+// Get required env var (throws if missing), with lazy caching
+function required(name: string): string {
+  if (cache.has(name)) return cache.get(name)!
+  const value = process.env[name]
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`)
+  }
+  cache.set(name, value)
+  return value
+}
+
+// Get optional env var with fallback, with lazy caching
+function optional(name: string, fallback: string = ''): string {
+  if (cache.has(name)) return cache.get(name)!
+  const value = process.env[name] || fallback
+  cache.set(name, value)
+  return value
+}
+
+// Public/shared environment variables (evaluated immediately, safe for client)
+const NODE_ENV = process.env.NODE_ENV || 'development'
+const NEXT_PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://moxsf.com'
+
+// Export typed env object with lazy getters for server vars
+export const env = {
+  // Airtable
+  get AIRTABLE_API_KEY() { return required('AIRTABLE_API_KEY') },
+  get AIRTABLE_BASE_ID() { return required('AIRTABLE_BASE_ID') },
+
+  // AI4E (separate Airtable base)
+  get AI4E_API_KEY() { return optional('AI4E_API_KEY') },
+  get AI4E_AIRTABLE_BASE_ID() { return optional('AI4E_AIRTABLE_BASE_ID') },
+
+  // Anthropic
+  get ANTHROPIC_API_KEY() { return optional('ANTHROPIC_API_KEY') },
+
+  // Stripe
+  get STRIPE_SECRET_KEY() { return required('STRIPE_SECRET_KEY') },
+  get STRIPE_WEBHOOK_SECRET() { return required('STRIPE_WEBHOOK_SECRET') },
+
+  // Resend (email)
+  get RESEND_API_KEY() { return required('RESEND_API_KEY') },
+
+  // Session
+  get SESSION_SECRET() { return required('SESSION_SECRET') },
+
+  // Discord
+  get DISCORD_BOT_TOKEN() { return optional('DISCORD_BOT_TOKEN') },
+  get DISCORD_GUILD_ID() { return optional('DISCORD_GUILD_ID') },
+  get DISCORD_ROLE_FRIEND() { return optional('DISCORD_ROLE_FRIEND') },
+  get DISCORD_ROLE_MEMBER() { return optional('DISCORD_ROLE_MEMBER') },
+  get DISCORD_ROLE_RESIDENT() { return optional('DISCORD_ROLE_RESIDENT') },
+  get DISCORD_ROLE_PRIVATE_OFFICE() { return optional('DISCORD_ROLE_PRIVATE_OFFICE') },
+  get DISCORD_ROLE_PROGRAM() { return optional('DISCORD_ROLE_PROGRAM') },
+  get DISCORD_DOOR_CODE_CHANNEL_ID() { return optional('DISCORD_DOOR_CODE_CHANNEL_ID') },
+  get DISCORD_PACKAGES_CHANNEL_ID() { return optional('DISCORD_PACKAGES_CHANNEL_ID') },
+
+  // Verkada
+  get VERKADA_API_KEY() { return optional('VERKADA_API_KEY') },
+  get VERKADA_MEMBER_KEY() { return optional('VERKADA_MEMBER_KEY') },
+  get VERKADA_UUID() { return optional('VERKADA_UUID') },
+  get VERKADA_WEEKLY_ACCESS_USER_ID() { return optional('VERKADA_WEEKLY_ACCESS_USER_ID') },
+  get VERKADA_OLD_WEEKLY_ACCESS_USER_ID() { return optional('VERKADA_OLD_WEEKLY_ACCESS_USER_ID') },
+
+  // Cron
+  get CRON_SECRET() { return optional('CRON_SECRET') },
+
+  // Shared/public
+  NODE_ENV,
+  NEXT_PUBLIC_BASE_URL,
+  isProduction: NODE_ENV === 'production',
+  isDevelopment: NODE_ENV === 'development',
+  isTest: NODE_ENV === 'test',
+}
