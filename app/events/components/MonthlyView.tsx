@@ -64,14 +64,11 @@ function DayCell({
       className={`flex flex-col ${!isFirstDay ? 'shadow-[-1.5px_0_0_0_rgb(209,213,219)] dark:shadow-[-1.5px_0_0_0_rgb(75,85,99)]' : ''} ${isDayToday ? 'bg-slate-50 dark:bg-slate-800/50' : ''}`}
     >
       {/* Date header row */}
-      <div className="relative flex items-center px-1 h-5 min-[816px]:h-7">
-        {isDayToday && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 min-[816px]:w-7 min-[816px]:h-7 bg-red-600 rounded-full" />
-        )}
+      <div className="flex items-center h-5 min-[816px]:h-7 px-1">
         <span
-          className={`relative z-10 text-xs min-[816px]:text-base font-light tabular-nums ${
+          className={`flex items-center justify-center text-xs min-[816px]:text-base font-light tabular-nums ${
             isDayToday
-              ? 'text-white font-medium'
+              ? 'text-white font-medium bg-red-600 rounded-full w-5 h-5 min-[816px]:w-7 min-[816px]:h-7'
               : isSunday
                 ? 'text-red-600 dark:text-red-500'
                 : 'text-gray-800 dark:text-gray-200'
@@ -170,9 +167,9 @@ export default function MonthlyView({ events }: { events: Event[] }) {
   }
 
   return (
-    <div ref={containerRef} className="bg-white dark:bg-gray-900">
+    <div ref={containerRef}>
       {/* Month header - centered relative to viewport, outside scroll container */}
-      <div className="px-3 py-3 text-center bg-white dark:bg-gray-900">
+      <div className="px-3 py-3 text-center">
         <span className="text-lg min-[816px]:text-xl text-gray-600 dark:text-gray-300 uppercase tracking-wider font-light">
           {format(today, 'MMMM yyyy')}
         </span>
