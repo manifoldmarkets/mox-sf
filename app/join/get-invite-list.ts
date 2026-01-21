@@ -7,7 +7,7 @@ interface PersonFields {
 
 export async function getAirtableData() {
   // New formula: anyone invited or to invite
-  const formula = `OR(Status="Invited",Status="To Invite")`
+  const formula = `OR(Status="Invited",Status="To Invite",Status="Cancelled")`
 
   const records = await findRecords<PersonFields>(Tables.People, formula, {
     fields: ['Name'],
