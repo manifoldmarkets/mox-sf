@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react'
 import Gallery from '@/app/gallery'
 import PeopleGallery from '@/app/people-gallery'
-import PeoplePage from '@/app/people/page'
-import EventsPage from '@/app/events/page'
 import { csContent } from '@/app/lib/homeContent'
 import styles from './cs.module.css'
 
@@ -113,7 +111,7 @@ export default function CSPage() {
             {csContent.eventsSubtitle}
           </p>
           <div style={{ border: '2px solid #000000', padding: '15px', background: '#f9f9f9' }}>
-            <EventsPage />
+            <p><a href="/events" className={styles.link}>View all events →</a></p>
           </div>
         </div>
 
@@ -133,7 +131,7 @@ export default function CSPage() {
         {/* Directory */}
         <div>
           <h2 className={styles.sectionTitle}>Member Directory</h2>
-          <PeoplePage />
+          <p><a href="/people" className={styles.link}>View all members →</a></p>
         </div>
 
         <hr className={styles.hr} />

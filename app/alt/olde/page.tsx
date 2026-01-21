@@ -1,7 +1,5 @@
 import Gallery from '@/app/gallery'
 import PeopleGallery from '@/app/people-gallery'
-import PeoplePage from '@/app/people/page'
-import EventsPage from '@/app/events/page'
 import { oldeContent } from '@/app/lib/homeContent'
 import styles from './olde.module.css'
 
@@ -118,7 +116,7 @@ export default function OldePage() {
             {oldeContent.eventsSubtitle}
           </p>
           <div className={styles.illuminatedBorder}>
-            <EventsPage />
+            <p style={{ textAlign: 'center' }}><a href="/events" style={{ color: '#5c4033' }}>View ye olde events →</a></p>
           </div>
         </div>
       </div>
@@ -140,7 +138,7 @@ export default function OldePage() {
       {/* People List */}
       <div className="max-w-4xl mx-auto px-6 mb-16">
         <div className={`${styles.parchment} p-8`}>
-          <PeoplePage />
+          <p style={{ textAlign: 'center' }}><a href="/people" style={{ color: '#5c4033' }}>View all denizens →</a></p>
         </div>
       </div>
 

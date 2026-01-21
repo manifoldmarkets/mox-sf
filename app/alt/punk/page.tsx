@@ -1,7 +1,5 @@
 import Gallery from '@/app/gallery'
 import PeopleGallery from '@/app/people-gallery'
-import PeoplePage from '@/app/people/page'
-import EventsPage from '@/app/events/page'
 import { punkContent } from '@/app/lib/homeContent'
 import styles from './punk.module.css'
 
@@ -139,7 +137,7 @@ export default function PunkPage() {
               </p>
             </div>
             <div style={{ filter: 'hue-rotate(270deg) saturate(1.3)' }}>
-              <EventsPage />
+              <p><a href="/events" style={{ color: '#ffff00', textDecoration: 'underline' }}>View all events →</a></p>
             </div>
           </div>
         </section>
@@ -161,7 +159,7 @@ export default function PunkPage() {
         </section>
 
         <section className="mb-16">
-          <PeoplePage />
+          <p><a href="/people" style={{ color: '#ff00ff', textDecoration: 'underline' }}>View all members →</a></p>
         </section>
 
         {/* Gallery */}
