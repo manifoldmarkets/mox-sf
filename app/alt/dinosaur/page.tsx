@@ -1,7 +1,5 @@
 import Gallery from '@/app/gallery'
 import PeopleGallery from '@/app/people-gallery'
-import PeoplePage from '@/app/people/page'
-import EventsPage from '@/app/events/page'
 import { dinosaurContent } from '@/app/lib/homeContent'
 import styles from './dinosaur.module.css'
 
@@ -129,7 +127,7 @@ export default function DinosaurPage() {
             {dinosaurContent.eventsTitle}
           </h2>
           <div className={styles.speechBubble}>
-            <EventsPage />
+            <p><a href="/events" style={{ color: '#000', textDecoration: 'underline' }}>View all events →</a></p>
           </div>
         </div>
       </div>
@@ -154,7 +152,7 @@ export default function DinosaurPage() {
       {/* People List */}
       <div className="max-w-6xl mx-auto px-6 py-6">
         <div className={styles.comicPanel}>
-          <PeoplePage />
+          <p><a href="/people" style={{ color: '#000', textDecoration: 'underline' }}>View all members →</a></p>
         </div>
       </div>
 
