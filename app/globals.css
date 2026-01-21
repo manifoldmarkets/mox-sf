@@ -195,3 +195,9 @@
   background-image: linear-gradient(to right, #d1d5db 2px, transparent 2px);
   background-size: 5px 1px;
 }
+
+@media (prefers-color-scheme: dark) {
+  .border-dashed-spaced {
+    background-image: linear-gradient(to right, #4b5563 2px, transparent 2px);
+  }
+}

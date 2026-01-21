@@ -38,31 +38,31 @@ function getEventColors(type?: string): {
   switch (eventType) {
     case 'public':
       return {
-        bg: 'bg-emerald-50',
+        bg: 'bg-emerald-50 dark:bg-emerald-950',
         border: 'border-emerald-600',
-        text: 'text-emerald-900',
-        hover: 'hover:bg-emerald-100',
+        text: 'text-emerald-900 dark:text-emerald-100',
+        hover: 'hover:bg-emerald-100 dark:hover:bg-emerald-900',
       }
     case 'members':
       return {
-        bg: 'bg-blue-50',
+        bg: 'bg-blue-50 dark:bg-blue-950',
         border: 'border-blue-600',
-        text: 'text-blue-900',
-        hover: 'hover:bg-blue-100',
+        text: 'text-blue-900 dark:text-blue-100',
+        hover: 'hover:bg-blue-100 dark:hover:bg-blue-900',
       }
     case 'private':
       return {
-        bg: 'bg-rose-50',
+        bg: 'bg-rose-50 dark:bg-rose-950',
         border: 'border-rose-600',
-        text: 'text-rose-900',
-        hover: 'hover:bg-rose-100',
+        text: 'text-rose-900 dark:text-rose-100',
+        hover: 'hover:bg-rose-100 dark:hover:bg-rose-900',
       }
     default:
       return {
-        bg: 'bg-gray-50',
+        bg: 'bg-gray-50 dark:bg-gray-800',
         border: 'border-gray-500',
-        text: 'text-gray-900',
-        hover: 'hover:bg-gray-100',
+        text: 'text-gray-900 dark:text-gray-100',
+        hover: 'hover:bg-gray-100 dark:hover:bg-gray-700',
       }
   }
 }
@@ -145,24 +145,24 @@ export default function WeeklyView({ events }: { events: Event[] }) {
 
   // TODO: Move away from amber as a theme color
   return (
-    <div className="-mx-4 md:mx-0 md:rounded-lg md:border md:border-gray-300 overflow-hidden">
+    <div className="-mx-4 md:mx-0 md:rounded-lg md:border md:border-gray-300 dark:md:border-gray-600 overflow-hidden">
       {/* Header row with days */}
       <div className="grid grid-cols-[16px_1fr_16px] md:grid-cols-[20px_1fr_20px]">
         <div /> {/* Left spacer */}
-        <div className="grid grid-cols-5 md:grid-cols-7 border-b border-gray-300">
+        <div className="grid grid-cols-5 md:grid-cols-7 border-b border-gray-300 dark:border-gray-600">
           {days.map((day, index) => (
             <div
               key={day.toISOString()}
-              className={`py-2 px-1 text-center border-l border-gray-300 first:border-l-0 ${
+              className={`py-2 px-1 text-center border-l border-gray-300 dark:border-gray-600 first:border-l-0 ${
                 index >= 5 ? 'hidden md:block' : ''
               } ${
-                isSameDay(day, today) ? 'bg-slate-200' : ''
+                isSameDay(day, today) ? 'bg-slate-200 dark:bg-slate-700' : ''
               }`}
             >
-              <div className="font-medium text-gray-900 text-sm">
+              <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                 {format(day, 'EEE')}
               </div>
-              <div className="text-xs text-gray-600">
+              <div className="text-xs text-gray-600 dark:text-gray-400">
                 {format(day, 'MMM d')}
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
           {TIME_MARKERS.map((hour) => (
             <div
               key={hour}
-              className="absolute w-full text-[9px] text-gray-500 text-center leading-none"
+              className="absolute w-full text-[9px] text-gray-500 dark:text-gray-400 text-center leading-none"
               style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT - 4}px` }}
             >
               {formatHour(hour)}
@@ -198,9 +198,9 @@ export default function WeeklyView({ events }: { events: Event[] }) {
             return (
               <div
                 key={day.toISOString()}
-                className={`relative border-l border-gray-300 first:border-l-0 ${
+                className={`relative border-l border-gray-300 dark:border-gray-600 first:border-l-0 ${
                   dayIndex >= 5 ? 'hidden md:block' : ''
-                } ${isToday ? 'bg-slate-100' : ''}`}
+                } ${isToday ? 'bg-slate-100 dark:bg-slate-800' : ''}`}
                 style={{ height: `${gridHeight}px` }}
               >
                 {/* Hour lines */}
@@ -209,7 +209,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
                   return (
                     <div key={hour}>
                       <div
-                        className={`absolute w-full ${isMarkerHour ? 'border-t-[1.5px] border-gray-300' : 'border-t-[1.5px] border-gray-200'}`}
+                        className={`absolute w-full ${isMarkerHour ? 'border-t-[1.5px] border-gray-300 dark:border-gray-500' : 'border-t-[1.5px] border-gray-200 dark:border-gray-600'}`}
                         style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT}px` }}
                       />
                       <div
@@ -248,7 +248,7 @@ export default function WeeklyView({ events }: { events: Event[] }) {
           {TIME_MARKERS.map((hour) => (
             <div
               key={hour}
-              className="absolute w-full text-[9px] text-gray-500 text-center leading-none"
+              className="absolute w-full text-[9px] text-gray-500 dark:text-gray-400 text-center leading-none"
               style={{ top: `${(hour - START_HOUR) * HOUR_HEIGHT - 4}px` }}
             >
               {formatHour(hour)}
