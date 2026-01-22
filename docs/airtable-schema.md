@@ -8,7 +8,7 @@ This document describes the Airtable tables and fields used by the Mox SF applic
 
 - **Base ID**: Set via `AIRTABLE_BASE_ID` environment variable
 - **API Key**: Set via `AIRTABLE_API_KEY` environment variable
-- **Client**: Uses official `airtable` npm package with lazy initialization
+- **Client**: Uses direct REST API calls via `fetch`
 
 ---
 

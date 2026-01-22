@@ -1,17 +1,6 @@
-import Airtable, { FieldSet, Records } from 'airtable'
 import { env } from './env'
 
-// Lazily initialize Airtable base to allow for testing with mocks
-let _base: ReturnType<Airtable['base']> | null = null
-
-function getBase() {
-  if (!_base) {
-    _base = new Airtable({
-      apiKey: env.AIRTABLE_API_KEY,
-    }).base(env.AIRTABLE_BASE_ID)
-  }
-  return _base
-}
+const AIRTABLE_API_URL = 'https://api.airtable.com/v0'
 
 // Table names as constants to avoid typos
 export const Tables = {
@@ -40,33 +29,89 @@ export interface QueryOptions {
   view?: string
 }
 
+// Common headers for all requests
+function getHeaders(): HeadersInit {
+  return {
+    Authorization: `Bearer ${env.AIRTABLE_API_KEY}`,
+    'Content-Type': 'application/json',
+  }
+}
+
+// Build URL with query params for list operations
+function buildListUrl(table: TableName, options: QueryOptions, offset?: string): string {
+  const base = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+  const params: string[] = []
+
+  if (options.filterByFormula) {
+    params.push(`filterByFormula=${encodeURIComponent(options.filterByFormula)}`)
+  }
+  if (options.maxRecords) {
+    params.push(`maxRecords=${options.maxRecords}`)
+  }
+  if (options.view) {
+    params.push(`view=${encodeURIComponent(options.view)}`)
+  }
+  if (offset) {
+    params.push(`offset=${offset}`)
+  }
+
+  // Handle fields[] array parameter
+  if (options.fields) {
+    for (const field of options.fields) {
+      params.push(`fields%5B%5D=${encodeURIComponent(field)}`)
+    }
+  }
+
+  // Handle sort[] array parameter
+  if (options.sort) {
+    options.sort.forEach((s, i) => {
+      params.push(`sort%5B${i}%5D%5Bfield%5D=${encodeURIComponent(s.field)}`)
+      if (s.direction) {
+        params.push(`sort%5B${i}%5D%5Bdirection%5D=${s.direction}`)
+      }
+    })
+  }
+
+  return params.length > 0 ? `${base}?${params.join('&')}` : base
+}
+
 export async function getRecords<T = Record<string, unknown>>(
   table: TableName,
   options: QueryOptions = {}
 ): Promise<AirtableRecord<T>[]> {
-  const query = getBase()(table).select({
-    ...(options.filterByFormula && {
-      filterByFormula: options.filterByFormula,
-    }),
-    ...(options.fields && { fields: options.fields }),
-    ...(options.sort && { sort: options.sort }),
-    ...(options.maxRecords && { maxRecords: options.maxRecords }),
-    ...(options.view && { view: options.view }),
-  })
-
   const records: AirtableRecord<T>[] = []
+  let offset: string | undefined
 
-  await query.eachPage(
-    (pageRecords: Records<FieldSet>, fetchNextPage: () => void) => {
-      for (const record of pageRecords) {
-        records.push({
-          id: record.id,
-          fields: record.fields as T,
-        })
-      }
-      fetchNextPage()
+  do {
+    const url = buildListUrl(table, options, offset)
+
+    const res = await fetch(url, {
+      headers: getHeaders(),
+    })
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}))
+      throw new Error(
+        `Airtable API error: ${res.status} ${res.statusText} - ${JSON.stringify(errorData)}`
+      )
     }
-  )
+
+    const data = await res.json()
+
+    for (const record of data.records || []) {
+      records.push({
+        id: record.id,
+        fields: record.fields as T,
+      })
+    }
+
+    offset = data.offset
+
+    // Stop if we've reached maxRecords
+    if (options.maxRecords && records.length >= options.maxRecords) {
+      break
+    }
+  } while (offset)
 
   return records
 }
@@ -83,10 +128,25 @@ export async function getRecord<T = Record<string, unknown>>(
   recordId: string
 ): Promise<AirtableRecord<T> | null> {
   try {
-    const record = await getBase()(table).find(recordId)
+    const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
+
+    const res = await fetch(url, {
+      headers: getHeaders(),
+    })
+
+    if (!res.ok) {
+      if (res.status === 404) {
+        return null
+      }
+      const errorData = await res.json().catch(() => ({}))
+      console.error(`Error fetching record ${recordId} from ${table}:`, errorData)
+      return null
+    }
+
+    const data = await res.json()
     return {
-      id: record.id,
-      fields: record.fields as T,
+      id: data.id,
+      fields: data.fields as T,
     }
   } catch (error) {
     console.error(`Error fetching record ${recordId} from ${table}:`, error)
@@ -107,13 +167,25 @@ export async function updateRecord<T = Record<string, unknown>>(
   recordId: string,
   fields: Partial<T>
 ): Promise<AirtableRecord<T>> {
-  const record = await getBase()(table).update(
-    recordId,
-    fields as Partial<FieldSet>
-  )
+  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
+
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: getHeaders(),
+    body: JSON.stringify({ fields }),
+  })
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(
+      `Airtable update error: ${res.status} ${res.statusText} - ${JSON.stringify(errorData)}`
+    )
+  }
+
+  const data = await res.json()
   return {
-    id: record.id,
-    fields: record.fields as T,
+    id: data.id,
+    fields: data.fields as T,
   }
 }
 
@@ -128,10 +200,25 @@ export async function createRecord<T = Record<string, unknown>>(
   table: TableName,
   fields: Partial<T>
 ): Promise<AirtableRecord<T>> {
-  const record = await getBase()(table).create(fields as Partial<FieldSet>)
+  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({ fields }),
+  })
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(
+      `Airtable create error: ${res.status} ${res.statusText} - ${JSON.stringify(errorData)}`
+    )
+  }
+
+  const data = await res.json()
   return {
-    id: record.id,
-    fields: record.fields as T,
+    id: data.id,
+    fields: data.fields as T,
   }
 }
 

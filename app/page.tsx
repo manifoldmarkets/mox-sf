@@ -5,6 +5,10 @@ import { PeopleContent } from './people/page'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
 
+// Disable caching - fetch fresh data on every request
+// This ensures Airtable attachment URLs (which expire after ~2 hours) stay valid
+export const dynamic = 'force-dynamic'
+
 function Link({
   href,
   children,

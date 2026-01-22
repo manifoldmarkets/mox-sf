@@ -95,7 +95,7 @@ export default function PeopleContentWrapper({
                     <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase font-sans tracking-wide text-center mb-3">
                       {name}
                     </h4>
-                    <PeopleListClient people={people} showFaces={showFaces} />
+                    <PeopleListClient people={people} showFaces={showFaces} compact />
                   </div>
                 ))}
             </div>
