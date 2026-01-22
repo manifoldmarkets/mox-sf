@@ -5,9 +5,11 @@ import { Person, formatUrl } from './people'
 export default function PeopleListClient({
   people,
   showFaces,
+  compact = false,
 }: {
   people: Person[]
   showFaces: boolean
+  compact?: boolean
 }) {
   // Randomly select members with links to emphasize (client-side only to avoid hydration mismatch)
   const [emphasizedIds, setEmphasizedIds] = useState<string[]>([])
@@ -62,51 +64,70 @@ export default function PeopleListClient({
   }
 
   if (showFaces) {
-    return (
-      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4">
-        <div className="flex flex-wrap justify-center gap-8 max-w-[75vw] mx-auto">
-          {people.map((person) => {
-            const photoUrl = getOptimizedPhotoUrl(person)
-            const content = (
-              <div className="flex flex-col items-center w-20 sm:w-24 md:w-28">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 overflow-hidden bg-secondary-100 dark:bg-amber-900 mb-1 shrink-0">
-                  {photoUrl ? (
-                    <img
-                      src={photoUrl}
-                      alt={person.name}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover object-center"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-amber-700">
-                      {person.name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <p className="text-xs text-center text-text-primary dark:text-text-primary-dark leading-tight">
-                  {person.name}
-                </p>
-              </div>
-            )
+    // Compact mode: smaller faces, tighter spacing, no full-width wrapper
+    const containerClasses = compact
+      ? 'flex flex-wrap justify-center gap-4'
+      : 'relative left-1/2 right-1/2 -mx-[50vw] w-screen px-4'
+    const innerClasses = compact
+      ? ''
+      : 'flex flex-wrap justify-center gap-8 max-w-[75vw] mx-auto'
+    const faceSize = compact
+      ? 'w-16 h-16 sm:w-18 sm:h-18'
+      : 'w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28'
+    const containerWidth = compact ? 'w-16 sm:w-18' : 'w-20 sm:w-24 md:w-28'
 
-            if (person.website) {
-              return (
-                <a
-                  key={person.id}
-                  href={formatUrl(person.website)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  {content}
-                </a>
-              )
-            } else {
-              return <div key={person.id}>{content}</div>
-            }
-          })}
-        </div>
+    const renderContent = () =>
+      people.map((person) => {
+        const photoUrl = getOptimizedPhotoUrl(person)
+        const content = (
+          <div className={`flex flex-col items-center ${containerWidth}`}>
+            <div
+              className={`${faceSize} overflow-hidden bg-secondary-100 dark:bg-amber-900 mb-1 shrink-0`}
+            >
+              {photoUrl ? (
+                <img
+                  src={photoUrl}
+                  alt={person.name}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-secondary-600 dark:text-amber-700">
+                  {person.name.charAt(0)}
+                </div>
+              )}
+            </div>
+            <p className="text-xs text-center text-text-primary dark:text-text-primary-dark leading-tight">
+              {person.name}
+            </p>
+          </div>
+        )
+
+        if (person.website) {
+          return (
+            <a
+              key={person.id}
+              href={formatUrl(person.website)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              {content}
+            </a>
+          )
+        } else {
+          return <div key={person.id}>{content}</div>
+        }
+      })
+
+    if (compact) {
+      return <div className={containerClasses}>{renderContent()}</div>
+    }
+
+    return (
+      <div className={containerClasses}>
+        <div className={innerClasses}>{renderContent()}</div>
       </div>
     )
   }
