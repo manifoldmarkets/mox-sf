@@ -1,15 +1,14 @@
 This project uses Bun as its package manager. Use `bun install`
 
+## Testing
+
+Use `bun run test` (not `bun test`) to run tests. This project uses vitest, and `bun test` invokes Bun's native test runner which has incompatible APIs.
+
 ## Shared Dev Server (codev)
 
-When the user runs `bun run codev`, the dev server logs are piped to `/tmp/dev-server.log`. This is typically running when you startup as localhost://3000, and she wants you to use it.
+When the user runs `bun run codev`, the dev server logs are piped to `/tmp/dev-server.log`.
 
-**To check logs:** `tail -100 /tmp/dev-server.log` (or `tail -f` to watch live)
-
-Use this proactively when:
-- Debugging issues the user mentions
-- After they report something happened in the browser
-- When investigating errors or unexpected behavior
+**To check logs:** `tail -100 /tmp/dev-server.log` (or `tail -f` to watch live) Use this proactively.
 
 The user sees logs in their terminal in real-time; you can read the same logs from the file.
 
