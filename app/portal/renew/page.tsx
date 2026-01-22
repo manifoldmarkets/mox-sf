@@ -28,6 +28,9 @@ export default async function RenewPage() {
 
   // Get user profile from Airtable
   const record = await getRecord<MemberFields>(Tables.People, effectiveUserId)
+  if (!record) {
+    redirect('/portal')
+  }
   const fields = record.fields
 
   const firstName = fields.Name?.split(' ')[0] || ''

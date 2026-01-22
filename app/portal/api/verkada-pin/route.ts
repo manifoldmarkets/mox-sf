@@ -6,25 +6,25 @@ interface PersonFields {
   Email?: string
 }
 
-// Generate a cryptographically secure random 6-digit PIN
-function generateSecurePin(): string {
-  const array = new Uint32Array(1)
-  crypto.getRandomValues(array)
-  // Generate a number between 100000 and 999999
-  const pin = (array[0] % 900000) + 100000
-  return pin.toString()
-}
+// Cache for Verkada API token (valid for 30 minutes, we refresh at 25 min to be safe)
+let cachedToken: string | null = null
+let tokenExpiresAt: number = 0
+const TOKEN_TTL_MS = 25 * 60 * 1000 // 25 minutes
 
-async function fetchVerkadaPinForUser(
-  userIdentifier: string
-): Promise<string | null> {
+// Cache for in-flight PIN requests to dedupe concurrent calls
+// TODO: This is a workaround for the portal rendering both mobile and desktop views
+// simultaneously, causing duplicate VerkadaPin components to mount and fetch.
+// The proper fix is to refactor the portal to only render one view based on screen size.
+// See TODO in app/portal/page.tsx
+const inFlightRequests = new Map<string, Promise<Response>>()
+
+async function getVerkadaToken(): Promise<string | null> {
+  // Return cached token if still valid
+  if (cachedToken && Date.now() < tokenExpiresAt) {
+    return cachedToken
+  }
+
   try {
-    if (!userIdentifier) {
-      console.error('[Verkada API] No user identifier provided')
-      return null
-    }
-
-    // Generate Verkada API token
     const tokenRes = await fetch('https://api.verkada.com/token', {
       method: 'POST',
       headers: {
@@ -44,6 +44,37 @@ async function fetchVerkadaPinForUser(
     }
 
     const { token } = await tokenRes.json()
+    cachedToken = token
+    tokenExpiresAt = Date.now() + TOKEN_TTL_MS
+    return token
+  } catch (error) {
+    console.error('[Verkada API] Error getting token:', error)
+    return null
+  }
+}
+
+// Generate a cryptographically secure random 6-digit PIN
+function generateSecurePin(): string {
+  const array = new Uint32Array(1)
+  crypto.getRandomValues(array)
+  // Generate a number between 100000 and 999999
+  const pin = (array[0] % 900000) + 100000
+  return pin.toString()
+}
+
+async function fetchVerkadaPinForUser(
+  userIdentifier: string
+): Promise<string | null> {
+  try {
+    if (!userIdentifier) {
+      console.error('[Verkada API] No user identifier provided')
+      return null
+    }
+
+    const token = await getVerkadaToken()
+    if (!token) {
+      return null
+    }
 
     // Fetch user access info to get PIN
     // Verkada API requires exactly one of: user_id, external_id, email, or employee_id
@@ -92,21 +123,11 @@ async function getUserEmail(userId: string): Promise<string | null> {
 
 async function setVerkadaPin(email: string, pin: string): Promise<boolean> {
   try {
-    // Generate Verkada API token (use member key for PIN updates)
-    const tokenRes = await fetch('https://api.verkada.com/token', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'x-api-key': env.VERKADA_MEMBER_KEY,
-      },
-    })
-
-    if (!tokenRes.ok) {
+    const token = await getVerkadaToken()
+    if (!token) {
       console.error('[Verkada API] Failed to get token for PIN update')
       return false
     }
-
-    const { token } = await tokenRes.json()
 
     // First, fetch the user to get their user_id
     const userRes = await fetch(
@@ -165,6 +186,31 @@ async function setVerkadaPin(email: string, pin: string): Promise<boolean> {
   }
 }
 
+async function fetchPinForUser(effectiveUserId: string): Promise<Response> {
+  const email = await getUserEmail(effectiveUserId)
+
+  if (!email) {
+    return Response.json({ pin: null, hasAccess: false })
+  }
+
+  // Fetch PIN from Verkada API
+  let pin = await fetchVerkadaPinForUser(email)
+
+  // If user doesn't have a PIN yet, automatically generate one
+  if (!pin) {
+    const newPin = generateSecurePin()
+    const success = await setVerkadaPin(email, newPin)
+
+    if (success) {
+      pin = newPin
+    } else {
+      return Response.json({ pin: null, hasAccess: false })
+    }
+  }
+
+  return Response.json({ pin, hasAccess: true })
+}
+
 export async function GET() {
   try {
     // Check if user is logged in
@@ -175,28 +221,22 @@ export async function GET() {
 
     // Use viewingAsUserId if staff is viewing as another user
     const effectiveUserId = session.viewingAsUserId || session.userId
-    const email = await getUserEmail(effectiveUserId)
 
-    if (!email) {
-      return Response.json({ pin: null, hasAccess: false })
+    // Dedupe concurrent requests for the same user
+    const existingRequest = inFlightRequests.get(effectiveUserId)
+    if (existingRequest) {
+      return existingRequest.then((res) => res.clone())
     }
 
-    // Fetch PIN from Verkada API
-    let pin = await fetchVerkadaPinForUser(email)
+    const requestPromise = fetchPinForUser(effectiveUserId)
+    inFlightRequests.set(effectiveUserId, requestPromise)
 
-    // If user doesn't have a PIN yet, automatically generate one
-    if (!pin) {
-      const newPin = generateSecurePin()
-      const success = await setVerkadaPin(email, newPin)
-
-      if (success) {
-        pin = newPin
-      } else {
-        return Response.json({ pin: null, hasAccess: false })
-      }
+    try {
+      const response = await requestPromise
+      return response
+    } finally {
+      inFlightRequests.delete(effectiveUserId)
     }
-
-    return Response.json({ pin, hasAccess: true })
   } catch (error) {
     console.error('[Verkada PIN] Error in verkada-pin API:', error)
     return Response.json({ error: 'Internal server error' }, { status: 500 })

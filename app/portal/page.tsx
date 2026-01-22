@@ -60,6 +60,16 @@ export default async function DashboardPage() {
     )
   }
 
+  // TODO: This portal renders BOTH mobile and desktop views simultaneously (hidden via CSS).
+  // This causes duplicate component mounts, duplicate API calls, and wasted resources.
+  // Refactor to use a useMediaQuery hook to conditionally render only one view:
+  //   const isMobile = useMediaQuery('(max-width: 1024px)')
+  //   return isMobile ? <MobilePortal /> : <DesktopPortal />
+  // This will require splitting this server component into a client wrapper.
+  // For now, the backend dedupe in verkada-pin/route.ts mitigates the duplicate API calls.
+
+  const verkadaPin = <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
+
   // Mobile view - separate screens for each section
   const mobileView = (
     <div className="lg:hidden">
@@ -72,6 +82,7 @@ export default async function DashboardPage() {
         status={profile.status}
         tier={profile.tier}
         orgId={profile.orgId}
+        verkadaPinSlot={verkadaPin}
       />
     </div>
   )
@@ -217,7 +228,7 @@ export default async function DashboardPage() {
               userEmail={profile.email}
             />
 
-            <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
+            {verkadaPin}
 
             <div id="events" className="scroll-mt-8">
               <HostedEvents userName={profile.name} />

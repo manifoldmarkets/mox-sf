@@ -5,7 +5,6 @@ import Link from 'next/link'
 import HostedEvents from './HostedEvents'
 import ProfileEditForm from './profile/edit/ProfileEditForm'
 import LogoutButton from './LogoutButton'
-import VerkadaPin from './VerkadaPin'
 import AdminViewAsSelector from './AdminViewAsSelector'
 import AdminBanner from './AdminBanner'
 import MembershipStatus from './MembershipStatus'
@@ -27,6 +26,7 @@ interface MobilePortalProps {
   status?: string | null
   tier?: string | null
   orgId?: string | null
+  verkadaPinSlot: React.ReactNode
 }
 
 type Section = 'subscription' | 'events' | 'profile'
@@ -40,6 +40,7 @@ export default function MobilePortal({
   status,
   tier,
   orgId,
+  verkadaPinSlot,
 }: MobilePortalProps) {
   const [activeSection, setActiveSection] = useState<Section>('subscription')
 
@@ -116,7 +117,7 @@ export default function MobilePortal({
               userEmail={profile.email}
             />
 
-            <VerkadaPin isViewingAs={!!viewingAsUserId} />
+            {verkadaPinSlot}
           </div>
         )}
 
