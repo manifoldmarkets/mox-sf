@@ -50,11 +50,22 @@ flowchart TB
 
 ## Tier to Forkable Club Mapping
 
+### Via Stripe (subscription purchase)
+
+| Stripe Product | Airtable Tier | Forkable Club |
+|----------------|---------------|---------------|
+| prod_RpkYg9EMJoi5oi | Member | MOX_MEMBERS |
+| prod_RpkufjD9E3esG5 | Resident | MOX_RESIDENTS |
+| prod_Rq9VzfM9QoJwPD | Friend | None |
+
+### Via Airtable Automation (non-Stripe members)
+
 | Airtable Tier | Forkable Club |
 |---------------|---------------|
-| Member | MOX_MEMBERS |
-| Resident | MOX_RESIDENTS |
-| Friend | None |
+| Private Office | MOX_RESIDENTS |
+| Program | MOX_MEMBERS |
+
+See [forkable-tier-sync.md](./forkable-tier-sync.md) for Airtable automation setup.
 
 Stripe product IDs and Forkable club IDs are configured in the webhook handler and forkable.ts.
 
