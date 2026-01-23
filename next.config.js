@@ -15,6 +15,7 @@ const redirects = {
     'https://moxsf.notion.site/Mox-Populi-26954492ea7a80f7820ec2f5c237b212',
   '/guests': '/guest-program',
   '/guest': '/guest-program',
+  '/onboard': 'https://airtable.com/appkHZ2UvU6SouT5y/pagS1zz7H3u2aoElF/form',
 
   // Endpoints mostly for admin/staff
   '/eventz':
