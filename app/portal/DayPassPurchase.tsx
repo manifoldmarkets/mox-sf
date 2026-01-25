@@ -54,7 +54,7 @@ export default function DayPassPurchase({
 
   return (
     <>
-      <h2>guest day pass</h2>
+      <h3>guest day pass</h3>
 
       <p>
         want to bring a friend to mox? buy them a day pass for <strong>$25</strong>.

@@ -20,14 +20,23 @@
 
 .portal h2 {
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 1.2em;
   margin-bottom: 10px;
   text-transform: lowercase;
+  position: relative;
+}
+
+.portal h2::before {
+  content: '*';
+  color: black;
+  font-weight: bold;
+  position: absolute;
+  left: -1.5em;
 }
 
 .portal h3 {
   font-weight: bold;
-  font-size: 1em;
+  font-size: 1.1em;
   margin-bottom: 10px;
 }
 

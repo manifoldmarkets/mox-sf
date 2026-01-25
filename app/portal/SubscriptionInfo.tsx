@@ -185,7 +185,7 @@ export default function SubscriptionInfo({
   if (loading) {
     return (
       <>
-        <h2>subscription</h2>
+        <h3>subscription</h3>
         <p className="loading">loading subscription details...</p>
       </>
     )
@@ -194,7 +194,7 @@ export default function SubscriptionInfo({
   if (!stripeCustomerId || error) {
     return (
       <>
-        <h2>subscription</h2>
+        <h3>subscription</h3>
         <p>no active subscription found</p>
       </>
     )
@@ -203,7 +203,7 @@ export default function SubscriptionInfo({
   if (cancelledData) {
     return (
       <>
-        <h2>subscription</h2>
+        <h3>subscription</h3>
         <div className="alert warning">
           <p>
             <strong>your subscription has been cancelled.</strong>
@@ -236,7 +236,7 @@ export default function SubscriptionInfo({
 
   return (
     <>
-      <h2>subscription</h2>
+      <h3>subscription</h3>
 
       {isPaused && (
         <div className="alert warning">

@@ -94,7 +94,7 @@ export default function VerkadaPin({
   if (loading) {
     return (
       <>
-        <h2>front door access</h2>
+        <h3>door code</h3>
         <p className="loading">loading...</p>
       </>
     )
@@ -103,7 +103,7 @@ export default function VerkadaPin({
   if (error) {
     return (
       <>
-        <h2>front door access</h2>
+        <h3>door code</h3>
         <p className="error">{error}</p>
       </>
     )
@@ -114,7 +114,7 @@ export default function VerkadaPin({
     if (isGuestProgram && guestPin) {
       return (
         <>
-          <h2>front door access</h2>
+          <h3>door code</h3>
           <p>as a guest program member, use this shared PIN code to enter:</p>
           <div className="pin-display">{guestPin}#</div>
         </>
@@ -123,7 +123,7 @@ export default function VerkadaPin({
 
     return (
       <>
-        <h2>front door access</h2>
+        <h3>front door access</h3>
         <p>
           door access is not available for your account. please contact a staff
           member to set up verkada access.
@@ -134,11 +134,10 @@ export default function VerkadaPin({
 
   return (
     <>
-      <h2>front door access</h2>
+      <h3>door code</h3>
 
       <p>
-        your personal PIN code. you can share this with guests, but you need to
-        be in the building when they use it.
+        your personal PIN code (weekly code is in the Discord). this is for guests or deliveries.
       </p>
 
       <div className="pin-display">{pin}#</div>
