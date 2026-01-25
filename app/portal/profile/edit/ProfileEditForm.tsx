@@ -152,6 +152,7 @@ export default function ProfileEditForm({
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Basic Info */}
       <div className="form-group">
         <label htmlFor="name">name *</label>
         <input
@@ -167,59 +168,9 @@ export default function ProfileEditForm({
       <div className="form-group">
         <label htmlFor="email">email</label>
         <input type="email" id="email" value={profile.email} disabled />
-        <p style={{ fontSize: '0.9em', color: '#666', marginTop: '5px' }}>
-          ask a staff member if you want to update your email
+        <p className="muted" style={{ marginTop: '5px' }}>
+          contact staff to change your email
         </p>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="discordUsername">discord username</label>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-          <input
-            type="text"
-            id="discordUsername"
-            name="discordUsername"
-            value={formData.discordUsername}
-            onChange={handleChange}
-            placeholder="yourname"
-            style={{ flex: 1 }}
-          />
-          <a
-            href="https://discord.gg/jZHTRHUWy9"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn"
-          >
-            join discord
-          </a>
-        </div>
-        <p style={{ fontSize: '0.9em', color: '#666', marginTop: '5px' }}>
-          your discord username (without the @). find it in discord under
-          Settings → My Account.
-        </p>
-        {profile.discordUsername && (
-          <p style={{ marginTop: '10px' }}>
-            <button
-              type="button"
-              onClick={handleDiscordSync}
-              disabled={discordSyncStatus === 'syncing'}
-            >
-              {discordSyncStatus === 'syncing'
-                ? 'syncing...'
-                : 'sync discord role'}
-            </button>
-            {discordSyncMessage && (
-              <span
-                className={
-                  discordSyncStatus === 'success' ? 'success' : 'error'
-                }
-                style={{ marginLeft: '10px' }}
-              >
-                {discordSyncMessage}
-              </span>
-            )}
-          </p>
-        )}
       </div>
 
       <div className="form-group">
@@ -242,8 +193,8 @@ export default function ProfileEditForm({
               src={photoFile ? URL.createObjectURL(photoFile) : profile.photo!}
               alt="Profile"
               style={{
-                width: '80px',
-                height: '80px',
+                width: '60px',
+                height: '60px',
                 objectFit: 'cover',
                 border: '1px solid #ccc',
               }}
@@ -256,7 +207,7 @@ export default function ProfileEditForm({
               accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
               onChange={handlePhotoChange}
             />
-            <p style={{ fontSize: '0.9em', color: '#666', marginTop: '5px' }}>
+            <p className="muted" style={{ marginTop: '5px' }}>
               JPG, PNG, WebP, GIF, or HEIC. Max 10MB.
             </p>
           </div>
@@ -275,6 +226,61 @@ export default function ProfileEditForm({
           show my profile in the <Link href="/people">member directory</Link>
         </label>
       </div>
+
+      <hr style={{ margin: '20px 0' }} />
+
+      {/* Discord Integration */}
+      <div className="form-group">
+        <label htmlFor="discordUsername">discord username</label>
+        <div className="inline-form">
+          <input
+            type="text"
+            id="discordUsername"
+            name="discordUsername"
+            value={formData.discordUsername}
+            onChange={handleChange}
+            placeholder="yourname"
+          />
+          <a
+            href="https://discord.gg/jZHTRHUWy9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn small"
+          >
+            join
+          </a>
+        </div>
+        <p className="muted" style={{ marginTop: '5px' }}>
+          your discord username (without @). find it under Settings → My
+          Account.
+        </p>
+        {profile.discordUsername && (
+          <p style={{ marginTop: '10px' }}>
+            <button
+              type="button"
+              onClick={handleDiscordSync}
+              disabled={discordSyncStatus === 'syncing'}
+              className="small"
+            >
+              {discordSyncStatus === 'syncing'
+                ? 'syncing...'
+                : 'sync discord role'}
+            </button>
+            {discordSyncMessage && (
+              <span
+                className={
+                  discordSyncStatus === 'success' ? 'success' : 'error'
+                }
+                style={{ marginLeft: '10px' }}
+              >
+                {discordSyncMessage}
+              </span>
+            )}
+          </p>
+        )}
+      </div>
+
+      <hr style={{ margin: '20px 0' }} />
 
       {message && (
         <p className={status === 'success' ? 'success' : 'error'}>{message}</p>

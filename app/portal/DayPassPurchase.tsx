@@ -71,7 +71,7 @@ export default function DayPassPurchase({
         {loading ? 'loading...' : 'purchase day pass ($25)'}
       </button>
 
-      <p style={{ marginTop: '10px', fontSize: '0.9em', color: '#666' }}>
+      <p className="muted" style={{ marginTop: '10px' }}>
         after purchase, you'll receive an activation link to share with your
         guest.
       </p>

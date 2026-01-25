@@ -247,7 +247,7 @@ export default function EventEditPage() {
         <div className="form-group">
           <label>assigned rooms:</label>
           <input type="text" value={event.assignedRooms} disabled />
-          <p style={{ fontSize: '0.9em', color: '#666', marginTop: '5px' }}>
+          <p className="muted" style={{ marginTop: '5px' }}>
             room assignment is managed by staff
           </p>
         </div>

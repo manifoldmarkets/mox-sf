@@ -7,16 +7,28 @@
   background: white;
   color: black;
   min-height: calc(100vh - 100px);
+  line-height: 1.5;
 }
 
 .portal h1 {
   font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
 }
 
 .portal h2 {
   font-weight: bold;
-  margin-bottom: 15px;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  text-transform: lowercase;
+}
+
+.portal h3 {
+  font-weight: bold;
+  font-size: 1em;
+  margin-bottom: 10px;
 }
 
 .portal p {
@@ -37,12 +49,14 @@
 .portal input[type="email"],
 .portal input[type="url"],
 .portal input[type="date"],
+.portal input[type="datetime-local"],
 .portal input[type="password"],
 .portal textarea,
 .portal select {
   width: 100%;
   font-family: monospace;
-  padding: 5px;
+  font-size: 1em;
+  padding: 8px;
   border: 1px solid #ccc;
   background: white;
   color: black;
@@ -67,9 +81,10 @@
 .portal button,
 .portal .btn {
   background: #f0f0f0;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
+  border: 1px solid #999;
+  padding: 8px 12px;
   font-family: monospace;
+  font-size: 1em;
   cursor: pointer;
   color: black;
   text-decoration: none;
@@ -79,10 +94,11 @@
 .portal button:hover,
 .portal .btn:hover {
   background: #e0e0e0;
+  border-color: #666;
 }
 
 .portal button:disabled {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -91,6 +107,7 @@
   background: #333;
   color: white;
   border-color: #333;
+  font-weight: bold;
 }
 
 .portal button.primary:hover,
@@ -106,6 +123,13 @@
 
 .portal button.danger:hover {
   background: #fdd;
+}
+
+/* Small inline buttons */
+.portal button.small,
+.portal .btn.small {
+  padding: 4px 8px;
+  font-size: 0.9em;
 }
 
 /* Tables */
@@ -256,16 +280,48 @@
   overflow-y: auto;
 }
 
-/* Admin banner */
-.portal .admin-banner {
-  background: #eef;
-  border: 1px solid #88c;
+/* Admin section (collapsible) */
+.portal .admin-section {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+.portal .admin-section summary {
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+}
+
+.portal .admin-section summary:hover {
+  color: #666;
 }
 
 /* Back link */
 .portal .back-link {
-  margin-bottom: 20px;
-  display: block;
+  margin-bottom: 15px;
+  display: inline-block;
+  color: #666;
+}
+
+.portal .back-link:hover {
+  color: #333;
+}
+
+/* Muted text */
+.portal .muted {
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Inline form layout */
+.portal .inline-form {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.portal .inline-form input {
+  flex: 1;
 }

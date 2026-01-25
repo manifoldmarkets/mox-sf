@@ -110,7 +110,7 @@ export default function LoginPage() {
         </button>
       </form>
 
-      <p style={{ marginTop: '20px', color: '#666' }}>
+      <p className="muted" style={{ marginTop: '20px' }}>
         we'll email you a secure link to access your profile. the link expires
         in 24 hours.
       </p>

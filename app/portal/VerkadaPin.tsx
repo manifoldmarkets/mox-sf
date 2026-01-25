@@ -129,7 +129,7 @@ export default function VerkadaPin({ isViewingAs = false }: VerkadaPinProps) {
         )}
 
         {isViewingAs && (
-          <p style={{ marginTop: '10px', fontSize: '0.9em', color: '#666' }}>
+          <p className="muted" style={{ marginTop: '10px' }}>
             to change this user's PIN, use the verkada admin portal
           </p>
         )}

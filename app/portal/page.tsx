@@ -54,28 +54,33 @@ export default async function DashboardPage() {
         ← back to home
       </Link>
 
+      <h1>member portal</h1>
+
       {/* Admin banner when viewing as another user */}
       {session.viewingAsUserId && session.viewingAsName && (
-        <div className="admin-banner">
-          viewing portal as <strong>{session.viewingAsName}</strong>.{' '}
-          <Link href="/portal/api/view-as?clear=true">exit view-as</Link>
+        <div className="alert info">
+          <strong>admin mode:</strong> viewing portal as{' '}
+          <strong>{session.viewingAsName}</strong>.{' '}
+          <Link href="/portal/api/view-as?clear=true">switch back</Link>
         </div>
       )}
 
-      {/* Admin tools */}
+      {/* Admin tools - collapsible section at top */}
       {session.isStaff && (
-        <section>
-          <h2>admin tools</h2>
-          <AdminViewAsSelector
-            currentViewingAsUserId={session.viewingAsUserId}
-            currentViewingAsName={session.viewingAsName}
-          />
-          <p style={{ marginTop: '10px' }}>
-            <Link href="/portal/admin/discord-mapping">
-              discord username mapping tool
-            </Link>
-          </p>
-        </section>
+        <details className="admin-section">
+          <summary>admin tools</summary>
+          <div style={{ marginTop: '10px' }}>
+            <AdminViewAsSelector
+              currentViewingAsUserId={session.viewingAsUserId}
+              currentViewingAsName={session.viewingAsName}
+            />
+            <p style={{ marginTop: '10px' }}>
+              <Link href="/portal/admin/discord-mapping">
+                → discord username mapping tool
+              </Link>
+            </p>
+          </div>
+        </details>
       )}
 
       <hr />
