@@ -1,4 +1,4 @@
-import { renameDiscordChannel, sendChannelMessage } from '@/app/lib/discord'
+import { renameDiscordChannel, sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord'
 import { env } from '@/app/lib/env'
 
 /**
@@ -177,7 +177,7 @@ export async function GET(request: Request) {
 
     // Step 5: Update Discord channel name
     const channelRenamed = await renameDiscordChannel(
-      env.DISCORD_DOOR_CODE_CHANNEL_ID,
+      DISCORD_CHANNELS.DOOR_CODE,
       `🚪 Code: ${newCode}#`
     )
     if (!channelRenamed) {
@@ -199,7 +199,7 @@ export async function GET(request: Request) {
     let messageSent = false
     if (oldCode) {
       messageSent = await sendChannelMessage(
-        env.DISCORD_PACKAGES_CHANNEL_ID,
+        DISCORD_CHANNELS.PACKAGES,
         `🔄 **Door code rotated!**\n\nThe old code **${oldCode}#** will continue to work until ${expiryDate}.`
       )
       if (!messageSent) {

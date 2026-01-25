@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -12,7 +13,6 @@ export default function LoginPage() {
   const [message, setMessage] = useState('')
   const [checkingSession, setCheckingSession] = useState(true)
 
-  // Check if user is already logged in
   useEffect(() => {
     async function checkSession() {
       try {
@@ -49,87 +49,71 @@ export default function LoginPage() {
 
       if (response.ok) {
         setStatus('success')
-        setMessage('Check your email! We sent you a login link.')
+        setMessage('check your email! we sent you a login link.')
       } else {
         setStatus('error')
-        setMessage(data.error || 'Something went wrong. Please try again.')
+        setMessage(data.error || 'something went wrong. please try again.')
       }
     } catch (error) {
       setStatus('error')
-      setMessage('Failed to send email. Please try again.')
+      setMessage('failed to send email. please try again.')
     }
   }
 
   if (checkingSession) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background-page dark:bg-background-page-dark px-4">
-        <div className="text-text-tertiary dark:text-text-tertiary-dark">
-          Checking session...
-        </div>
-      </div>
+      <>
+        <h1>member portal</h1>
+        <p className="loading">checking session...</p>
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background-page dark:bg-background-page-dark px-4">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-brand dark:text-brand-dark-mode mb-2 font-display">
-            Member Portal
-          </h1>
-          <p className="text-text-tertiary dark:text-text-tertiary-dark font-sans">
-            Sign in to edit your profile and manage your membership
+    <>
+      <Link href="/" className="back-link">
+        ← back to home
+      </Link>
+
+      <h1>member portal</h1>
+
+      <p>sign in to edit your profile and manage your membership.</p>
+
+      <hr />
+
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="email">email address:</label>
+          <input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            disabled={status === 'loading' || status === 'success'}
+          />
+        </div>
+
+        {message && (
+          <p className={status === 'success' ? 'success' : 'error'}>
+            {message}
           </p>
-        </div>
+        )}
 
-        <div className="bg-background-surface dark:bg-background-surface-dark shadow-md p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2 font-sans"
-              >
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-border-medium dark:border-border-medium-dark bg-background-surface dark:bg-background-subtle-dark text-text-primary dark:text-text-primary-dark focus:ring-2 focus:ring-brand dark:focus:ring-brand focus:border-brand dark:focus:border-brand font-sans"
-                placeholder="your@email.com"
-                disabled={status === 'loading' || status === 'success'}
-              />
-            </div>
+        <button
+          type="submit"
+          disabled={status === 'loading' || status === 'success'}
+          className="primary"
+        >
+          {status === 'loading' ? 'sending...' : 'send login link'}
+        </button>
+      </form>
 
-            {message && (
-              <div
-                className={`p-4 font-sans ${
-                  status === 'success'
-                    ? 'bg-success-bg dark:bg-success-bg-dark text-success-text dark:text-success-text-dark border border-success-bg dark:border-success-bg-dark'
-                    : 'bg-error-bg dark:bg-error-bg-dark text-error-text dark:text-error-text-dark border border-error-bg dark:border-error-bg-dark'
-                }`}
-              >
-                {message}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={status === 'loading' || status === 'success'}
-              className="w-full bg-brand dark:bg-brand text-white py-2 px-4 hover:bg-brand-dark dark:hover:bg-brand-dark disabled:bg-text-muted dark:disabled:bg-text-muted-dark disabled:cursor-not-allowed transition-colors font-sans"
-            >
-              {status === 'loading' ? 'Sending...' : 'Send Login Link'}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center text-sm text-text-tertiary dark:text-text-tertiary-dark font-sans">
-            <p>We'll email you a secure link to access your profile.</p>
-            <p className="mt-1">The link expires in 24 hours.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+      <p className="muted" style={{ marginTop: '20px' }}>
+        we'll email you a secure link to access your profile. the link expires
+        in 24 hours.
+      </p>
+    </>
   )
 }

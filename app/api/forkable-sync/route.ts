@@ -1,5 +1,5 @@
 import { Tables, getRecord, updateRecord } from '@/app/lib/airtable'
-import { sendChannelMessage } from '@/app/lib/discord'
+import { sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord'
 import { env } from '@/app/lib/env'
 import {
   addMemberToForkable,
@@ -177,7 +177,7 @@ async function sendNotification({
   success: boolean
   errors?: string[]
 }) {
-  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
+  const channelId = DISCORD_CHANNELS.NOTIFICATIONS
   if (!channelId) {
     console.log('[Forkable Sync] No Discord notifications channel configured, skipping notification')
     return

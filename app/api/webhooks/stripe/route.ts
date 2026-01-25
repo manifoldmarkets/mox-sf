@@ -1,4 +1,5 @@
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
+import { stripe } from '@/app/lib/stripe';
 import { Resend } from 'resend';
 import { getDayPassActivationEmail } from '@/app/lib/emails/day-pass-activation';
 import {
@@ -7,17 +8,13 @@ import {
   findRecord,
   escapeAirtableString,
 } from '@/app/lib/airtable';
-import { sendChannelMessage } from '@/app/lib/discord';
+import { sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord';
 import { env } from '@/app/lib/env';
 import {
   addMemberToForkable,
   FORKABLE_CLUBS,
   parseFullName,
 } from '@/app/lib/forkable';
-
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-10-29.clover',
-});
 
 const resend = new Resend(env.RESEND_API_KEY);
 
@@ -429,7 +426,7 @@ async function sendForkableNotification({
   success: boolean;
   errors?: string[];
 }) {
-  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID;
+  const channelId = DISCORD_CHANNELS.NOTIFICATIONS;
   if (!channelId) {
     console.log('[Stripe Webhook] No Discord notifications channel configured, skipping notification');
     return;

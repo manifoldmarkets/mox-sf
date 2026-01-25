@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 
@@ -6,6 +7,29 @@ interface PersonFields {
   Name?: string
   Email?: string
   Tier?: string
+}
+
+// GET handler for clearing view-as mode via link
+export async function GET(request: NextRequest) {
+  const session = await getSession()
+
+  if (!session.isLoggedIn || !session.isStaff) {
+    return NextResponse.redirect(new URL('/portal', request.url))
+  }
+
+  const clear = request.nextUrl.searchParams.get('clear')
+
+  if (clear === 'true') {
+    session.viewingAsUserId = undefined
+    session.viewingAsName = undefined
+    await session.save()
+    revalidatePath('/portal')
+  }
+
+  // Add timestamp to bust any client-side cache
+  const redirectUrl = new URL('/portal', request.url)
+  redirectUrl.searchParams.set('t', Date.now().toString())
+  return NextResponse.redirect(redirectUrl)
 }
 
 export async function POST(request: NextRequest) {

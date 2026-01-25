@@ -41,6 +41,10 @@ interface PersonFields {
   Photo?: { url: string; filename: string }[]
   Tier?: string
   Status?: string
+  'Work thing'?: string | null
+  'Work thing URL'?: string | null
+  'Fun thing'?: string | null
+  'Fun thing URL'?: string | null
 }
 
 export async function POST(request: Request) {
@@ -58,6 +62,10 @@ export async function POST(request: Request) {
     const discordUsername = formData.get('discordUsername') as string | null
     const directoryVisible = formData.get('directoryVisible') === 'true'
     const photoFile = formData.get('photo') as File | null
+    const workThing = formData.get('workThing') as string | null
+    const workThingUrl = formData.get('workThingUrl') as string | null
+    const funThing = formData.get('funThing') as string | null
+    const funThingUrl = formData.get('funThingUrl') as string | null
 
     // Validate name
     if (!name || name.trim().length === 0) {
@@ -74,6 +82,18 @@ export async function POST(request: Request) {
     const trimmedWebsite = website?.trim() || ''
     if (trimmedWebsite && !isValidURL(trimmedWebsite)) {
       return Response.json({ error: 'Invalid website URL' }, { status: 400 })
+    }
+
+    // Validate work thing URL
+    const trimmedWorkThingUrl = workThingUrl?.trim() || ''
+    if (trimmedWorkThingUrl && !isValidURL(trimmedWorkThingUrl)) {
+      return Response.json({ error: 'Invalid work thing URL' }, { status: 400 })
+    }
+
+    // Validate fun thing URL
+    const trimmedFunThingUrl = funThingUrl?.trim() || ''
+    if (trimmedFunThingUrl && !isValidURL(trimmedFunThingUrl)) {
+      return Response.json({ error: 'Invalid fun thing URL' }, { status: 400 })
     }
 
     // Validate Discord username
@@ -94,6 +114,10 @@ export async function POST(request: Request) {
       Website: trimmedWebsite,
       'Discord Username': trimmedDiscord || null,
       'Show in directory': directoryVisible,
+      'Work thing': workThing?.trim() || null,
+      'Work thing URL': trimmedWorkThingUrl || null,
+      'Fun thing': funThing?.trim() || null,
+      'Fun thing URL': trimmedFunThingUrl || null,
     }
 
     // Update Airtable record (without photo - that's handled separately)

@@ -1,13 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
-import Stripe from 'stripe'
-import { env } from '@/app/lib/env'
+import { stripe } from '@/app/lib/stripe'
 import RenewContent from './RenewContent'
-
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-10-29.clover',
-})
 
 interface MemberFields {
   Name?: string

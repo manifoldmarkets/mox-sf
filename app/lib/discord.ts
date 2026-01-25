@@ -1,31 +1,16 @@
 // Discord API integration for role management
 
 import { env } from './env'
+import {
+  DISCORD_GUILD_ID,
+  TIER_TO_ROLE,
+  ALL_MEMBER_ROLE_IDS,
+  ACTIVE_TIERS,
+  DISCORD_CHANNELS,
+} from './discord-constants'
 
-// Map Airtable tiers to Discord role IDs
-// You'll need to set these in your .env file
-// Note: Staff role is NOT auto-synced to avoid permission issues
-function getTierToRole(): Record<string, string> {
-  const roles: Record<string, string> = {}
-  if (env.DISCORD_ROLE_FRIEND) roles['Friend'] = env.DISCORD_ROLE_FRIEND
-  if (env.DISCORD_ROLE_MEMBER) roles['Member'] = env.DISCORD_ROLE_MEMBER
-  if (env.DISCORD_ROLE_RESIDENT) roles['Resident'] = env.DISCORD_ROLE_RESIDENT
-  if (env.DISCORD_ROLE_PRIVATE_OFFICE) roles['Private Office'] = env.DISCORD_ROLE_PRIVATE_OFFICE
-  if (env.DISCORD_ROLE_PROGRAM) roles['Program'] = env.DISCORD_ROLE_PROGRAM
-  return roles
-}
-
-// All member roles (for removing old roles when tier changes)
-function getAllMemberRoleIds(): string[] {
-  const roles = [
-    env.DISCORD_ROLE_FRIEND,
-    env.DISCORD_ROLE_MEMBER,
-    env.DISCORD_ROLE_RESIDENT,
-    env.DISCORD_ROLE_PRIVATE_OFFICE,
-    env.DISCORD_ROLE_PROGRAM,
-  ]
-  return roles.filter((r): r is string => !!r)
-}
+// Re-export constants for convenience
+export { DISCORD_GUILD_ID, DISCORD_CHANNELS }
 
 /**
  * Helper to make Discord API requests with rate limit handling
@@ -84,8 +69,8 @@ interface SyncResult {
 export async function findDiscordMember(
   username: string
 ): Promise<DiscordMember | null> {
-  if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID) {
-    console.error('Discord bot token or guild ID not configured')
+  if (!env.DISCORD_BOT_TOKEN) {
+    console.error('Discord bot token not configured')
     return null
   }
 
@@ -93,7 +78,7 @@ export async function findDiscordMember(
 
   try {
     // Search for member by query (Discord API v10)
-    const searchUrl = `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/members/search?query=${encodeURIComponent(normalizedUsername)}&limit=10`
+    const searchUrl = `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/search?query=${encodeURIComponent(normalizedUsername)}&limit=10`
 
     const response = await discordFetch(searchUrl)
 
@@ -127,13 +112,13 @@ export async function assignRole(
   discordUserId: string,
   roleId: string
 ): Promise<boolean> {
-  if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID) {
+  if (!env.DISCORD_BOT_TOKEN) {
     return false
   }
 
   try {
     const response = await discordFetch(
-      `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
+      `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
       { method: 'PUT' }
     )
 
@@ -160,13 +145,13 @@ export async function removeRole(
   discordUserId: string,
   roleId: string
 ): Promise<boolean> {
-  if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID) {
+  if (!env.DISCORD_BOT_TOKEN) {
     return false
   }
 
   try {
     const response = await discordFetch(
-      `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
+      `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${discordUserId}/roles/${roleId}`,
       { method: 'DELETE' }
     )
 
@@ -195,14 +180,7 @@ export async function syncDiscordRole(
   status: string | null
 ): Promise<SyncResult> {
   // Only sync for active members (Staff excluded - managed manually)
-  const activeTiers = [
-    'Friend',
-    'Member',
-    'Resident',
-    'Private Office',
-    'Program',
-  ]
-  const isActive = status === 'Joined' && tier && activeTiers.includes(tier)
+  const isActive = status === 'Joined' && tier && ACTIVE_TIERS.includes(tier)
 
   if (!isActive) {
     return {
@@ -221,8 +199,7 @@ export async function syncDiscordRole(
   }
 
   // Get the target role for this tier
-  const tierToRole = getTierToRole()
-  const targetRoleId = tierToRole[tier]
+  const targetRoleId = TIER_TO_ROLE[tier]
   if (!targetRoleId) {
     return {
       success: false,
@@ -231,8 +208,7 @@ export async function syncDiscordRole(
   }
 
   // Remove any existing member roles (except the one we're assigning)
-  const allMemberRoles = getAllMemberRoleIds()
-  const rolesToRemove = allMemberRoles.filter(
+  const rolesToRemove = ALL_MEMBER_ROLE_IDS.filter(
     (r) => r !== targetRoleId && member.roles.includes(r)
   )
 
@@ -264,7 +240,7 @@ export async function syncDiscordRole(
  * Check if Discord integration is configured
  */
 export function isDiscordConfigured(): boolean {
-  return !!(env.DISCORD_BOT_TOKEN && env.DISCORD_GUILD_ID)
+  return !!env.DISCORD_BOT_TOKEN
 }
 
 /**

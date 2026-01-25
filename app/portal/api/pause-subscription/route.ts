@@ -1,17 +1,22 @@
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
-import { sendChannelMessage } from '@/app/lib/discord'
-import Stripe from 'stripe'
-import { env } from '@/app/lib/env'
-
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-10-29.clover',
-})
+import { sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord'
+import { stripe } from '@/app/lib/stripe'
+import { sendEmail } from '@/app/lib/email'
 
 interface PersonFields {
   Email?: string
   Name?: string
   'Stripe Customer ID'?: string
+}
+
+// Format a date for display
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 }
 
 // Send Discord notification to staff
@@ -21,27 +26,25 @@ async function notifyStaff(
   resumeDate: string | null,
   reason: string
 ) {
-  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
-  if (!channelId) {
-    console.log('[Pause Subscription] No Discord notifications channel configured, skipping notification')
-    return
-  }
-
   const pauseInfo = resumeDate
-    ? `Resume on: ${new Date(resumeDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`
+    ? `Resume on: ${formatDate(resumeDate)}`
     : 'Paused indefinitely'
 
-  const message = `⏸️ **Subscription Paused:** ${userName} (${userEmail})\n${pauseInfo}\nReason: ${reason}`
-
-  const sent = await sendChannelMessage(channelId, message)
-  if (sent) {
-    console.log('[Pause Subscription] Sent Discord notification')
-  } else {
-    console.error('[Pause Subscription] Failed to send Discord notification')
-  }
+  await sendChannelMessage(
+    DISCORD_CHANNELS.NOTIFICATIONS,
+    `⏸️ **Subscription Paused:** ${userName} (${userEmail})\n${pauseInfo}\nReason: ${reason}`
+  )
 }
 
-// Send confirmation email to the user about their subscription pause
+// Send Discord notification when subscription is resumed
+async function notifyStaffResume(userEmail: string, userName: string) {
+  await sendChannelMessage(
+    DISCORD_CHANNELS.NOTIFICATIONS,
+    `▶️ **Subscription Resumed:** ${userName} (${userEmail})`
+  )
+}
+
+// Send confirmation email to user about subscription pause
 async function notifyUserPause(
   userEmail: string,
   userName: string,
@@ -49,19 +52,13 @@ async function notifyUserPause(
   reason: string
 ) {
   const pauseInfo = resumeDate
-    ? `Your subscription will automatically resume on ${new Date(resumeDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.`
+    ? `Your subscription will automatically resume on ${formatDate(resumeDate)}.`
     : 'Your subscription is paused indefinitely. You can resume it anytime from your member portal.'
 
-  try {
-    const resendApiKey = env.RESEND_API_KEY
-
-    if (!resendApiKey) {
-      console.error('[Pause Subscription] No Resend API key found')
-      return
-    }
-
-    const emailBody = `
-Hi ${userName},
+  await sendEmail({
+    to: userEmail,
+    subject: 'Your Mox Membership Has Been Paused',
+    text: `Hi ${userName},
 
 Your Mox membership has been paused.
 
@@ -72,38 +69,29 @@ Reason: ${reason}
 If you have any questions, please contact us at team@moxsf.com.
 
 Best,
-The Mox Team
-    `.trim()
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Member Portal <portal@account.moxsf.com>',
-        to: [userEmail],
-        subject: 'Your Mox Membership Has Been Paused',
-        text: emailBody,
-      }),
-    })
-
-    const responseData = await response.json()
-    console.log(
-      '[Pause Subscription] User notification response:',
-      response.status,
-      responseData
-    )
-  } catch (error) {
-    console.error(
-      '[Pause Subscription] Failed to send user notification email:',
-      error
-    )
-  }
+The Mox Team`,
+  })
 }
 
-// Send notification to admin when they pause a subscription for another user
+// Send confirmation email to user about subscription resume
+async function notifyUserResume(userEmail: string, userName: string) {
+  await sendEmail({
+    to: userEmail,
+    subject: 'Your Mox Membership Has Been Resumed',
+    text: `Hi ${userName},
+
+Your Mox membership has been resumed and is now active again.
+
+Your next billing cycle will begin according to your subscription schedule.
+
+If you have any questions, please contact us at team@moxsf.com.
+
+Best,
+The Mox Team`,
+  })
+}
+
+// Send confirmation to admin when they pause a subscription for another user
 async function notifyAdminPause(
   adminEmail: string,
   adminName: string,
@@ -113,19 +101,13 @@ async function notifyAdminPause(
   reason: string
 ) {
   const pauseInfo = resumeDate
-    ? `Resume on: ${new Date(resumeDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`
+    ? `Resume on: ${formatDate(resumeDate)}`
     : 'Paused indefinitely'
 
-  try {
-    const resendApiKey = env.RESEND_API_KEY
-
-    if (!resendApiKey) {
-      console.error('[Pause Subscription] No Resend API key found')
-      return
-    }
-
-    const emailBody = `
-Hi ${adminName},
+  await sendEmail({
+    to: adminEmail,
+    subject: `Confirmation: You Paused ${userName}'s Membership`,
+    text: `Hi ${adminName},
 
 You have paused the membership for ${userName} (${userEmail}).
 
@@ -135,123 +117,21 @@ Reason: ${reason}
 This is a confirmation of the action you took in the member portal.
 
 Best,
-The Mox Team
-    `.trim()
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Member Portal <portal@account.moxsf.com>',
-        to: [adminEmail],
-        subject: `Confirmation: You Paused ${userName}'s Membership`,
-        text: emailBody,
-      }),
-    })
-
-    const responseData = await response.json()
-    console.log(
-      '[Pause Subscription] Admin notification response:',
-      response.status,
-      responseData
-    )
-  } catch (error) {
-    console.error(
-      '[Pause Subscription] Failed to send admin notification email:',
-      error
-    )
-  }
+The Mox Team`,
+  })
 }
 
-// Send Discord notification to staff when subscription is resumed
-async function notifyStaffResume(userEmail: string, userName: string) {
-  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
-  if (!channelId) {
-    console.log('[Resume Subscription] No Discord notifications channel configured, skipping notification')
-    return
-  }
-
-  const message = `▶️ **Subscription Resumed:** ${userName} (${userEmail})`
-
-  const sent = await sendChannelMessage(channelId, message)
-  if (sent) {
-    console.log('[Resume Subscription] Sent Discord notification')
-  } else {
-    console.error('[Resume Subscription] Failed to send Discord notification')
-  }
-}
-
-// Send confirmation email to the user about their subscription resuming
-async function notifyUserResume(userEmail: string, userName: string) {
-  try {
-    const resendApiKey = env.RESEND_API_KEY
-
-    if (!resendApiKey) {
-      console.error('[Resume Subscription] No Resend API key found')
-      return
-    }
-
-    const emailBody = `
-Hi ${userName},
-
-Your Mox membership has been resumed and is now active again.
-
-Your next billing cycle will begin according to your subscription schedule.
-
-If you have any questions, please contact us at team@moxsf.com.
-
-Best,
-The Mox Team
-    `.trim()
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Member Portal <portal@account.moxsf.com>',
-        to: [userEmail],
-        subject: 'Your Mox Membership Has Been Resumed',
-        text: emailBody,
-      }),
-    })
-
-    const responseData = await response.json()
-    console.log(
-      '[Resume Subscription] User notification response:',
-      response.status,
-      responseData
-    )
-  } catch (error) {
-    console.error(
-      '[Resume Subscription] Failed to send user notification email:',
-      error
-    )
-  }
-}
-
-// Send notification to admin when they resume a subscription for another user
+// Send confirmation to admin when they resume a subscription for another user
 async function notifyAdminResume(
   adminEmail: string,
   adminName: string,
   userEmail: string,
   userName: string
 ) {
-  try {
-    const resendApiKey = env.RESEND_API_KEY
-
-    if (!resendApiKey) {
-      console.error('[Resume Subscription] No Resend API key found')
-      return
-    }
-
-    const emailBody = `
-Hi ${adminName},
+  await sendEmail({
+    to: adminEmail,
+    subject: `Confirmation: You Resumed ${userName}'s Membership`,
+    text: `Hi ${adminName},
 
 You have resumed the membership for ${userName} (${userEmail}).
 
@@ -260,35 +140,8 @@ Their subscription is now active again.
 This is a confirmation of the action you took in the member portal.
 
 Best,
-The Mox Team
-    `.trim()
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Member Portal <portal@account.moxsf.com>',
-        to: [adminEmail],
-        subject: `Confirmation: You Resumed ${userName}'s Membership`,
-        text: emailBody,
-      }),
-    })
-
-    const responseData = await response.json()
-    console.log(
-      '[Resume Subscription] Admin notification response:',
-      response.status,
-      responseData
-    )
-  } catch (error) {
-    console.error(
-      '[Resume Subscription] Failed to send admin notification email:',
-      error
-    )
-  }
+The Mox Team`,
+  })
 }
 
 // Get user info from Airtable
@@ -324,7 +177,7 @@ export async function POST(request: Request) {
     if (resumeDate) {
       const resumeDateObj = new Date(resumeDate)
       const today = new Date()
-      today.setHours(0, 0, 0, 0) // Start of today
+      today.setHours(0, 0, 0, 0)
 
       if (resumeDateObj < today) {
         return Response.json(
@@ -365,7 +218,6 @@ export async function POST(request: Request) {
     let pausedUntilString: string | null = null
 
     if (resumeDate) {
-      // Convert the date string to a Unix timestamp (start of day in user's timezone)
       const resumeDateObj = new Date(resumeDate)
       pauseEndTimestamp = Math.floor(resumeDateObj.getTime() / 1000)
       pausedUntilString = resumeDateObj.toISOString()
@@ -374,7 +226,7 @@ export async function POST(request: Request) {
     // Pause the subscription in Stripe
     await stripe.subscriptions.update(subscription.id, {
       pause_collection: {
-        behavior: 'void', // Don't collect payment, adjust billing cycle
+        behavior: 'void',
         resumes_at: pauseEndTimestamp,
       },
       metadata: {
@@ -382,10 +234,8 @@ export async function POST(request: Request) {
       },
     })
 
-    // Notify staff
+    // Send notifications
     await notifyStaff(userInfo.email, userInfo.name, resumeDate, reason)
-
-    // Notify the user
     await notifyUserPause(userInfo.email, userInfo.name, resumeDate, reason)
 
     // If an admin is acting on behalf of another user, notify the admin
@@ -451,7 +301,7 @@ export async function DELETE() {
       )
     }
 
-    // Resume the subscription - Stripe automatically handles billing cycle adjustment
+    // Resume the subscription
     await stripe.subscriptions.update(subscription.id, {
       pause_collection: null,
       metadata: {
@@ -459,10 +309,8 @@ export async function DELETE() {
       },
     })
 
-    // Notify staff about resume
+    // Send notifications
     await notifyStaffResume(userInfo.email, userInfo.name)
-
-    // Notify the user
     await notifyUserResume(userInfo.email, userInfo.name)
 
     // If an admin is acting on behalf of another user, notify the admin

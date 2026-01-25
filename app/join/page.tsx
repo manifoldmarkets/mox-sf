@@ -281,14 +281,38 @@ export default function JoinPage() {
   const [isAuthorized, setIsAuthorized] = useState(false)
   const [specialInvite, setSpecialInvite] = useState<string | null>(null)
 
-  // Check for invite parameter in URL
+  // Check for invite parameter and prefilled name in URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const inviteCode = params.get('invite')
     if (inviteCode && SPECIAL_INVITE_CODES.includes(inviteCode)) {
       setSpecialInvite(inviteCode)
     }
+    // Prefill name from query param
+    const nameParam = params.get('name')
+    if (nameParam) {
+      setName(nameParam)
+    }
   }, [])
+
+  // Auto-authorize if name is prefilled from URL and matches invite list
+  useEffect(() => {
+    if (!name || isSubmitted || isAuthorized) return
+    const params = new URLSearchParams(window.location.search)
+    const nameParam = params.get('name')
+    if (!nameParam) return // Only auto-submit if name came from URL
+
+    if (inviteList === null) return // Wait for invite list to load
+
+    const isOnList = inviteList.some(
+      (allowedName) =>
+        allowedName.trim().toLowerCase() === name.trim().toLowerCase()
+    )
+    if (isOnList) {
+      setIsSubmitted(true)
+      setIsAuthorized(true)
+    }
+  }, [name, inviteList, isSubmitted, isAuthorized])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
