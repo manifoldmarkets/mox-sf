@@ -88,7 +88,6 @@ export default async function DashboardPage() {
         </details>
       )}
 
-      <hr />
 
       {/* Membership Status */}
       <section>
@@ -104,7 +103,7 @@ export default async function DashboardPage() {
       {/* Subscription details (if has Stripe customer) */}
       {profile.stripeCustomerId && (
         <section>
-          <SubscriptionInfo stripeCustomerId={profile.stripeCustomerId} />
+          <SubscriptionInfo key={effectiveUserId} stripeCustomerId={profile.stripeCustomerId} />
         </section>
       )}
 
@@ -112,7 +111,7 @@ export default async function DashboardPage() {
 
       {/* Door Access */}
       <section>
-        <VerkadaPin isViewingAs={!!session.viewingAsUserId} tier={profile.tier} />
+        <VerkadaPin key={effectiveUserId} isViewingAs={!!session.viewingAsUserId} tier={profile.tier} />
       </section>
 
       <hr />
@@ -130,7 +129,7 @@ export default async function DashboardPage() {
 
       {/* Events */}
       <section>
-        <HostedEvents userName={profile.name} />
+        <HostedEvents key={effectiveUserId} userName={profile.name} />
       </section>
 
       <hr />
