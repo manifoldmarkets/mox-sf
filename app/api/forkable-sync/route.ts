@@ -1,13 +1,11 @@
 import { Tables, getRecord, updateRecord } from '@/app/lib/airtable'
+import { sendChannelMessage } from '@/app/lib/discord'
 import { env } from '@/app/lib/env'
 import {
   addMemberToForkable,
   FORKABLE_CLUBS,
   type ForkableClubId,
 } from '@/app/lib/forkable'
-import { Resend } from 'resend'
-
-const resend = new Resend(env.RESEND_API_KEY)
 
 // Map Airtable Tier to Forkable club IDs
 // Private Office → MOX_RESIDENTS (they get resident-level meal access)
@@ -179,42 +177,24 @@ async function sendNotification({
   success: boolean
   errors?: string[]
 }) {
+  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
+  if (!channelId) {
+    console.log('[Forkable Sync] No Discord notifications channel configured, skipping notification')
+    return
+  }
+
   const clubName = tier === 'Private Office' ? 'Mox Residents' : 'Mox Members'
 
-  const subject = success
-    ? `Forkable: ${name} added to ${clubName}`
-    : `Forkable: Failed to add ${name}`
+  const message = success
+    ? `✅ **Forkable:** ${name} (${email}) added to ${clubName}`
+    : `❌ **Forkable:** Failed to add ${name} (${email}) to ${clubName}.` +
+      `Please add them manually at https://forkable.com\n\n` +
+      `**Errors:**\n${errors?.join('\n') || 'Unknown error'}`
 
-  const body = success
-    ? `New ${tier} member added to Forkable ${clubName} club.
-
-Name: ${name}
-Email: ${email}
-Tier: ${tier}
-Club: ${clubName}
-
-They should receive an invite from Forkable shortly.`
-    : `Failed to add ${tier} member to Forkable.
-
-Name: ${name}
-Email: ${email}
-Tier: ${tier}
-Target Club: ${clubName}
-
-Errors:
-${errors?.join('\n') || 'Unknown error'}
-
-Please add them manually at https://forkable.com`
-
-  try {
-    await resend.emails.send({
-      from: 'Mox Notifications <noreply@account.moxsf.com>',
-      to: 'team@moxsf.com',
-      subject,
-      text: body,
-    })
-    console.log('[Forkable Sync] Sent notification email')
-  } catch (error) {
-    console.error('[Forkable Sync] Failed to send notification:', error)
+  const sent = await sendChannelMessage(channelId, message)
+  if (sent) {
+    console.log('[Forkable Sync] Sent Discord notification')
+  } else {
+    console.error('[Forkable Sync] Failed to send Discord notification')
   }
 }
