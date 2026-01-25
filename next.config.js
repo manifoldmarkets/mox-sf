@@ -16,6 +16,7 @@ const redirects = {
   '/guests': '/guest-program',
   '/guest': '/guest-program',
   '/onboard': 'https://airtable.com/appkHZ2UvU6SouT5y/pagS1zz7H3u2aoElF/form',
+  '/membership': 'https://moxsf.notion.site/memberships',
 
   // Endpoints mostly for admin/staff
   '/eventz':
