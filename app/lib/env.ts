@@ -65,6 +65,7 @@ export const env = {
   get DISCORD_ROLE_PROGRAM() { return optional('DISCORD_ROLE_PROGRAM') },
   get DISCORD_DOOR_CODE_CHANNEL_ID() { return optional('DISCORD_DOOR_CODE_CHANNEL_ID') },
   get DISCORD_PACKAGES_CHANNEL_ID() { return optional('DISCORD_PACKAGES_CHANNEL_ID') },
+  get DISCORD_NOTIFICATIONS_CHANNEL_ID() { return optional('DISCORD_NOTIFICATIONS_CHANNEL_ID') },
 
   // Verkada
   get VERKADA_API_KEY() { return optional('VERKADA_API_KEY') },

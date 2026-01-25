@@ -35,11 +35,10 @@ In Airtable, go to **Automations** → **Create automation**
 **Action type:** Run a script
 
 ```javascript
-// Airtable automation script
 const config = input.config();
 const recordId = config.recordId;
+const secret = input.config().secret;
 const apiUrl = 'https://moxsf.com/api/forkable-sync';
-const secret = 'YOUR_FORKABLE_SYNC_SECRET'; // Set in env
 
 const response = await fetch(apiUrl, {
   method: 'POST',
@@ -53,15 +52,12 @@ const response = await fetch(apiUrl, {
 });
 
 const result = await response.json();
-console.log('Forkable sync result:', result);
-
-if (!result.success && !result.skipped) {
-  throw new Error(`Forkable sync failed: ${JSON.stringify(result.errors)}`);
-}
+output.set('result', result);
 ```
 
 **Input variables:**
 - `recordId`: Record ID (from trigger)
+- `secret`: Your FORKABLE_SYNC_SECRET value
 
 ### 4. Environment Setup
 
@@ -82,7 +78,7 @@ openssl rand -hex 32
 3. Maps their Tier to the appropriate Forkable club
 4. Calls Forkable API to add them to the meal club
 5. Updates the "In Forkable" checkbox in Airtable
-6. Sends notification email to team@moxsf.com
+6. Sends Discord notification (if `DISCORD_NOTIFICATIONS_CHANNEL_ID` is configured)
 
 ## Manual Testing
 
