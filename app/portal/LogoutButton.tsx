@@ -17,8 +17,10 @@ export default function LogoutButton() {
   }
 
   return (
-    <button onClick={handleLogout}>
-      logout
-    </button>
+    <div style={{ textAlign: 'right' }}>
+      <button onClick={handleLogout}>
+        logout
+      </button>
+    </div>
   )
 }
