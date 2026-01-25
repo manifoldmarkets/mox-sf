@@ -1,0 +1,271 @@
+/* Handcoded-style portal CSS */
+.portal {
+  font-family: monospace;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  color: black;
+  min-height: calc(100vh - 100px);
+}
+
+.portal h1 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.portal h2 {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.portal p {
+  margin-bottom: 10px;
+}
+
+.portal a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.portal a:hover {
+  color: darkblue;
+}
+
+/* Form elements */
+.portal input[type="text"],
+.portal input[type="email"],
+.portal input[type="url"],
+.portal input[type="date"],
+.portal input[type="password"],
+.portal textarea,
+.portal select {
+  width: 100%;
+  font-family: monospace;
+  padding: 5px;
+  border: 1px solid #ccc;
+  background: white;
+  color: black;
+  box-sizing: border-box;
+}
+
+.portal input:focus,
+.portal textarea:focus,
+.portal select:focus {
+  outline: 2px solid #666;
+  outline-offset: 1px;
+}
+
+.portal input:disabled,
+.portal textarea:disabled {
+  background: #f0f0f0;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Buttons */
+.portal button,
+.portal .btn {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  font-family: monospace;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.portal button:hover,
+.portal .btn:hover {
+  background: #e0e0e0;
+}
+
+.portal button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.portal button.primary,
+.portal .btn.primary {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+.portal button.primary:hover,
+.portal .btn.primary:hover {
+  background: #000;
+}
+
+.portal button.danger {
+  background: #fee;
+  border-color: #c66;
+  color: #900;
+}
+
+.portal button.danger:hover {
+  background: #fdd;
+}
+
+/* Tables */
+.portal table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.portal th,
+.portal td {
+  text-align: left;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+.portal th {
+  background: #f0f0f0;
+}
+
+/* Form groups */
+.portal .form-group {
+  margin-bottom: 15px;
+}
+
+.portal label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Status messages */
+.portal .error {
+  color: red;
+}
+
+.portal .success {
+  color: green;
+}
+
+.portal .loading {
+  color: #666;
+  font-style: italic;
+}
+
+/* Section dividers */
+.portal hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 30px 0;
+}
+
+.portal section {
+  margin-bottom: 30px;
+}
+
+/* Checkbox styling */
+.portal input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+/* PIN display */
+.portal .pin-display {
+  font-size: 2em;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: 2px solid #333;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+/* Status badges */
+.portal .badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 0.85em;
+  border: 1px solid #ccc;
+  background: #f0f0f0;
+}
+
+.portal .badge.confirmed {
+  background: #dfd;
+  border-color: #8c8;
+  color: #060;
+}
+
+.portal .badge.cancelled {
+  background: #fdd;
+  border-color: #c88;
+  color: #600;
+}
+
+.portal .badge.paused {
+  background: #ffd;
+  border-color: #cc8;
+  color: #660;
+}
+
+/* Alert boxes */
+.portal .alert {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+}
+
+.portal .alert.warning {
+  background: #ffd;
+  border-color: #cc8;
+}
+
+.portal .alert.error {
+  background: #fdd;
+  border-color: #c88;
+  color: #600;
+}
+
+.portal .alert.success {
+  background: #dfd;
+  border-color: #8c8;
+}
+
+.portal .alert.info {
+  background: #eef;
+  border-color: #88c;
+}
+
+/* Modal overlay */
+.portal .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.portal .modal {
+  background: white;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Admin banner */
+.portal .admin-banner {
+  background: #eef;
+  border: 1px solid #88c;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+/* Back link */
+.portal .back-link {
+  margin-bottom: 20px;
+  display: block;
+}
