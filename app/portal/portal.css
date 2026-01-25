@@ -3,10 +3,10 @@
   font-family: monospace;
   max-width: 600px;
   margin: 50px auto;
-  padding: 20px;
+  padding: 20px 35px; /* Extra horizontal padding for h2 asterisk markers */
   background: white;
   color: black;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100dvh - 100px); /* dvh works better on mobile than vh */
   line-height: 1.5;
 }
 

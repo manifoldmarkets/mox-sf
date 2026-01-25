@@ -258,7 +258,7 @@ export default function SubscriptionInfo({
         <strong>{subscription.tier}</strong> · {subscription.rate} · renews {formattedDate}
       </p>
 
-      <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
+      <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start' }}>
         <button
           onClick={handleManageBilling}
           disabled={billingLoading}
