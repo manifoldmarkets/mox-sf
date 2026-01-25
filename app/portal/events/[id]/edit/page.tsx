@@ -302,8 +302,6 @@ export default function EventEditPage() {
         />
       </div>
 
-      <hr />
-
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         {event.status !== 'Cancelled' && (
           <button onClick={handleSave} disabled={saving} className="primary">

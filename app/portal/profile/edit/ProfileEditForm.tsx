@@ -178,7 +178,7 @@ export default function ProfileEditForm({
     <form onSubmit={handleSubmit}>
       {/* Basic Info */}
       <div className="form-group">
-        <label htmlFor="name">name *</label>
+        <label htmlFor="name">name</label>
         <input
           type="text"
           id="name"
@@ -356,8 +356,6 @@ export default function ProfileEditForm({
       </div>
         </>
       )}
-
-      <hr style={{ margin: '20px 0' }} />
 
       {message && (
         <p className={status === 'success' ? 'success' : 'error'}>{message}</p>

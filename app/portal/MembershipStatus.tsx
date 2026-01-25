@@ -50,10 +50,10 @@ export default function MembershipStatus({
 
   return (
     <>
-      <h2>membership status</h2>
+      <h2>access</h2>
 
       <p>
-        status: <strong>{status || 'unknown'}</strong>
+        membership status: <strong>{status || 'unknown'}</strong>
         {tier && !isInvited && (
           <>
             {' '}
