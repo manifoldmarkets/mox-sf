@@ -1,6 +1,6 @@
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
-import { sendChannelMessage } from '@/app/lib/discord'
+import { sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord'
 import Stripe from 'stripe'
 import { env } from '@/app/lib/env'
 
@@ -21,7 +21,7 @@ async function notifyStaff(
   resumeDate: string | null,
   reason: string
 ) {
-  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
+  const channelId = DISCORD_CHANNELS.NOTIFICATIONS
   if (!channelId) {
     console.log('[Pause Subscription] No Discord notifications channel configured, skipping notification')
     return
@@ -168,7 +168,7 @@ The Mox Team
 
 // Send Discord notification to staff when subscription is resumed
 async function notifyStaffResume(userEmail: string, userName: string) {
-  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
+  const channelId = DISCORD_CHANNELS.NOTIFICATIONS
   if (!channelId) {
     console.log('[Resume Subscription] No Discord notifications channel configured, skipping notification')
     return

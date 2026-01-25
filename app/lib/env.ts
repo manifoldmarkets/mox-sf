@@ -55,17 +55,8 @@ export const env = {
   // Session
   get SESSION_SECRET() { return required('SESSION_SECRET') },
 
-  // Discord
+  // Discord (bot token is secret, other IDs are in discord-constants.ts)
   get DISCORD_BOT_TOKEN() { return optional('DISCORD_BOT_TOKEN') },
-  get DISCORD_GUILD_ID() { return optional('DISCORD_GUILD_ID') },
-  get DISCORD_ROLE_FRIEND() { return optional('DISCORD_ROLE_FRIEND') },
-  get DISCORD_ROLE_MEMBER() { return optional('DISCORD_ROLE_MEMBER') },
-  get DISCORD_ROLE_RESIDENT() { return optional('DISCORD_ROLE_RESIDENT') },
-  get DISCORD_ROLE_PRIVATE_OFFICE() { return optional('DISCORD_ROLE_PRIVATE_OFFICE') },
-  get DISCORD_ROLE_PROGRAM() { return optional('DISCORD_ROLE_PROGRAM') },
-  get DISCORD_DOOR_CODE_CHANNEL_ID() { return optional('DISCORD_DOOR_CODE_CHANNEL_ID') },
-  get DISCORD_PACKAGES_CHANNEL_ID() { return optional('DISCORD_PACKAGES_CHANNEL_ID') },
-  get DISCORD_NOTIFICATIONS_CHANNEL_ID() { return optional('DISCORD_NOTIFICATIONS_CHANNEL_ID') },
 
   // Verkada
   get VERKADA_API_KEY() { return optional('VERKADA_API_KEY') },
@@ -73,6 +64,7 @@ export const env = {
   get VERKADA_UUID() { return optional('VERKADA_UUID') },
   get VERKADA_WEEKLY_ACCESS_USER_ID() { return optional('VERKADA_WEEKLY_ACCESS_USER_ID') },
   get VERKADA_OLD_WEEKLY_ACCESS_USER_ID() { return optional('VERKADA_OLD_WEEKLY_ACCESS_USER_ID') },
+  get VERKADA_GUEST_USER_ID() { return optional('VERKADA_GUEST_USER_ID') },
 
   // Cron
   get CRON_SECRET() { return optional('CRON_SECRET') },
