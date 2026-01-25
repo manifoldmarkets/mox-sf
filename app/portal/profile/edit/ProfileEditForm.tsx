@@ -47,6 +47,14 @@ export default function ProfileEditForm({
   >('idle')
   const [discordSyncMessage, setDiscordSyncMessage] = useState('')
 
+  // Show directory fields for members/applicants who can appear in directory
+  // Not for: Guest, Guest Program, Courtesy, Volunteer (just visiting)
+  const directoryEligibleTiers = ['Staff', 'Member', 'Resident', 'Private Office', 'Program', 'Friend']
+  const applicantStatuses = ['Applied', 'Evaluating', 'Backburner', 'To Invite', 'Invited', 'Waitlisted']
+  const showDirectoryFields =
+    (profile.tier && directoryEligibleTiers.includes(profile.tier)) ||
+    (profile.status && applicantStatuses.includes(profile.status))
+
   useEffect(() => {
     setFormData({
       name: profile.name,
@@ -224,35 +232,38 @@ export default function ProfileEditForm({
           {' '}<a href="/discord" target="_blank" rel="noopener noreferrer">link to server</a>
         </p>
       </div>
-      <hr style={{ margin: '20px 0' }} />
+      {/* Directory fields - only for members/applicants who can appear in directory */}
+      {showDirectoryFields && (
+        <>
+          <hr style={{ margin: '20px 0' }} />
 
-      <div className="form-group">
-        <label>
-          <input
-            type="checkbox"
-            id="directoryVisible"
-            name="directoryVisible"
-            checked={formData.directoryVisible}
-            onChange={handleChange}
-          />
-          <b>
-            show my profile in the <Link href="/people">member directory</Link>
-          </b>
-        </label>
-      </div>
+          <div className="form-group">
+            <label>
+              <input
+                type="checkbox"
+                id="directoryVisible"
+                name="directoryVisible"
+                checked={formData.directoryVisible}
+                onChange={handleChange}
+              />
+              <b>
+                I'd like to have my profile be shown in the <Link href="/people">member directory</Link>
+              </b>
+            </label>
+          </div>
 
 
-      <div className="form-group">
-        <label htmlFor="website">website</label>
-        <input
-          type="url"
-          id="website"
-          name="website"
-          value={formData.website}
-          onChange={handleChange}
-          placeholder="https://yourwebsite.com"
-        />
-      </div>
+          <div className="form-group">
+            <label htmlFor="website">website</label>
+            <input
+              type="url"
+              id="website"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              placeholder="https://yourwebsite.com"
+            />
+          </div>
 
       <div className="form-group">
         <label>profile photo</label>
@@ -343,6 +354,8 @@ export default function ProfileEditForm({
           placeholder="personal website, a blogpost, some obscure wikipedia page"
         />
       </div>
+        </>
+      )}
 
       <hr style={{ margin: '20px 0' }} />
 
