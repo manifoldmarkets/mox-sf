@@ -30,6 +30,10 @@ Primary table for user/member management.
 | `Photo` | multipleAttachments | Profile photo | ✅ Profile, directory |
 | `Show in directory` | checkbox | Display in public directory | ✅ Directory visibility |
 | `Discord Username` | singleLineText | Discord handle for role syncing | ✅ Discord integration |
+| `Work thing` | singleLineText | Professional interest (1-4 words) | ✅ Profile, directory |
+| `Work thing URL` | url | Link for professional interest | ✅ Profile, directory |
+| `Fun thing` | singleLineText | Fun interest (1-4 words) | ✅ Profile, directory |
+| `Fun thing URL` | url | Link for fun interest | ✅ Profile, directory |
 | `magic_link_token` | singleLineText | Auth token (32-byte hex) | ✅ Magic link auth |
 | `token_expires` | dateTime | Token expiration timestamp | ✅ Magic link auth |
 | `Stripe Customer ID` | multilineText | Link to Stripe customer | ✅ Billing, subscriptions |

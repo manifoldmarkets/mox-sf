@@ -22,6 +22,10 @@ interface ProfileFields {
   Tier?: string
   Org?: string[]
   'Discord Username'?: string
+  'Work thing'?: string
+  'Work thing URL'?: string
+  'Fun thing'?: string
+  'Fun thing URL'?: string
 }
 
 export default async function DashboardPage() {
@@ -55,6 +59,10 @@ export default async function DashboardPage() {
       </Link>
 
       <h1>member portal</h1>
+      <p className="muted">
+        logged in as {session.name || profile.name}
+        {session.isStaff && ' (staff)'}
+      </p>
 
       {/* Admin banner when viewing as another user */}
       {session.viewingAsUserId && session.viewingAsName && (
@@ -70,10 +78,7 @@ export default async function DashboardPage() {
         <details className="admin-section">
           <summary>admin tools</summary>
           <div style={{ marginTop: '10px' }}>
-            <AdminViewAsSelector
-              currentViewingAsUserId={session.viewingAsUserId}
-              currentViewingAsName={session.viewingAsName}
-            />
+            <AdminViewAsSelector />
             <p style={{ marginTop: '10px' }}>
               <Link href="/portal/admin/discord-mapping">
                 → discord username mapping tool
@@ -105,6 +110,13 @@ export default async function DashboardPage() {
 
       <hr />
 
+      {/* Door Access */}
+      <section>
+        <VerkadaPin isViewingAs={!!session.viewingAsUserId} tier={profile.tier} />
+      </section>
+
+      <hr />
+
       {/* Day Pass */}
       <section>
         <DayPassPurchase
@@ -112,13 +124,6 @@ export default async function DashboardPage() {
           userName={profile.name}
           userEmail={profile.email}
         />
-      </section>
-
-      <hr />
-
-      {/* Door Access */}
-      <section>
-        <VerkadaPin isViewingAs={!!session.viewingAsUserId} />
       </section>
 
       <hr />
@@ -154,6 +159,10 @@ async function getUserProfile(recordId: string): Promise<{
   tier: string | null
   orgId: string | null
   discordUsername: string | null
+  workThing: string | null
+  workThingUrl: string | null
+  funThing: string | null
+  funThingUrl: string | null
   error?: string
 } | null> {
   const record = await getRecord<ProfileFields>(Tables.People, recordId)
@@ -176,5 +185,9 @@ async function getUserProfile(recordId: string): Promise<{
     tier: fields.Tier || null,
     orgId: fields.Org?.[0] || null,
     discordUsername: fields['Discord Username'] || null,
+    workThing: fields['Work thing'] || null,
+    workThingUrl: fields['Work thing URL'] || null,
+    funThing: fields['Fun thing'] || null,
+    funThingUrl: fields['Fun thing URL'] || null,
   }
 }

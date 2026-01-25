@@ -14,6 +14,10 @@ interface ProfileEditFormProps {
     discordUsername?: string | null
     tier?: string | null
     status?: string | null
+    workThing?: string | null
+    workThingUrl?: string | null
+    funThing?: string | null
+    funThingUrl?: string | null
   }
   userId: string
 }
@@ -28,6 +32,10 @@ export default function ProfileEditForm({
     website: profile.website,
     discordUsername: profile.discordUsername || '',
     directoryVisible: profile.directoryVisible,
+    workThing: profile.workThing || '',
+    workThingUrl: profile.workThingUrl || '',
+    funThing: profile.funThing || '',
+    funThingUrl: profile.funThingUrl || '',
   })
   const [photoFile, setPhotoFile] = useState<File | null>(null)
   const [status, setStatus] = useState<
@@ -45,6 +53,10 @@ export default function ProfileEditForm({
       website: profile.website,
       discordUsername: profile.discordUsername || '',
       directoryVisible: profile.directoryVisible,
+      workThing: profile.workThing || '',
+      workThingUrl: profile.workThingUrl || '',
+      funThing: profile.funThing || '',
+      funThingUrl: profile.funThingUrl || '',
     })
     setStatus('idle')
     setMessage('')
@@ -85,6 +97,10 @@ export default function ProfileEditForm({
         'directoryVisible',
         formData.directoryVisible.toString()
       )
+      formDataToSend.append('workThing', formData.workThing)
+      formDataToSend.append('workThingUrl', formData.workThingUrl)
+      formDataToSend.append('funThing', formData.funThing)
+      formDataToSend.append('funThingUrl', formData.funThingUrl)
 
       if (photoFile) {
         formDataToSend.append('photo', photoFile)
@@ -114,7 +130,7 @@ export default function ProfileEditForm({
   }
 
   const handleDiscordSync = async () => {
-    if (!profile.discordUsername) return
+    if (!formData.discordUsername) return
 
     setDiscordSyncStatus('syncing')
     setDiscordSyncMessage('')
@@ -124,7 +140,7 @@ export default function ProfileEditForm({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          discordUsername: profile.discordUsername,
+          discordUsername: formData.discordUsername,
           tier: profile.tier,
           status: profile.status,
           userId,
@@ -174,6 +190,59 @@ export default function ProfileEditForm({
       </div>
 
       <div className="form-group">
+        <label htmlFor="discordUsername">discord username</label>
+        <div className="inline-form">
+          <input
+            type="text"
+            id="discordUsername"
+            name="discordUsername"
+            value={formData.discordUsername}
+            onChange={handleChange}
+            placeholder="yourname"
+          />
+          {(profile.discordUsername || formData.discordUsername) && (
+            <button
+              type="button"
+              onClick={handleDiscordSync}
+              disabled={discordSyncStatus === 'syncing' || !formData.discordUsername}
+            >
+              {discordSyncStatus === 'syncing' ? 'syncing...' : 'sync roles'}
+            </button>
+          )}
+        </div>
+        {discordSyncMessage && (
+          <p
+            className={discordSyncStatus === 'success' ? 'success' : 'error'}
+            style={{ marginTop: '5px' }}
+          >
+            {discordSyncMessage}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: '5px' }}>
+          your discord username (without @). find it under Settings → My
+          Account. If you can't see anything, click 'sync roles'.
+          {' '}<a href="/discord" target="_blank" rel="noopener noreferrer">link to server</a>
+        </p>
+      </div>
+      <hr style={{ margin: '20px 0' }} />
+
+      <div className="form-group">
+        <label>
+          <input
+            type="checkbox"
+            id="directoryVisible"
+            name="directoryVisible"
+            checked={formData.directoryVisible}
+            onChange={handleChange}
+          />
+          <b>
+            show my profile in the <Link href="/people">member directory</Link>
+          </b>
+        </label>
+      </div>
+
+
+      <div className="form-group">
         <label htmlFor="website">website</label>
         <input
           type="url"
@@ -206,7 +275,17 @@ export default function ProfileEditForm({
               id="photo"
               accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
               onChange={handlePhotoChange}
+              style={{ display: 'none' }}
             />
+            <button
+              type="button"
+              onClick={() => document.getElementById('photo')?.click()}
+            >
+              {photoFile ? 'change file' : 'choose file'}
+            </button>
+            {photoFile && (
+              <span style={{ marginLeft: '10px' }}>{photoFile.name}</span>
+            )}
             <p className="muted" style={{ marginTop: '5px' }}>
               JPG, PNG, WebP, GIF, or HEIC. Max 10MB.
             </p>
@@ -214,70 +293,55 @@ export default function ProfileEditForm({
         </div>
       </div>
 
+
       <div className="form-group">
-        <label>
-          <input
-            type="checkbox"
-            id="directoryVisible"
-            name="directoryVisible"
-            checked={formData.directoryVisible}
-            onChange={handleChange}
-          />
-          show my profile in the <Link href="/people">member directory</Link>
-        </label>
+        <label htmlFor="workThing">one professional thing you're into (1-4 words)</label>
+        <input
+          type="text"
+          id="workThing"
+          name="workThing"
+          value={formData.workThing}
+          onChange={handleChange}
+          placeholder='e.g. "solving evals scaling", "microbe destruction"'
+          maxLength={50}
+        />
       </div>
 
-      <hr style={{ margin: '20px 0' }} />
-
-      {/* Discord Integration */}
       <div className="form-group">
-        <label htmlFor="discordUsername">discord username</label>
-        <div className="inline-form">
-          <input
-            type="text"
-            id="discordUsername"
-            name="discordUsername"
-            value={formData.discordUsername}
-            onChange={handleChange}
-            placeholder="yourname"
-          />
-          <a
-            href="https://discord.gg/jZHTRHUWy9"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn small"
-          >
-            join
-          </a>
-        </div>
-        <p className="muted" style={{ marginTop: '5px' }}>
-          your discord username (without @). find it under Settings → My
-          Account.
-        </p>
-        {profile.discordUsername && (
-          <p style={{ marginTop: '10px' }}>
-            <button
-              type="button"
-              onClick={handleDiscordSync}
-              disabled={discordSyncStatus === 'syncing'}
-              className="small"
-            >
-              {discordSyncStatus === 'syncing'
-                ? 'syncing...'
-                : 'sync discord role'}
-            </button>
-            {discordSyncMessage && (
-              <span
-                className={
-                  discordSyncStatus === 'success' ? 'success' : 'error'
-                }
-                style={{ marginLeft: '10px' }}
-              >
-                {discordSyncMessage}
-              </span>
-            )}
-          </p>
-        )}
+        <label htmlFor="workThingUrl">relevant hyperlink</label>
+        <input
+          type="url"
+          id="workThingUrl"
+          name="workThingUrl"
+          value={formData.workThingUrl}
+          onChange={handleChange}
+          placeholder="your company's website, academic paper, etc"
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="funThing">one fun thing you're into (1-4 words)</label>
+        <input
+          type="text"
+          id="funThing"
+          name="funThing"
+          value={formData.funThing}
+          onChange={handleChange}
+          placeholder='e.g. "horse photography", "making people laugh"'
+          maxLength={50}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="funThingUrl">relevant hyperlink</label>
+        <input
+          type="url"
+          id="funThingUrl"
+          name="funThingUrl"
+          value={formData.funThingUrl}
+          onChange={handleChange}
+          placeholder="personal website, a blogpost, some obscure wikipedia page"
+        />
       </div>
 
       <hr style={{ margin: '20px 0' }} />
