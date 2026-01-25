@@ -209,9 +209,7 @@ export default async function Component() {
 
                 <div className="flex flex-col gap-2 flex-1">
                   <a
-                    href="/apply"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/membership"
                     className="px-6 py-3 text-sm text-center bg-amber-900 dark:bg-slate-500 text-white hover:bg-amber-800 dark:hover:bg-amber-400 transition-colors"
                   >
                     Apply for membership
