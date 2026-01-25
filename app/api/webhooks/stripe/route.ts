@@ -7,6 +7,7 @@ import {
   findRecord,
   escapeAirtableString,
 } from '@/app/lib/airtable';
+import { sendChannelMessage } from '@/app/lib/discord';
 import { env } from '@/app/lib/env';
 import {
   addMemberToForkable,
@@ -428,41 +429,23 @@ async function sendForkableNotification({
   success: boolean;
   errors?: string[];
 }) {
-  const subject = success
-    ? `Forkable: ${customerName || customerEmail} added successfully`
-    : `Forkable: Failed to add ${customerName || customerEmail}`;
+  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID;
+  if (!channelId) {
+    console.log('[Stripe Webhook] No Discord notifications channel configured, skipping notification');
+    return;
+  }
 
-  const body = success
-    ? `New ${tier} member added to Forkable meal club.
+  const name = customerName || customerEmail;
+  const message = success
+    ? `✅ **Forkable:** ${name} (${customerEmail}) added to Mox ${tier}s`
+    : `❌ **Forkable:** Failed to add ${name} (${customerEmail}) to Mox ${tier}s. ` +
+      `Please add them manually at https://forkable.com\n\n` +
+      `**Errors:**\n${errors?.join('\n') || 'Unknown error'}`;
 
-Name: ${customerName || '(not provided)'}
-Email: ${customerEmail}
-Tier: ${tier}
-
-They should receive an invite from Forkable shortly.`
-    : `Failed to add new ${tier} member to Forkable.
-
-Name: ${customerName || '(not provided)'}
-Email: ${customerEmail}
-Tier: ${tier}
-
-Errors:
-${errors?.join('\n') || 'Unknown error'}
-
-Please add them manually at https://forkable.com`;
-
-  try {
-    await resend.emails.send({
-      from: 'Mox Notifications <noreply@account.moxsf.com>',
-      to: 'team@moxsf.com',
-      subject,
-      text: body,
-    });
-    console.log('[Stripe Webhook] Sent Forkable notification email');
-  } catch (error) {
-    console.error(
-      '[Stripe Webhook] Failed to send Forkable notification:',
-      error
-    );
+  const sent = await sendChannelMessage(channelId, message);
+  if (sent) {
+    console.log('[Stripe Webhook] Sent Forkable Discord notification');
+  } else {
+    console.error('[Stripe Webhook] Failed to send Forkable Discord notification');
   }
 }

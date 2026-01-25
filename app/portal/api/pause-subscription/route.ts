@@ -1,5 +1,6 @@
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
+import { sendChannelMessage } from '@/app/lib/discord'
 import Stripe from 'stripe'
 import { env } from '@/app/lib/env'
 
@@ -13,56 +14,30 @@ interface PersonFields {
   'Stripe Customer ID'?: string
 }
 
-// Send email notification to staff
+// Send Discord notification to staff
 async function notifyStaff(
   userEmail: string,
   userName: string,
   resumeDate: string | null,
   reason: string
 ) {
+  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
+  if (!channelId) {
+    console.log('[Pause Subscription] No Discord notifications channel configured, skipping notification')
+    return
+  }
+
   const pauseInfo = resumeDate
     ? `Resume on: ${new Date(resumeDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`
     : 'Paused indefinitely'
 
-  try {
-    const resendApiKey = env.RESEND_API_KEY
+  const message = `⏸️ **Subscription Paused:** ${userName} (${userEmail})\n${pauseInfo}\nReason: ${reason}`
 
-    if (!resendApiKey) {
-      console.error('[Pause Subscription] No Resend API key found')
-      return
-    }
-
-    const emailBody = `
-User: ${userName} (${userEmail})
-${pauseInfo}
-Reason: ${reason}
-
-This is an automated notification from the member portal.
-    `.trim()
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Member Portal <portal@account.moxsf.com>',
-        to: ['team@moxsf.com'],
-        subject: `Subscription Pause: ${userName}`,
-        text: emailBody,
-      }),
-    })
-
-    if (!response.ok) {
-      const responseData = await response.json()
-      console.error('[Pause Subscription] Resend API error:', response.status, responseData)
-    }
-  } catch (error) {
-    console.error(
-      '[Pause Subscription] Failed to send notification email:',
-      error
-    )
+  const sent = await sendChannelMessage(channelId, message)
+  if (sent) {
+    console.log('[Pause Subscription] Sent Discord notification')
+  } else {
+    console.error('[Pause Subscription] Failed to send Discord notification')
   }
 }
 
@@ -191,47 +166,21 @@ The Mox Team
   }
 }
 
-// Send email notification to staff when subscription is resumed
+// Send Discord notification to staff when subscription is resumed
 async function notifyStaffResume(userEmail: string, userName: string) {
-  try {
-    const resendApiKey = env.RESEND_API_KEY
+  const channelId = env.DISCORD_NOTIFICATIONS_CHANNEL_ID
+  if (!channelId) {
+    console.log('[Resume Subscription] No Discord notifications channel configured, skipping notification')
+    return
+  }
 
-    if (!resendApiKey) {
-      console.error('[Resume Subscription] No Resend API key found')
-      return
-    }
+  const message = `▶️ **Subscription Resumed:** ${userName} (${userEmail})`
 
-    const emailBody = `
-User: ${userName} (${userEmail})
-
-This is an automated notification from the member portal.
-    `.trim()
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Member Portal <portal@account.moxsf.com>',
-        to: ['team@moxsf.com'],
-        subject: `Subscription Resumed: ${userName}`,
-        text: emailBody,
-      }),
-    })
-
-    const responseData = await response.json()
-    console.log(
-      '[Resume Subscription] Resend API response:',
-      response.status,
-      responseData
-    )
-  } catch (error) {
-    console.error(
-      '[Resume Subscription] Failed to send notification email:',
-      error
-    )
+  const sent = await sendChannelMessage(channelId, message)
+  if (sent) {
+    console.log('[Resume Subscription] Sent Discord notification')
+  } else {
+    console.error('[Resume Subscription] Failed to send Discord notification')
   }
 }
 
