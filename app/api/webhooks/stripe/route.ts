@@ -1,4 +1,5 @@
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
+import { stripe } from '@/app/lib/stripe';
 import { Resend } from 'resend';
 import { getDayPassActivationEmail } from '@/app/lib/emails/day-pass-activation';
 import {
@@ -14,10 +15,6 @@ import {
   FORKABLE_CLUBS,
   parseFullName,
 } from '@/app/lib/forkable';
-
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-10-29.clover',
-});
 
 const resend = new Resend(env.RESEND_API_KEY);
 

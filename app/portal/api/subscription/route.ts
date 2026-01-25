@@ -1,10 +1,5 @@
 import { getSession } from '@/app/lib/session'
-import Stripe from 'stripe'
-import { env } from '@/app/lib/env'
-
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-10-29.clover',
-})
+import { stripe } from '@/app/lib/stripe'
 
 export async function GET(request: Request) {
   try {
