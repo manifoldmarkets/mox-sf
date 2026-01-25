@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 
@@ -22,9 +23,13 @@ export async function GET(request: NextRequest) {
     session.viewingAsUserId = undefined
     session.viewingAsName = undefined
     await session.save()
+    revalidatePath('/portal')
   }
 
-  return NextResponse.redirect(new URL('/portal', request.url))
+  // Add timestamp to bust any client-side cache
+  const redirectUrl = new URL('/portal', request.url)
+  redirectUrl.searchParams.set('t', Date.now().toString())
+  return NextResponse.redirect(redirectUrl)
 }
 
 export async function POST(request: NextRequest) {

@@ -8,15 +8,7 @@ interface Member {
   email: string
 }
 
-interface AdminViewAsSelectorProps {
-  currentViewingAsUserId?: string
-  currentViewingAsName?: string
-}
-
-export default function AdminViewAsSelector({
-  currentViewingAsUserId,
-  currentViewingAsName,
-}: AdminViewAsSelectorProps) {
+export default function AdminViewAsSelector() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Member[]>([])
   const [searching, setSearching] = useState(false)
@@ -82,44 +74,9 @@ export default function AdminViewAsSelector({
     }
   }
 
-  async function handleClearView() {
-    if (switching) return
-    setSwitching(true)
-
-    try {
-      await fetch('/portal/api/view-as', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: null }),
-      })
-
-      window.location.reload()
-    } catch (error) {
-      console.error('Failed to clear view:', error)
-      setSwitching(false)
-    }
-  }
-
   return (
     <div>
-      <div style={{ marginBottom: '10px' }}>
-        <label htmlFor="view-as-search">view portal as:</label>
-        {currentViewingAsUserId && (
-          <button
-            onClick={handleClearView}
-            disabled={switching}
-            style={{ marginLeft: '10px' }}
-          >
-            view as yourself
-          </button>
-        )}
-      </div>
-
-      {currentViewingAsUserId && (
-        <p style={{ marginBottom: '10px' }}>
-          currently viewing as: <strong>{currentViewingAsName}</strong>
-        </p>
-      )}
+      <label htmlFor="view-as-search">view portal as:</label>
 
       <div style={{ position: 'relative' }}>
         <input
