@@ -49,7 +49,7 @@ export const defaultContent: HomeContent = {
   offersText:
     'Mox offers all the infrastructure you need for deep work, a rich community atmosphere, and events that you\'ll find meaningful.',
   ctaButtons: {
-    primary: { text: 'Apply for membership', href: '/apply' },
+    primary: { text: 'Apply for membership', href: '/membership' },
     secondary: { text: 'Inquire about offices', href: 'mailto:rachel@moxsf.com' },
     tertiary: { text: 'Buy a day pass', href: '/day-pass' },
   },
@@ -88,7 +88,7 @@ export const punkContent: HomeContent = {
   offersText:
     'Space for your sh*t! Deep work vibes! A community that actually gives a damn! Events that don\'t suck!',
   ctaButtons: {
-    primary: { text: 'GET IN', href: '/apply' },
+    primary: { text: 'GET IN', href: '/membership' },
     secondary: { text: 'Office space??', href: 'mailto:rachel@moxsf.com' },
     tertiary: { text: 'Day pass', href: '/day-pass' },
   },
@@ -122,7 +122,7 @@ export const dinosaurContent: HomeContent = {
   offersText:
     'A prehistoric space for modern work! Community! Events! Everything a dinosaur needs to thrive in the 21st century!',
   ctaButtons: {
-    primary: { text: 'Join the herd!', href: '/apply' },
+    primary: { text: 'Join the herd!', href: '/membership' },
     secondary: { text: 'Inquire about caves', href: 'mailto:rachel@moxsf.com' },
     tertiary: { text: 'Day pass for dinos', href: '/day-pass' },
   },
@@ -157,7 +157,7 @@ export const oldeContent: HomeContent = {
   offersText:
     'A moſt Noble Hall for Deep Contemplation, a Brotherhood of Learned Perſons, and Gatherings of Great Purpoſe. All manner of Accomodations for ye Purſuit of Excellence.',
   ctaButtons: {
-    primary: { text: 'Petition for Memberſhip', href: '/apply' },
+    primary: { text: 'Petition for Memberſhip', href: '/membership' },
     secondary: { text: 'Enquire About Chambers', href: 'mailto:rachel@moxsf.com' },
     tertiary: { text: 'Day Paſs for Viѕitors', href: '/day-pass' },
   },
@@ -192,7 +192,7 @@ export const csContent: HomeContent = {
   offersText:
     'Mox provides workspace infrastructure, collaborative environment, and regular seminars. Suitable for individual research and group projects.',
   ctaButtons: {
-    primary: { text: 'Application Form', href: '/apply' },
+    primary: { text: 'Application Form', href: '/membership' },
     secondary: { text: 'Contact for Office Space', href: 'mailto:rachel@moxsf.com' },
     tertiary: { text: 'Day Pass Information', href: '/day-pass' },
   },
