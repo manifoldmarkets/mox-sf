@@ -11,6 +11,9 @@ import MembershipStatus from './MembershipStatus'
 import DayPassPurchase from './DayPassPurchase'
 import SubscriptionInfo from './SubscriptionInfo'
 
+// Disable caching - session data (view-as) must be fresh on every request
+export const dynamic = 'force-dynamic'
+
 interface ProfileFields {
   Name?: string
   Email?: string
