@@ -39,19 +39,31 @@ export default function MembershipStatus({
   const hasSubscription = !!stripeCustomerId
   const isPrivateOffice = tier === 'Private Office'
 
+  // Format tier display name
+  // Tiers: Staff, Volunteer, Private Office, Program, Resident, Member, Friend, Courtesy, Guest Program, Paused
+  const getTierDisplay = () => {
+    if (!tier) return null
+    if (tier === 'Private Office') return 'private office'
+    if (tier === 'Guest Program') return 'guest program'
+    return tier.toLowerCase()
+  }
+
   return (
     <>
       <h2>membership status</h2>
 
       <p>
         status: <strong>{status || 'unknown'}</strong>
-        {isPrivateOffice && (
+        {tier && !isInvited && (
           <>
             {' '}
-            | private office:{' '}
-            <strong>
-              {loadingOrg ? 'loading...' : orgName || 'no office assigned'}
-            </strong>
+            · membership type: <strong>{getTierDisplay()}</strong>
+          </>
+        )}
+        {isPrivateOffice && orgId && (
+          <>
+            {' '}
+            ({loadingOrg ? 'loading...' : orgName || 'no office assigned'})
           </>
         )}
       </p>
@@ -72,23 +84,31 @@ export default function MembershipStatus({
         <>
           <div className="alert info">
             <p>
-              hey {firstName}! you're invited to join mox. choose a membership
-              tier below to get started with a 1-week free trial.
+              hey {firstName}! you're invited to join mox. all memberships
+              include a 1-week free trial.
             </p>
           </div>
-          <div style={{ marginTop: '20px' }}>
-            <script
-              async
-              src="https://js.stripe.com/v3/pricing-table.js"
-            ></script>
-            {/* @ts-ignore */}
-            <stripe-pricing-table
-              pricing-table-id="prctbl_1SBTulRobJaZ7DVC19nKSvjs"
-              publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
+
+          <p style={{ marginTop: '15px' }}>
+            <strong>Friend</strong> $160/mo · drop by up to 2x/week
+            <br />
+            <strong>Member</strong> $380/mo · unlimited access, hot desk
+            <br />
+            <strong>Resident</strong> $780/mo · dedicated desk + monitor
+          </p>
+
+          <p style={{ marginTop: '15px' }}>
+            <Link
+              href={`/join?name=${encodeURIComponent(firstName)}`}
+              className="btn primary"
             >
-              {/* @ts-ignore */}
-            </stripe-pricing-table>
-          </div>
+              choose a membership
+            </Link>
+          </p>
+
+          <p className="muted" style={{ marginTop: '15px' }}>
+            questions? <a href="mailto:rachel@moxsf.com">rachel@moxsf.com</a>
+          </p>
         </>
       )}
     </>
