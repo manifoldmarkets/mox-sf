@@ -4,15 +4,22 @@ import { useState, useEffect } from 'react'
 
 interface VerkadaPinProps {
   isViewingAs?: boolean
+  tier?: string | null
 }
 
-export default function VerkadaPin({ isViewingAs = false }: VerkadaPinProps) {
+export default function VerkadaPin({
+  isViewingAs = false,
+  tier,
+}: VerkadaPinProps) {
   const [pin, setPin] = useState<string | null>(null)
   const [hasAccess, setHasAccess] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [regenerating, setRegenerating] = useState<boolean>(false)
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
+  const [guestPin, setGuestPin] = useState<string | null>(null)
+
+  const isGuestProgram = tier === 'Program' || tier === 'Guest Program'
 
   useEffect(() => {
     async function fetchPin() {
@@ -37,6 +44,26 @@ export default function VerkadaPin({ isViewingAs = false }: VerkadaPinProps) {
 
     fetchPin()
   }, [])
+
+  // Fetch guest PIN for guest program members
+  useEffect(() => {
+    if (!isGuestProgram) return
+
+    async function fetchGuestPin() {
+      try {
+        const response = await fetch('/portal/api/verkada-guest-pin')
+        const data = await response.json()
+
+        if (response.ok && data.pin) {
+          setGuestPin(data.pin)
+        }
+      } catch (err) {
+        console.error('Failed to fetch guest PIN:', err)
+      }
+    }
+
+    fetchGuestPin()
+  }, [isGuestProgram])
 
   const handleRegenerate = async () => {
     setShowConfirm(false)
@@ -83,6 +110,17 @@ export default function VerkadaPin({ isViewingAs = false }: VerkadaPinProps) {
   }
 
   if (!hasAccess || !pin) {
+    // Show guest PIN for guest program members even if they don't have personal access
+    if (isGuestProgram && guestPin) {
+      return (
+        <>
+          <h2>front door access</h2>
+          <p>as a guest program member, use this shared PIN code to enter:</p>
+          <div className="pin-display">{guestPin}#</div>
+        </>
+      )
+    }
+
     return (
       <>
         <h2>front door access</h2>
