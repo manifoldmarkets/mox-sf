@@ -254,28 +254,9 @@ export default function SubscriptionInfo({
         </div>
       )}
 
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <strong>plan</strong>
-            </td>
-            <td>{subscription.tier}</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>rate</strong>
-            </td>
-            <td>{subscription.rate}</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>renewal date</strong>
-            </td>
-            <td>{formattedDate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <p>
+        <strong>{subscription.tier}</strong> · {subscription.rate} · renews {formattedDate}
+      </p>
 
       <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
         <button

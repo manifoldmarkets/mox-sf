@@ -85,14 +85,13 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
             <tr>
               <th>event</th>
               <th>date</th>
-              <th>status</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {events.map((event) => {
               const startDate = new Date(event.startDate)
-              const formattedDate = format(startDate, 'MMM d, yyyy')
+              const formattedDate = format(startDate, 'MMM d')
               const formattedTime = format(startDate, 'h:mm a')
 
               return (
@@ -100,26 +99,25 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
                   <td>
                     {event.name}
                     {event.assignedRooms && (
-                      <span style={{ color: '#666' }}>
+                      <span className="muted">
                         {' '}
                         ({event.assignedRooms})
                       </span>
                     )}
+                    {event.status && event.status !== 'Confirmed' && (
+                      <span className="muted"> · {event.status.toLowerCase()}</span>
+                    )}
+                  </td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
+                    {formattedDate}, {formattedTime}
                   </td>
                   <td>
-                    {formattedDate}
-                    <br />
-                    <span style={{ color: '#666' }}>{formattedTime}</span>
-                  </td>
-                  <td>
-                    <span
-                      className={`badge ${event.status?.toLowerCase().replace(' ', '-') || ''}`}
+                    <Link
+                      href={`/portal/events/${event.id}/edit`}
+                      className="btn small"
                     >
-                      {event.status || 'unknown'}
-                    </span>
-                  </td>
-                  <td>
-                    <Link href={`/portal/events/${event.id}/edit`}>edit</Link>
+                      edit
+                    </Link>
                   </td>
                 </tr>
               )
