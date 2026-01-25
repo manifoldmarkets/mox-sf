@@ -8,6 +8,25 @@ interface PersonFields {
   Tier?: string
 }
 
+// GET handler for clearing view-as mode via link
+export async function GET(request: NextRequest) {
+  const session = await getSession()
+
+  if (!session.isLoggedIn || !session.isStaff) {
+    return NextResponse.redirect(new URL('/portal', request.url))
+  }
+
+  const clear = request.nextUrl.searchParams.get('clear')
+
+  if (clear === 'true') {
+    session.viewingAsUserId = undefined
+    session.viewingAsName = undefined
+    await session.save()
+  }
+
+  return NextResponse.redirect(new URL('/portal', request.url))
+}
+
 export async function POST(request: NextRequest) {
   const session = await getSession()
 
