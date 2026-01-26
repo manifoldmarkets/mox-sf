@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Read(/var/folders/**)",
-      "Read(/private/var/**)"
+      "Read(/private/var/**)",
+      "Read(//var/folders/**)",
+      "Read(//private/var/**)"
     ],
     "additionalDirectories": [
       "/Users/rachelshu/code/mox-sf/app/door"
