@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import Gallery from './venue-gallery'
 import PeopleGallery from './people-gallery'
-import { PeopleContent } from './people/page'
+import { getPeople, getOrgs, getPrograms, buildDirectoryData } from './people/people'
+import DirectoryClient from './people/DirectoryClient'
+import './people/people.css'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
 
@@ -31,7 +33,10 @@ function Link({
 }
 
 export default async function Component() {
-  const events = await getEvents()
+  const [events, people, orgsMap, programsMap] = await Promise.all([
+    getEvents(), getPeople(), getOrgs(), getPrograms()
+  ])
+  const { sections, orgsLookup, programsLookup } = buildDirectoryData(people, orgsMap, programsMap)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -247,7 +252,15 @@ export default async function Component() {
           <PeopleGallery />
         </section>
         <section id="people" className="mb-12 sm:mb-16">
-          <PeopleContent />
+          <div className="directory homepage-directory">
+            <DirectoryClient
+              sections={sections}
+              orgsLookup={orgsLookup}
+              programsLookup={programsLookup}
+              memberCount={people.length}
+              isHomepage
+            />
+          </div>
         </section>
       </div>
 

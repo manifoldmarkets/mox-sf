@@ -70,17 +70,14 @@ export default function DirectoryClient({
           {toggleButton}
         </div>
       </div>
-      {!isHomepage && (
         <p className="muted">
           {memberCount} members
           {filter && ` matching "${filter}"`}
         </p>
-      )}
 
       {sections.map((section, idx) => {
         if (section.type === 'person-section' && section.people) {
           if (section.people.length === 0) return null
-          const isFirstSection = idx === 0
           return (
             <div key={idx} className="directory-section">
               <h2 className="section-title">{section.title}</h2>

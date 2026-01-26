@@ -257,12 +257,6 @@ a.interest.fun:hover {
   }
 }
 
-/* Homepage toggle - right aligned */
-.directory-toggle.homepage-toggle {
-  text-align: right;
-  margin-bottom: 15px;
-}
-
 /* Toggle button - inline with title */
 .directory-toggle {
   display: inline;
