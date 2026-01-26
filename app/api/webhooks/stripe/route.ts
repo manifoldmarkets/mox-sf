@@ -134,7 +134,7 @@ async function handleMemberDayPass(session: Stripe.Checkout.Session) {
 
   try {
     await createRecord(Tables.DayPasses, {
-      Name: session.id,
+      Name: session.id.slice(-6),
       Username: userName,
       Status: 'Unused',
       'Stripe link (from User)': `Member day pass - $25 - ${userEmail}`,
@@ -257,7 +257,7 @@ async function createAirtableRecord({
     const personId = await findOrCreatePerson({ customerName, customerEmail });
 
     const fields: Record<string, unknown> = {
-      Name: paymentId,
+      Name: paymentId.slice(-6),
       'Pass Type': passType,
       Status: 'Unused',
     };
