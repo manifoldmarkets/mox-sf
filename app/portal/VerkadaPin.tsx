@@ -171,6 +171,33 @@ export default function VerkadaPin({
           </p>
         )}
       </div>
+
+      {/* Verkada Pass App */}
+      <div style={{ marginTop: '25px', paddingTop: '15px', borderTop: '1px solid var(--border-color)' }}>
+        <h4 style={{ marginBottom: '10px', fontWeight: 'bold' }}>verkada pass app</h4>
+        <p>
+          install the Verkada Pass app to unlock the door via Bluetooth — no code needed.
+          sign in with the same email you use for this portal.
+        </p>
+        <div style={{ marginTop: '10px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <a
+            href="https://apps.apple.com/app/verkada-pass/id1462898419"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn"
+          >
+            App Store (iPhone)
+          </a>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.verkada.pass"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn"
+          >
+            Google Play (Android)
+          </a>
+        </div>
+      </div>
     </>
   )
 }
