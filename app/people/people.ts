@@ -1,11 +1,10 @@
-import { getRecords, findRecords, Tables } from '../lib/airtable'
+import { findRecords, Tables } from '../lib/airtable'
 
 export type Person = {
   id: string
   name: string
   tier: string | null
   org: string[]
-  orgNames: string[]
   program: string[]
   status: string | null
   website: string
@@ -15,6 +14,19 @@ export type Person = {
   workThingUrl: string | null
   funThing: string | null
   funThingUrl: string | null
+}
+
+export type Org = {
+  id: string
+  name: string
+  stealth: boolean
+  rooms: string[]
+}
+
+export type Program = {
+  id: string
+  name: string
+  rooms: string[]
 }
 
 // Restrict down to fields we need.
@@ -35,12 +47,6 @@ const FIELDS = [
   'Fun thing URL',
 ]
 
-interface OrgFields {
-  Name?: string
-  Status?: string
-  Stealth?: boolean
-}
-
 interface PersonFields {
   Name?: string
   Tier?: string
@@ -56,32 +62,7 @@ interface PersonFields {
   'Fun thing URL'?: string
 }
 
-async function getOrgNames(): Promise<Map<string, string>> {
-  const orgMap = new Map<string, string>()
-
-  try {
-    const records = await findRecords<OrgFields>(Tables.Orgs, '{Status}!=""', {
-      fields: ['Name', 'Stealth'],
-    })
-
-    for (const record of records) {
-      if (record.id && record.fields.Name) {
-        const isStealth = record.fields.Stealth === true
-        const displayName = isStealth ? '<stealth>' : record.fields.Name
-        orgMap.set(record.id, displayName)
-      }
-    }
-  } catch (error) {
-    console.error('Failed to fetch orgs, using empty map')
-  }
-
-  return orgMap
-}
-
 export async function getPeople(): Promise<Person[]> {
-  // Fetch org names first
-  const orgMap = await getOrgNames()
-
   const records = await findRecords<PersonFields>(
     Tables.People,
     'AND({Show in directory}=TRUE(), {Status}="Joined")',
@@ -93,15 +74,11 @@ export async function getPeople(): Promise<Person[]> {
 
   // Parse the data into the Person type
   const people: Person[] = records.map((record) => {
-    const orgIds = record.fields.Org || []
-    const orgNames = orgIds.map((id: string) => orgMap.get(id) || id)
-
     return {
       id: record.id,
       name: record.fields.Name || '',
       tier: record.fields.Tier || null,
-      org: orgIds,
-      orgNames: orgNames,
+      org: record.fields.Org || [],
       program: record.fields.Program || [],
       status: record.fields.Status || null,
       website: record.fields.Website || '',
@@ -133,6 +110,16 @@ export function hasText(person: Person): boolean {
   return !!(person.workThing || person.funThing)
 }
 
+// Content level: 'full' = has photo/text, 'org' = has org only, 'minimal' = name only
+export function getContentLevel(
+  person: Person
+): 'full' | 'org' | 'minimal' {
+  const hasPhotoOrText = hasPhoto(person) || hasText(person)
+  if (hasPhotoOrText) return 'full'
+  if (person.org && person.org.length > 0) return 'org'
+  return 'minimal'
+}
+
 export function filterPeople(
   people: Person[],
   filter?: string
@@ -153,12 +140,63 @@ export function sortPeopleByCompleteness(people: Person[]): Person[] {
     const bHasPhoto = hasPhoto(b)
     const aHasText = hasText(a)
     const bHasText = hasText(b)
+    const aHasOrg = a.org && a.org.length > 0
+    const bHasOrg = b.org && b.org.length > 0
 
-    // Score: 2 = both, 1 = photo only, 0 = neither
-    const aScore = aHasPhoto && aHasText ? 2 : aHasPhoto ? 1 : 0
-    const bScore = bHasPhoto && bHasText ? 2 : bHasPhoto ? 1 : 0
+    // Score: 3 = both photo+text, 2 = photo or text, 1 = org only, 0 = nothing
+    const aScore =
+      aHasPhoto && aHasText ? 3 : aHasPhoto || aHasText ? 2 : aHasOrg ? 1 : 0
+    const bScore =
+      bHasPhoto && bHasText ? 3 : bHasPhoto || bHasText ? 2 : bHasOrg ? 1 : 0
 
     if (aScore !== bScore) return bScore - aScore // Higher score first
     return a.name.localeCompare(b.name) // Then alphabetically
   })
 }
+
+// Fetch all orgs with their room numbers
+interface OrgFields {
+  Name?: string
+  Stealth?: boolean
+  'Room #'?: string[]
+}
+
+export async function getOrgs(): Promise<Map<string, Org>> {
+  const records = await findRecords<OrgFields>(Tables.Orgs, '', {
+    fields: ['Name', 'Stealth', 'Room #'],
+  })
+
+  const orgsMap = new Map<string, Org>()
+  for (const record of records) {
+    orgsMap.set(record.id, {
+      id: record.id,
+      name: record.fields.Name || '',
+      stealth: record.fields.Stealth || false,
+      rooms: record.fields['Room #'] || [],
+    })
+  }
+  return orgsMap
+}
+
+// Fetch all programs with their room numbers
+interface ProgramFields {
+  Name?: string
+  'Room #'?: string[]
+}
+
+export async function getPrograms(): Promise<Map<string, Program>> {
+  const records = await findRecords<ProgramFields>(Tables.Programs, '', {
+    fields: ['Name', 'Room #'],
+  })
+
+  const programsMap = new Map<string, Program>()
+  for (const record of records) {
+    programsMap.set(record.id, {
+      id: record.id,
+      name: record.fields.Name || '',
+      rooms: record.fields['Room #'] || [],
+    })
+  }
+  return programsMap
+}
+
