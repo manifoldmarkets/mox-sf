@@ -1,14 +1,51 @@
 /* Handcoded-style directory CSS - matches portal aesthetic */
+:root {
+  /* Light mode colors (default) */
+  --bg-primary: white;
+  --bg-secondary: #f5f5f5;
+  --bg-hover: #eee;
+  --text-primary: black;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --border-color: #ddd;
+  --border-dark: #333;
+  --border-light: #ccc;
+  --link-color: blue;
+  --link-hover: darkblue;
+  --placeholder-bg: #f0f0f0;
+  --program-border: #0d9488;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-hover: #3d3d3d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --text-muted: #696969;
+    --border-color: #444;
+    --border-dark: #ccc;
+    --border-light: #555;
+    --link-color: #66b3ff;
+    --link-hover: #99ccff;
+    --placeholder-bg: #2a2a2a;
+    --program-border: #20b2aa;
+  }
+}
+
 .directory {
   font-family: monospace;
   max-width: 1200px;
   margin: 50px auto;
   padding: 30px 45px;
-  background: white;
-  color: black;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: calc(100dvh - 100px);
   line-height: 1.5;
   font-size: 1em;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .directory.homepage-directory {
@@ -19,38 +56,38 @@
   font-weight: bold;
   font-size: 1.5em;
   margin-bottom: 10px;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid var(--border-dark);
   padding-bottom: 10px;
 }
 
 .directory .muted {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9em;
   margin-bottom: 20px;
 }
 
 .directory a {
-  color: blue;
+  color: var(--link-color);
   text-decoration: underline;
 }
 
 .directory a:hover {
-  color: darkblue;
+  color: var(--link-hover);
 }
 
 .directory .back-link {
   margin-bottom: 15px;
   display: inline-block;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .directory .back-link:hover {
-  color: #333;
+  color: var(--text-primary);
 }
 
 .directory hr {
   border: none;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--border-light);
   margin: 30px 0;
 }
 
@@ -65,7 +102,7 @@
 .person-entry {
   display: flex;
   aspect-ratio: 3.5 / 1;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   overflow: hidden;
 }
 
@@ -85,13 +122,13 @@
 .person-photo .photo-placeholder {
   width: 100%;
   height: 100%;
-  background: #f0f0f0;
+  background: var(--placeholder-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   font-size: 1.3em;
-  color: #999;
+  color: var(--text-muted);
 }
 
 /* Person info - takes remaining 3 parts */
@@ -109,9 +146,15 @@
 }
 
 .person-name a {
-  color: black;
+  color: var(--text-primary);
   text-decoration: underline;
   text-decoration-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .person-name a {
+    text-decoration-color: rgba(224, 224, 224, 0.3);
+  }
 }
 
 .person-name a:hover {
@@ -121,7 +164,7 @@
 /* Affiliation (org/program) - caps header */
 .person-affiliation {
   font-size: 0.75em;
-  color: #666;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 4px;
@@ -134,7 +177,7 @@
 }
 
 .into-text {
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .interest.work {
@@ -166,7 +209,7 @@ a.interest.fun:hover {
 }
 
 .and-text {
-  color: #666;
+  color: var(--text-secondary);
 }
 
 /* Section styles */
@@ -179,7 +222,7 @@ a.interest.fun:hover {
   font-weight: bold;
   margin-bottom: 15px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -193,22 +236,22 @@ a.interest.fun:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f5f5f5;
+  background: var(--bg-secondary);
   padding: 8px 12px;
   margin-bottom: 12px;
-  border-left: 3px solid #0d9488;
+  border-left: 3px solid var(--program-border);
 }
 
 .program-title {
   font-size: 1em;
   font-weight: bold;
-  color: #333;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .program-room {
   font-size: 0.85em;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 /* Compact entry for people with no photo or description */
@@ -267,16 +310,17 @@ a.interest.fun:hover {
   font-family: monospace;
   font-size: 0.8em;
   padding: 4px 10px;
-  background: #f5f5f5;
-  border: 1px solid #ccc;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
   cursor: pointer;
-  color: #666;
+  color: var(--text-secondary);
   vertical-align: middle;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .directory-toggle button:hover {
-  background: #eee;
-  color: #333;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 /* Title row with toggle */
@@ -285,7 +329,7 @@ a.interest.fun:hover {
   align-items: baseline;
   justify-content: space-between;
   margin-bottom: 10px;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid var(--border-dark);
   padding-bottom: 10px;
 }
 
@@ -310,20 +354,21 @@ a.interest.fun:hover {
   font-weight: bold;
   white-space: nowrap;
   padding: 5px 14px;
-  border: 1px solid #ccc;
-  background: white;
-  color: black;
+  border: 1px solid var(--border-light);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 a.collapsed-name {
-  color: black;
+  color: var(--text-primary);
   text-decoration: none;
 }
 
 a.collapsed-name:hover {
-  background: #f5f5f5;
-  border-color: #999;
+  background: var(--bg-secondary);
+  border-color: var(--text-muted);
 }
 
 /* Tighter spacing when section contains collapsed list */
