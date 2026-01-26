@@ -8,6 +8,7 @@ export async function GET() {
       isLoggedIn: session.isLoggedIn,
       userId: session.userId,
       email: session.email,
+      name: session.name,
       isStaff: session.isStaff,
       viewingAsUserId: session.viewingAsUserId,
       viewingAsName: session.viewingAsName,
