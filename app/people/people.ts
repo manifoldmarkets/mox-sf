@@ -40,13 +40,12 @@ interface PersonFields {
   'Fun thing URL'?: string
 }
 
-// View prefilters to Show in directory=TRUE and Status=Joined
-const DIRECTORY_VIEW = 'viwFAo9VqG0VzrokE'
-
 export async function getPeople(): Promise<Person[]> {
-  const records = await findRecords<PersonFields>(Tables.People, '', {
-    view: DIRECTORY_VIEW,
-  })
+  const records = await findRecords<PersonFields>(
+    Tables.People,
+    'AND({Show in directory}=TRUE(), {Status}="Joined")',
+    {}
+  )
 
   return records.map((record) => ({
     id: record.id,
