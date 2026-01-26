@@ -1,0 +1,415 @@
+/* Handcoded-style directory CSS - matches portal aesthetic */
+:root {
+  /* Light mode colors (default) */
+  --bg-primary: white;
+  --bg-secondary: #f5f5f5;
+  --bg-hover: #eee;
+  --text-primary: black;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --border-color: #ddd;
+  --border-dark: #333;
+  --border-light: #ccc;
+  --link-color: blue;
+  --link-hover: darkblue;
+  --placeholder-bg: #f0f0f0;
+  --program-border: #0d9488;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors - darker, less saturated background */
+    --bg-primary: #0f1117;
+    --bg-secondary: #1a202c;
+    --bg-hover: #232d3d;
+    --text-primary: #e8eaed;
+    --text-secondary: #b0b4b8;
+    --text-muted: #7a7e82;
+    --border-color: #6b5f52;
+    --border-dark: #7a8290;
+    --border-light: #8a7868;
+    --link-color: #8ab4f8;
+    --link-hover: #aecbfa;
+    --placeholder-bg: #161b22;
+    --program-border: #4db8aa;
+  }
+}
+
+.directory-wrapper {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.directory {
+  font-family: monospace;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 45px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+.directory h1 {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--border-dark);
+  padding-bottom: 10px;
+}
+
+.directory .muted {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  margin-bottom: 20px;
+}
+
+.directory a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.directory a:hover {
+  color: var(--link-hover);
+}
+
+.directory .back-link {
+  margin-bottom: 15px;
+  display: inline-block;
+  color: var(--text-secondary);
+}
+
+.directory .back-link:hover {
+  color: var(--text-primary);
+}
+
+.directory hr {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 30px 0;
+}
+
+/* Directory list */
+.directory-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 10px;
+}
+
+/* Person card - 3.5:1 aspect ratio for more vertical room */
+.person-entry {
+  display: flex;
+  aspect-ratio: 3.5 / 1;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+/* Photo - square, takes up left side */
+.person-photo {
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  height: 100%;
+}
+
+.person-photo .photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.person-photo .photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--placeholder-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: var(--text-muted);
+}
+
+/* Person info - takes remaining 3 parts */
+.person-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 15px;
+}
+
+.person-name {
+  font-weight: bold;
+}
+
+.person-name a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .person-name a {
+    text-decoration-color: rgba(224, 224, 224, 0.5);
+  }
+}
+
+.person-name a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Affiliation (org/program) - caps header */
+.person-affiliation {
+  font-size: 0.75em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+/* Main content - name inline with interests */
+.person-main {
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.into-text {
+  color: var(--text-secondary);
+}
+
+.interest.work {
+  color: #14b8a6; /* teal-500 - lighter for better visibility */
+  font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  .interest.work {
+    color: #4db8aa; /* even lighter teal for dark mode */
+  }
+}
+
+.interest.fun {
+  color: #ea580c; /* orange-600 */
+  font-weight: bold;
+}
+
+a.interest.work {
+  text-decoration: underline;
+  text-decoration-color: rgba(13, 148, 136, 0.5);
+}
+
+a.interest.work:hover {
+  text-decoration-color: currentColor;
+}
+
+a.interest.fun {
+  text-decoration: underline;
+  text-decoration-color: rgba(234, 88, 12, 0.5);
+}
+
+a.interest.fun:hover {
+  text-decoration-color: currentColor;
+}
+
+@media (prefers-color-scheme: dark) {
+  a.interest.work {
+    text-decoration-color: rgba(38, 166, 154, 0.6);
+  }
+
+  a.interest.fun {
+    text-decoration-color: rgba(255, 152, 0, 0.6);
+  }
+}
+
+.and-text {
+  color: var(--text-secondary);
+}
+
+/* Section styles */
+.directory-section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Program/Office subsections */
+.program-section {
+  margin-bottom: 25px;
+}
+
+.program-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-secondary);
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-left: 3px solid var(--program-border);
+}
+
+.program-title {
+  font-size: 1em;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.program-room {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
+
+/* Compact entry for people with no photo or description */
+.person-entry-compact {
+  aspect-ratio: unset;
+  height: auto;
+}
+
+.person-entry-compact .person-photo {
+  /* Match the width that a 3.5:1 card would have for its square photo */
+  /* Card width W has photo width = W/3.5 (from aspect ratio) */
+  /* Use calc to derive same width as full cards */
+  width: calc(100% / 3.5);
+  height: auto;
+  aspect-ratio: unset;
+}
+
+.person-entry-compact .person-photo .photo-placeholder {
+  font-size: 1.3em;
+  height: 100%;
+  min-height: 40px;
+  aspect-ratio: unset;
+}
+
+.person-entry-compact .person-info {
+  padding: 8px 12px;
+}
+
+/* Homepage directory - breakout to ~70% viewport width */
+.homepage-directory {
+  max-width: none;
+  width: 70vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 30px 0;
+}
+
+.homepage-directory .directory-list {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+@media (min-width: 1000px) {
+  .homepage-directory .directory-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Toggle button - inline with title */
+.directory-toggle {
+  display: inline;
+  margin-left: 15px;
+}
+
+.directory-toggle button {
+  font-family: monospace;
+  font-size: 0.8em;
+  padding: 4px 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+  color: var(--text-secondary);
+  vertical-align: middle;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.directory-toggle button:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Title row with toggle */
+.directory-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--border-dark);
+  padding-bottom: 10px;
+}
+
+.directory-title-row h1 {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Collapsed list - left-justified spread of names with pill style */
+.collapsed-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 2px 0;
+  margin-bottom: 5px;
+}
+
+.collapsed-name {
+  font-size: 0.95em;
+  font-weight: bold;
+  white-space: nowrap;
+  padding: 5px 14px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+a.collapsed-name {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+a.collapsed-name:hover {
+  background: var(--bg-secondary);
+  border-color: var(--text-muted);
+}
+
+/* Tighter spacing when section contains collapsed list */
+.directory-section:has(.collapsed-list) {
+  margin-bottom: 20px;
+}
+
+.directory-section:has(.collapsed-list) .section-title {
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+}
+
+.program-section:has(.collapsed-list) {
+  margin-bottom: 12px;
+}
+
+.program-section:has(.collapsed-list) .program-header {
+  margin-bottom: 6px;
+  padding: 5px 10px;
+}
+
+/* Loading state */
+.loading {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 50px 20px;
+  font-size: 0.95em;
+}

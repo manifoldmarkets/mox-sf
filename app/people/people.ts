@@ -1,44 +1,30 @@
-import { getRecords, findRecords, Tables } from '../lib/airtable'
+import { findRecords, Tables } from '../lib/airtable'
 
 export type Person = {
   id: string
   name: string
   tier: string | null
   org: string[]
-  orgNames: string[]
   program: string[]
-  status: string | null
   website: string
   photo: any[] | null
-  showInDirectory: boolean
   workThing: string | null
   workThingUrl: string | null
   funThing: string | null
   funThingUrl: string | null
 }
 
-// Restrict down to fields we need.
-// WARNING: if we fetch all fields, sensitive things like email may be exposed.
-// Unfortunately, Airtable doesn't support per-field control on access keys.
-const FIELDS = [
-  'Name',
-  'Tier',
-  'Org',
-  'Program',
-  'Status',
-  'Website',
-  'Photo',
-  'Show in directory',
-  'Work thing',
-  'Work thing URL',
-  'Fun thing',
-  'Fun thing URL',
-]
+export type Org = {
+  id: string
+  name: string
+  stealth: boolean
+  rooms: string[]
+}
 
-interface OrgFields {
-  Name?: string
-  Status?: string
-  Stealth?: boolean
+export type Program = {
+  id: string
+  name: string
+  rooms: string[]
 }
 
 interface PersonFields {
@@ -46,75 +32,34 @@ interface PersonFields {
   Tier?: string
   Org?: string[]
   Program?: string[]
-  Status?: string
   Website?: string
   Photo?: any[]
-  'Show in directory'?: boolean
   'Work thing'?: string
   'Work thing URL'?: string
   'Fun thing'?: string
   'Fun thing URL'?: string
 }
 
-async function getOrgNames(): Promise<Map<string, string>> {
-  const orgMap = new Map<string, string>()
-
-  try {
-    const records = await findRecords<OrgFields>(Tables.Orgs, '{Status}!=""', {
-      fields: ['Name', 'Stealth'],
-    })
-
-    for (const record of records) {
-      if (record.id && record.fields.Name) {
-        const isStealth = record.fields.Stealth === true
-        const displayName = isStealth ? '<stealth>' : record.fields.Name
-        orgMap.set(record.id, displayName)
-      }
-    }
-  } catch (error) {
-    console.error('Failed to fetch orgs, using empty map')
-  }
-
-  return orgMap
-}
-
 export async function getPeople(): Promise<Person[]> {
-  // Fetch org names first
-  const orgMap = await getOrgNames()
-
   const records = await findRecords<PersonFields>(
     Tables.People,
     'AND({Show in directory}=TRUE(), {Status}="Joined")',
-    {
-      fields: FIELDS,
-      view: 'viw9V2tzcnqvRXcV3',
-    }
+    {}
   )
 
-  // Parse the data into the Person type
-  const people: Person[] = records.map((record) => {
-    const orgIds = record.fields.Org || []
-    const orgNames = orgIds.map((id: string) => orgMap.get(id) || id)
-
-    return {
-      id: record.id,
-      name: record.fields.Name || '',
-      tier: record.fields.Tier || null,
-      org: orgIds,
-      orgNames: orgNames,
-      program: record.fields.Program || [],
-      status: record.fields.Status || null,
-      website: record.fields.Website || '',
-      photo: record.fields.Photo || [],
-      showInDirectory: true,
-      workThing: record.fields['Work thing'] || null,
-      workThingUrl: record.fields['Work thing URL'] || null,
-      funThing: record.fields['Fun thing'] || null,
-      funThingUrl: record.fields['Fun thing URL'] || null,
-    }
-  })
-
-  return people
+  return records.map((record) => ({
+    id: record.id,
+    name: record.fields.Name || '',
+    tier: record.fields.Tier || null,
+    org: record.fields.Org || [],
+    program: record.fields.Program || [],
+    website: record.fields.Website || '',
+    photo: record.fields.Photo || [],
+    workThing: record.fields['Work thing'] || null,
+    workThingUrl: record.fields['Work thing URL'] || null,
+    funThing: record.fields['Fun thing'] || null,
+    funThingUrl: record.fields['Fun thing URL'] || null,
+  }))
 }
 
 export function formatUrl(url: string): string {
@@ -153,12 +98,131 @@ export function sortPeopleByCompleteness(people: Person[]): Person[] {
     const bHasPhoto = hasPhoto(b)
     const aHasText = hasText(a)
     const bHasText = hasText(b)
+    const aHasOrg = a.org && a.org.length > 0
+    const bHasOrg = b.org && b.org.length > 0
 
-    // Score: 2 = both, 1 = photo only, 0 = neither
-    const aScore = aHasPhoto && aHasText ? 2 : aHasPhoto ? 1 : 0
-    const bScore = bHasPhoto && bHasText ? 2 : bHasPhoto ? 1 : 0
+    // Score: 3 = both photo+text, 2 = photo or text, 1 = org only, 0 = nothing
+    const aScore =
+      aHasPhoto && aHasText ? 3 : aHasPhoto || aHasText ? 2 : aHasOrg ? 1 : 0
+    const bScore =
+      bHasPhoto && bHasText ? 3 : bHasPhoto || bHasText ? 2 : bHasOrg ? 1 : 0
 
     if (aScore !== bScore) return bScore - aScore // Higher score first
     return a.name.localeCompare(b.name) // Then alphabetically
   })
 }
+
+// Fetch all orgs with their room numbers
+interface OrgFields {
+  Name?: string
+  Stealth?: boolean
+  'Room #'?: string[]
+}
+
+export async function getOrgs(): Promise<Map<string, Org>> {
+  const records = await findRecords<OrgFields>(Tables.Orgs, '', {
+    fields: ['Name', 'Stealth', 'Room #'],
+  })
+
+  const orgsMap = new Map<string, Org>()
+  for (const record of records) {
+    orgsMap.set(record.id, {
+      id: record.id,
+      name: record.fields.Name || '',
+      stealth: record.fields.Stealth || false,
+      rooms: record.fields['Room #'] || [],
+    })
+  }
+  return orgsMap
+}
+
+// Fetch all programs with their room numbers
+interface ProgramFields {
+  Name?: string
+  'Room #'?: string[]
+}
+
+export async function getPrograms(): Promise<Map<string, Program>> {
+  const records = await findRecords<ProgramFields>(Tables.Programs, '', {
+    fields: ['Name', 'Room #'],
+  })
+
+  const programsMap = new Map<string, Program>()
+  for (const record of records) {
+    programsMap.set(record.id, {
+      id: record.id,
+      name: record.fields.Name || '',
+      rooms: record.fields['Room #'] || [],
+    })
+  }
+  return programsMap
+}
+
+// Build sections data from people, orgs, and programs for DirectoryClient
+export function buildDirectoryData(
+  people: Person[],
+  orgsMap: Map<string, Org>,
+  programsMap: Map<string, Program>
+) {
+  const staff = sortPeopleByCompleteness(
+    people.filter((p) => p.tier === 'Staff')
+  )
+  const privateOffices = sortPeopleByCompleteness(
+    people.filter((p) => p.tier === 'Private Office')
+  )
+  const members = sortPeopleByCompleteness(
+    people.filter((p) => p.tier !== 'Staff' && p.tier !== 'Private Office')
+  )
+
+  // Group private offices by org (excluding stealth)
+  const officesByOrg = new Map<string, { name: string; rooms: string[]; people: Person[] }>()
+  privateOffices.forEach((person) => {
+    const orgId = person.org?.[0] || 'independent'
+    const org = orgsMap.get(orgId)
+    if (org?.stealth) return
+    if (!officesByOrg.has(orgId)) {
+      officesByOrg.set(orgId, { name: org?.name || 'Independent', rooms: org?.rooms || [], people: [] })
+    }
+    officesByOrg.get(orgId)!.people.push(person)
+  })
+
+  // Group members by program
+  const programGroups = new Map<string, { name: string; rooms: string[]; people: Person[] }>()
+  const membersWithoutProgram: Person[] = []
+  members.forEach((person) => {
+    const programId = person.program?.[0]
+    if (programId) {
+      const program = programsMap.get(programId)
+      if (!programGroups.has(programId)) {
+        programGroups.set(programId, { name: program?.name || 'Program', rooms: program?.rooms || [], people: [] })
+      }
+      programGroups.get(programId)!.people.push(person)
+    } else {
+      membersWithoutProgram.push(person)
+    }
+  })
+
+  // Sort by size then alphabetically
+  const sortGroups = (a: { name: string; people: Person[] }, b: { name: string; people: Person[] }) =>
+    b.people.length !== a.people.length ? b.people.length - a.people.length : a.name.localeCompare(b.name)
+
+  const sortedOrgs = Array.from(officesByOrg.entries()).sort(([, a], [, b]) => sortGroups(a, b))
+  const sortedPrograms = Array.from(programGroups.entries()).sort(([, a], [, b]) => sortGroups(a, b))
+
+  // Convert maps to plain objects for client component
+  const orgsLookup: Record<string, { name: string }> = {}
+  orgsMap.forEach((org, id) => { orgsLookup[id] = { name: org.name } })
+
+  const programsLookup: Record<string, { name: string }> = {}
+  programsMap.forEach((program, id) => { programsLookup[id] = { name: program.name } })
+
+  const sections = [
+    { type: 'person-section' as const, title: 'Staff', people: staff, affiliationType: 'org' as const },
+    { type: 'grouped-section' as const, title: 'Programs', groups: sortedPrograms.map(([id, g]) => ({ id, ...g })) },
+    { type: 'grouped-section' as const, title: 'Offices', groups: sortedOrgs.map(([id, g]) => ({ id, ...g })) },
+    { type: 'person-section' as const, title: 'Members', people: membersWithoutProgram, affiliationType: 'both' as const },
+  ]
+
+  return { sections, orgsLookup, programsLookup }
+}
+

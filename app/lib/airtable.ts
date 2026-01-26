@@ -7,6 +7,7 @@ export const Tables = {
   People: 'People',
   Events: 'Events',
   Orgs: 'Orgs',
+  Programs: 'Programs',
   DayPasses: 'Day Passes',
 } as const
 
