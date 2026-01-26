@@ -1,20 +1,139 @@
 /* Handcoded-style portal CSS */
+:root {
+  /* Light mode colors (default) */
+  --bg-primary: white;
+  --bg-secondary: #f5f5f5;
+  --bg-hover: #eee;
+  --text-primary: black;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --border-color: #ccc;
+  --border-dark: #333;
+  --border-light: #ccc;
+  --link-color: blue;
+  --link-hover: darkblue;
+  --form-bg: white;
+  --form-border: #ccc;
+  --form-disabled-bg: #f0f0f0;
+  --form-disabled-text: #666;
+  --button-bg: #f0f0f0;
+  --button-border: #999;
+  --button-hover-bg: #e0e0e0;
+  --primary-button-bg: #333;
+  --primary-button-hover: #000;
+  --danger-bg: #fee;
+  --danger-border: #c66;
+  --danger-text: #900;
+  --danger-hover: #fdd;
+  --table-header-bg: #f0f0f0;
+  --badge-bg: #f0f0f0;
+  --admin-bg: #f8f8f8;
+  --admin-border: #ddd;
+  --modal-bg: white;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --success-bg: #dfd;
+  --success-border: #8c8;
+  --success-text: #060;
+  --cancel-bg: #fdd;
+  --cancel-border: #c88;
+  --cancel-text: #600;
+  --pause-bg: #ffd;
+  --pause-border: #cc8;
+  --pause-text: #660;
+  --alert-warning-bg: #ffd;
+  --alert-warning-border: #cc8;
+  --alert-error-bg: #fdd;
+  --alert-error-border: #c88;
+  --alert-error-text: #600;
+  --alert-success-bg: #dfd;
+  --alert-success-border: #8c8;
+  --alert-info-bg: #eef;
+  --alert-info-border: #88c;
+  --admin-mode-bg: #fce7f3;
+  --admin-mode-border: #ec4899;
+  --admin-mode-text: #be185d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors - adapted from people.css with portal-specific adjustments */
+    --bg-primary: #0f1117;
+    --bg-secondary: #1a202c;
+    --bg-hover: #232d3d;
+    --text-primary: #e8eaed;
+    --text-secondary: #b0b4b8;
+    --text-muted: #7a7e82;
+    --border-color: #3d444d;
+    --border-dark: #7a8290;
+    --border-light: #3d444d;
+    --link-color: #8ab4f8;
+    --link-hover: #aecbfa;
+    --form-bg: #161b22;
+    --form-border: #30363d;
+    --form-disabled-bg: #0d1117;
+    --form-disabled-text: #7a7e82;
+    --button-bg: #21262d;
+    --button-border: #444c56;
+    --button-hover-bg: #30363d;
+    --primary-button-bg: #238636;
+    --primary-button-hover: #2ea043;
+    --danger-bg: #3d1f1a;
+    --danger-border: #da3633;
+    --danger-text: #f85149;
+    --danger-hover: #484038;
+    --table-header-bg: #21262d;
+    --badge-bg: #21262d;
+    --admin-bg: #0d1117;
+    --admin-border: #30363d;
+    --modal-bg: #0f1117;
+    --modal-overlay: rgba(0, 0, 0, 0.85);
+    --success-bg: #1f2f1f;
+    --success-border: #238636;
+    --success-text: #3fb950;
+    --cancel-bg: #3d1f1a;
+    --cancel-border: #da3633;
+    --cancel-text: #f85149;
+    --pause-bg: #3d2d1a;
+    --pause-border: #d29922;
+    --pause-text: #d29922;
+    --alert-warning-bg: #3d2d1a;
+    --alert-warning-border: #d29922;
+    --alert-error-bg: #3d1f1a;
+    --alert-error-border: #da3633;
+    --alert-error-text: #f85149;
+    --alert-success-bg: #1f2f1f;
+    --alert-success-border: #238636;
+    --alert-info-bg: #1f2a3f;
+    --alert-info-border: #388bfd;
+    --admin-mode-bg: #2d1f29;
+    --admin-mode-border: #c64c9d;
+    --admin-mode-text: #f584cc;
+  }
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .portal {
   font-family: monospace;
   max-width: 600px;
   margin: 50px auto;
   padding: 20px 35px; /* Extra horizontal padding for h2 asterisk markers */
-  background: white;
-  color: black;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: calc(100dvh - 100px); /* dvh works better on mobile than vh */
   line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .portal h1 {
   font-weight: bold;
   font-size: 1.5em;
   margin-bottom: 20px;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid var(--border-dark);
   padding-bottom: 10px;
 }
 
@@ -28,7 +147,7 @@
 
 .portal h2::before {
   content: '*';
-  color: black;
+  color: var(--text-primary);
   font-weight: bold;
   position: absolute;
   left: -1.5em;
@@ -45,12 +164,12 @@
 }
 
 .portal a {
-  color: blue;
+  color: var(--link-color);
   text-decoration: underline;
 }
 
 .portal a:hover {
-  color: darkblue;
+  color: var(--link-hover);
 }
 
 /* Form elements */
@@ -60,50 +179,53 @@
 .portal input[type="date"],
 .portal input[type="datetime-local"],
 .portal input[type="password"],
+.portal input[type="search"],
 .portal textarea,
 .portal select {
   width: 100%;
   font-family: monospace;
   font-size: 1em;
   padding: 8px;
-  border: 1px solid #ccc;
-  background: white;
-  color: black;
+  border: 1px solid var(--form-border);
+  background: var(--form-bg);
+  color: var(--text-primary);
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .portal input:focus,
 .portal textarea:focus,
 .portal select:focus {
-  outline: 2px solid #666;
+  outline: 2px solid var(--text-secondary);
   outline-offset: 1px;
 }
 
 .portal input:disabled,
 .portal textarea:disabled {
-  background: #f0f0f0;
-  color: #666;
+  background: var(--form-disabled-bg);
+  color: var(--form-disabled-text);
   cursor: not-allowed;
 }
 
 /* Buttons */
 .portal button,
 .portal .btn {
-  background: #f0f0f0;
-  border: 1px solid #999;
+  background: var(--button-bg);
+  border: 1px solid var(--button-border);
   padding: 8px 12px;
   font-family: monospace;
   font-size: 1em;
   cursor: pointer;
-  color: black;
+  color: var(--text-primary);
   text-decoration: none;
   display: inline-block;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .portal button:hover,
 .portal .btn:hover {
-  background: #e0e0e0;
-  border-color: #666;
+  background: var(--button-hover-bg);
+  border-color: var(--text-secondary);
 }
 
 .portal button:disabled {
@@ -113,25 +235,26 @@
 
 .portal button.primary,
 .portal .btn.primary {
-  background: #333;
+  background: var(--primary-button-bg);
   color: white;
-  border-color: #333;
+  border-color: var(--primary-button-bg);
   font-weight: bold;
 }
 
 .portal button.primary:hover,
 .portal .btn.primary:hover {
-  background: #000;
+  background: var(--primary-button-hover);
+  border-color: var(--primary-button-hover);
 }
 
 .portal button.danger {
-  background: #fee;
-  border-color: #c66;
-  color: #900;
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger-text);
 }
 
 .portal button.danger:hover {
-  background: #fdd;
+  background: var(--danger-hover);
 }
 
 /* Small inline buttons */
@@ -152,11 +275,12 @@
 .portal td {
   text-align: left;
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .portal th {
-  background: #f0f0f0;
+  background: var(--table-header-bg);
 }
 
 /* Form groups */
@@ -171,22 +295,22 @@
 
 /* Status messages */
 .portal .error {
-  color: red;
+  color: var(--danger-text);
 }
 
 .portal .success {
-  color: green;
+  color: var(--success-text);
 }
 
 .portal .loading {
-  color: #666;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
 /* Section dividers */
 .portal hr {
   border: none;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--border-color);
   margin: 30px 0;
 }
 
@@ -205,9 +329,11 @@
   font-size: 2em;
   font-weight: bold;
   padding: 10px 15px;
-  border: 2px solid #333;
+  border: 2px solid var(--border-dark);
   display: inline-block;
   margin: 10px 0;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 /* Status badges */
@@ -215,54 +341,66 @@
   display: inline-block;
   padding: 2px 6px;
   font-size: 0.85em;
-  border: 1px solid #ccc;
-  background: #f0f0f0;
+  border: 1px solid var(--border-color);
+  background: var(--badge-bg);
+  color: var(--text-primary);
 }
 
 .portal .badge.confirmed {
-  background: #dfd;
-  border-color: #8c8;
-  color: #060;
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success-text);
 }
 
 .portal .badge.cancelled {
-  background: #fdd;
-  border-color: #c88;
-  color: #600;
+  background: var(--cancel-bg);
+  border-color: var(--cancel-border);
+  color: var(--cancel-text);
 }
 
 .portal .badge.paused {
-  background: #ffd;
-  border-color: #cc8;
-  color: #660;
+  background: var(--pause-bg);
+  border-color: var(--pause-border);
+  color: var(--pause-text);
 }
 
 /* Alert boxes */
 .portal .alert {
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .portal .alert.warning {
-  background: #ffd;
-  border-color: #cc8;
+  background: var(--alert-warning-bg);
+  border-color: var(--alert-warning-border);
 }
 
 .portal .alert.error {
-  background: #fdd;
-  border-color: #c88;
-  color: #600;
+  background: var(--alert-error-bg);
+  border-color: var(--alert-error-border);
+  color: var(--alert-error-text);
 }
 
 .portal .alert.success {
-  background: #dfd;
-  border-color: #8c8;
+  background: var(--alert-success-bg);
+  border-color: var(--alert-success-border);
 }
 
 .portal .alert.info {
-  background: #eef;
-  border-color: #88c;
+  background: var(--alert-info-bg);
+  border-color: var(--alert-info-border);
+}
+
+.portal .alert.info:has(strong:first-child) {
+  background: var(--admin-mode-bg);
+  border-color: var(--admin-mode-border);
+  color: var(--admin-mode-text);
+}
+
+.portal .alert.info:has(strong:first-child) a {
+  color: var(--admin-mode-text);
 }
 
 /* Modal overlay */
@@ -272,7 +410,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--modal-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,46 +419,49 @@
 }
 
 .portal .modal {
-  background: white;
+  background: var(--modal-bg);
   padding: 20px;
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  color: var(--text-primary);
 }
 
 /* Admin section (collapsible) */
 .portal .admin-section {
-  background: #f8f8f8;
-  border: 1px solid #ddd;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
   padding: 10px;
   margin-bottom: 15px;
+  color: var(--text-primary);
 }
 
 .portal .admin-section summary {
   cursor: pointer;
   font-weight: bold;
   user-select: none;
+  color: var(--text-primary);
 }
 
 .portal .admin-section summary:hover {
-  color: #666;
+  color: var(--text-secondary);
 }
 
 /* Back link */
 .portal .back-link {
   margin-bottom: 15px;
   display: inline-block;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .portal .back-link:hover {
-  color: #333;
+  color: var(--text-primary);
 }
 
 /* Muted text */
 .portal .muted {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9em;
 }
 

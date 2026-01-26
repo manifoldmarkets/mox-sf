@@ -107,8 +107,8 @@ export default function AdminViewAsSelector() {
               zIndex: 10,
               width: '100%',
               marginTop: '2px',
-              background: 'white',
-              border: '1px solid #ccc',
+              background: 'var(--form-bg)',
+              border: '1px solid var(--form-border)',
               maxHeight: '200px',
               overflowY: 'auto',
             }}
@@ -124,18 +124,19 @@ export default function AdminViewAsSelector() {
                   padding: '8px',
                   background: 'none',
                   border: 'none',
-                  borderBottom: '1px solid #eee',
+                  borderBottom: '1px solid var(--border-color)',
                   cursor: 'pointer',
+                  color: 'var(--text-primary)',
                 }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.background = '#f0f0f0')
+                  (e.currentTarget.style.background = 'var(--bg-hover)')
                 }
                 onMouseOut={(e) => (e.currentTarget.style.background = 'none')}
               >
                 <div>
                   <strong>{member.name}</strong>
                 </div>
-                <div style={{ fontSize: '0.9em', color: '#666' }}>
+                <div style={{ fontSize: '0.9em', color: 'var(--text-secondary)' }}>
                   {member.email}
                 </div>
               </button>
@@ -153,10 +154,10 @@ export default function AdminViewAsSelector() {
                 zIndex: 10,
                 width: '100%',
                 marginTop: '2px',
-                background: 'white',
-                border: '1px solid #ccc',
+                background: 'var(--form-bg)',
+                border: '1px solid var(--form-border)',
                 padding: '8px',
-                color: '#666',
+                color: 'var(--text-secondary)',
               }}
             >
               no members found
