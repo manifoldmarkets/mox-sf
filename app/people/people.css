@@ -18,21 +18,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark mode colors - improved contrast per Dark Reader */
-    --bg-primary: #0f1419;
-    --bg-secondary: #1a1f2e;
-    --bg-hover: #252d3d;
+    /* Dark mode colors - darker, less saturated background */
+    --bg-primary: #0f1117;
+    --bg-secondary: #1a202c;
+    --bg-hover: #232d3d;
     --text-primary: #e8eaed;
     --text-secondary: #b0b4b8;
     --text-muted: #7a7e82;
-    --border-color: #3a4250;
-    --border-dark: #d0d1d5;
-    --border-light: #494f58;
+    --border-color: #6b5f52;
+    --border-dark: #7a8290;
+    --border-light: #8a7868;
     --link-color: #8ab4f8;
     --link-hover: #aecbfa;
-    --placeholder-bg: #1e2329;
-    --program-border: #26a69a;
+    --placeholder-bg: #161b22;
+    --program-border: #4db8aa;
   }
+}
+
+.directory-wrapper {
+  min-height: 100vh;
+  background: var(--bg-primary);
 }
 
 .directory {
@@ -175,8 +180,14 @@
 }
 
 .interest.work {
-  color: #0d9488; /* teal-600 */
+  color: #14b8a6; /* teal-500 - lighter for better visibility */
   font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  .interest.work {
+    color: #4db8aa; /* even lighter teal for dark mode */
+  }
 }
 
 .interest.fun {
@@ -392,4 +403,13 @@ a.collapsed-name:hover {
 .program-section:has(.collapsed-list) .program-header {
   margin-bottom: 6px;
   padding: 5px 10px;
+}
+
+/* Loading state */
+.loading {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 50px 20px;
+  font-size: 0.95em;
 }

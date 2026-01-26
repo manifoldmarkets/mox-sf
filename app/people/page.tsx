@@ -22,17 +22,19 @@ export default async function PeoplePage({ searchParams }: { searchParams: Promi
   const { sections, orgsLookup, programsLookup } = buildDirectoryData(filteredPeople, orgsMap, programsMap)
 
   return (
-    <div className="directory">
-      <Link href="/" className="back-link">&larr; back to home</Link>
-      <DirectoryClient
-        sections={sections}
-        orgsLookup={orgsLookup}
-        programsLookup={programsLookup}
-        memberCount={filteredPeople.length}
-        filter={params.filter}
-      />
-      <hr />
-      <p className="muted"><Link href="/portal/login">edit your info</Link></p>
+    <div className="directory-wrapper">
+      <div className="directory">
+        <Link href="/" className="back-link">&larr; back to home</Link>
+        <DirectoryClient
+          sections={sections}
+          orgsLookup={orgsLookup}
+          programsLookup={programsLookup}
+          memberCount={filteredPeople.length}
+          filter={params.filter}
+        />
+        <hr />
+        <p className="muted"><Link href="/portal/login">edit your info</Link></p>
+      </div>
     </div>
   )
 }

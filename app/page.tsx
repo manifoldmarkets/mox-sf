@@ -1,15 +1,9 @@
 import Image from 'next/image'
 import Gallery from './venue-gallery'
 import PeopleGallery from './people-gallery'
-import { getPeople, getOrgs, getPrograms, buildDirectoryData } from './people/people'
-import DirectoryClient from './people/DirectoryClient'
-import './people/people.css'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
 
-// Disable caching - fetch fresh data on every request
-// This ensures Airtable attachment URLs (which expire after ~2 hours) stay valid
-export const dynamic = 'force-dynamic'
 
 function Link({
   href,
@@ -33,10 +27,9 @@ function Link({
 }
 
 export default async function Component() {
-  const [events, people, orgsMap, programsMap] = await Promise.all([
-    getEvents(), getPeople(), getOrgs(), getPrograms()
+  const [events] = await Promise.all([
+    getEvents()
   ])
-  const { sections, orgsLookup, programsLookup } = buildDirectoryData(people, orgsMap, programsMap)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -188,7 +181,7 @@ export default async function Component() {
 
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                   <a
-                    href="#people"
+                    href="/people"
                     className="block text-center text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
                   >
                     See people →
@@ -250,17 +243,6 @@ export default async function Component() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <section className="mb-12 sm:mb-16">
           <PeopleGallery />
-        </section>
-        <section id="people" className="mb-12 sm:mb-16">
-          <div className="directory homepage-directory">
-            <DirectoryClient
-              sections={sections}
-              orgsLookup={orgsLookup}
-              programsLookup={programsLookup}
-              memberCount={people.length}
-              isHomepage
-            />
-          </div>
         </section>
       </div>
 
