@@ -8,6 +8,7 @@ import {
   Kalam,
 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+import PortalNav from './components/PortalNav'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -86,6 +87,7 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} ${handwriting.variable} font-lora`}
       >
+        <PortalNav />
         {children}
         <Analytics />
       </body>
