@@ -18,38 +18,32 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark mode colors */
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-hover: #3d3d3d;
-    --text-primary: #e0e0e0;
-    --text-secondary: #a0a0a0;
-    --text-muted: #696969;
-    --border-color: #444;
-    --border-dark: #ccc;
-    --border-light: #555;
-    --link-color: #66b3ff;
-    --link-hover: #99ccff;
-    --placeholder-bg: #2a2a2a;
-    --program-border: #20b2aa;
+    /* Dark mode colors - improved contrast per Dark Reader */
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a1f2e;
+    --bg-hover: #252d3d;
+    --text-primary: #e8eaed;
+    --text-secondary: #b0b4b8;
+    --text-muted: #7a7e82;
+    --border-color: #3a4250;
+    --border-dark: #d0d1d5;
+    --border-light: #494f58;
+    --link-color: #8ab4f8;
+    --link-hover: #aecbfa;
+    --placeholder-bg: #1e2329;
+    --program-border: #26a69a;
   }
 }
 
 .directory {
   font-family: monospace;
   max-width: 1200px;
-  margin: 50px auto;
+  margin: 0 auto;
   padding: 30px 45px;
-  background: var(--bg-primary);
   color: var(--text-primary);
-  min-height: calc(100dvh - 100px);
   line-height: 1.5;
   font-size: 1em;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.directory.homepage-directory {
-  background: transparent;
+  transition: color 0.3s ease;
 }
 
 .directory h1 {
@@ -355,7 +349,7 @@ a.interest.fun:hover {
   white-space: nowrap;
   padding: 5px 14px;
   border: 1px solid var(--border-light);
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
