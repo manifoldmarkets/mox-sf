@@ -169,7 +169,8 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
   const passInfo = DAY_PASS_PRODUCTS[product.id];
   const customerEmail = session.customer_details?.email;
   const customerName = session.customer_details?.name || 'Guest';
-  const paymentId = session.id;
+  const basePaymentId = session.id;
+  const quantity = lineItem.quantity || 1;
 
   if (!customerEmail) {
     console.error('[Stripe Webhook] No customer email found');
@@ -177,33 +178,45 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
   }
 
   console.log(
-    `[Stripe Webhook] Processing ${passInfo.type} purchase for ${customerEmail}`
+    `[Stripe Webhook] Processing ${quantity}x ${passInfo.type} purchase for ${customerEmail}`
   );
 
-  // Create Airtable record
-  const airtableRecord = await createAirtableRecord({
-    paymentId,
-    customerName,
-    customerEmail,
-    passType: passInfo.type,
-  });
+  // Create Airtable records for each pass
+  const paymentIds: string[] = [];
+  for (let i = 0; i < quantity; i++) {
+    // For single passes, use the base ID; for multiple, append index
+    const paymentId = quantity === 1 ? basePaymentId : `${basePaymentId}-${i + 1}`;
 
-  if (!airtableRecord) {
-    console.error('[Stripe Webhook] Failed to create Airtable record');
+    const airtableRecord = await createAirtableRecord({
+      paymentId,
+      customerName,
+      customerEmail,
+      passType: passInfo.type,
+    });
+
+    if (airtableRecord) {
+      paymentIds.push(paymentId);
+    } else {
+      console.error(`[Stripe Webhook] Failed to create Airtable record for pass ${i + 1}`);
+    }
+  }
+
+  if (paymentIds.length === 0) {
+    console.error('[Stripe Webhook] Failed to create any Airtable records');
     return;
   }
 
-  // Send activation email
+  // Send activation email with all pass links
   await sendActivationEmail({
     customerEmail,
     customerName,
     passType: passInfo.type,
     passDescription: passInfo.description,
-    paymentId,
+    paymentIds,
   });
 
   console.log(
-    `[Stripe Webhook] Successfully processed ${passInfo.type} for ${customerEmail}`
+    `[Stripe Webhook] Successfully processed ${paymentIds.length}x ${passInfo.type} for ${customerEmail}`
   );
 }
 
@@ -281,22 +294,24 @@ async function sendActivationEmail({
   customerName,
   passType,
   passDescription,
-  paymentId,
+  paymentIds,
 }: {
   customerEmail: string;
   customerName: string;
   passType: string;
   passDescription: string;
-  paymentId: string;
+  paymentIds: string[];
 }) {
   const baseUrl = env.NEXT_PUBLIC_BASE_URL;
-  const activationLink = `${baseUrl}/day-pass/activate?id=${paymentId}`;
+  const activationLinks = paymentIds.map(
+    (id) => `${baseUrl}/day-pass/activate?id=${id}`
+  );
 
   const { subject, text } = getDayPassActivationEmail({
     customerName,
     passType,
     passDescription,
-    activationLink,
+    activationLinks,
   });
 
   try {
