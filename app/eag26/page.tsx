@@ -36,55 +36,71 @@ export default function EAG26DayPassPage() {
       <section>
         <h2>get a day pass</h2>
 
-        <p>full day access to Mox (9 AM &ndash; 11 PM).</p>
+        <div
+          style={{
+            border: '2px solid var(--border-dark)',
+            padding: '20px',
+            background: 'var(--bg-secondary)',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
+            full day access (9 AM &ndash; 11 PM)
+          </div>
 
-        <div style={{ margin: '20px 0' }}>
-          <label>quantity:</label>
+          <div
+            style={{
+              fontSize: '3em',
+              fontWeight: 'bold',
+              margin: '10px 0',
+            }}
+          >
+            ${PRICE_PER_PASS}
+            <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
+          </div>
+
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              marginTop: '8px',
+              justifyContent: 'center',
+              gap: '15px',
+              margin: '20px 0',
             }}
           >
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              style={{ width: '40px' }}
+              style={{ width: '44px', height: '44px', fontSize: '1.2em' }}
             >
-              -
+              &minus;
             </button>
-            <span style={{ fontSize: '1.2em', fontWeight: 'bold', width: '30px', textAlign: 'center' }}>
+            <span style={{ fontSize: '1.5em', fontWeight: 'bold', minWidth: '40px' }}>
               {quantity}
             </span>
             <button
               onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-              style={{ width: '40px' }}
+              style={{ width: '44px', height: '44px', fontSize: '1.2em' }}
             >
               +
             </button>
           </div>
-        </div>
 
-        <div style={{ margin: '20px 0' }}>
-          <div className="pin-display">
-            ${total}
-            {quantity > 1 && (
-              <span style={{ fontSize: '0.5em', fontWeight: 'normal', marginLeft: '10px' }}>
-                ({quantity} &times; ${PRICE_PER_PASS})
-              </span>
-            )}
-          </div>
-        </div>
+          {quantity > 1 && (
+            <div style={{ marginBottom: '15px', color: 'var(--text-secondary)' }}>
+              {quantity} passes &times; ${PRICE_PER_PASS} = <strong>${total}</strong>
+            </div>
+          )}
 
-        <a
-          href={buyUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn primary"
-        >
-          buy {quantity > 1 ? `${quantity} passes` : 'day pass'}
-        </a>
+          <a
+            href={buyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn primary"
+            style={{ padding: '12px 24px', fontSize: '1.1em' }}
+          >
+            buy {quantity > 1 ? `${quantity} passes` : 'day pass'} {quantity > 1 ? `— $${total}` : ''}
+          </a>
+        </div>
 
         <p className="muted" style={{ marginTop: '15px' }}>
           after purchase, you'll receive an email with activation link(s). click
