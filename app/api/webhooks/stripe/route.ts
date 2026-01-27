@@ -161,16 +161,16 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
   const lineItem = lineItems.data[0];
   const product = lineItem.price?.product as Stripe.Product;
 
-  if (!product || !DAY_PASS_PRODUCTS[product.id]) {
-    console.log('[Stripe Webhook] Not a day pass product:', product?.id);
+  // Check if it's a known day pass product ID
+  const passInfo = product ? DAY_PASS_PRODUCTS[product.id] : null;
+
+  if (!passInfo) {
+    console.log('[Stripe Webhook] Not a day pass product:', product?.id, product?.name);
     return;
   }
-
-  const passInfo = DAY_PASS_PRODUCTS[product.id];
   const customerEmail = session.customer_details?.email;
   const customerName = session.customer_details?.name || 'Guest';
-  const basePaymentId = session.id;
-  const quantity = lineItem.quantity || 1;
+  const sessionId = session.id;
 
   if (!customerEmail) {
     console.error('[Stripe Webhook] No customer email found');
@@ -178,45 +178,44 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
   }
 
   console.log(
-    `[Stripe Webhook] Processing ${quantity}x ${passInfo.type} purchase for ${customerEmail}`
+    `[Stripe Webhook] Processing ${passInfo.type} purchase for ${customerEmail}`
   );
 
-  // Create Airtable records for each pass
-  const paymentIds: string[] = [];
-  for (let i = 0; i < quantity; i++) {
-    // For single passes, use the base ID; for multiple, append index
-    const paymentId = quantity === 1 ? basePaymentId : `${basePaymentId}-${i + 1}`;
+  // Check if we've already processed this session to avoid duplicates
+  const existingRecord = await findRecord(
+    Tables.DayPasses,
+    `{Name}="${escapeAirtableString(sessionId)}"`
+  );
 
-    const airtableRecord = await createAirtableRecord({
-      paymentId,
-      customerName,
-      customerEmail,
-      passType: passInfo.type,
-    });
-
-    if (airtableRecord) {
-      paymentIds.push(paymentId);
-    } else {
-      console.error(`[Stripe Webhook] Failed to create Airtable record for pass ${i + 1}`);
-    }
-  }
-
-  if (paymentIds.length === 0) {
-    console.error('[Stripe Webhook] Failed to create any Airtable records');
+  if (existingRecord) {
+    console.log('[Stripe Webhook] Session already processed, skipping');
     return;
   }
 
-  // Send activation email with all pass links
+  // Create Airtable record
+  const airtableRecord = await createAirtableRecord({
+    paymentId: sessionId,
+    customerName,
+    customerEmail,
+    passType: passInfo.type,
+  });
+
+  if (!airtableRecord) {
+    console.error('[Stripe Webhook] Failed to create Airtable record');
+    return;
+  }
+
+  // Send activation email
   await sendActivationEmail({
     customerEmail,
     customerName,
     passType: passInfo.type,
     passDescription: passInfo.description,
-    paymentIds,
+    paymentIds: [sessionId],
   });
 
   console.log(
-    `[Stripe Webhook] Successfully processed ${paymentIds.length}x ${passInfo.type} for ${customerEmail}`
+    `[Stripe Webhook] Successfully processed ${passInfo.type} for ${customerEmail}`
   );
 }
 
@@ -270,7 +269,7 @@ async function createAirtableRecord({
     const personId = await findOrCreatePerson({ customerName, customerEmail });
 
     const fields: Record<string, unknown> = {
-      Name: paymentId.slice(-6),
+      Name: paymentId,
       'Pass Type': passType,
       Status: 'Unused',
     };
@@ -303,15 +302,13 @@ async function sendActivationEmail({
   paymentIds: string[];
 }) {
   const baseUrl = env.NEXT_PUBLIC_BASE_URL;
-  const activationLinks = paymentIds.map(
-    (id) => `${baseUrl}/day-pass/activate?id=${id}`
-  );
+  const activationLink = `${baseUrl}/day-pass/activate?id=${paymentIds[0]}`;
 
   const { subject, text } = getDayPassActivationEmail({
     customerName,
     passType,
     passDescription,
-    activationLinks,
+    activationLink,
   });
 
   try {

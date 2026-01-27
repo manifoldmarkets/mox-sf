@@ -1,16 +1,19 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
-
-const STRIPE_LINK = 'https://buy.stripe.com/6oU14p2QU4k9cZNdOSbbG08'
-const PRICE_PER_PASS = 25
+import { useSearchParams } from 'next/navigation'
 
 export default function EAG26DayPassPage() {
-  const [quantity, setQuantity] = useState(1)
+  const searchParams = useSearchParams()
+  const code = searchParams.get('code')
+  const isFreePass = code === 'table'
 
-  const total = quantity * PRICE_PER_PASS
-  const buyUrl = `${STRIPE_LINK}?quantity=${quantity}`
+  const handleCheckout = () => {
+    const url = isFreePass
+      ? 'https://buy.stripe.com/6oU14p2QU4k9cZNdOSbbG08?prefilled_promo_code=TABLE'
+      : 'https://buy.stripe.com/6oU14p2QU4k9cZNdOSbbG08'
+    window.location.href = url
+  }
 
   return (
     <>
@@ -50,9 +53,7 @@ export default function EAG26DayPassPage() {
             textAlign: 'center',
           }}
         >
-          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
-            full day access (9 AM &ndash; 11 PM)
-          </div>
+
 
           <div
             style={{
@@ -61,55 +62,25 @@ export default function EAG26DayPassPage() {
               margin: '10px 0',
             }}
           >
-            ${PRICE_PER_PASS}
-            <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
+            {isFreePass ? 'FREE' : '$25'}
+            {!isFreePass && (
+              <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
+            )}
           </div>
-
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '15px',
-              margin: '20px 0',
-            }}
-          >
-            <button
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              style={{ width: '44px', height: '44px', fontSize: '1.2em' }}
-            >
-              &minus;
-            </button>
-            <span style={{ fontSize: '1.5em', fontWeight: 'bold', minWidth: '40px' }}>
-              {quantity}
-            </span>
-            <button
-              onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-              style={{ width: '44px', height: '44px', fontSize: '1.2em' }}
-            >
-              +
-            </button>
+          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
+            full day access (9 AM &ndash; 11 PM)
           </div>
-
-          {quantity > 1 && (
-            <div style={{ marginBottom: '15px', color: 'var(--text-secondary)' }}>
-              {quantity} passes &times; ${PRICE_PER_PASS} = <strong>${total}</strong>
-            </div>
-          )}
-
-          <a
-            href={buyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={handleCheckout}
             className="btn primary"
-            style={{ padding: '12px 24px', fontSize: '1.1em' }}
+            style={{ padding: '12px 24px', fontSize: '1.1em', marginTop: '20px' }}
           >
-            buy {quantity > 1 ? `${quantity} passes` : 'day pass'}
-          </a>
+            {isFreePass ? 'get free pass' : 'buy day pass'}
+          </button>
         </div>
 
         <p className="muted" style={{ marginTop: '15px' }}>
-          after purchase, you'll receive an email with activation link(s). click
+          after purchase, you'll receive an email with an activation link. click
           the link on the day of your visit to get your door code.
         </p>
       </section>

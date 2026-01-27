@@ -1,127 +1,189 @@
-function Link({
-  href,
-  children,
-  className,
-}: {
-  href: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2 ${className}`}
-    >
-      {children}
-    </a>
-  )
-}
+'use client'
+
+import Link from 'next/link'
 
 export default function DayPassPage() {
+  const handleDayCheckout = () => {
+    window.location.href = 'https://buy.stripe.com/00weVf3UY3g5f7V7qubbG02'
+  }
+
+  const handleHappyHourCheckout = () => {
+    window.location.href = 'https://buy.stripe.com/dRm9AV636cQF8Jx26abbG03'
+  }
+
+  const handleWeekCheckout = () => {
+    window.location.href = 'https://buy.stripe.com/5kQ7sNezC5od8JxcKObbG01'
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800">
-      <div className="max-w-2xl mx-auto pt-12 pb-8 px-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold mb-2 font-display text-amber-900">
-            Mox Day Passes
-          </h1>
-          <p className="text-gray-600">Drop in for a day, evening, or week.</p>
-        </div>
+    <>
+      <Link href="/" className="back-link">
+        &larr; back to home
+      </Link>
 
-        {/* Free guest option - emphasized */}
-        <div className="bg-amber-50 border border-amber-200 p-4 mb-6 text-center">
-          <p className="text-amber-900 font-medium">
-            Know a member? You can visit for free as their guest.
-          </p>
-          <p className="text-sm text-amber-700 mt-1">
-            Already have access?{' '}
-            <a
-              href="https://donate.stripe.com/7sY7sN1MQdUJ8Jx126bbG07"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-amber-900"
-            >
-              Make a donation
-            </a>
-          </p>
-        </div>
+      <h1>day passes</h1>
 
-        {/* Pass options */}
-        <div className="grid grid-cols-3 gap-3 mb-8">
-          <a
-            href="https://buy.stripe.com/00weVf3UY3g5f7V7qubbG02"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white p-4 border-2 border-slate-200 hover:border-amber-400 hover:shadow-md transition-all text-center group"
-          >
-            <div className="text-lg font-bold text-amber-900 mb-1">Day</div>
-            <div className="text-2xl font-bold text-gray-800">$70</div>
-            <div className="text-xs text-gray-500 mt-1 mb-2">Full day</div>
-            <div className="text-xs font-semibold text-amber-800 bg-amber-100 py-1 px-2 group-hover:bg-amber-200 transition-all">
-              Buy →
-            </div>
-          </a>
+      <p>drop in for a day, evening, or week.</p>
 
-          <a
-            href="https://buy.stripe.com/dRm9AV636cQF8Jx26abbG03"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white p-4 border-2 border-slate-200 hover:border-amber-400 hover:shadow-md transition-all text-center group"
-          >
-            <div className="text-lg font-bold text-amber-900 mb-1">
-              Happy Hour
-            </div>
-            <div className="text-2xl font-bold text-gray-800">$40</div>
-            <div className="text-xs text-gray-500 mt-1 mb-2">After 4pm</div>
-            <div className="text-xs font-semibold text-amber-800 bg-amber-100 py-1 px-2 group-hover:bg-amber-200 transition-all">
-              Buy →
-            </div>
-          </a>
-
-          <a
-            href="https://buy.stripe.com/5kQ7sNezC5od8JxcKObbG01"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white p-4 border-2 border-slate-200 hover:border-amber-400 hover:shadow-md transition-all text-center group"
-          >
-            <div className="text-lg font-bold text-amber-900 mb-1">Week</div>
-            <div className="text-2xl font-bold text-gray-800">$250</div>
-            <div className="text-xs text-gray-500 mt-1 mb-2">7 days</div>
-            <div className="text-xs font-semibold text-amber-800 bg-amber-100 py-1 px-2 group-hover:bg-amber-200 transition-all">
-              Buy →
-            </div>
-          </a>
-        </div>
-
-        {/* Location */}
-        <div className="bg-white border border-slate-200 p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <span className="text-xl">📍</span>
-            <div>
-              <div className="font-semibold text-gray-800">
-                1680 Mission St, San Francisco
-              </div>
-              <div className="text-sm text-gray-500">Between 12th & 13th St</div>
-            </div>
-          </div>
-        </div>
-
-        {/* What you get */}
-        <div className="text-center text-sm text-gray-600 mb-8">
-          <span className="font-medium">Includes:</span> Monitors • Fast wifi •
-          Coffee & snacks • Meeting rooms • Member events
-        </div>
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-400 pt-4 border-t border-gray-200">
-          <Link href="/">← moxsf.com</Link>
-          {' · '}
-          <Link href="mailto:team@moxsf.com">team@moxsf.com</Link>
-        </div>
+      <div className="alert info">
+        know a member? you can visit for free as their guest.
       </div>
-    </div>
+
+      <hr />
+
+      <section>
+        <h2>day pass</h2>
+
+        <div
+          style={{
+            border: '2px solid var(--border-dark)',
+            padding: '20px',
+            background: 'var(--bg-secondary)',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
+            full day access (9 AM &ndash; 11 PM)
+          </div>
+
+          <div
+            style={{
+              fontSize: '3em',
+              fontWeight: 'bold',
+              margin: '10px 0',
+            }}
+          >
+            $70
+            <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
+          </div>
+
+          <button
+            onClick={handleDayCheckout}
+            className="btn primary"
+            style={{ padding: '12px 24px', fontSize: '1.1em', marginTop: '20px' }}
+          >
+            buy day pass
+          </button>
+        </div>
+
+        <p className="muted" style={{ marginTop: '15px' }}>
+          after purchase, you'll receive an email with an activation link.
+        </p>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>happy hour pass</h2>
+
+        <div
+          style={{
+            border: '2px solid var(--border-dark)',
+            padding: '20px',
+            background: 'var(--bg-secondary)',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
+            evening access (after 4 PM)
+          </div>
+
+          <div
+            style={{
+              fontSize: '3em',
+              fontWeight: 'bold',
+              margin: '10px 0',
+            }}
+          >
+            $40
+            <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
+          </div>
+
+          <button
+            onClick={handleHappyHourCheckout}
+            className="btn primary"
+            style={{ padding: '12px 24px', fontSize: '1.1em', marginTop: '20px' }}
+          >
+            buy happy hour pass
+          </button>
+        </div>
+
+        <p className="muted" style={{ marginTop: '15px' }}>
+          after purchase, you'll receive an email with an activation link.
+        </p>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>week pass</h2>
+
+        <div
+          style={{
+            border: '2px solid var(--border-dark)',
+            padding: '20px',
+            background: 'var(--bg-secondary)',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
+            7 days of access
+          </div>
+
+          <div
+            style={{
+              fontSize: '3em',
+              fontWeight: 'bold',
+              margin: '10px 0',
+            }}
+          >
+            $250
+            <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
+          </div>
+
+          <button
+            onClick={handleWeekCheckout}
+            className="btn primary"
+            style={{ padding: '12px 24px', fontSize: '1.1em', marginTop: '20px' }}
+          >
+            buy week pass
+          </button>
+        </div>
+
+        <p className="muted" style={{ marginTop: '15px' }}>
+          after purchase, you'll receive an email with an activation link.
+        </p>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>location</h2>
+        <p>
+          <strong>1680 Mission St, San Francisco</strong>
+          <br />
+          <span className="muted">between 12th & 13th St</span>
+        </p>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>what's included</h2>
+        <ul>
+          <li>monitors & fast wifi</li>
+          <li>coffee, tea & snacks</li>
+          <li>meeting rooms</li>
+          <li>member events</li>
+        </ul>
+      </section>
+
+      <hr />
+
+      <p className="muted">
+        questions? email us at{' '}
+        <a href="mailto:team@moxsf.com">team@moxsf.com</a>
+      </p>
+    </>
   )
 }
