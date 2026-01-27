@@ -21,14 +21,13 @@ export default function EAG26DayPassPage() {
       <h1>EAG day pass</h1>
 
       <p>
-        special rate for EAG 2026 attendees. drop by Mox during your time in SF!
+        special rate for EAG 2026 attendees, Feb 9 &mdash; Feb 20.
       </p>
 
       <div className="alert info">
-        <strong>Feb 9 &mdash; Feb 20</strong>
-        <br />
         Mox is a semipublic coworking space hosting AI safety organizations and
-        fellowships, and a host to many EAG SF satellite events.
+        fellowships, and a host to many EAG SF satellite events. drop by during
+        your time in SF!
       </div>
 
       <hr />
