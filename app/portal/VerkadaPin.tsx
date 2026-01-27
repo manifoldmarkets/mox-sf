@@ -18,6 +18,7 @@ export default function VerkadaPin({
   const [regenerating, setRegenerating] = useState<boolean>(false)
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [guestPin, setGuestPin] = useState<string | null>(null)
+  const [showAppInfo, setShowAppInfo] = useState<boolean>(false)
 
   const isGuestProgram = tier === 'Program' || tier === 'Guest Program'
 
@@ -137,67 +138,75 @@ export default function VerkadaPin({
       <h3>door code</h3>
 
       <p>
-        your personal PIN code (weekly code is in the Discord). this is for guests or deliveries.
+        your personal PIN code (weekly code is in the Discord). this is for guests or deliveries,{' '}
+        <span
+          onClick={() => setShowAppInfo(!showAppInfo)}
+          style={{
+            textDecoration: 'underline',
+            textDecorationStyle: 'dotted',
+            cursor: 'pointer',
+          }}
+        >
+          or use the app
+        </span>
+        .
       </p>
 
-      <div className="pin-display">{pin}#</div>
-
-      <div style={{ marginTop: '15px' }}>
-        {!showConfirm ? (
-          <button
-            onClick={() => setShowConfirm(true)}
-            disabled={regenerating || isViewingAs}
-          >
-            {regenerating ? 'generating...' : 'regenerate PIN'}
-          </button>
-        ) : (
-          <div className="alert warning">
-            <p>
-              <strong>regenerate PIN?</strong> your current PIN ({pin}#) will
-              stop working immediately.
-            </p>
-            <div style={{ marginTop: '10px' }}>
-              <button onClick={handleRegenerate} className="danger">
-                yes, regenerate
-              </button>{' '}
-              <button onClick={() => setShowConfirm(false)}>cancel</button>
-            </div>
-          </div>
-        )}
-
-        {isViewingAs && (
-          <p className="muted" style={{ marginTop: '10px' }}>
-            to change this user's PIN, use the verkada admin portal
+      {showAppInfo && (
+        <div style={{ marginBottom: '10px', padding: '10px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
+          <p style={{ marginBottom: '10px' }}>
+            install the Verkada Pass app to unlock via Bluetooth. sign in with the same email you use for this portal.
           </p>
-        )}
-      </div>
-
-      {/* Verkada Pass App */}
-      <div style={{ marginTop: '25px', paddingTop: '15px', borderTop: '1px solid var(--border-color)' }}>
-        <h4 style={{ marginBottom: '10px', fontWeight: 'bold' }}>verkada pass app</h4>
-        <p>
-          install the Verkada Pass app to unlock the door via Bluetooth — no code needed.
-          sign in with the same email you use for this portal.
-        </p>
-        <div style={{ marginTop: '10px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          <a
-            href="https://apps.apple.com/app/verkada-pass/id1462898419"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn"
-          >
-            App Store (iPhone)
-          </a>
-          <a
-            href="https://play.google.com/store/apps/details?id=com.verkada.pass"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn"
-          >
-            Google Play (Android)
-          </a>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <a
+              href="https://apps.apple.com/app/verkada-pass/id1477261074"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn small"
+            >
+              App Store
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.verkada.VerkadaPass"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn small"
+            >
+              Google Play
+            </a>
+          </div>
         </div>
-      </div>
+      )}
+
+      <div className="pin-display">{pin}#</div>
+      <br />
+      {!showConfirm ? (
+        <button
+          onClick={() => setShowConfirm(true)}
+          disabled={regenerating || isViewingAs}
+        >
+          {regenerating ? 'generating...' : 'regenerate PIN'}
+        </button>
+      ) : (
+        <div className="alert warning">
+          <p>
+            <strong>confirm regenerate PIN?</strong> this is mainly for if you gave it to
+            someone you shouldn't have.
+          </p>
+          <div style={{ marginTop: '10px' }}>
+            <button onClick={handleRegenerate} className="danger">
+              yes, regenerate
+            </button>{' '}
+            <button onClick={() => setShowConfirm(false)}>cancel</button>
+          </div>
+        </div>
+      )}
+
+      {isViewingAs && (
+        <p className="muted" style={{ marginTop: '10px' }}>
+          to change this user's PIN, use the verkada admin portal
+        </p>
+      )}
     </>
   )
 }
