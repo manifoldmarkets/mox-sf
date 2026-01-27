@@ -47,11 +47,15 @@ export default function EAG26DayPassPage() {
 
         {/* EAG info */}
         <div className="bg-amber-50 border border-amber-200 p-4 mb-6 text-center">
-          <p className="text-amber-900 font-medium">
-            Welcome, EAG attendees!
+          <p className="text-sm font-semibold text-amber-800 mb-1">
+            Feb 9 — Feb 20
           </p>
-          <p className="text-sm text-amber-700 mt-1">
-            Drop by Mox during your time in SF.
+          <p className="text-amber-900 font-medium">
+            Come co-work at Mox!
+          </p>
+          <p className="text-sm text-amber-700 mt-2">
+            Mox is a semipublic coworking space hosting AI safety organizations
+            and fellowships, and a host to many EAG SF satellite events.
           </p>
         </div>
 
