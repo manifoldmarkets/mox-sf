@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function EAG26DayPassPage() {
+function EAG26DayPassContent() {
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
   const isFreePass = code === 'table'
@@ -138,5 +139,13 @@ export default function EAG26DayPassPage() {
         <a href="mailto:team@moxsf.com">team@moxsf.com</a>
       </p>
     </>
+  )
+}
+
+export default function EAG26DayPassPage() {
+  return (
+    <Suspense fallback={null}>
+      <EAG26DayPassContent />
+    </Suspense>
   )
 }
