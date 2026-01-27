@@ -14,7 +14,6 @@ export function getDayPassActivationEmail({
 }) {
   const subject = `Your Mox ${passType} is Ready!`;
 
-  // Plain text version - this is what gets sent
   const text = `
 Hi ${customerName},
 
@@ -22,7 +21,7 @@ Thanks for getting a ${passType}!
 
 ${passDescription}
 
-On the day you're planning to visit, click here to get your door code:
+On the day you're planning to visit, click this link to get your door code:
 ${activationLink}
 
 ADDRESS

@@ -134,7 +134,7 @@ async function handleMemberDayPass(session: Stripe.Checkout.Session) {
 
   try {
     await createRecord(Tables.DayPasses, {
-      Name: session.id,
+      Name: session.id.slice(-6),
       Username: userName,
       Status: 'Unused',
       'Stripe link (from User)': `Member day pass - $25 - ${userEmail}`,
@@ -161,15 +161,16 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
   const lineItem = lineItems.data[0];
   const product = lineItem.price?.product as Stripe.Product;
 
-  if (!product || !DAY_PASS_PRODUCTS[product.id]) {
-    console.log('[Stripe Webhook] Not a day pass product:', product?.id);
+  // Check if it's a known day pass product ID
+  const passInfo = product ? DAY_PASS_PRODUCTS[product.id] : null;
+
+  if (!passInfo) {
+    console.log('[Stripe Webhook] Not a day pass product:', product?.id, product?.name);
     return;
   }
-
-  const passInfo = DAY_PASS_PRODUCTS[product.id];
   const customerEmail = session.customer_details?.email;
   const customerName = session.customer_details?.name || 'Guest';
-  const paymentId = session.id;
+  const sessionId = session.id;
 
   if (!customerEmail) {
     console.error('[Stripe Webhook] No customer email found');
@@ -180,9 +181,20 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
     `[Stripe Webhook] Processing ${passInfo.type} purchase for ${customerEmail}`
   );
 
+  // Check if we've already processed this session to avoid duplicates
+  const existingRecord = await findRecord(
+    Tables.DayPasses,
+    `{Name}="${escapeAirtableString(sessionId)}"`
+  );
+
+  if (existingRecord) {
+    console.log('[Stripe Webhook] Session already processed, skipping');
+    return;
+  }
+
   // Create Airtable record
   const airtableRecord = await createAirtableRecord({
-    paymentId,
+    paymentId: sessionId,
     customerName,
     customerEmail,
     passType: passInfo.type,
@@ -199,7 +211,7 @@ async function handleGuestDayPass(session: Stripe.Checkout.Session) {
     customerName,
     passType: passInfo.type,
     passDescription: passInfo.description,
-    paymentId,
+    paymentIds: [sessionId],
   });
 
   console.log(
@@ -281,16 +293,16 @@ async function sendActivationEmail({
   customerName,
   passType,
   passDescription,
-  paymentId,
+  paymentIds,
 }: {
   customerEmail: string;
   customerName: string;
   passType: string;
   passDescription: string;
-  paymentId: string;
+  paymentIds: string[];
 }) {
   const baseUrl = env.NEXT_PUBLIC_BASE_URL;
-  const activationLink = `${baseUrl}/day-pass/activate?id=${paymentId}`;
+  const activationLink = `${baseUrl}/day-pass/activate?id=${paymentIds[0]}`;
 
   const { subject, text } = getDayPassActivationEmail({
     customerName,
