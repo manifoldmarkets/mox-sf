@@ -26,8 +26,15 @@ export default function EAG26DayPassPage() {
 
       <div className="alert info">
         Mox is a semipublic coworking space hosting AI safety organizations and
-        fellowships, and a host to many EAG SF satellite events. drop by during
-        your time in SF!
+        fellowships, and a host to{' '}
+        <a
+          href="https://docs.google.com/document/d/14fm12_piAKRTLm4R5o_4DS43eCf84kWKuoerO4Sv3uo/edit?tab=t.0#heading=h.fwd10a41j1u4"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          many EAG SF satellite events
+        </a>
+        . drop by during your time in SF!
       </div>
 
       <hr />
