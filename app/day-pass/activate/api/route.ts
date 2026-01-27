@@ -113,9 +113,6 @@ export async function POST(request: Request) {
     }
 
     const passType = fields['Pass Type'] || 'Day Pass'
-    console.log(
-      `Activated ${passType} for ${fields.Username}, door code: ${doorCode}`
-    )
 
     // Calculate expiration date based on pass type
     // All passes expire at 11pm on the last day
