@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 type ActivationState = 'loading' | 'success' | 'expired' | 'not-found' | 'error'
 
@@ -75,166 +76,122 @@ function ActivatePageContent() {
 
   if (state === 'loading') {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
+      <>
+        <h1>activating pass...</h1>
+        <p className="loading">loading your door code...</p>
+      </>
     )
   }
 
   if (state === 'success') {
     return (
-      <div className="min-h-screen bg-slate-50 text-gray-800">
-        <div className="max-w-md mx-auto pt-8 pb-8 px-6">
-          {/* Door code - the main event */}
-          <div className="bg-amber-50 border-2 border-amber-200 p-6 mb-6 text-center">
-            <div className="text-sm text-amber-700 mb-1">Door Code</div>
-            <div className="text-5xl font-bold text-amber-900 tracking-wider font-mono">
-              {doorCode}#
-            </div>
-          </div>
+      <>
+        <h1>welcome, {userName}!</h1>
 
-          {/* Remote unlock option */}
+        <p className="muted">{passType} activated</p>
+
+        {expiresAt && (
+          <p className="muted">
+            expires 11pm{' '}
+            {new Date(expiresAt + 'T00:00:00').toLocaleDateString('en-US', {
+              weekday: 'long',
+              month: 'short',
+              day: 'numeric',
+            })}
+          </p>
+        )}
+
+        <hr />
+
+        <section>
+          <h2>door code</h2>
+          <div className="pin-display">{doorCode}#</div>
+          <p className="muted">enter this code on the keypad at the front door.</p>
+        </section>
+
+        <section style={{ marginTop: '20px' }}>
           <button
             onClick={handleUnlockDoor}
             disabled={unlocking || unlockSuccess}
-            className={`w-full py-3 font-semibold transition-all mb-6 ${
-              unlockSuccess
-                ? 'bg-green-600 text-white'
-                : unlocking
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-white border border-slate-200 text-gray-700 hover:border-amber-300'
-            }`}
+            className={unlockSuccess ? 'primary' : ''}
+            style={{ width: '100%' }}
           >
             {unlocking
-              ? 'Unlocking...'
+              ? 'unlocking...'
               : unlockSuccess
-                ? '✓ Door Unlocked'
-                : 'Unlock Door Remotely'}
+                ? 'door unlocked!'
+                : 'unlock door remotely'}
           </button>
           {unlockError && (
-            <p className="text-sm text-red-600 text-center -mt-4 mb-4">
-              Couldn't unlock. Try the code on the keypad.
+            <p className="error" style={{ marginTop: '10px' }}>
+              couldn't unlock. try the code on the keypad.
             </p>
           )}
+        </section>
 
-          {/* Confirmation */}
-          <div className="text-center mb-6">
-            <div className="text-lg font-semibold text-gray-800">
-              Welcome, {userName}!
-            </div>
-            <div className="text-sm text-gray-500">{passType} activated</div>
-            {expiresAt && (
-              <div className="text-sm text-gray-500 mt-1">
-                Expires 11pm{' '}
-                {new Date(expiresAt + 'T00:00:00').toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </div>
-            )}
-          </div>
+        <hr />
 
-          {/* Location */}
-          <div className="bg-white border border-slate-200 p-4 mb-6">
-            <div className="flex items-start gap-3">
-              <span className="text-xl">📍</span>
-              <div>
-                <div className="font-semibold text-gray-800">1680 Mission St</div>
-                <div className="text-sm text-gray-500">
-                  Enter code on keypad at front door
-                </div>
-              </div>
-            </div>
-          </div>
+        <section>
+          <h2>location</h2>
+          <p>
+            <strong>1680 Mission St, San Francisco</strong>
+            <br />
+            <span className="muted">between 12th & 13th St</span>
+          </p>
+        </section>
 
-          {/* Footer */}
-          <div className="text-center text-sm text-gray-400">
-            Questions?{' '}
-            <a
-              href="mailto:team@moxsf.com"
-              className="text-amber-800 hover:text-amber-600"
-            >
-              team@moxsf.com
-            </a>
-          </div>
-        </div>
-      </div>
+        <hr />
+
+        <p className="muted">
+          questions? email us at{' '}
+          <a href="mailto:team@moxsf.com">team@moxsf.com</a>
+        </p>
+      </>
     )
   }
 
   if (state === 'expired') {
     return (
-      <div className="min-h-screen bg-slate-50 text-gray-800">
-        <div className="max-w-md mx-auto pt-16 pb-8 px-6 text-center">
-          <div className="text-4xl mb-4">⏰</div>
-          <h1 className="text-2xl font-bold mb-2 text-gray-800">Pass Expired</h1>
-          <p className="text-gray-600 mb-6">
-            This pass has expired. Get a new one to visit.
-          </p>
-          <a
-            href="/eag26"
-            className="inline-block px-6 py-3 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all"
-          >
-            Get an EAG Day Pass
-          </a>
-        </div>
-      </div>
+      <>
+        <h1>pass expired</h1>
+
+        <p>this pass has expired. get a new one to visit.</p>
+
+        <Link href="/eag26" className="btn primary">
+          get an EAG day pass
+        </Link>
+      </>
     )
   }
 
   if (state === 'not-found') {
     return (
-      <div className="min-h-screen bg-slate-50 text-gray-800">
-        <div className="max-w-md mx-auto pt-16 pb-8 px-6 text-center">
-          <div className="text-4xl mb-4">🔍</div>
-          <h1 className="text-2xl font-bold mb-2 text-gray-800">
-            Pass Not Found
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Check your email for the correct link, or get a new pass.
-          </p>
-          <a
-            href="/eag26"
-            className="inline-block px-6 py-3 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all"
-          >
-            Get an EAG Day Pass
-          </a>
-        </div>
-      </div>
+      <>
+        <h1>pass not found</h1>
+
+        <p>check your email for the correct link, or get a new pass.</p>
+
+        <Link href="/eag26" className="btn primary">
+          get an EAG day pass
+        </Link>
+      </>
     )
   }
 
   // Error state
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800">
-      <div className="max-w-md mx-auto pt-16 pb-8 px-6 text-center">
-        <div className="text-4xl mb-4">😕</div>
-        <h1 className="text-2xl font-bold mb-2 text-gray-800">
-          Something Went Wrong
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Try refreshing, or contact us for help.
-        </p>
-        <div className="space-x-3">
-          <button
-            onClick={() => window.location.reload()}
-            className="inline-block px-6 py-3 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-all"
-          >
-            Refresh
-          </button>
-          <a
-            href="mailto:team@moxsf.com"
-            className="inline-block px-6 py-3 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-all"
-          >
-            Contact Us
-          </a>
-        </div>
+    <>
+      <h1>something went wrong</h1>
+
+      <p>try refreshing, or contact us for help.</p>
+
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button onClick={() => window.location.reload()}>refresh</button>
+        <a href="mailto:team@moxsf.com" className="btn primary">
+          contact us
+        </a>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -242,12 +199,10 @@ export default function ActivatePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-800 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
-          </div>
-        </div>
+        <>
+          <h1>activating pass...</h1>
+          <p className="loading">loading...</p>
+        </>
       }
     >
       <ActivatePageContent />

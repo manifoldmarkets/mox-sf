@@ -1,27 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-
-function Link({
-  href,
-  children,
-  className,
-}: {
-  href: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2 ${className}`}
-    >
-      {children}
-    </a>
-  )
-}
+import Link from 'next/link'
 
 const STRIPE_LINK = 'https://buy.stripe.com/EAG_PLACEHOLDER_EAG26'
 const PRICE_PER_PASS = 25
@@ -33,100 +13,137 @@ export default function EAG26DayPassPage() {
   const buyUrl = `${STRIPE_LINK}?quantity=${quantity}`
 
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800">
-      <div className="max-w-2xl mx-auto pt-12 pb-8 px-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold mb-2 font-display text-amber-900">
-            EAG Day Pass
-          </h1>
-          <p className="text-gray-600">
-            Special rate for EAG 2026 attendees.
-          </p>
-        </div>
+    <>
+      <Link href="/" className="back-link">
+        &larr; back to home
+      </Link>
 
-        {/* EAG info */}
-        <div className="bg-amber-50 border border-amber-200 p-4 mb-6 text-center">
-          <p className="text-sm font-semibold text-amber-800 mb-1">
-            Feb 9 — Feb 20
-          </p>
-          <p className="text-amber-900 font-medium">
-            Come co-work at Mox!
-          </p>
-          <p className="text-sm text-amber-700 mt-2">
-            Mox is a semipublic coworking space hosting AI safety organizations
-            and fellowships, and a host to many EAG SF satellite events.
-          </p>
-        </div>
+      <h1>EAG day pass</h1>
 
-        {/* Pass option with quantity selector */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white p-6 border-2 border-slate-200 text-center w-64">
-            <div className="text-lg font-bold text-amber-900 mb-1">Day Pass</div>
-            <div className="text-3xl font-bold text-gray-800">${PRICE_PER_PASS}</div>
-            <div className="text-xs text-gray-500 mt-1 mb-4">Full day access</div>
+      <p>
+        special rate for EAG 2026 attendees. drop by Mox during your time in SF!
+      </p>
 
-            {/* Quantity selector */}
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <button
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="w-8 h-8 flex items-center justify-center border border-slate-300 hover:border-amber-400 hover:bg-amber-50 transition-all text-lg font-bold text-gray-600"
-              >
-                -
-              </button>
-              <span className="text-xl font-bold w-8 text-center">{quantity}</span>
-              <button
-                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                className="w-8 h-8 flex items-center justify-center border border-slate-300 hover:border-amber-400 hover:bg-amber-50 transition-all text-lg font-bold text-gray-600"
-              >
-                +
-              </button>
-            </div>
-
-            {/* Total */}
-            {quantity > 1 && (
-              <div className="text-sm text-gray-600 mb-3">
-                {quantity} passes = <span className="font-semibold">${total}</span>
-              </div>
-            )}
-
-            <a
-              href={buyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-sm font-semibold text-amber-800 bg-amber-100 py-2 px-3 hover:bg-amber-200 transition-all"
-            >
-              Buy {quantity > 1 ? `${quantity} Passes` : 'Now'}
-            </a>
-          </div>
-        </div>
-
-        {/* Location */}
-        <div className="bg-white border border-slate-200 p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <span className="text-xl">📍</span>
-            <div>
-              <div className="font-semibold text-gray-800">
-                1680 Mission St, San Francisco
-              </div>
-              <div className="text-sm text-gray-500">Between 12th & 13th St</div>
-            </div>
-          </div>
-        </div>
-
-        {/* What you get */}
-        <div className="text-center text-sm text-gray-600 mb-8">
-          <span className="font-medium">Includes:</span> Monitors • Fast wifi •
-          Coffee & snacks • Meeting rooms • Member events
-        </div>
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-400 pt-4 border-t border-gray-200">
-          <Link href="/">← moxsf.com</Link>
-          {' · '}
-          <Link href="mailto:team@moxsf.com">team@moxsf.com</Link>
-        </div>
+      <div className="alert info">
+        <strong>Feb 9 &mdash; Feb 20</strong>
+        <br />
+        Mox is a semipublic coworking space hosting AI safety organizations and
+        fellowships, and a host to many EAG SF satellite events.
       </div>
-    </div>
+
+      <hr />
+
+      <section>
+        <h2>get a day pass</h2>
+
+        <p>full day access to Mox (9 AM &ndash; 11 PM).</p>
+
+        <div style={{ margin: '20px 0' }}>
+          <label>quantity:</label>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginTop: '8px',
+            }}
+          >
+            <button
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              style={{ width: '40px' }}
+            >
+              -
+            </button>
+            <span style={{ fontSize: '1.2em', fontWeight: 'bold', width: '30px', textAlign: 'center' }}>
+              {quantity}
+            </span>
+            <button
+              onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+              style={{ width: '40px' }}
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <div style={{ margin: '20px 0' }}>
+          <div className="pin-display">
+            ${total}
+            {quantity > 1 && (
+              <span style={{ fontSize: '0.5em', fontWeight: 'normal', marginLeft: '10px' }}>
+                ({quantity} &times; ${PRICE_PER_PASS})
+              </span>
+            )}
+          </div>
+        </div>
+
+        <a
+          href={buyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn primary"
+        >
+          buy {quantity > 1 ? `${quantity} passes` : 'day pass'}
+        </a>
+
+        <p className="muted" style={{ marginTop: '15px' }}>
+          after purchase, you'll receive an email with activation link(s). click
+          the link on the day of your visit to get your door code.
+        </p>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>location</h2>
+        <p>
+          <strong>1680 Mission St, San Francisco</strong>
+          <br />
+          <span className="muted">between 12th & 13th St</span>
+        </p>
+        <p className="muted">
+          enter the door code on the keypad at the front door.
+        </p>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>what's included</h2>
+        <ul>
+          <li>monitors & fast wifi</li>
+          <li>coffee, tea & snacks</li>
+          <li>meeting rooms</li>
+          <li>member events</li>
+        </ul>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>more about Mox</h2>
+        <p>
+          <Link href="/people">&rarr; see who's at Mox</Link>
+        </p>
+        <p>
+          <Link href="/events">&rarr; upcoming events</Link>
+        </p>
+        <p>
+          <Link href="https://lu.ma/mox" target="_blank" rel="noopener noreferrer">
+            &rarr; EAG satellite events at Mox (lu.ma)
+          </Link>
+        </p>
+        <p>
+          <Link href="/membership">&rarr; membership info</Link>
+        </p>
+      </section>
+
+      <hr />
+
+      <p className="muted">
+        questions? email us at{' '}
+        <a href="mailto:team@moxsf.com">team@moxsf.com</a>
+      </p>
+    </>
   )
 }
