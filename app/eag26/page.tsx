@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-const STRIPE_LINK = 'https://buy.stripe.com/EAG_PLACEHOLDER_EAG26'
+const STRIPE_LINK = 'https://buy.stripe.com/6oU14p2QU4k9cZNdOSbbG08'
 const PRICE_PER_PASS = 25
 
 export default function EAG26DayPassPage() {
@@ -98,7 +98,7 @@ export default function EAG26DayPassPage() {
             className="btn primary"
             style={{ padding: '12px 24px', fontSize: '1.1em' }}
           >
-            buy {quantity > 1 ? `${quantity} passes` : 'day pass'} {quantity > 1 ? `— $${total}` : ''}
+            buy {quantity > 1 ? `${quantity} passes` : 'day pass'}
           </a>
         </div>
 
