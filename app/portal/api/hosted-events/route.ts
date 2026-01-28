@@ -13,6 +13,7 @@ interface EventFields {
   URL?: string
   'Host Name'?: string
   'Hosted by'?: string[]
+  'Recurring Series'?: string
 }
 
 function transformEvent(record: { id: string; fields: EventFields }) {
@@ -33,6 +34,7 @@ function transformEvent(record: { id: string; fields: EventFields }) {
     status: record.fields.Status || undefined,
     url: record.fields.URL || undefined,
     host: hostName || '',
+    recurringSeries: record.fields['Recurring Series'] || undefined,
   }
 }
 
