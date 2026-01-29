@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 interface Room {
   id: string
@@ -117,10 +117,27 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
     loadDayBookings()
   }, [selectedDate, rooms])
 
-  // Set default date to today
+  // Set default date to today and prefill times to nearest hour
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0]
+    const now = new Date()
+    const today = now.toISOString().split('T')[0]
     setSelectedDate(today)
+
+    // Round up to next hour for start time
+    const currentHour = now.getHours()
+    const nextHour = currentHour + 1
+    if (nextHour >= 8 && nextHour < 22) {
+      const startSlot = `${nextHour.toString().padStart(2, '0')}:00`
+      setStartTime(startSlot)
+      if (nextHour < 21) {
+        setEndTime(`${(nextHour + 1).toString().padStart(2, '0')}:00`)
+      }
+    } else if (nextHour < 8) {
+      // Before 8am, default to 8am
+      setStartTime('08:00')
+      setEndTime('09:00')
+    }
+    // If after 9pm, leave times empty (too late to book today)
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -239,6 +256,18 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
         <h2>new booking</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
+            <label htmlFor="date">date *</label>
+            <input
+              type="date"
+              id="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              required
+            />
+          </div>
+
+          <div className="form-group">
             <label htmlFor="room">room *</label>
             <select
               id="room"
@@ -255,18 +284,6 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
                 </option>
               ))}
             </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="date">date *</label>
-            <input
-              type="date"
-              id="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              required
-            />
           </div>
 
           <div className="form-group">
@@ -342,7 +359,7 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
 
       </section>
 
-      {/* Day Calendar View - All Rooms */}
+      {/* Day Calendar View - Rooms as rows, times as columns, grouped by floor */}
       {selectedDate && rooms.length > 0 && (
         <section style={{ marginTop: '20px' }}>
           <h2>
@@ -356,83 +373,115 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
             <table style={{ fontSize: '0.85em', borderCollapse: 'collapse', width: '100%' }}>
               <thead>
                 <tr>
-                  <th style={{ padding: '4px 8px', textAlign: 'left', minWidth: '60px' }}></th>
-                  {rooms.map((room) => (
+                  <th style={{ padding: '4px 8px', textAlign: 'left', minWidth: '120px' }}>room</th>
+                  {TIME_SLOTS.slice(0, -1).map((slot) => (
                     <th
-                      key={room.id}
+                      key={slot}
                       style={{
-                        padding: '4px 8px',
+                        padding: '4px 4px',
                         textAlign: 'center',
-                        minWidth: '80px',
-                        fontWeight: selectedRoom === room.id ? 'bold' : 'normal',
-                        background: selectedRoom === room.id ? 'var(--bg-secondary)' : 'transparent',
+                        minWidth: '40px',
+                        fontSize: '0.8em',
+                        fontWeight: (startTime && slot >= startTime && endTime && slot < endTime) ? 'bold' : 'normal',
                       }}
                     >
-                      {room.name}
+                      {formatTimeSlot(slot).replace(':00 ', '')}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {TIME_SLOTS.slice(0, -1).map((slot) => (
-                  <tr key={slot}>
-                    <td style={{ padding: '2px 8px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                      {formatTimeSlot(slot)}
-                    </td>
-                    {rooms.map((room) => {
-                      const booking = getSlotBooking(room.id, slot)
-                      const isBooked = !!booking
-                      const isSelected =
-                        selectedRoom === room.id &&
-                        startTime &&
-                        endTime &&
-                        slot >= startTime &&
-                        slot < endTime
+                {/* Group rooms by floor */}
+                {Array.from(new Set(rooms.map(r => r.floor || 'Other')))
+                  .sort()
+                  .map((floor) => {
+                    const floorRooms = rooms.filter(r => (r.floor || 'Other') === floor)
+                    return (
+                      <React.Fragment key={floor}>
+                        <tr>
+                          <td
+                            colSpan={TIME_SLOTS.length}
+                            style={{
+                              padding: '8px 8px 4px',
+                              fontWeight: 'bold',
+                              color: 'var(--text-muted)',
+                              fontSize: '0.9em',
+                              borderBottom: '1px solid var(--border-color)',
+                            }}
+                          >
+                            Floor {floor}
+                          </td>
+                        </tr>
+                        {floorRooms.map((room) => (
+                          <tr key={room.id}>
+                            <td
+                              style={{
+                                padding: '2px 8px',
+                                whiteSpace: 'nowrap',
+                                fontWeight: selectedRoom === room.id ? 'bold' : 'normal',
+                                background: selectedRoom === room.id ? 'var(--bg-secondary)' : 'transparent',
+                              }}
+                            >
+                              {room.name}
+                              {room.size && <span className="muted"> ({room.size})</span>}
+                            </td>
+                            {TIME_SLOTS.slice(0, -1).map((slot) => {
+                              const booking = getSlotBooking(room.id, slot)
+                              const isBooked = !!booking
+                              const isSelected =
+                                selectedRoom === room.id &&
+                                startTime &&
+                                endTime &&
+                                slot >= startTime &&
+                                slot < endTime
 
-                      return (
-                        <td
-                          key={room.id}
-                          style={{
-                            padding: '2px 4px',
-                            textAlign: 'center',
-                            background: isBooked
-                              ? 'var(--danger-bg)'
-                              : isSelected
-                              ? 'var(--success-bg)'
-                              : 'var(--bg-secondary)',
-                            border: `1px solid ${
-                              isBooked
-                                ? 'var(--danger-border)'
-                                : isSelected
-                                ? 'var(--success-border)'
-                                : 'var(--border-color)'
-                            }`,
-                            cursor: isBooked ? 'not-allowed' : 'pointer',
-                          }}
-                          title={isBooked ? `Booked${booking.purpose ? `: ${booking.purpose}` : ''}` : 'Available'}
-                          onClick={() => {
-                            if (!isBooked) {
-                              setSelectedRoom(room.id)
-                              const slotHour = parseInt(slot.split(':')[0])
-                              setStartTime(slot)
-                              if (slotHour < 22) {
-                                setEndTime(`${(slotHour + 1).toString().padStart(2, '0')}:00`)
-                              }
-                            }
-                          }}
-                        >
-                          {isBooked ? (
-                            <span style={{ color: 'var(--danger-text)' }}>x</span>
-                          ) : isSelected ? (
-                            <span style={{ color: 'var(--success-text)' }}>*</span>
-                          ) : (
-                            <span style={{ color: 'var(--text-muted)' }}>-</span>
-                          )}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                ))}
+                              return (
+                                <td
+                                  key={slot}
+                                  style={{
+                                    padding: '2px 2px',
+                                    textAlign: 'center',
+                                    background: isBooked
+                                      ? 'var(--danger-bg)'
+                                      : isSelected
+                                      ? 'var(--success-bg)'
+                                      : 'var(--bg-secondary)',
+                                    border: `1px solid ${
+                                      isBooked
+                                        ? 'var(--danger-border)'
+                                        : isSelected
+                                        ? 'var(--success-border)'
+                                        : 'var(--border-color)'
+                                    }`,
+                                    cursor: isBooked ? 'not-allowed' : 'pointer',
+                                  }}
+                                  title={isBooked ? `Booked${booking.purpose ? `: ${booking.purpose}` : ''}` : 'Available'}
+                                  onClick={() => {
+                                    if (!isBooked) {
+                                      setSelectedRoom(room.id)
+                                      const slotHour = parseInt(slot.split(':')[0])
+                                      setStartTime(slot)
+                                      if (slotHour < 22) {
+                                        setEndTime(`${(slotHour + 1).toString().padStart(2, '0')}:00`)
+                                      }
+                                    }
+                                  }}
+                                >
+                                  {isBooked ? (
+                                    <span style={{ color: 'var(--danger-text)' }}>x</span>
+                                  ) : isSelected ? (
+                                    <span style={{ color: 'var(--success-text)' }}>*</span>
+                                  ) : (
+                                    <span style={{ color: 'var(--text-muted)' }}>-</span>
+                                  )}
+                                </td>
+                              )
+                            })}
+                          </tr>
+                        ))}
+                      </React.Fragment>
+                    )
+                  })}
               </tbody>
             </table>
           </div>
