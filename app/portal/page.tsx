@@ -130,6 +130,18 @@ export default async function DashboardPage() {
 
       <hr />
 
+      {/* Room Booking */}
+      <section>
+        <h2>book a room</h2>
+        <p>
+          <Link href="/portal/book-room">
+            reserve a meeting room or call booth
+          </Link>
+        </p>
+      </section>
+
+      <hr />
+
       {/* Events */}
       <section>
         <HostedEvents key={effectiveUserId} userName={profile.name} />

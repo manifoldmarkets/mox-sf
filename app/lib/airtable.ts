@@ -9,6 +9,8 @@ export const Tables = {
   Orgs: 'Orgs',
   Programs: 'Programs',
   DayPasses: 'Day Passes',
+  Rooms: 'Rooms',
+  RoomBookings: 'Room Bookings',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]
@@ -258,6 +260,34 @@ export async function findRecord<T = Record<string, unknown>>(
     maxRecords: 1,
   })
   return records[0] || null
+}
+
+/**
+ * Deletes a record by ID.
+ *
+ * @param table - Table name
+ * @param recordId - Airtable record ID
+ * @returns true if deleted, false if not found
+ */
+export async function deleteRecord(table: TableName, recordId: string): Promise<boolean> {
+  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
+
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  })
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      return false
+    }
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(
+      `Airtable delete error: ${res.status} ${res.statusText} - ${JSON.stringify(errorData)}`
+    )
+  }
+
+  return true
 }
 
 // Re-export the escape helper for use in formulas
