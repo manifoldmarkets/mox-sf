@@ -5,6 +5,7 @@ import {
   getBookingsForRoom,
   findConflicts,
   createBooking,
+  cancelBooking,
   getRoom,
 } from '@/app/lib/room-bookings'
 import { getRecord, Tables } from '@/app/lib/airtable'
@@ -87,22 +88,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check for conflicts
-    const conflicts = await findConflicts(roomId, start, end)
-    if (conflicts.length > 0) {
-      return NextResponse.json(
-        {
-          error: 'Time slot is already booked',
-          conflicts: conflicts.map((c) => ({
-            startDate: c.startDate,
-            endDate: c.endDate,
-          })),
-        },
-        { status: 409 }
-      )
-    }
-
-    // Get room details
+    // Get room details first (this is idempotent, safe to do early)
     const room = await getRoom(roomId)
     if (!room) {
       return NextResponse.json({ error: 'Room not found' }, { status: 404 })
@@ -123,6 +109,21 @@ export async function POST(request: NextRequest) {
       finalUserName = userRecord?.fields.Name || 'Unknown'
     }
 
+    // Pre-check for conflicts (optimistic - another request could sneak in)
+    const preConflicts = await findConflicts(roomId, start, end)
+    if (preConflicts.length > 0) {
+      return NextResponse.json(
+        {
+          error: 'Time slot is already booked',
+          conflicts: preConflicts.map((c) => ({
+            startDate: c.startDate,
+            endDate: c.endDate,
+          })),
+        },
+        { status: 409 }
+      )
+    }
+
     // Create the booking
     const booking = await createBooking({
       roomId,
@@ -133,6 +134,24 @@ export async function POST(request: NextRequest) {
       endDate: end,
       purpose,
     })
+
+    // Re-check for conflicts after creation (optimistic concurrency control)
+    // Exclude the booking we just created
+    const postConflicts = await findConflicts(roomId, start, end, booking.id)
+    if (postConflicts.length > 0) {
+      // Another booking snuck in - cancel ours and return error
+      await cancelBooking(booking.id)
+      return NextResponse.json(
+        {
+          error: 'Time slot was just booked by someone else. Please try again.',
+          conflicts: postConflicts.map((c) => ({
+            startDate: c.startDate,
+            endDate: c.endDate,
+          })),
+        },
+        { status: 409 }
+      )
+    }
 
     return NextResponse.json({ booking }, { status: 201 })
   } catch (error) {
