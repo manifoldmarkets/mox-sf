@@ -8,7 +8,8 @@ export async function proxy(request: NextRequest) {
   if (
     path.startsWith('/portal/api') ||
     path.startsWith('/portal/login') ||
-    path.startsWith('/portal/verify')
+    path.startsWith('/portal/verify') ||
+    path.startsWith('/portal/auth')
   ) {
     return NextResponse.next()
   }
