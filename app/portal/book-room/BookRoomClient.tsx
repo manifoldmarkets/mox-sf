@@ -117,27 +117,37 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
     loadDayBookings()
   }, [selectedDate, rooms])
 
-  // Set default date to today and prefill times to nearest hour
+  // Set default date and prefill times to nearest hour
+  // If after booking hours (9pm), default to next day at 8am
   useEffect(() => {
     const now = new Date()
-    const today = now.toISOString().split('T')[0]
-    setSelectedDate(today)
-
-    // Round up to next hour for start time
     const currentHour = now.getHours()
     const nextHour = currentHour + 1
-    if (nextHour >= 8 && nextHour < 22) {
-      const startSlot = `${nextHour.toString().padStart(2, '0')}:00`
-      setStartTime(startSlot)
-      if (nextHour < 21) {
-        setEndTime(`${(nextHour + 1).toString().padStart(2, '0')}:00`)
-      }
+
+    // Determine if we should use today or tomorrow
+    let bookingDate: Date
+    let defaultStartHour: number
+
+    if (nextHour >= 22 || currentHour >= 21) {
+      // After 9pm - use tomorrow at 8am
+      bookingDate = new Date(now)
+      bookingDate.setDate(bookingDate.getDate() + 1)
+      defaultStartHour = 8
     } else if (nextHour < 8) {
-      // Before 8am, default to 8am
-      setStartTime('08:00')
-      setEndTime('09:00')
+      // Before 8am - use today at 8am
+      bookingDate = now
+      defaultStartHour = 8
+    } else {
+      // During booking hours - use today at next hour
+      bookingDate = now
+      defaultStartHour = nextHour
     }
-    // If after 9pm, leave times empty (too late to book today)
+
+    setSelectedDate(bookingDate.toISOString().split('T')[0])
+    setStartTime(`${defaultStartHour.toString().padStart(2, '0')}:00`)
+    if (defaultStartHour < 22) {
+      setEndTime(`${(defaultStartHour + 1).toString().padStart(2, '0')}:00`)
+    }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -391,9 +401,14 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
                 </tr>
               </thead>
               <tbody>
-                {/* Group rooms by floor */}
+                {/* Group rooms by floor (higher floors first) */}
                 {Array.from(new Set(rooms.map(r => r.floor || 'Other')))
-                  .sort()
+                  .sort((a, b) => {
+                    // Sort numerically in descending order, 'Other' goes last
+                    if (a === 'Other') return 1
+                    if (b === 'Other') return -1
+                    return parseInt(b) - parseInt(a)
+                  })
                   .map((floor) => {
                     const floorRooms = rooms.filter(r => (r.floor || 'Other') === floor)
                     return (
