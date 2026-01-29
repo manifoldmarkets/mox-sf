@@ -59,6 +59,7 @@ export const env = {
   get DISCORD_BOT_TOKEN() { return optional('DISCORD_BOT_TOKEN') },
   get DISCORD_CLIENT_ID() { return optional('DISCORD_CLIENT_ID') },
   get DISCORD_CLIENT_SECRET() { return optional('DISCORD_CLIENT_SECRET') },
+  get DISCORD_PUBLIC_KEY() { return optional('DISCORD_PUBLIC_KEY') },
 
   // Verkada
   get VERKADA_API_KEY() { return optional('VERKADA_API_KEY') },
