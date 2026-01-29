@@ -109,30 +109,37 @@ export async function getBookingsForRoom(
   const endISO = endDate.toISOString()
 
   // Find bookings that overlap with the requested time range
+  // (linked record fields require client-side filtering)
   const formula = `AND(
-    FIND('${escapeAirtableString(roomId)}', ARRAYJOIN({Room})) > 0,
     {Status} = 'Confirmed',
     IS_BEFORE({Start}, '${endISO}'),
     IS_AFTER({End}, '${startISO}')
   )`
 
   const records = await findRecords<RoomBookingFields>(Tables.RoomBookings, formula)
-  return records.map((r) => parseBooking(r))
+
+  // Filter to only this room's bookings
+  return records
+    .filter((r) => r.fields.Room?.includes(roomId))
+    .map((r) => parseBooking(r))
 }
 
 /**
  * Get all bookings for a user
  */
 export async function getUserBookings(userId: string): Promise<Booking[]> {
-  const formula = `AND(
-    FIND('${escapeAirtableString(userId)}', ARRAYJOIN({Booked By})) > 0,
-    {Status} = 'Confirmed'
-  )`
+  // Fetch confirmed bookings and filter by user client-side
+  // (linked record fields in Airtable formulas require lookup/rollup fields for text search)
+  const formula = `{Status} = 'Confirmed'`
 
   const records = await findRecords<RoomBookingFields>(Tables.RoomBookings, formula, {
     sort: [{ field: 'Start', direction: 'asc' }],
   })
-  return records.map((r) => parseBooking(r))
+
+  // Filter to only this user's bookings
+  return records
+    .filter((r) => r.fields['Booked By']?.includes(userId))
+    .map((r) => parseBooking(r))
 }
 
 /**
@@ -148,8 +155,8 @@ export async function findConflicts(
   const endISO = endDate.toISOString()
 
   // Find bookings that overlap with the requested time range
+  // (linked record fields require client-side filtering)
   let formula = `AND(
-    FIND('${escapeAirtableString(roomId)}', ARRAYJOIN({Room})) > 0,
     {Status} = 'Confirmed',
     IS_BEFORE({Start}, '${endISO}'),
     IS_AFTER({End}, '${startISO}')
@@ -158,7 +165,6 @@ export async function findConflicts(
   if (excludeBookingId) {
     formula = `AND(
       RECORD_ID() != '${escapeAirtableString(excludeBookingId)}',
-      FIND('${escapeAirtableString(roomId)}', ARRAYJOIN({Room})) > 0,
       {Status} = 'Confirmed',
       IS_BEFORE({Start}, '${endISO}'),
       IS_AFTER({End}, '${startISO}')
@@ -166,7 +172,11 @@ export async function findConflicts(
   }
 
   const records = await findRecords<RoomBookingFields>(Tables.RoomBookings, formula)
-  return records.map((r) => parseBooking(r))
+
+  // Filter to only this room's bookings
+  return records
+    .filter((r) => r.fields.Room?.includes(roomId))
+    .map((r) => parseBooking(r))
 }
 
 /**
