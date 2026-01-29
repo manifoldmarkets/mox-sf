@@ -63,19 +63,30 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get('x-signature-ed25519')
   const timestamp = request.headers.get('x-signature-timestamp')
 
+  console.log('[Discord] Received interaction request')
+  console.log('[Discord] Has signature:', !!signature)
+  console.log('[Discord] Has timestamp:', !!timestamp)
+
   if (!signature || !timestamp) {
+    console.log('[Discord] Missing signature headers')
     return NextResponse.json({ error: 'Missing signature headers' }, { status: 401 })
   }
 
   const publicKey = env.DISCORD_PUBLIC_KEY
+  console.log('[Discord] Public key configured:', !!publicKey)
+  console.log('[Discord] Public key length:', publicKey?.length || 0)
+
   if (!publicKey) {
-    console.error('DISCORD_PUBLIC_KEY not configured')
+    console.error('[Discord] DISCORD_PUBLIC_KEY not configured')
     return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
   }
 
   // Verify the request is from Discord using the official library
   const isValid = verifyKey(body, signature, timestamp, publicKey)
+  console.log('[Discord] Signature valid:', isValid)
+
   if (!isValid) {
+    console.log('[Discord] Invalid signature - rejecting request')
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
   }
 
