@@ -112,7 +112,7 @@ function formatMessage(
     '```',
     ...lines,
     '```',
-    `_Updated at ${timeStr} PT_`,
+    `_Updated ${timeStr} PT (refreshes every 10 min)_`,
     `## 📅 [Book a room](<${PORTAL_URL}/portal/book-room>)`
   ].join('\n')
 }
