@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSession } from '@/app/lib/session'
 import { isValidToken, escapeAirtableString } from '@/app/lib/airtable-helpers'
 import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
+import { syncDiscordRole } from '@/app/lib/discord'
 
 interface PersonFields {
   Email?: string
   Name?: string
   Tier?: string
+  Status?: string
+  'Discord Username'?: string
   magic_link_token?: string
   token_expires?: string
 }
@@ -14,6 +17,7 @@ interface PersonFields {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const token = searchParams.get('token')
+  const discordUsername = searchParams.get('discord')
 
   if (!token) {
     return NextResponse.redirect(
@@ -41,11 +45,19 @@ export async function GET(request: NextRequest) {
     // Create session
     await createSession(user.id, user.email, user.name, user.isStaff)
 
-    // Clear the token from Airtable (one-time use)
-    await clearToken(user.id)
+    // Clear the token and optionally link Discord
+    const discordLinked = await clearTokenAndLinkDiscord(
+      user.id,
+      discordUsername,
+      user.tier,
+      user.status
+    )
 
     // Redirect to portal
-    return NextResponse.redirect(new URL('/portal', request.url))
+    const redirectUrl = discordLinked
+      ? new URL('/portal?discord_linked=true', request.url)
+      : new URL('/portal', request.url)
+    return NextResponse.redirect(redirectUrl)
   } catch (error) {
     console.error('Error verifying token:', error)
     return NextResponse.redirect(
@@ -86,12 +98,34 @@ async function verifyToken(token: string) {
     email: record.fields.Email,
     name: record.fields.Name,
     isStaff: record.fields.Tier === 'Staff',
+    tier: record.fields.Tier,
+    status: record.fields.Status,
   }
 }
 
-async function clearToken(recordId: string) {
-  await updateRecord<PersonFields>(Tables.People, recordId, {
+async function clearTokenAndLinkDiscord(
+  recordId: string,
+  discordUsername: string | null,
+  tier?: string,
+  status?: string
+): Promise<boolean> {
+  // Clear the token, and set Discord Username if provided
+  const updates: Partial<PersonFields> = {
     magic_link_token: '',
     token_expires: undefined,
-  })
+  }
+
+  if (discordUsername) {
+    updates['Discord Username'] = discordUsername
+  }
+
+  await updateRecord<PersonFields>(Tables.People, recordId, updates)
+
+  // If we linked Discord, sync their role
+  if (discordUsername && tier && status) {
+    await syncDiscordRole(discordUsername, tier, status)
+    return true
+  }
+
+  return false
 }

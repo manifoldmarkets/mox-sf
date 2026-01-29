@@ -33,9 +33,6 @@ interface PersonFields {
   Tier?: string
   Status?: string
   'Discord Username'?: string
-  discord_link_token?: string
-  discord_link_expires?: string
-  discord_link_user_id?: string
   magic_link_token?: string
   token_expires?: string
 }
@@ -73,12 +70,11 @@ async function generateMagicLinkForDiscordUser(
 }
 
 /**
- * Send a Discord link verification email
+ * Send a Discord link verification email (uses existing magic link flow)
  */
 async function sendDiscordLinkEmail(
   email: string,
-  discordUsername: string,
-  discordUserId: string
+  discordUsername: string
 ): Promise<{ success: boolean; error?: string }> {
   const escapedEmail = escapeAirtableString(email.toLowerCase().trim())
   const formula = `{Email} = '${escapedEmail}'`
@@ -100,21 +96,19 @@ async function sendDiscordLinkEmail(
     }
   }
 
-  // Generate verification token
+  // Generate magic link token (reuse existing flow)
   const token = crypto.randomBytes(32).toString('hex')
   const expiresAt = new Date(Date.now() + 15 * 60 * 1000) // 15 minutes
 
-  // Store pending link info
   await updateRecord<PersonFields>(Tables.People, record.id, {
-    discord_link_token: token,
-    discord_link_expires: expiresAt.toISOString(),
-    discord_link_user_id: discordUserId,
+    magic_link_token: token,
+    token_expires: expiresAt.toISOString(),
   })
 
-  // Send verification email
+  // Send verification email with Discord username in the URL
   const resend = new Resend(env.RESEND_API_KEY)
   const baseUrl = env.NEXT_PUBLIC_BASE_URL
-  const verifyUrl = `${baseUrl}/portal/verify-discord?token=${token}`
+  const verifyUrl = `${baseUrl}/portal/verify?token=${token}&discord=${encodeURIComponent(discordUsername)}`
 
   await resend.emails.send({
     from: 'Mox SF <noreply@account.moxsf.com>',
@@ -283,7 +277,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Send verification email
-      const result = await sendDiscordLinkEmail(email, username, userId)
+      const result = await sendDiscordLinkEmail(email, username)
 
       if (!result.success) {
         return NextResponse.json({
