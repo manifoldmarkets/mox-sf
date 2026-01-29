@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/room-availability",
-      "schedule": "* * * * *"
+      "schedule": "*/10 * * * *"
     }
   ]
 }
