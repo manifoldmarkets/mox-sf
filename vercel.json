@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/rotate-door-code",
       "schedule": "0 17 * * 1"
+    },
+    {
+      "path": "/api/cron/room-availability",
+      "schedule": "* * * * *"
     }
   ]
 }

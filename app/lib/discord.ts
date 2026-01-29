@@ -11,6 +11,7 @@ import {
 
 // Re-export constants for convenience
 export { DISCORD_GUILD_ID, DISCORD_CHANNELS }
+export { DISCORD_ROOM_AVAILABILITY_MESSAGE_ID } from './discord-constants'
 
 /**
  * Helper to make Discord API requests with rate limit handling
@@ -291,10 +292,10 @@ export async function renameDiscordChannel(
 export async function sendChannelMessage(
   channelId: string,
   content: string
-): Promise<boolean> {
+): Promise<{ success: boolean; messageId?: string }> {
   if (!env.DISCORD_BOT_TOKEN) {
     console.error('[Discord] Bot token not configured')
-    return false
+    return { success: false }
   }
 
   try {
@@ -317,12 +318,56 @@ export async function sendChannelMessage(
         response.status,
         await response.text()
       )
+      return { success: false }
+    }
+
+    const data = await response.json()
+    return { success: true, messageId: data.id }
+  } catch (error) {
+    console.error('[Discord] Send message error:', error)
+    return { success: false }
+  }
+}
+
+/**
+ * Edit an existing message in a Discord channel
+ */
+export async function editChannelMessage(
+  channelId: string,
+  messageId: string,
+  content: string
+): Promise<boolean> {
+  if (!env.DISCORD_BOT_TOKEN) {
+    console.error('[Discord] Bot token not configured')
+    return false
+  }
+
+  try {
+    const response = await discordFetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content,
+        }),
+      }
+    )
+
+    if (!response.ok) {
+      console.error(
+        '[Discord] Failed to edit message:',
+        response.status,
+        await response.text()
+      )
       return false
     }
 
     return true
   } catch (error) {
-    console.error('[Discord] Send message error:', error)
+    console.error('[Discord] Edit message error:', error)
     return false
   }
 }
