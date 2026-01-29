@@ -38,7 +38,7 @@ async function generateMagicLinkForDiscordUser(
   if (!record) {
     return {
       success: false,
-      error: 'Your Discord account is not linked to a MOX membership. Please contact staff for help.',
+      error: 'Your Discord account is not linked to a MOX membership. Use /link to connect your account.',
     }
   }
 
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     const commandName = interaction.data?.name
 
-    if (commandName === 'portal') {
+    if (commandName === 'login') {
       // Get the Discord username from the interaction
       const discordUser = interaction.member?.user || interaction.user
       const username = discordUser?.username

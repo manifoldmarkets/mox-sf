@@ -14,7 +14,7 @@ if (!DISCORD_BOT_TOKEN || !DISCORD_CLIENT_ID) {
 
 const commands = [
   {
-    name: 'portal',
+    name: 'login',
     description: 'Get a magic link to access the MOX member portal',
   },
 ]
