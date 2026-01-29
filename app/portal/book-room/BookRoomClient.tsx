@@ -143,7 +143,9 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
       defaultStartHour = nextHour
     }
 
-    setSelectedDate(bookingDate.toISOString().split('T')[0])
+    // Format date as YYYY-MM-DD in local time (not UTC)
+    setSelectedDate(formatLocalDate(bookingDate))
+
     setStartTime(`${defaultStartHour.toString().padStart(2, '0')}:00`)
     if (defaultStartHour < 22) {
       setEndTime(`${(defaultStartHour + 1).toString().padStart(2, '0')}:00`)
@@ -272,7 +274,7 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
               id="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
+              min={formatLocalDate(new Date())}
               required
             />
           </div>
@@ -560,4 +562,12 @@ function formatTimeSlot(time: string): string {
   const ampm = hour >= 12 ? 'pm' : 'am'
   const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
   return `${displayHour}:00 ${ampm}`
+}
+
+// Format date as YYYY-MM-DD in local time (avoids UTC conversion issues)
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear()
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const day = date.getDate().toString().padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
