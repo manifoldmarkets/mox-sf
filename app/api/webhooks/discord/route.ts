@@ -2,19 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/app/lib/env'
 import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
 import { escapeAirtableString } from '@/app/lib/airtable-helpers'
+import {
+  verifyKey,
+  InteractionType,
+  InteractionResponseType,
+} from 'discord-interactions'
 import crypto from 'crypto'
-
-// Discord interaction types
-const InteractionType = {
-  PING: 1,
-  APPLICATION_COMMAND: 2,
-} as const
-
-// Discord interaction response types
-const InteractionResponseType = {
-  PONG: 1,
-  CHANNEL_MESSAGE_WITH_SOURCE: 4,
-} as const
 
 // Message flags
 const MessageFlags = {
@@ -28,42 +21,6 @@ interface PersonFields {
   'Discord Username'?: string
   magic_link_token?: string
   token_expires?: string
-}
-
-/**
- * Verify Discord signature using Ed25519
- */
-async function verifyDiscordSignature(
-  body: string,
-  signature: string,
-  timestamp: string
-): Promise<boolean> {
-  const publicKey = env.DISCORD_PUBLIC_KEY
-  if (!publicKey) {
-    console.error('DISCORD_PUBLIC_KEY not configured')
-    return false
-  }
-
-  try {
-    const message = Buffer.from(timestamp + body)
-    const sig = Buffer.from(signature, 'hex')
-    const key = Buffer.from(publicKey, 'hex')
-
-    // Import the public key for Ed25519
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      key,
-      { name: 'Ed25519' },
-      false,
-      ['verify']
-    )
-
-    // Verify the signature
-    return await crypto.subtle.verify('Ed25519', cryptoKey, sig, message)
-  } catch (error) {
-    console.error('Signature verification error:', error)
-    return false
-  }
 }
 
 /**
@@ -110,8 +67,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing signature headers' }, { status: 401 })
   }
 
-  // Verify the request is from Discord
-  const isValid = await verifyDiscordSignature(body, signature, timestamp)
+  const publicKey = env.DISCORD_PUBLIC_KEY
+  if (!publicKey) {
+    console.error('DISCORD_PUBLIC_KEY not configured')
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+  }
+
+  // Verify the request is from Discord using the official library
+  const isValid = verifyKey(body, signature, timestamp, publicKey)
   if (!isValid) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
   }
