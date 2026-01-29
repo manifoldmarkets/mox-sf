@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Verify the request is from Discord using the official library
-  const isValid = verifyKey(body, signature, timestamp, publicKey)
+  const isValid = await verifyKey(body, signature, timestamp, publicKey)
   console.log('[Discord] Signature valid:', isValid)
 
   if (!isValid) {
