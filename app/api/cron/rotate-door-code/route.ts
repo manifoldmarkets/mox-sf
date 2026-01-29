@@ -198,10 +198,11 @@ export async function GET(request: Request) {
 
     let messageSent = false
     if (oldCode) {
-      messageSent = await sendChannelMessage(
+      const result = await sendChannelMessage(
         DISCORD_CHANNELS.PACKAGES,
         `Door code has rotated, for package deliveries, the old door code **${oldCode}#** will continue to work until ${expiryDate}.`
       )
+      messageSent = result.success
       if (!messageSent) {
         console.error(
           '[Cron rotate-door-code] Failed to send message to #packages'

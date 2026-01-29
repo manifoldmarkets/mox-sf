@@ -18,7 +18,11 @@ export const DISCORD_CHANNELS = {
   DOOR_CODE: '1360304053887701092',
   PACKAGES: '1409615290353844397',
   NOTIFICATIONS: '1465054507816980523',
+  ROOM_AVAILABILITY: '1466343013146951774',
 } as const
+
+// Message ID for the room availability status message that gets edited
+export const DISCORD_ROOM_AVAILABILITY_MESSAGE_ID = '1466343657014558742'
 
 // Map Airtable tiers to Discord role IDs
 export const TIER_TO_ROLE: Record<string, string> = {
