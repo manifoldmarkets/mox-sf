@@ -99,16 +99,15 @@ export async function GET(request: NextRequest) {
     const discordUser: DiscordUser = await userResponse.json()
     console.log('Discord user authenticated:', discordUser.id, discordUser.username)
 
-    // Look up user in Airtable by Discord ID
-    // The "Discord Username" field actually stores the Discord user ID
-    const escapedDiscordId = escapeAirtableString(discordUser.id)
-    const formula = `{Discord Username} = '${escapedDiscordId}'`
+    // Look up user in Airtable by Discord username
+    const escapedUsername = escapeAirtableString(discordUser.username)
+    const formula = `{Discord Username} = '${escapedUsername}'`
 
     const record = await findRecord<PersonFields>(Tables.People, formula)
 
     if (!record) {
       // User not found in our system
-      console.log('Discord user not found in Airtable:', discordUser.id)
+      console.log('Discord user not found in Airtable:', discordUser.username)
       return NextResponse.redirect(
         new URL('/portal/login?error=discord_not_linked', request.url)
       )
