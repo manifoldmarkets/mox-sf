@@ -15,7 +15,11 @@ if (!DISCORD_BOT_TOKEN || !DISCORD_CLIENT_ID) {
 const commands = [
   {
     name: 'login',
-    description: 'Get a magic link to access the MOX member portal',
+    description: 'Get a magic link to access the Mox member portal',
+  },
+  {
+    name: 'link',
+    description: 'Link your Discord account to your Mox membership',
   },
 ]
 
