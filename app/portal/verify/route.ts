@@ -15,6 +15,12 @@ interface PersonFields {
 }
 
 export async function GET(request: NextRequest) {
+  // Block Discord's link preview crawler from consuming the token
+  const userAgent = request.headers.get('user-agent') || ''
+  if (userAgent.includes('Discordbot')) {
+    return new NextResponse('OK', { status: 200 })
+  }
+
   const searchParams = request.nextUrl.searchParams
   const token = searchParams.get('token')
   const discordUsername = searchParams.get('discord')
