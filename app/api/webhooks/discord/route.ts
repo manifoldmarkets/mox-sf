@@ -46,25 +46,44 @@ async function generateMagicLinkForDiscordUser(
   const escapedUsername = escapeAirtableString(discordUsername)
   const formula = `{Discord Username} = '${escapedUsername}'`
 
+  console.log('[Discord /login] Looking up user with formula:', formula)
+
   const record = await findRecord<PersonFields>(Tables.People, formula)
 
   if (!record) {
+    console.log('[Discord /login] No record found for Discord username:', discordUsername)
     return {
       success: false,
       error: 'Your Discord account is not linked to a Mox membership. Use /link to connect your account.',
     }
   }
 
+  console.log('[Discord /login] Found record:', record.id, 'for user:', record.fields.Name)
+
   const token = crypto.randomBytes(32).toString('hex')
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
 
-  await updateRecord<PersonFields>(Tables.People, record.id, {
-    magic_link_token: token,
-    token_expires: expiresAt.toISOString(),
-  })
+  console.log('[Discord /login] Generated token (first 8 chars):', token.substring(0, 8))
+  console.log('[Discord /login] Token expires at:', expiresAt.toISOString())
+
+  try {
+    const updated = await updateRecord<PersonFields>(Tables.People, record.id, {
+      magic_link_token: token,
+      token_expires: expiresAt.toISOString(),
+    })
+    console.log('[Discord /login] Update result - token saved:', updated.fields.magic_link_token?.substring(0, 8))
+  } catch (error) {
+    console.error('[Discord /login] Failed to update record:', error)
+    return {
+      success: false,
+      error: 'Failed to generate login link. Please try again.',
+    }
+  }
 
   const baseUrl = env.NEXT_PUBLIC_BASE_URL
   const url = `${baseUrl}/portal/verify?token=${token}`
+
+  console.log('[Discord /login] Generated URL:', url)
 
   return { success: true, url }
 }
