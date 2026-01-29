@@ -227,7 +227,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `**Your personal portal link** (expires in 5 minutes):\n${result.url}\n\nThis link is just for you - don't share it!`,
+          content: `**Your personal portal link** (expires in 5 minutes):\n<${result.url}>\n\nThis link is just for you - don't share it!`,
           flags: MessageFlags.EPHEMERAL,
         },
       })
