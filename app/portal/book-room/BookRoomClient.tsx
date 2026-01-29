@@ -43,6 +43,7 @@ const TIME_SLOTS = generateTimeSlots()
 export default function BookRoomClient({ userId, userName }: BookRoomClientProps) {
   const [rooms, setRooms] = useState<Room[]>([])
   const [bookings, setBookings] = useState<Booking[]>([])
+  const [dayBookings, setDayBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -83,6 +84,34 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
 
     loadData()
   }, [])
+
+  // Load bookings for selected room and date
+  useEffect(() => {
+    if (!selectedRoom || !selectedDate) {
+      setDayBookings([])
+      return
+    }
+
+    async function loadDayBookings() {
+      try {
+        const startOfDay = new Date(`${selectedDate}T00:00:00`)
+        const endOfDay = new Date(`${selectedDate}T23:59:59`)
+
+        const res = await fetch(
+          `/portal/api/room-bookings?roomId=${selectedRoom}&startDate=${startOfDay.toISOString()}&endDate=${endOfDay.toISOString()}`
+        )
+
+        if (res.ok) {
+          const data = await res.json()
+          setDayBookings(data.bookings || [])
+        }
+      } catch {
+        // Silently fail - calendar view is secondary
+      }
+    }
+
+    loadDayBookings()
+  }, [selectedRoom, selectedDate])
 
   // Set default date to today
   useEffect(() => {
@@ -126,8 +155,9 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
         return
       }
 
-      // Success - add to bookings list and reset form
+      // Success - add to bookings list and day view, reset form
       setBookings((prev) => [...prev, data.booking])
+      setDayBookings((prev) => [...prev, data.booking])
       setSubmitSuccess(true)
       setStartTime('')
       setEndTime('')
@@ -185,6 +215,18 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
   const futureBookings = bookings.filter(
     (b) => new Date(b.endDate) > new Date()
   )
+
+  // Check if a time slot is booked
+  const getSlotBooking = (slot: string): Booking | undefined => {
+    const slotHour = parseInt(slot.split(':')[0])
+    return dayBookings.find((b) => {
+      const startHour = new Date(b.startDate).getHours()
+      const endHour = new Date(b.endDate).getHours()
+      return slotHour >= startHour && slotHour < endHour
+    })
+  }
+
+  const selectedRoomName = rooms.find((r) => r.id === selectedRoom)?.name
 
   return (
     <>
@@ -293,6 +335,52 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
             {submitting ? 'booking...' : 'book room'}
           </button>
         </form>
+
+        {/* Day Calendar View */}
+        {selectedRoom && selectedDate && (
+          <div style={{ marginTop: '20px' }}>
+            <h3>
+              {selectedRoomName} - {new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '10px' }}>
+              {TIME_SLOTS.slice(0, -1).map((slot) => {
+                const booking = getSlotBooking(slot)
+                const isBooked = !!booking
+                const isSelected = startTime && endTime && slot >= startTime && slot < endTime
+
+                return (
+                  <div
+                    key={slot}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '4px 8px',
+                      background: isBooked
+                        ? 'var(--danger-bg)'
+                        : isSelected
+                        ? 'var(--success-bg)'
+                        : 'var(--bg-secondary)',
+                      border: `1px solid ${isBooked ? 'var(--danger-border)' : isSelected ? 'var(--success-border)' : 'var(--border-color)'}`,
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    <span style={{ width: '70px', color: 'var(--text-muted)' }}>
+                      {formatTimeSlot(slot)}
+                    </span>
+                    {isBooked && (
+                      <span style={{ color: 'var(--danger-text)' }}>
+                        booked{booking.purpose && ` - ${booking.purpose}`}
+                      </span>
+                    )}
+                    {isSelected && !isBooked && (
+                      <span style={{ color: 'var(--success-text)' }}>your selection</span>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
       <hr />
