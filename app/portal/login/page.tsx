@@ -100,6 +100,12 @@ function LoginPageContent() {
     }
   }
 
+  const handleReset = () => {
+    setStatus('idle')
+    setEmail('')
+    setMessage('')
+  }
+
   if (checkingSession) {
     return (
       <>
@@ -138,6 +144,26 @@ function LoginPageContent() {
         {message && (
           <p className={status === 'success' ? 'success' : 'error'}>
             {message}
+            {status === 'success' && (
+              <>
+                {' '}
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    color: 'inherit',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    font: 'inherit',
+                  }}
+                >
+                  try different email?
+                </button>
+              </>
+            )}
           </p>
         )}
 
