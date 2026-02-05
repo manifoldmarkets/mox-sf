@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: 'Upcoming events and gatherings at Mox',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function EventsPage() {
   const allEvents = await getEvents()
 
