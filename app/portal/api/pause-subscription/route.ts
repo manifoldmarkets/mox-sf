@@ -166,7 +166,19 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { resumeDate, reason } = await request.json()
+    const { userId, resumeDate, reason } = await request.json()
+
+    // Validate userId - must be provided and match either the logged-in user or the user being viewed as
+    if (!userId) {
+      return Response.json({ error: 'User ID is required' }, { status: 400 })
+    }
+
+    // Authorization check: userId must match either session.userId or session.viewingAsUserId
+    const isOwnAccount = userId === session.userId
+    const isViewingAsTarget = session.isStaff && session.viewingAsUserId === userId
+    if (!isOwnAccount && !isViewingAsTarget) {
+      return Response.json({ error: 'Unauthorized to pause this user' }, { status: 403 })
+    }
 
     // Validate reason
     if (!reason || typeof reason !== 'string' || !reason.trim()) {
@@ -187,9 +199,8 @@ export async function POST(request: Request) {
       }
     }
 
-    // Get user information - use viewingAsUserId if staff is viewing as another user
-    const effectiveUserId = session.viewingAsUserId || session.userId
-    const userInfo = await getUserInfo(effectiveUserId)
+    // Get user information using the validated userId
+    const userInfo = await getUserInfo(userId)
     if (!userInfo || !userInfo.customerId) {
       return Response.json(
         { error: 'User or subscription not found' },
@@ -239,7 +250,7 @@ export async function POST(request: Request) {
     await notifyUserPause(userInfo.email, userInfo.name, resumeDate, reason)
 
     // If an admin is acting on behalf of another user, notify the admin
-    if (session.viewingAsUserId && session.viewingAsUserId === effectiveUserId) {
+    if (isViewingAsTarget) {
       await notifyAdminPause(
         session.email,
         session.name || 'Admin',
@@ -264,16 +275,29 @@ export async function POST(request: Request) {
   }
 }
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
   try {
     const session = await getSession()
     if (!session.isLoggedIn || !session.userId) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Get user information - use viewingAsUserId if staff is viewing as another user
-    const effectiveUserId = session.viewingAsUserId || session.userId
-    const userInfo = await getUserInfo(effectiveUserId)
+    const { userId } = await request.json()
+
+    // Validate userId - must be provided and match either the logged-in user or the user being viewed as
+    if (!userId) {
+      return Response.json({ error: 'User ID is required' }, { status: 400 })
+    }
+
+    // Authorization check: userId must match either session.userId or session.viewingAsUserId
+    const isOwnAccount = userId === session.userId
+    const isViewingAsTarget = session.isStaff && session.viewingAsUserId === userId
+    if (!isOwnAccount && !isViewingAsTarget) {
+      return Response.json({ error: 'Unauthorized to resume this user' }, { status: 403 })
+    }
+
+    // Get user information using the validated userId
+    const userInfo = await getUserInfo(userId)
     if (!userInfo || !userInfo.customerId) {
       return Response.json(
         { error: 'User or subscription not found' },
@@ -314,7 +338,7 @@ export async function DELETE() {
     await notifyUserResume(userInfo.email, userInfo.name)
 
     // If an admin is acting on behalf of another user, notify the admin
-    if (session.viewingAsUserId && session.viewingAsUserId === effectiveUserId) {
+    if (isViewingAsTarget) {
       await notifyAdminResume(
         session.email,
         session.name || 'Admin',
