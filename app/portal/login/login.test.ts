@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 /**
  * Tests for the login page functionality.
@@ -46,8 +46,8 @@ describe('Login page email submission flow', () => {
   })
 
   describe('Form state transitions', () => {
-    // These tests document the expected state machine behavior
     // The form has 4 states: 'idle' | 'loading' | 'success' | 'error'
+    // Only 'loading' disables the form - all other states allow interaction
 
     it('should define correct initial state', () => {
       const initialState = {
@@ -60,7 +60,7 @@ describe('Login page email submission flow', () => {
       expect(initialState.message).toBe('')
     })
 
-    it('should define loading state behavior', () => {
+    it('should disable form only during loading', () => {
       // During loading: input disabled, button disabled, button text = "sending..."
       const loadingState = {
         status: 'loading',
@@ -72,37 +72,22 @@ describe('Login page email submission flow', () => {
       expect(loadingState.buttonDisabled).toBe(true)
     })
 
-    it('should define success state behavior', () => {
-      // After success: shows message, input disabled, button disabled
-      // NEW: "try different email?" link should appear
+    it('should keep form enabled after success', () => {
+      // After success: shows message, form stays enabled for retry
+      // (rate limiting prevents abuse)
       const successState = {
         status: 'success',
         message: 'check your email! we sent you a login link.',
-        inputDisabled: true,
-        buttonDisabled: true,
-        showTryDifferentEmail: true,
+        inputDisabled: false,
+        buttonDisabled: false,
       }
-      expect(successState.showTryDifferentEmail).toBe(true)
+      expect(successState.inputDisabled).toBe(false)
+      expect(successState.buttonDisabled).toBe(false)
     })
 
-    it('should define reset behavior from success state', () => {
-      // When "try different email?" is clicked:
-      // - status resets to 'idle'
-      // - email is cleared
-      // - message is cleared
-      const stateAfterReset = {
-        status: 'idle',
-        email: '',
-        message: '',
-      }
-      expect(stateAfterReset.status).toBe('idle')
-      expect(stateAfterReset.email).toBe('')
-      expect(stateAfterReset.message).toBe('')
-    })
-
-    it('should define error state behavior', () => {
-      // After error: shows error message, input enabled, button enabled
-      // User can immediately retry without clicking anything
+    it('should keep form enabled after error', () => {
+      // After error: shows error message, form stays enabled
+      // User can immediately fix typo and retry
       const errorState = {
         status: 'error',
         inputDisabled: false,
@@ -128,7 +113,7 @@ describe('Send magic link API behavior', () => {
   })
 
   describe('API response handling', () => {
-    it('should handle successful response', () => {
+    it('should handle successful response (email found and sent)', () => {
       const successResponse = {
         ok: true,
         status: 200,
@@ -138,6 +123,20 @@ describe('Send magic link API behavior', () => {
         },
       }
       expect(successResponse.ok).toBe(true)
+    })
+
+    it('should handle email not found response', () => {
+      // API now tells user when email is not in the system
+      const notFoundResponse = {
+        ok: false,
+        status: 404,
+        data: {
+          error:
+            "We don't have that email in our system. Check for typos or contact us.",
+        },
+      }
+      expect(notFoundResponse.status).toBe(404)
+      expect(notFoundResponse.data.error).toContain("don't have that email")
     })
 
     it('should handle rate limit response', () => {
@@ -152,7 +151,7 @@ describe('Send magic link API behavior', () => {
       expect(rateLimitResponse.status).toBe(429)
     })
 
-    it('should handle invalid email response', () => {
+    it('should handle invalid email format response', () => {
       const invalidEmailResponse = {
         ok: false,
         status: 400,

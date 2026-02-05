@@ -65,12 +65,13 @@ export async function POST(request: Request) {
     const user = await findUserByEmail(normalizedEmail)
 
     if (!user) {
-      // For security, don't reveal if user exists or not
-      return Response.json({
-        success: true,
-        message:
-          'If an account exists with that email, you will receive a login link.',
-      })
+      return Response.json(
+        {
+          error:
+            "We don't have that email in our system. Check for typos or contact us.",
+        },
+        { status: 404 }
+      )
     }
 
     // Generate secure token

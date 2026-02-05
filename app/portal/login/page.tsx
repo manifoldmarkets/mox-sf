@@ -100,12 +100,6 @@ function LoginPageContent() {
     }
   }
 
-  const handleReset = () => {
-    setStatus('idle')
-    setEmail('')
-    setMessage('')
-  }
-
   if (checkingSession) {
     return (
       <>
@@ -137,39 +131,19 @@ function LoginPageContent() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            disabled={status === 'loading' || status === 'success'}
+            disabled={status === 'loading'}
           />
         </div>
 
         {message && (
           <p className={status === 'success' ? 'success' : 'error'}>
             {message}
-            {status === 'success' && (
-              <>
-                {' '}
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: 0,
-                    color: 'inherit',
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                    font: 'inherit',
-                  }}
-                >
-                  try different email?
-                </button>
-              </>
-            )}
           </p>
         )}
 
         <button
           type="submit"
-          disabled={status === 'loading' || status === 'success'}
+          disabled={status === 'loading'}
           className="primary"
         >
           {status === 'loading' ? 'sending...' : 'send login link'}
