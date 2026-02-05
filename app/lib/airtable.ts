@@ -90,6 +90,7 @@ export async function getRecords<T = Record<string, unknown>>(
 
     const res = await fetch(url, {
       headers: getHeaders(),
+      cache: 'no-store',
     })
 
     if (!res.ok) {
@@ -135,6 +136,7 @@ export async function getRecord<T = Record<string, unknown>>(
 
     const res = await fetch(url, {
       headers: getHeaders(),
+      cache: 'no-store',
     })
 
     if (!res.ok) {

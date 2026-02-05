@@ -2,19 +2,28 @@ import { getEvents } from '../lib/events'
 import { Metadata } from 'next'
 import EventsClient from './EventsClient'
 import { isAfter, isSameDay, startOfDay } from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
 
 export const metadata: Metadata = {
   title: 'Events | Mox',
   description: 'Upcoming events and gatherings at Mox',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function EventsPage() {
   const allEvents = await getEvents()
 
-  // Filter to only future events
-  const today = startOfDay(new Date())
+  // Filter to only future events (using Pacific timezone since Mox is in SF)
+  const pacificTz = 'America/Los_Angeles'
+  const nowInPacific = toZonedTime(new Date(), pacificTz)
+  const todayInPacific = startOfDay(nowInPacific)
   const futureEvents = allEvents.filter((event) => {
-    return isAfter(event.startDate, today) || isSameDay(event.startDate, today)
+    const eventDateInPacific = toZonedTime(event.startDate, pacificTz)
+    return (
+      isAfter(eventDateInPacific, todayInPacific) ||
+      isSameDay(eventDateInPacific, todayInPacific)
+    )
   })
 
   // Sort by start time
