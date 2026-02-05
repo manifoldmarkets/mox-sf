@@ -168,6 +168,15 @@ export async function POST(request: Request) {
 
     const { userId, resumeDate, reason } = await request.json()
 
+    // Debug logging
+    console.log('[Pause Subscription] Debug info:', {
+      requestUserId: userId,
+      sessionUserId: session.userId,
+      sessionViewingAsUserId: session.viewingAsUserId,
+      sessionIsStaff: session.isStaff,
+      sessionName: session.name,
+    })
+
     // Validate userId - must be provided and match either the logged-in user or the user being viewed as
     if (!userId) {
       return Response.json({ error: 'User ID is required' }, { status: 400 })
@@ -176,6 +185,13 @@ export async function POST(request: Request) {
     // Authorization check: userId must match either session.userId or session.viewingAsUserId
     const isOwnAccount = userId === session.userId
     const isViewingAsTarget = session.isStaff && session.viewingAsUserId === userId
+
+    console.log('[Pause Subscription] Authorization check:', {
+      isOwnAccount,
+      isViewingAsTarget,
+      authorized: isOwnAccount || isViewingAsTarget,
+    })
+
     if (!isOwnAccount && !isViewingAsTarget) {
       return Response.json({ error: 'Unauthorized to pause this user' }, { status: 403 })
     }
@@ -201,6 +217,13 @@ export async function POST(request: Request) {
 
     // Get user information using the validated userId
     const userInfo = await getUserInfo(userId)
+    console.log('[Pause Subscription] User info lookup:', {
+      requestedUserId: userId,
+      foundUserEmail: userInfo?.email,
+      foundUserName: userInfo?.name,
+      foundCustomerId: userInfo?.customerId,
+    })
+
     if (!userInfo || !userInfo.customerId) {
       return Response.json(
         { error: 'User or subscription not found' },
@@ -284,6 +307,15 @@ export async function DELETE(request: Request) {
 
     const { userId } = await request.json()
 
+    // Debug logging
+    console.log('[Resume Subscription] Debug info:', {
+      requestUserId: userId,
+      sessionUserId: session.userId,
+      sessionViewingAsUserId: session.viewingAsUserId,
+      sessionIsStaff: session.isStaff,
+      sessionName: session.name,
+    })
+
     // Validate userId - must be provided and match either the logged-in user or the user being viewed as
     if (!userId) {
       return Response.json({ error: 'User ID is required' }, { status: 400 })
@@ -292,6 +324,13 @@ export async function DELETE(request: Request) {
     // Authorization check: userId must match either session.userId or session.viewingAsUserId
     const isOwnAccount = userId === session.userId
     const isViewingAsTarget = session.isStaff && session.viewingAsUserId === userId
+
+    console.log('[Resume Subscription] Authorization check:', {
+      isOwnAccount,
+      isViewingAsTarget,
+      authorized: isOwnAccount || isViewingAsTarget,
+    })
+
     if (!isOwnAccount && !isViewingAsTarget) {
       return Response.json({ error: 'Unauthorized to resume this user' }, { status: 403 })
     }
