@@ -26,18 +26,31 @@ export default function PortalNav() {
       .catch(() => setSession({ isLoggedIn: false }))
   }, [isPortalPage])
 
-  // Check for any top banner and get its height on route change
+  // Track banner visibility and adjust nav position on scroll
   useEffect(() => {
-    const checkBanner = () => {
+    const updateNavPosition = () => {
       const banner = document.querySelector('[data-top-banner]')
-      setBannerHeight(banner ? banner.getBoundingClientRect().height : 0)
+      if (!banner) {
+        setBannerHeight(0)
+        return
+      }
+      // Get how much of the banner is still visible (bottom edge relative to viewport top)
+      const bannerBottom = banner.getBoundingClientRect().bottom
+      // Nav should be positioned at banner bottom, but never below 0
+      setBannerHeight(Math.max(0, bannerBottom))
     }
 
     // Check immediately and after a short delay (for SSR hydration)
-    checkBanner()
-    const timeout = setTimeout(checkBanner, 100)
+    updateNavPosition()
+    const timeout = setTimeout(updateNavPosition, 100)
 
-    return () => clearTimeout(timeout)
+    // Update on scroll
+    window.addEventListener('scroll', updateNavPosition, { passive: true })
+
+    return () => {
+      clearTimeout(timeout)
+      window.removeEventListener('scroll', updateNavPosition)
+    }
   }, [pathname])
 
   // Don't render on portal pages or while loading
