@@ -104,6 +104,29 @@ The weekly cron job (`/api/cron/rotate-door-code`) updates Discord:
 1. Renames door code channel: `🚪 Code: 1234#`
 2. Posts to packages channel with rotation notice
 
+## Notification Types
+
+The bot posts notifications to `DISCORD_PACKAGES_CHANNEL_ID` (aka #notifications):
+
+| Event | Message Format |
+|-------|----------------|
+| Door code rotation | Weekly code change announcement |
+| Package arrival | Package notification for member |
+| EAG day pass registration | Name, email, and website of registrant |
+
+### EAG Day Pass Notifications
+
+When someone registers for an EAG day pass at `/eag26`, a notification is posted:
+
+```
+🎫 **EAG Day Pass Registration**
+**Name:** John Doe
+**Email:** john@example.com
+**Website:** https://linkedin.com/in/johndoe
+```
+
+This is triggered by `POST /eag26/api/register`.
+
 ## Rate Limiting
 
 Built into `discordFetch()`:

@@ -2,6 +2,8 @@
 
 This document describes the flow for purchasing and activating day passes.
 
+> **Note:** For the free EAG SF 2026 day pass flow, see [eag-day-pass-flow.md](./eag-day-pass-flow.md).
+
 ## Flowchart
 
 ```mermaid

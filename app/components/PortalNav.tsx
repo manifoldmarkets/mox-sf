@@ -12,6 +12,7 @@ interface SessionData {
 export default function PortalNav() {
   const pathname = usePathname()
   const [session, setSession] = useState<SessionData | null>(null)
+  const [bannerHeight, setBannerHeight] = useState(0)
 
   // Don't render on portal pages
   const isPortalPage = pathname?.startsWith('/portal')
@@ -25,13 +26,43 @@ export default function PortalNav() {
       .catch(() => setSession({ isLoggedIn: false }))
   }, [isPortalPage])
 
+  // Track banner visibility and adjust nav position on scroll
+  useEffect(() => {
+    const updateNavPosition = () => {
+      const banner = document.querySelector('[data-top-banner]')
+      if (!banner) {
+        setBannerHeight(0)
+        return
+      }
+      // Get how much of the banner is still visible (bottom edge relative to viewport top)
+      const bannerBottom = banner.getBoundingClientRect().bottom
+      // Nav should be positioned at banner bottom, but never below 0
+      setBannerHeight(Math.max(0, bannerBottom))
+    }
+
+    // Check immediately and after a short delay (for SSR hydration)
+    updateNavPosition()
+    const timeout = setTimeout(updateNavPosition, 100)
+
+    // Update on scroll
+    window.addEventListener('scroll', updateNavPosition, { passive: true })
+
+    return () => {
+      clearTimeout(timeout)
+      window.removeEventListener('scroll', updateNavPosition)
+    }
+  }, [pathname])
+
   // Don't render on portal pages or while loading
   if (isPortalPage || !session) {
     return null
   }
 
   return (
-    <nav className="fixed top-0 right-0 z-50 p-4">
+    <nav
+      className="fixed right-0 z-50 p-4"
+      style={{ top: bannerHeight }}
+    >
       {session.isLoggedIn ? (
         <a
           href="/portal"

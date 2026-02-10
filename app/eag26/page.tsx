@@ -1,19 +1,47 @@
 'use client'
 
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { useState } from 'react'
 
-function EAG26DayPassContent() {
-  const searchParams = useSearchParams()
-  const code = searchParams.get('code')
-  const isFreePass = code === 'table'
+export default function EAG26DayPassPage() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [website, setWebsite] = useState('')
+  const [isEAGAttendee, setIsEAGAttendee] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
+  const [doorCode, setDoorCode] = useState<string | null>(null)
 
-  const handleCheckout = () => {
-    const url = isFreePass
-      ? 'https://buy.stripe.com/6oU14p2QU4k9cZNdOSbbG08?prefilled_promo_code=TABLE'
-      : 'https://buy.stripe.com/6oU14p2QU4k9cZNdOSbbG08'
-    window.location.href = url
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/eag26/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          website,
+          isEAGAttendee,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Something went wrong')
+        return
+      }
+
+      setDoorCode(data.doorCode)
+    } catch {
+      setError('Failed to submit. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -25,14 +53,14 @@ function EAG26DayPassContent() {
       <h1>EAG day pass</h1>
 
       <p>
-        special rate for EAG 2026 attendees, Feb 9 &mdash; Feb 20.
+        Free entry for EAG SF 2026 attendees and their guests, Feb 9 &mdash; 17!
       </p>
 
       <div className="alert info">
         Mox is a semipublic coworking space hosting AI safety organizations and
         fellowships, and a host to{' '}
         <a
-          href="https://docs.google.com/document/d/14fm12_piAKRTLm4R5o_4DS43eCf84kWKuoerO4Sv3uo/edit?tab=t.0#heading=h.fwd10a41j1u4"
+          href="https://docs.google.com/document/d/1wscXdZkkOLJmOt5MXxv9o5AGYbA2RIo6qV5VjDi-idM/edit?tab=t.0#heading=h.yqiqt79rz7aw"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -43,48 +71,147 @@ function EAG26DayPassContent() {
 
       <hr />
 
-      <section>
-        <h2>get a day pass</h2>
-
-        <div
-          style={{
-            border: '2px solid var(--border-dark)',
-            padding: '20px',
-            background: 'var(--bg-secondary)',
-            textAlign: 'center',
-          }}
-        >
-
+      {doorCode ? (
+        <section>
+          <h2>your door code</h2>
+          <div
+            style={{
+              border: '2px solid var(--border-dark)',
+              padding: '20px',
+              background: 'var(--bg-secondary)',
+              textAlign: 'center',
+            }}
+          >
+            <div
+              style={{
+                fontSize: '3em',
+                fontWeight: 'bold',
+                fontFamily: 'monospace',
+                margin: '10px 0',
+              }}
+            >
+              {doorCode}
+            </div>
+            <p>
+              you'll also get this emailed to you!
+            </p>
+            <p>valid 9 AM &ndash; 8 PM every day through Tuesday, Feb 17
+            </p>
+          </div>
+        </section>
+      ) : (
+        <section>
+          <h2>get a free day pass</h2>
 
           <div
             style={{
-              fontSize: '3em',
-              fontWeight: 'bold',
-              margin: '10px 0',
+              border: '2px solid var(--border-dark)',
+              padding: '20px',
+              background: 'var(--bg-secondary)',
             }}
           >
-            {isFreePass ? 'FREE' : '$25'}
-            {!isFreePass && (
-              <span style={{ fontSize: '0.4em', fontWeight: 'normal' }}>/pass</span>
-            )}
-          </div>
-          <div style={{ marginBottom: '5px', color: 'var(--text-secondary)' }}>
-            full day access (9 AM &ndash; 11 PM)
-          </div>
-          <button
-            onClick={handleCheckout}
-            className="btn primary"
-            style={{ padding: '12px 24px', fontSize: '1.1em', marginTop: '20px' }}
-          >
-            {isFreePass ? 'get free pass' : 'buy day pass'}
-          </button>
-        </div>
 
-        <p className="muted" style={{ marginTop: '15px' }}>
-          after purchase, you'll receive an email with an activation link. click
-          the link on the day of your visit to get your door code.
-        </p>
-      </section>
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: '15px' }}>
+                <label htmlFor="name" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    border: '1px solid var(--border-dark)',
+                    background: 'var(--bg-primary)',
+                    color: 'var(--text-primary)',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label htmlFor="email" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    border: '1px solid var(--border-dark)',
+                    background: 'var(--bg-primary)',
+                    color: 'var(--text-primary)',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label htmlFor="website" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                  Personal website, LinkedIn, or other profile
+                </label>
+                <input
+                  type="url"
+                  id="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    border: '1px solid var(--border-dark)',
+                    background: 'var(--bg-primary)',
+                    color: 'var(--text-primary)',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={isEAGAttendee}
+                    onChange={(e) => setIsEAGAttendee(e.target.checked)}
+                    required
+                    style={{ marginTop: '3px' }}
+                  />
+                  <span>
+                    I confirm that I am an EAG SF 2026 attendee or the guest of one.
+                  </span>
+                </label>
+              </div>
+
+              {error && (
+                <div className="alert error" style={{ marginBottom: '15px' }}>
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isSubmitting || !name || !email || !website || !isEAGAttendee}
+                className="btn primary"
+                style={{ padding: '12px 24px', fontSize: '1.1em', width: '100%' }}
+              >
+                {isSubmitting ? 'submitting...' : 'get door code'}
+              </button>
+            </form>
+            <div style={{ marginTop: '15px', color: 'var(--text-secondary)', textAlign: 'center' }}>
+              full day access (9 AM &ndash; 8 PM)
+            </div>
+          </div>
+        </section>
+      )}
 
       <hr />
 
@@ -95,20 +222,21 @@ function EAG26DayPassContent() {
           <br />
           <span className="muted">between 12th & 13th St</span>
         </p>
-        <p className="muted">
-          enter the door code on the keypad at the front door.
-        </p>
       </section>
 
       <hr />
 
       <section>
-        <h2>what's included</h2>
+        <h2>Mox Floorplan</h2>
         <ul>
-          <li>monitors & fast wifi</li>
-          <li>coffee, tea & snacks</li>
-          <li>meeting rooms</li>
-          <li>member events</li>
+          <li>Floor 4: Hangouts & EAs floor, nap rooms, gym, printing
+          </li>
+          <li>Floor 3: Startups floor, hotdesks, cafeteria
+          </li>
+          <li>Floor 2: AI safety floor, hotdesks, podcasting room
+          </li>
+          <li>Floor 1: Events hall, bike storage
+          </li>
         </ul>
       </section>
 
@@ -117,18 +245,13 @@ function EAG26DayPassContent() {
       <section>
         <h2>more about Mox</h2>
         <p>
-          <Link href="/people">&rarr; see who's at Mox</Link>
+          <Link href="/membership">&rarr; membership info</Link>
         </p>
         <p>
           <Link href="/events">&rarr; upcoming events</Link>
         </p>
         <p>
-          <Link href="https://lu.ma/mox" target="_blank" rel="noopener noreferrer">
-            &rarr; EAG satellite events at Mox (lu.ma)
-          </Link>
-        </p>
-        <p>
-          <Link href="/membership">&rarr; membership info</Link>
+          <Link href="/discord">&rarr; join our discord</Link>
         </p>
       </section>
 
@@ -139,13 +262,5 @@ function EAG26DayPassContent() {
         <a href="mailto:team@moxsf.com">team@moxsf.com</a>
       </p>
     </>
-  )
-}
-
-export default function EAG26DayPassPage() {
-  return (
-    <Suspense fallback={null}>
-      <EAG26DayPassContent />
-    </Suspense>
   )
 }
