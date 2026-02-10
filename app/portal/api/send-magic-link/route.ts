@@ -80,11 +80,11 @@ export async function POST(request: Request) {
     // Update user record with token
     await updateUserToken(user.id, token, expiresAt)
 
-    // Get the base URL from the request or environment variable
+    // Get the base URL - use request URL in development, env var in production
     const requestUrl = new URL(request.url)
-    const baseUrl =
-      env.NEXT_PUBLIC_BASE_URL ||
-      `${requestUrl.protocol}//${requestUrl.host}`
+    const baseUrl = env.isDevelopment
+      ? `${requestUrl.protocol}//${requestUrl.host}`
+      : env.NEXT_PUBLIC_BASE_URL
 
     // Send email with magic link
     const magicLink = `${baseUrl}/portal/verify?token=${token}`
