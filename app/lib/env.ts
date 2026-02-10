@@ -81,6 +81,9 @@ export const env = {
   // ImgBB
   get IMGBB_API_KEY() { return optional('IMGBB_API_KEY') },
 
+  // EAG Guest Code
+  get EAG_GUEST_CODE() { return required('EAG_GUEST_CODE') },
+
   // Shared/public
   NODE_ENV,
   NEXT_PUBLIC_BASE_URL,
