@@ -214,6 +214,36 @@ Get organization name.
 
 ---
 
+### EAG Day Pass Registration
+
+#### POST `/eag26/api/register`
+Register for a free EAG SF 2026 day pass.
+
+- **Auth:** None
+- **Body:**
+  ```json
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "website": "https://linkedin.com/in/johndoe",
+    "isEAGAttendee": true
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "doorCode": "1234"
+  }
+  ```
+- **Details:**
+  - Creates or updates record in Airtable People table with "EAG 2026" tag
+  - Sends welcome email with door code via Resend
+  - Posts notification to Discord #notifications channel
+  - Door code valid 9 AM – 8 PM through Feb 17, 2026
+
+---
+
 ### Events
 
 #### GET `/portal/api/hosted-events`
