@@ -245,12 +245,12 @@ export default function EAG26DayPassPage() {
       <section>
         <h2>more about Mox</h2>
         <p>
-        <p>
           <Link href="/membership">&rarr; membership info</Link>
         </p>
         <p>
           <Link href="/events">&rarr; upcoming events</Link>
         </p>
+        <p>
           <Link href="/discord">&rarr; join our discord</Link>
         </p>
       </section>
