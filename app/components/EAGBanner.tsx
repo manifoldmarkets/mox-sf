@@ -18,13 +18,13 @@ export default async function EAGBanner() {
       className="block bg-amber-600 text-white text-sm text-center py-2 px-4 hover:bg-amber-700 transition-colors"
     >
       {isLoggedIn ? (
-        <>
-          Bring your friends visiting for EAG SF — free day passes available!
-        </>
+        <u>
+          Invite your friends visiting for EAG SF!
+        </u>
       ) : (
-        <>
+        <u>
           In town for EAG SF? Get a free day pass to Mox!
-        </>
+        </u>
       )}
     </a>
   )
