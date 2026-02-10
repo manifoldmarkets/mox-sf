@@ -26,9 +26,9 @@ export default function PortalNav() {
       .catch(() => setSession({ isLoggedIn: false }))
   }, [isPortalPage])
 
-  // Check for EAG banner and get its height
+  // Check for any top banner and get its height
   useEffect(() => {
-    const banner = document.querySelector('[data-eag-banner]')
+    const banner = document.querySelector('[data-top-banner]')
     if (banner) {
       setBannerHeight(banner.getBoundingClientRect().height)
     }
