@@ -26,13 +26,19 @@ export default function PortalNav() {
       .catch(() => setSession({ isLoggedIn: false }))
   }, [isPortalPage])
 
-  // Check for any top banner and get its height
+  // Check for any top banner and get its height on route change
   useEffect(() => {
-    const banner = document.querySelector('[data-top-banner]')
-    if (banner) {
-      setBannerHeight(banner.getBoundingClientRect().height)
+    const checkBanner = () => {
+      const banner = document.querySelector('[data-top-banner]')
+      setBannerHeight(banner ? banner.getBoundingClientRect().height : 0)
     }
-  }, [])
+
+    // Check immediately and after a short delay (for SSR hydration)
+    checkBanner()
+    const timeout = setTimeout(checkBanner, 100)
+
+    return () => clearTimeout(timeout)
+  }, [pathname])
 
   // Don't render on portal pages or while loading
   if (isPortalPage || !session) {
