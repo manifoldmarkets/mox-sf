@@ -12,6 +12,7 @@ interface SessionData {
 export default function PortalNav() {
   const pathname = usePathname()
   const [session, setSession] = useState<SessionData | null>(null)
+  const [bannerHeight, setBannerHeight] = useState(0)
 
   // Don't render on portal pages
   const isPortalPage = pathname?.startsWith('/portal')
@@ -25,13 +26,24 @@ export default function PortalNav() {
       .catch(() => setSession({ isLoggedIn: false }))
   }, [isPortalPage])
 
+  // Check for EAG banner and get its height
+  useEffect(() => {
+    const banner = document.querySelector('[data-eag-banner]')
+    if (banner) {
+      setBannerHeight(banner.getBoundingClientRect().height)
+    }
+  }, [])
+
   // Don't render on portal pages or while loading
   if (isPortalPage || !session) {
     return null
   }
 
   return (
-    <nav className="fixed top-0 right-0 z-50 p-4">
+    <nav
+      className="fixed right-0 z-50 p-4"
+      style={{ top: bannerHeight }}
+    >
       {session.isLoggedIn ? (
         <a
           href="/portal"
