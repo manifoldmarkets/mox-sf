@@ -64,6 +64,7 @@ ${htmlBody}
       },
       body: JSON.stringify({
         from: 'Mox SF <portal@account.moxsf.com>',
+        reply_to: 'team@moxsf.com',
         to: [to],
         subject: 'Your Mox EAG Day Pass',
         html,
