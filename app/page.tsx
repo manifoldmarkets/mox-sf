@@ -3,6 +3,7 @@ import Gallery from './venue-gallery'
 import PeopleGallery from './people-gallery'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
+import EAGBanner from './components/EAGBanner'
 
 
 function Link({
@@ -31,15 +32,8 @@ export default async function Component() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* Open house banner */}
-      {/* <a
-        href="https://manifund.org/projects/mox-a-coworking--events-space-in-sf"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block bg-brand text-white text-sm text-center py-2 hover:bg-brand-dark transition-colors"
-      >
-        Mox is fundraising! Learn more & support us <u>here</u>
-      </a> */}
+      {/* EAG SF 2026 day pass banner */}
+      <EAGBanner />
 
       {/* Hero section */}
       <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-gray-50 dark:bg-gray-900">
