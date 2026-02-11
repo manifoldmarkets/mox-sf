@@ -227,8 +227,18 @@ export default function EAG26DayPassPage() {
       <hr />
 
       <section>
-        <h2>Mox Floorplan</h2>
-        <ul>
+        <h2>FYI</h2>
+        <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
+          <li>Shoes off policy! We provide socks and bathroom slippers, you can bring your own indoor slippers if desired.</li>
+          <li>Our building has no elevator, walk up only!</li>
+        </ul>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>Orienting to Mox</h2>
+        <ul style={{ listStyleType: "circle", paddingLeft: '20px' }}>
           <li>Floor 4: Hangouts & EAs floor, nap rooms, gym, printing
           </li>
           <li>Floor 3: Startups floor, hotdesks, cafeteria
@@ -238,6 +248,9 @@ export default function EAG26DayPassPage() {
           <li>Floor 1: Events hall, bike storage
           </li>
         </ul>
+        <br />
+        <b>We recommend you try the 4th floor!</b>
+
       </section>
 
       <hr />

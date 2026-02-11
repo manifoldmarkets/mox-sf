@@ -1,6 +1,6 @@
 Hi {{name}}! Thanks for registering for a free EAG pass, we're excited to see you soon!
 
-## Your Door Code
+## Door Code
 **{{doorCode}}**
 You'll enter this code on the keypad at the front door!
 The code is valid 9 AM – 8 PM every day through Tuesday, Feb 17.
@@ -9,7 +9,7 @@ The code is valid 9 AM – 8 PM every day through Tuesday, Feb 17.
 [1680 Mission St, San Francisco](https://maps.app.goo.gl/xnXHNAHRu8iT1Ksh6) (between 12th & 13th St)
 
 ## FYI
-- Shoes off policy! We provide socks, you can bring your own indoor slippers if desired.
+- Shoes off policy! We provide socks and bathroom slippers, you can bring your own indoor slippers if desired.
 - Our building has no elevator, walk up only!
 
 ## Orienting to Mox
