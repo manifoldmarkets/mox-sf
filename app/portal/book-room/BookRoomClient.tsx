@@ -117,30 +117,29 @@ export default function BookRoomClient({ userId, userName }: BookRoomClientProps
     loadDayBookings()
   }, [selectedDate, rooms])
 
-  // Set default date and prefill times to nearest hour
-  // If after booking hours (9pm), default to next day at 8am
+  // Set default date and prefill times to current hour
+  // If after booking hours (10pm), default to next day at 8am
   useEffect(() => {
     const now = new Date()
     const currentHour = now.getHours()
-    const nextHour = currentHour + 1
 
     // Determine if we should use today or tomorrow
     let bookingDate: Date
     let defaultStartHour: number
 
-    if (nextHour >= 22 || currentHour >= 21) {
-      // After 9pm - use tomorrow at 8am
+    if (currentHour >= 22) {
+      // After 10pm - use tomorrow at 8am
       bookingDate = new Date(now)
       bookingDate.setDate(bookingDate.getDate() + 1)
       defaultStartHour = 8
-    } else if (nextHour < 8) {
+    } else if (currentHour < 8) {
       // Before 8am - use today at 8am
       bookingDate = now
       defaultStartHour = 8
     } else {
-      // During booking hours - use today at next hour
+      // During booking hours - use today at current hour
       bookingDate = now
-      defaultStartHour = nextHour
+      defaultStartHour = currentHour
     }
 
     // Format date as YYYY-MM-DD in local time (not UTC)

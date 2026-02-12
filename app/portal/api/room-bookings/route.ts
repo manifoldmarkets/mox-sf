@@ -81,7 +81,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (start < new Date()) {
+    // Allow booking the current hour (e.g. booking the 3pm slot at 3:17pm)
+    const startOfCurrentHour = new Date()
+    startOfCurrentHour.setMinutes(0, 0, 0)
+    if (start < startOfCurrentHour) {
       return NextResponse.json(
         { error: 'Cannot book in the past' },
         { status: 400 }
