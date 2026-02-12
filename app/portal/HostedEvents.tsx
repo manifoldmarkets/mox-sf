@@ -127,13 +127,7 @@ export default function HostedEvents({ userName }: HostedEventsProps) {
       )}
 
       <p style={{ marginTop: '15px' }}>
-        <a
-          href="https://airtable.com/appkHZ2UvU6SouT5y/pagHlAqA2JFG7nNP2/form"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          submit a new event
-        </a>
+        <Link href="/portal/submit-event">submit a new event</Link>
       </p>
     </>
   )

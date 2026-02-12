@@ -191,13 +191,20 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
         {/* Sync link */}
         <div className="flex gap-4 mb-6">
           <div className="flex-shrink-0 w-24 hidden lg:block"></div>
-          <div className="flex-1 min-w-0 text-center sm:text-left">
+          <div className="flex-1 min-w-0 text-center sm:text-left flex flex-wrap gap-x-3 gap-y-1 justify-center sm:justify-start">
             <button
               onClick={() => setIsCalendarOpen(true)}
               className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2 cursor-pointer"
             >
               Sync to your calendar
             </button>
+            <span className="text-sm text-gray-300 dark:text-gray-600">·</span>
+            <Link
+              href="/portal/submit-event"
+              className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
+            >
+              Submit event (members only)
+            </Link>
           </div>
         </div>
 
