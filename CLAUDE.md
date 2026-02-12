@@ -24,7 +24,7 @@ Use `bun run test` (not `bun test`) to run tests. This project uses vitest, and 
 
 ## Shared Dev Server (codev)
 
-When the user runs `bun run codev`, the dev server logs are piped to `/tmp/dev-server.log`. You should personally run `bun run dev`, though.
+Typically, I am running a server via `bun run codev`, such that the dev server logs are piped to `/tmp/dev-server.log` for you to access. Check first to see if that's running. If this is not running, you should personally be running the standard command `bun run dev` instead, though.
 
 **To check logs:** `tail -100 /tmp/dev-server.log` (or `tail -f` to watch live) Use this proactively.
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRecord, findRecords, Tables } from '@/app/lib/airtable'
 import { getSession } from '@/app/lib/session'
+import { sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord'
 
 const VALID_TYPES = ['Public', 'Members', 'Private']
 const VALID_STATUSES = ['Idea', 'Confirmed']
@@ -113,6 +114,29 @@ export async function POST(request: NextRequest) {
     }
 
     const record = await createRecord(Tables.Events, fields)
+
+    // Notify staff on Discord
+    const submitterName = session.viewingAsName || session.name || session.email
+    const dateStr = new Date(body.startDate).toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZone: 'America/Los_Angeles',
+    })
+    const statusNote = status === 'Confirmed' ? '(auto-confirmed)' : '(needs review)'
+    await sendChannelMessage(
+      DISCORD_CHANNELS.NOTIFICATIONS,
+      `📅 **New Event Submitted** ${statusNote}\n` +
+        (body.url
+          ? `**[${body.name.trim()}](<${body.url.trim()}>)**\n`
+          : `**${body.name.trim()}**\n`) +
+        `**When:** ${dateStr}\n` +
+        `**Type:** ${body.type}\n` +
+        `**By:** ${submitterName}\n` +
+        `[review in airtable](<https://airtable.com/appkHZ2UvU6SouT5y/tblqzGMNypqO3jftS/viw2vtDPy1HxntPqS>)`
+    )
 
     return NextResponse.json({
       event: { id: record.id },
