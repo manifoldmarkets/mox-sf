@@ -134,7 +134,7 @@ async function handleMemberDayPass(session: Stripe.Checkout.Session) {
 
   try {
     await createRecord(Tables.DayPasses, {
-      Name: session.id.slice(-6),
+      Name: session.id,
       Username: userName,
       Status: 'Unused',
       'Stripe link (from User)': `Member day pass - $25 - ${userEmail}`,

@@ -39,7 +39,7 @@ export async function POST(request: Request) {
           quantity: 1,
         },
       ],
-      success_url: `${baseUrl}/day-pass/activate?payment_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${baseUrl}/day-pass/activate?id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/portal`,
       metadata: {
         type: 'member_day_pass',
