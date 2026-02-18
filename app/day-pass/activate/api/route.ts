@@ -66,14 +66,8 @@ export async function POST(request: Request) {
       return Response.json({ success: false, status: 'not-found' })
     }
 
-    // Truncate payment ID to last 6 chars to match how it's stored in Airtable
-    // For multi-pass purchases, IDs end with "-1", "-2", etc. so we need to preserve that
-    const truncatedId = paymentId.includes('-')
-      ? paymentId.slice(0, -2).slice(-6) + paymentId.slice(-2) // e.g., "cs_live_abc123-1" -> "c123-1"
-      : paymentId.slice(-6) // e.g., "cs_live_abc123" -> "bc123"
-
-    // Fetch day pass record from Airtable
-    const escapedPaymentId = escapeAirtableString(truncatedId)
+    // Fetch day pass record from Airtable using the full payment ID
+    const escapedPaymentId = escapeAirtableString(paymentId)
     const record = await findRecord<DayPassFields>(
       Tables.DayPasses,
       `{Name}='${escapedPaymentId}'`
