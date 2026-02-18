@@ -3,7 +3,7 @@ import Gallery from './venue-gallery'
 import PeopleGallery from './people-gallery'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
-import EAGBanner from './components/EAGBanner'
+import DonateBanner from './components/DonateBanner'
 
 
 function Link({
@@ -32,8 +32,8 @@ export default async function Component() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* EAG SF 2026 day pass banner */}
-      <EAGBanner />
+      {/* Donate banner */}
+      <DonateBanner />
 
       {/* Hero section */}
       <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-gray-50 dark:bg-gray-900">
@@ -478,6 +478,13 @@ export default async function Component() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-gray-500 dark:text-gray-400 mb-2">
             A project of <Link href="https://manifund.org">Manifund</Link>
+            {' · '}
+            <a
+              href="/donate"
+              className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
+            >
+              Donate
+            </a>
           </p>
           <p className="text-gray-500 dark:text-gray-400">
             Questions? Contact{' '}
