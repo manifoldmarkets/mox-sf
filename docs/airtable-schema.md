@@ -158,6 +158,20 @@ Physical room/desk management.
 
 ---
 
+### Floors
+
+Per-floor metadata used by the `/floorplans` public page.
+
+| Field | Type | Description | Used by App |
+|-------|------|-------------|-------------|
+| `Name` | singleLineText | Floor name, e.g. "Floor 1" | ✅ Floorplans page |
+| `Description` | multilineText | Short description of the floor's character/use | ✅ Floorplans page |
+| `Images` | multipleAttachments | Photos of the floor (shown alongside SVG floorplan) | ✅ Floorplans page |
+
+The SVG floorplans themselves are stored as static files in `/public/floorplans/Floor N.svg`.
+
+---
+
 ### Other Tables (not used by app)
 
 - **Investments** - Investment tracking
