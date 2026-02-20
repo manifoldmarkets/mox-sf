@@ -1,8 +1,9 @@
-import { getEvents } from '../lib/events'
+import { getEvents, Event } from '../lib/events'
 import { Metadata } from 'next'
 import EventsClient from './EventsClient'
 import { isAfter, isSameDay, startOfDay } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
+import DataErrorBanner from '../components/DataErrorBanner'
 
 export const metadata: Metadata = {
   title: 'Events | Mox',
@@ -12,7 +13,14 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function EventsPage() {
-  const allEvents = await getEvents()
+  let allEvents: Event[] = []
+  let dataError = false
+  try {
+    allEvents = await getEvents()
+  } catch (e) {
+    console.error('Failed to fetch events:', e)
+    dataError = true
+  }
 
   // Filter to only future events (using Pacific timezone since Mox is in SF)
   const pacificTz = 'America/Los_Angeles'
@@ -29,5 +37,10 @@ export default async function EventsPage() {
   // Sort by start time
   futureEvents.sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
 
-  return <EventsClient initialEvents={futureEvents} />
+  return (
+    <>
+      {dataError && <DataErrorBanner />}
+      <EventsClient initialEvents={futureEvents} />
+    </>
+  )
 }

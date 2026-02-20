@@ -1,9 +1,11 @@
 import { Metadata } from 'next'
 import {
+  Event,
   getPastEvents,
   sortPastEventsByPriorityAndDate,
 } from '@/app/lib/events'
 import HistoryClient from './HistoryClient'
+import DataErrorBanner from '../components/DataErrorBanner'
 
 export const metadata: Metadata = {
   title: 'History | Mox',
@@ -11,8 +13,20 @@ export const metadata: Metadata = {
 }
 
 export default async function PastEventsPage() {
-  const rawEvents = await getPastEvents()
+  let rawEvents: Event[] = []
+  let dataError = false
+  try {
+    rawEvents = await getPastEvents()
+  } catch (e) {
+    console.error('Failed to fetch past events:', e)
+    dataError = true
+  }
   const events = sortPastEventsByPriorityAndDate(rawEvents)
 
-  return <HistoryClient initialEvents={events} />
+  return (
+    <>
+      {dataError && <DataErrorBanner />}
+      <HistoryClient initialEvents={events} />
+    </>
+  )
 }

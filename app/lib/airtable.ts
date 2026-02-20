@@ -92,6 +92,7 @@ export async function getRecords<T = Record<string, unknown>>(
     const res = await fetch(url, {
       headers: getHeaders(),
       cache: 'no-store',
+      signal: AbortSignal.timeout(5000),
     })
 
     if (!res.ok) {
@@ -138,6 +139,7 @@ export async function getRecord<T = Record<string, unknown>>(
     const res = await fetch(url, {
       headers: getHeaders(),
       cache: 'no-store',
+      signal: AbortSignal.timeout(5000),
     })
 
     if (!res.ok) {
