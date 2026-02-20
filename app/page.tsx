@@ -4,7 +4,6 @@ import PeopleGallery from './people-gallery'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
 import DonateBanner from './components/DonateBanner'
-import DataErrorBanner from './components/DataErrorBanner'
 
 
 function Link({
@@ -30,17 +29,14 @@ function Link({
 
 export default async function Component() {
   let events: Awaited<ReturnType<typeof getEvents>> = []
-  let dataError = false
   try {
     events = await getEvents()
   } catch (e) {
     console.error('Failed to fetch events:', e)
-    dataError = true
   }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {dataError && <DataErrorBanner />}
       {/* Donate banner */}
       <DonateBanner />
 

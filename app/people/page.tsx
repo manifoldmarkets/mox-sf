@@ -8,7 +8,6 @@ import {
   buildDirectoryData,
 } from './people'
 import DirectoryClient from './DirectoryClient'
-import DataErrorBanner from '../components/DataErrorBanner'
 import './people.css'
 
 export const metadata: Metadata = {
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
 }
 
 export default async function PeoplePage({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
-  let dataError = false
   let people: Awaited<ReturnType<typeof getPeople>> = []
   let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
   let programsMap: Awaited<ReturnType<typeof getPrograms>> = new Map()
@@ -27,7 +25,6 @@ export default async function PeoplePage({ searchParams }: { searchParams: Promi
     ])
   } catch (e) {
     console.error('Failed to fetch people data:', e)
-    dataError = true
   }
 
   const params = await searchParams
@@ -36,7 +33,6 @@ export default async function PeoplePage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="directory-wrapper">
-      {dataError && <DataErrorBanner />}
       <div className="directory">
         <Link href="/" className="back-link">&larr; back to home</Link>
         <DirectoryClient

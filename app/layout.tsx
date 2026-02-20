@@ -9,6 +9,7 @@ import {
 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import PortalNav from './components/PortalNav'
+import DataErrorBanner from './components/DataErrorBanner'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -87,6 +88,7 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${lora.variable} ${merriweather.variable} ${firaSans.variable} ${geistMono.variable} ${handwriting.variable} font-lora`}
       >
+        <DataErrorBanner />
         <PortalNav />
         {children}
         <Analytics />
