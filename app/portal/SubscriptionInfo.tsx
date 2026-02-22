@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 interface SubscriptionInfoProps {
   stripeCustomerId: string | null
+  userId: string
 }
 
 interface SubscriptionData {
@@ -23,6 +24,7 @@ interface CancelledData {
 
 export default function SubscriptionInfo({
   stripeCustomerId,
+  userId,
 }: SubscriptionInfoProps) {
   const [subscription, setSubscription] = useState<SubscriptionData | null>(
     null
@@ -126,6 +128,7 @@ export default function SubscriptionInfo({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          userId,
           resumeDate: resumeDate || null,
           reason: pauseReason,
         }),
@@ -160,6 +163,8 @@ export default function SubscriptionInfo({
     try {
       const response = await fetch('/portal/api/pause-subscription', {
         method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
       })
 
       const data = await response.json()
