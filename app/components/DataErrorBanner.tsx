@@ -20,11 +20,8 @@ export default function DataErrorBanner() {
 
     checkHealth()
 
-    // Re-check every 30s
-    const interval = setInterval(checkHealth, 30_000)
     return () => {
       mounted = false
-      clearInterval(interval)
     }
   }, [])
 
