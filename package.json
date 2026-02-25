@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "codev": "next dev 2>&1 | tee /tmp/dev-server.log",
+    "dev": "next dev 2>&1 | tee /tmp/dev-server.log",
     "build": "next build",
     "start": "next start",
     "prettier": "prettier --write .",
