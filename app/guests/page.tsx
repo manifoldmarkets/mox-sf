@@ -45,7 +45,7 @@ function PartnerCard({
         <img
           src={logoUrl}
           alt={`${name} logo`}
-          className={`w-36 h-36 ${bgColor} p-3`}
+          className={`w-36 h-36 ${bgColor} p-3 object-contain`}
         />
       ) : (
         <div className="w-36 h-36 bg-black border border-gray-200 flex items-center justify-center text-gray-400 text-xs font-mono mr-4 overflow-hidden">
@@ -260,6 +260,12 @@ export default function GuestsPage() {
               url="https://bluedot.org/"
               logoUrl="https://bluedot.org/images/logo/BlueDot_Impact_Logo_White.svg"
               bgColor="bg-[#00104e]"
+            />
+            <PartnerCard
+              name="Sentient Futures"
+              url="https://www.sentientfutures.ai/"
+              logoUrl="https://images.squarespace-cdn.com/content/v1/688ec3cb2608393cd4dacb49/91d99e3b-8e0f-4c7d-9a44-45e2e283bf60/3+%5Bmain%5Dhorizontal-starry%404x.png?format=1500w"
+              bgColor="bg-white"
             />
           </div>
         </section>

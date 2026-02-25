@@ -462,6 +462,19 @@ export default async function Component() {
                 Timaeus
               </span>
             </a>
+
+            <a
+              href="https://www.sentientfutures.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center overflow-hidden p-3 border border-gray-200 dark:border-gray-600"
+            >
+              <img
+                src="https://images.squarespace-cdn.com/content/v1/688ec3cb2608393cd4dacb49/91d99e3b-8e0f-4c7d-9a44-45e2e283bf60/3+%5Bmain%5Dhorizontal-starry%404x.png?format=1500w"
+                alt="Sentient Futures logo"
+                className="h-full w-auto object-contain"
+              />
+            </a>
           </div>
         </div>
       </div>
