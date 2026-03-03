@@ -1,5 +1,5 @@
 import { Event } from '../lib/events'
-import { format, differenceInDays } from 'date-fns'
+import { format, differenceInDays, startOfDay, isAfter, isSameDay } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import Link from 'next/link'
 
@@ -8,9 +8,15 @@ interface EventsCardCompactProps {
 }
 
 export default function EventsCardCompact({ events }: EventsCardCompactProps) {
-  // Show only upcoming events, limit to 5
+  // Show only upcoming events (including ones happening today), limit to 5
+  const pacificTz = 'America/Los_Angeles'
+  const nowInPacific = toZonedTime(new Date(), pacificTz)
+  const todayInPacific = startOfDay(nowInPacific)
   const upcomingEvents = events
-    .filter((event) => event.startDate >= new Date())
+    .filter((event) => {
+      const eventDateInPacific = toZonedTime(event.startDate, pacificTz)
+      return isAfter(eventDateInPacific, todayInPacific) || isSameDay(eventDateInPacific, todayInPacific)
+    })
     .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
     .slice(0, 5)
 
