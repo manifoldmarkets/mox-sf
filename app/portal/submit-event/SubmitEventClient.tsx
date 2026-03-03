@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 
 interface DirectoryMember {
   id: string
@@ -36,6 +36,12 @@ function formatDateTimeForInput(dateString?: string): string {
 }
 
 const TYPE_OPTIONS = ['Public', 'Members', 'Private']
+const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+
+interface RecurrenceInstance {
+  date: string // datetime-local format
+  url: string
+}
 
 export default function SubmitEventClient({ userId, userName }: SubmitEventClientProps) {
   // URL fetch state
@@ -55,6 +61,18 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
   const [type, setType] = useState('')
   const [status, setStatus] = useState('Idea')
   const [notes, setNotes] = useState('')
+
+  // Recurrence state
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState<'weekly' | 'biweekly' | 'monthly'>('weekly')
+  const [recurrenceDays, setRecurrenceDays] = useState<boolean[]>([false, false, false, false, false, false, false])
+  const [recurrenceEndType, setRecurrenceEndType] = useState<'for' | 'until'>('for')
+  const [recurrenceCount, setRecurrenceCount] = useState(4)
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState(() => {
+    const d = new Date()
+    d.setDate(d.getDate() + 30)
+    return d.toISOString().split('T')[0]
+  })
+  const [manualInstances, setManualInstances] = useState<RecurrenceInstance[] | null>(null)
 
   // Co-hosts state
   const [coHosts, setCoHosts] = useState<DirectoryMember[]>([])
@@ -91,10 +109,99 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
       m.name.toLowerCase().includes(coHostSearch.toLowerCase())
   )
 
+  // Auto-select day of week from startDate when switching to Recurring
+  useEffect(() => {
+    if (!startDate || status !== 'Recurring') return
+    const d = new Date(startDate)
+    if (isNaN(d.getTime())) return
+    const ourIndex = (d.getDay() + 6) % 7 // Convert Sun=0 to Mon=0 index
+    setRecurrenceDays((prev) => {
+      if (prev.some(Boolean)) return prev
+      const next = [...prev]
+      next[ourIndex] = true
+      return next
+    })
+  }, [startDate, status])
+
+  // Generate recurrence dates for preview
+  const recurrenceDates = useMemo(() => {
+    if (status !== 'Recurring' || !startDate) return []
+    const start = new Date(startDate)
+    if (isNaN(start.getTime())) return []
+
+    const dates: Date[] = []
+
+    if (recurrenceFrequency === 'monthly') {
+      const limit = recurrenceEndType === 'for' ? recurrenceCount : 52
+      const endLimit =
+        recurrenceEndType === 'until' && recurrenceEndDate
+          ? new Date(recurrenceEndDate + 'T23:59:59')
+          : null
+
+      for (let i = 0; i < limit; i++) {
+        const d = new Date(start)
+        d.setMonth(d.getMonth() + i)
+        if (endLimit && d > endLimit) break
+        dates.push(d)
+      }
+    } else {
+      const interval = recurrenceFrequency === 'biweekly' ? 2 : 1
+      const selectedDays = recurrenceDays.reduce<number[]>((acc, selected, i) => {
+        if (selected) acc.push(i)
+        return acc
+      }, [])
+      if (selectedDays.length === 0) return []
+
+      const limit = recurrenceEndType === 'for' ? recurrenceCount : 52
+      const endLimit =
+        recurrenceEndType === 'until' && recurrenceEndDate
+          ? new Date(recurrenceEndDate + 'T23:59:59')
+          : null
+
+      // Find Monday of the week containing startDate
+      const ourDayIndex = (start.getDay() + 6) % 7
+      const monday = new Date(start)
+      monday.setDate(monday.getDate() - ourDayIndex)
+      monday.setHours(0, 0, 0, 0)
+
+      for (let week = 0; week < limit; week++) {
+        for (const dayIdx of selectedDays) {
+          const d = new Date(monday)
+          d.setDate(d.getDate() + week * 7 * interval + dayIdx)
+          d.setHours(start.getHours(), start.getMinutes(), 0, 0)
+          if (d < start) continue
+          if (endLimit && d > endLimit) continue
+          dates.push(d)
+        }
+      }
+      dates.sort((a, b) => a.getTime() - b.getTime())
+    }
+
+    return dates.slice(0, 52)
+  }, [
+    status,
+    startDate,
+    recurrenceFrequency,
+    recurrenceDays,
+    recurrenceEndType,
+    recurrenceCount,
+    recurrenceEndDate,
+  ])
+
+  // Sync generated dates into editable instances when recurrence config changes
+  useEffect(() => {
+    setManualInstances(null)
+  }, [recurrenceFrequency, recurrenceDays, recurrenceEndType, recurrenceCount, recurrenceEndDate, startDate])
+
+  const displayInstances: RecurrenceInstance[] = manualInstances ?? recurrenceDates.map((d) => ({
+    date: formatDateTimeForInput(d.toISOString()),
+    url: '',
+  }))
+
   // Submission state
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const [submitResult, setSubmitResult] = useState<{ status: string } | null>(null)
+  const [submitResult, setSubmitResult] = useState<{ status: string; count?: number } | null>(null)
 
   const handleFetchUrl = async () => {
     if (!eventUrl.trim()) return
@@ -189,6 +296,13 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
         body.coHosts = coHosts.map((c) => c.id)
       }
 
+      if (status === 'Recurring' && displayInstances.length > 0) {
+        body.recurrenceInstances = displayInstances.map((inst) => ({
+          date: new Date(inst.date).toISOString(),
+          url: inst.url || undefined,
+        }))
+      }
+
       const response = await fetch('/portal/api/create-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -202,7 +316,7 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
         return
       }
 
-      setSubmitResult({ status: data.status })
+      setSubmitResult({ status: data.status, count: data.count })
     } catch {
       setSubmitError('Failed to submit event. Please try again.')
     } finally {
@@ -214,7 +328,12 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
   if (submitResult) {
     return (
       <div className="alert success">
-        {submitResult.status === 'Confirmed' ? (
+        {submitResult.status === 'Recurring' ? (
+          <p>
+            {submitResult.count} recurring events created! we&apos;ll review them and
+            get back to you shortly.
+          </p>
+        ) : submitResult.status === 'Confirmed' ? (
           <p>
             event submitted and confirmed! it will appear on the{' '}
             <a href="/events">events calendar</a>.
@@ -458,11 +577,212 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
             >
               <option value="Idea">Idea</option>
               <option value="Confirmed">Confirmed</option>
+              <option value="Recurring">Recurring</option>
             </select>
             <p className="muted" style={{ marginTop: '5px' }}>
               if you mark it &apos;Confirmed&apos;, it will automatically show up on the events calendar.
+              &apos;Recurring&apos; is for events that repeat regularly (e.g. weekly meetups).
             </p>
           </div>
+
+          {status === 'Recurring' && startDate && (
+            <div
+              style={{
+                padding: '15px',
+                border: '1px solid var(--border-color)',
+                marginBottom: '15px',
+              }}
+            >
+              <div className="form-group">
+                <label>repeats:</label>
+                <select
+                  value={recurrenceFrequency}
+                  onChange={(e) =>
+                    setRecurrenceFrequency(e.target.value as 'weekly' | 'biweekly' | 'monthly')
+                  }
+                >
+                  <option value="weekly">Weekly</option>
+                  <option value="biweekly">Every other week</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </div>
+
+              {recurrenceFrequency !== 'monthly' && (
+                <div className="form-group">
+                  <label>days of the week:</label>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    {DAY_LABELS.map((label, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => {
+                          const next = [...recurrenceDays]
+                          next[i] = !next[i]
+                          if (next.some(Boolean)) setRecurrenceDays(next)
+                        }}
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          border: recurrenceDays[i]
+                            ? '2px solid #e44'
+                            : '1px solid var(--border-color)',
+                          background: recurrenceDays[i] ? '#e44' : 'none',
+                          color: recurrenceDays[i] ? '#fff' : 'var(--text-color)',
+                          cursor: 'pointer',
+                          fontSize: '0.85em',
+                          fontWeight: recurrenceDays[i] ? 'bold' : 'normal',
+                          padding: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="form-group" style={{ marginBottom: recurrenceDates.length > 0 ? '15px' : 0 }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      border: '1px solid var(--border-color)',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setRecurrenceEndType('until')}
+                      style={{
+                        padding: '4px 12px',
+                        border: 'none',
+                        background:
+                          recurrenceEndType === 'until' ? 'var(--text-color)' : 'none',
+                        color:
+                          recurrenceEndType === 'until' ? 'var(--bg-color)' : 'var(--text-color)',
+                        cursor: 'pointer',
+                        fontSize: '0.9em',
+                      }}
+                    >
+                      until
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRecurrenceEndType('for')}
+                      style={{
+                        padding: '4px 12px',
+                        border: 'none',
+                        borderLeft: '1px solid var(--border-color)',
+                        background:
+                          recurrenceEndType === 'for' ? 'var(--text-color)' : 'none',
+                        color:
+                          recurrenceEndType === 'for' ? 'var(--bg-color)' : 'var(--text-color)',
+                        cursor: 'pointer',
+                        fontSize: '0.9em',
+                      }}
+                    >
+                      for
+                    </button>
+                  </div>
+
+                  {recurrenceEndType === 'for' ? (
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                      <input
+                        type="number"
+                        min={2}
+                        max={52}
+                        value={recurrenceCount}
+                        onChange={(e) =>
+                          setRecurrenceCount(
+                            Math.max(2, Math.min(52, parseInt(e.target.value) || 2))
+                          )
+                        }
+                        style={{
+                          width: '60px',
+                          border: '1px solid var(--border-color)',
+                          padding: '4px 8px',
+                        }}
+                      />
+                      <span className="muted">
+                        {recurrenceFrequency === 'monthly' ? 'months' : 'weeks'}
+                      </span>
+                    </div>
+                  ) : (
+                    <input
+                      type="date"
+                      value={recurrenceEndDate}
+                      onChange={(e) => setRecurrenceEndDate(e.target.value)}
+                      min={startDate ? startDate.split('T')[0] : undefined}
+                      style={{ width: '140px' }}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {displayInstances.length > 0 && (
+                <div>
+                  <label style={{ marginBottom: '8px', display: 'block' }}>
+                    {displayInstances.length} times:
+                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {displayInstances.map((inst, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          display: 'flex',
+                          gap: '6px',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <input
+                          type="datetime-local"
+                          value={inst.date}
+                          onChange={(e) => {
+                            const next = [...displayInstances]
+                            next[i] = { ...next[i], date: e.target.value }
+                            setManualInstances(next)
+                          }}
+                          style={{ flex: '0 0 auto' }}
+                        />
+                        <input
+                          type="url"
+                          value={inst.url}
+                          onChange={(e) => {
+                            const next = [...displayInstances]
+                            next[i] = { ...next[i], url: e.target.value }
+                            setManualInstances(next)
+                          }}
+                          placeholder="event url (optional)"
+                          style={{ flex: 1, minWidth: 0 }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const next = displayInstances.filter((_, j) => j !== i)
+                            setManualInstances(next)
+                          }}
+                          style={{
+                            border: 'none',
+                            background: 'none',
+                            cursor: 'pointer',
+                            padding: '4px 6px',
+                            fontSize: '1em',
+                            color: 'var(--text-secondary)',
+                          }}
+                        >
+                          x
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="notes">notes for Mox staff:</label>
@@ -478,8 +798,16 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
           {submitError && <p className="error">{submitError}</p>}
 
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button type="submit" disabled={submitting} className="primary">
-              {submitting ? 'submitting...' : 'submit event'}
+            <button
+              type="submit"
+              disabled={submitting || (status === 'Recurring' && displayInstances.length === 0)}
+              className="primary"
+            >
+              {submitting
+                ? 'submitting...'
+                : status === 'Recurring' && displayInstances.length > 0
+                  ? `submit ${displayInstances.length} events`
+                  : 'submit event'}
             </button>
             <button
               type="button"

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRecord, findRecords, Tables } from '@/app/lib/airtable'
+import { createRecord, createRecords, findRecords, Tables } from '@/app/lib/airtable'
 import { getSession } from '@/app/lib/session'
 import { sendChannelMessage, DISCORD_CHANNELS } from '@/app/lib/discord'
 
 const VALID_TYPES = ['Public', 'Members', 'Private']
-const VALID_STATUSES = ['Idea', 'Confirmed']
+const VALID_STATUSES = ['Idea', 'Confirmed', 'Recurring']
 
 interface CreateEventBody {
   name: string
@@ -17,6 +17,7 @@ interface CreateEventBody {
   imageUrl?: string
   notes?: string
   coHosts?: string[]
+  recurrenceInstances?: Array<{ date: string; url?: string }>
 }
 
 async function hasHostedConfirmedEvent(userId: string): Promise<boolean> {
@@ -113,10 +114,59 @@ export async function POST(request: NextRequest) {
       fields['Notes'] = body.notes.trim()
     }
 
+    const submitterName = session.viewingAsName || session.name || session.email
+
+    // Handle recurring events: batch-create one event per recurrence instance
+    if (status === 'Recurring' && body.recurrenceInstances && body.recurrenceInstances.length > 0) {
+      const instances = body.recurrenceInstances.slice(0, 52) // Safety cap
+      const duration =
+        body.endDate && body.startDate
+          ? new Date(body.endDate).getTime() - new Date(body.startDate).getTime()
+          : 0
+
+      const allFields = instances.map((inst) => {
+        const eventFields: Record<string, unknown> = { ...fields, 'Start Date': inst.date }
+        if (duration > 0) {
+          eventFields['End Date'] = new Date(
+            new Date(inst.date).getTime() + duration
+          ).toISOString()
+        }
+        if (inst.url?.trim()) {
+          eventFields['URL'] = inst.url.trim()
+        }
+        return eventFields
+      })
+
+      const records = await createRecords(Tables.Events, allFields)
+
+      const firstDateStr = new Date(instances[0].date).toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'America/Los_Angeles',
+      })
+      await sendChannelMessage(
+        DISCORD_CHANNELS.NOTIFICATIONS,
+        `🔁 **${instances.length} Recurring Events Submitted** (needs review)\n` +
+          (body.url
+            ? `**[${body.name.trim()}](<${body.url.trim()}>)**\n`
+            : `**${body.name.trim()}**\n`) +
+          `**Starting:** ${firstDateStr}\n` +
+          `**Type:** ${body.type}\n` +
+          `**By:** ${submitterName}\n` +
+          `[review in airtable](<https://airtable.com/appkHZ2UvU6SouT5y/tblqzGMNypqO3jftS/viw2vtDPy1HxntPqS>)`
+      )
+
+      return NextResponse.json({
+        events: records.map((r) => ({ id: r.id })),
+        status: 'Recurring',
+        count: records.length,
+      })
+    }
+
+    // Single event creation
     const record = await createRecord(Tables.Events, fields)
 
-    // Notify staff on Discord
-    const submitterName = session.viewingAsName || session.name || session.email
     const dateStr = new Date(body.startDate).toLocaleDateString('en-US', {
       weekday: 'short',
       month: 'short',

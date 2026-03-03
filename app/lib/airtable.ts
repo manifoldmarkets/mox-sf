@@ -231,6 +231,50 @@ export async function createRecord<T = Record<string, unknown>>(
 }
 
 /**
+ * Creates multiple records in batches of 10 (Airtable's max per request).
+ *
+ * @param table - Table name
+ * @param recordsFields - Array of field objects for each record
+ * @returns All created records
+ */
+export async function createRecords<T = Record<string, unknown>>(
+  table: TableName,
+  recordsFields: Partial<T>[]
+): Promise<AirtableRecord<T>[]> {
+  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+  const results: AirtableRecord<T>[] = []
+
+  // Airtable allows max 10 records per batch request
+  for (let i = 0; i < recordsFields.length; i += 10) {
+    const batch = recordsFields.slice(i, i + 10)
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        records: batch.map((fields) => ({ fields })),
+      }),
+    })
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}))
+      throw new Error(
+        `Airtable batch create error: ${res.status} ${res.statusText} - ${JSON.stringify(errorData)}`
+      )
+    }
+
+    const data = await res.json()
+    for (const record of data.records || []) {
+      results.push({
+        id: record.id,
+        fields: record.fields as T,
+      })
+    }
+  }
+
+  return results
+}
+
+/**
  * Finds records matching a filter formula.
  * Convenience wrapper around getRecords for simple queries.
  *
