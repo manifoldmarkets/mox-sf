@@ -746,7 +746,7 @@ export default function SubmitEventClient({ userId, userName }: SubmitEventClien
                             next[i] = { ...next[i], date: e.target.value }
                             setManualInstances(next)
                           }}
-                          style={{ flex: '0 0 auto' }}
+                          style={{ width: '180px', flex: '0 0 auto' }}
                         />
                         <input
                           type="url"
