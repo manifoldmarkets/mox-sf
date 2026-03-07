@@ -12,7 +12,7 @@ Please help keep these up to date.
 
 ## Automations
 
-New automation routes should use the `withAutomation` wrapper from `app/lib/automation.ts` for step tracking and failure alerts. After adding a new automation, run `bun scan-automations` to regenerate the manifest. See `docs/workflows/automation-dashboard.md` for full details.
+Automations are auto-discovered by `bun scan-automations` which generates `app/lib/automations-manifest.ts`. The staff dashboard at `/portal/admin/automations` shows all automations. After adding a new automation route, run `bun scan-automations` to regenerate the manifest. See `docs/workflows/automation-dashboard.md` for details.
 
 ## Key Configuration Files
 

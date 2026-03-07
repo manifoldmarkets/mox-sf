@@ -48,7 +48,6 @@ interface AutomationEntry {
   type: 'cron' | 'webhook' | 'integration' | 'portal-action' | 'event-action'
   cronSchedule?: string
   httpMethod: string
-  usesWrapper: boolean
 }
 
 // ============================================================================
@@ -88,7 +87,6 @@ function detectHttpMethod(content: string): string {
   if (/export\s+(async\s+)?function\s+PUT/m.test(content)) methods.push('PUT')
   if (/export\s+(async\s+)?function\s+PATCH/m.test(content)) methods.push('PATCH')
   if (/export\s+(async\s+)?function\s+DELETE/m.test(content)) methods.push('DELETE')
-  // Also detect withAutomation exports: export const GET = withAutomation(...)
   if (/export\s+const\s+GET\s*=/m.test(content) && !methods.includes('GET')) methods.push('GET')
   if (/export\s+const\s+POST\s*=/m.test(content) && !methods.includes('POST')) methods.push('POST')
   return methods.join(', ') || 'GET'
@@ -132,7 +130,6 @@ function scanAutomations(): AutomationEntry[] {
         type: classifyRoute(routePath),
         cronSchedule: cronSchedules.get(apiPath),
         httpMethod: detectHttpMethod(content),
-        usesWrapper: content.includes('withAutomation'),
       })
     }
   }
@@ -151,7 +148,6 @@ function scanAutomations(): AutomationEntry[] {
       routePath: '/' + route,
       type: 'portal-action',
       httpMethod: detectHttpMethod(content),
-      usesWrapper: content.includes('withAutomation'),
     })
   }
 
@@ -169,29 +165,6 @@ function scanAutomations(): AutomationEntry[] {
       routePath: '/' + route,
       type: 'event-action',
       httpMethod: detectHttpMethod(content),
-      usesWrapper: content.includes('withAutomation'),
-    })
-  }
-
-  // Also scan for any route using withAutomation that we haven't found yet
-  for (const routeFile of findRouteFiles(APP_DIR)) {
-    const relPath = relative(APP_DIR, routeFile)
-    const routePath = relPath.replace(/\/route\.ts$/, '')
-    if (seen.has(routePath)) continue
-
-    const content = readFileSync(routeFile, 'utf-8')
-    if (!content.includes('withAutomation')) continue
-
-    seen.add(routePath)
-    const apiPath = '/' + routePath
-    entries.push({
-      id: deriveId(routePath),
-      filePath: 'app/' + relPath,
-      routePath: apiPath,
-      type: classifyRoute(routePath),
-      cronSchedule: cronSchedules.get(apiPath),
-      httpMethod: detectHttpMethod(content),
-      usesWrapper: true,
     })
   }
 
@@ -214,8 +187,7 @@ function generateManifest(entries: AutomationEntry[]): string {
     "  type: 'cron' | 'webhook' | 'integration' | 'portal-action' | 'event-action'",
     '  cronSchedule?: string',
     '  httpMethod: string',
-    '  usesWrapper: boolean',
-    '  /** AI-generated summary. Edit in this file if wrong. */',
+    '  /** Hand-edited summary. Edit in this file if wrong. */',
     '  summary: string',
     '}',
     '',
@@ -261,16 +233,7 @@ const entries = scanAutomations()
 console.log(`Found ${entries.length} automations:\n`)
 for (const e of entries) {
   const schedule = e.cronSchedule ? ` (${e.cronSchedule})` : ''
-  const wrapper = e.usesWrapper ? '✓' : '○'
-  console.log(`  [${wrapper}] ${e.id} — ${e.type}${schedule} — ${e.filePath}`)
-}
-
-const unwrapped = entries.filter((e) => !e.usesWrapper)
-if (unwrapped.length > 0) {
-  console.log(`\n⚠ ${unwrapped.length} automation(s) not yet using withAutomation wrapper:`)
-  for (const e of unwrapped) {
-    console.log(`    ${e.filePath}`)
-  }
+  console.log(`  ${e.id} — ${e.type}${schedule} — ${e.filePath}`)
 }
 
 const manifest = generateManifest(entries)

@@ -8,8 +8,7 @@ export interface AutomationManifestEntry {
   type: 'cron' | 'webhook' | 'integration' | 'portal-action' | 'event-action'
   cronSchedule?: string
   httpMethod: string
-  usesWrapper: boolean
-  /** AI-generated summary. Edit in this file if wrong. */
+  /** Hand-edited summary. Edit in this file if wrong. */
   summary: string
 }
 
@@ -22,7 +21,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "type": "cron",
     "cronSchedule": "* * * * *",
     "httpMethod": "GET",
-    "usesWrapper": false,
     "summary": "Updates Discord message with real-time meeting room availability from Airtable bookings"
   },
   {
@@ -32,7 +30,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "type": "cron",
     "cronSchedule": "0 17 * * 1",
     "httpMethod": "GET",
-    "usesWrapper": true,
     "summary": "Rotates weekly Verkada door code, updates Discord channel name and posts notification"
   },
   {
@@ -41,7 +38,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/day-pass/activate/api",
     "type": "event-action",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Activates a purchased day pass, sets date and reveals door code"
   },
   {
@@ -50,7 +46,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/eag26/api/register",
     "type": "event-action",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Registers EAG attendees for day pass access, creates Airtable record and sends welcome email"
   },
   {
@@ -59,7 +54,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/api/forkable-sync",
     "type": "integration",
     "httpMethod": "POST",
-    "usesWrapper": true,
     "summary": "Adds members to Forkable meal club when Airtable tier changes to Private Office or Program"
   },
   {
@@ -68,7 +62,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/portal/api/bulk-sync-discord-roles",
     "type": "portal-action",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Staff-only bulk sync of all members' Discord roles to match their Airtable tiers"
   },
   {
@@ -77,7 +70,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/portal/api/pause-subscription",
     "type": "portal-action",
     "httpMethod": "POST, DELETE",
-    "usesWrapper": false,
     "summary": "Pauses or resumes a member's Stripe subscription and notifies staff via email"
   },
   {
@@ -86,7 +78,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/portal/api/send-magic-link",
     "type": "portal-action",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Sends passwordless login email with magic link token, rate-limited to 3 per 15 min"
   },
   {
@@ -95,7 +86,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/portal/api/sync-discord-role",
     "type": "portal-action",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Syncs a single member's Discord role to match their Airtable tier"
   },
   {
@@ -104,7 +94,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/api/webhooks/discord",
     "type": "webhook",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Handles Discord interaction webhooks (slash commands, verifications)"
   },
   {
@@ -113,7 +102,6 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/api/webhooks/stripe",
     "type": "webhook",
     "httpMethod": "POST",
-    "usesWrapper": false,
     "summary": "Handles Stripe events: day pass purchases create Airtable records and send activation emails; new subscriptions add members to Forkable"
   }
 ]

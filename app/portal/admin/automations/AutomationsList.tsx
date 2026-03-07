@@ -143,10 +143,6 @@ export default function AutomationsList({
                       <td style={{ fontWeight: 'bold' }}>source</td>
                       <td><code>{a.filePath}</code></td>
                     </tr>
-                    <tr>
-                      <td style={{ fontWeight: 'bold' }}>instrumented</td>
-                      <td>{a.usesWrapper ? 'yes' : 'not yet'}</td>
-                    </tr>
                   </tbody>
                 </table>
 
