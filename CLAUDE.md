@@ -10,6 +10,10 @@ This project uses Bun as its package manager. Use `bun install`
 
 Please help keep these up to date.
 
+## Automations
+
+New automation routes should use the `withAutomation` wrapper from `app/lib/automation.ts` for step tracking and failure alerts. After adding a new automation, run `bun scan-automations` to regenerate the manifest. See `docs/workflows/automation-dashboard.md` for full details.
+
 ## Key Configuration Files
 
 - **`app/lib/env.ts`** - All environment variables (Airtable, Stripe, Discord, Verkada, etc.)
