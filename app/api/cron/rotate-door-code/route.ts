@@ -200,7 +200,7 @@ export async function GET(request: Request) {
     if (oldCode) {
       const result = await sendChannelMessage(
         DISCORD_CHANNELS.PACKAGES,
-        `Door code has rotated, for package deliveries, the old door code **${oldCode}#** will continue to work until ${expiryDate}.`
+        `Door code has rotated to **${newCode}#**, for package deliveries, the old door code **${oldCode}#** will continue to work until ${expiryDate}.`
       )
       messageSent = result.success
       if (!messageSent) {
