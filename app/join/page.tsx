@@ -1,11 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAirtableData } from './get-invite-list'
+import {
+  getAirtableData,
+  getInviteByRecordId,
+  type InviteEntry,
+} from './get-invite-list'
 
 export function JoinContent(props: {
   firstName?: string
   specialInvite?: string | null
+  airtableRecordId?: string | null
 }) {
   const { firstName, specialInvite } = props
   return (
@@ -197,6 +202,9 @@ export function JoinContent(props: {
             <stripe-pricing-table
               pricing-table-id="prctbl_1SBTulRobJaZ7DVC19nKSvjs"
               publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
+              {...(props.airtableRecordId
+                ? { 'client-reference-id': props.airtableRecordId }
+                : {})}
             >
               {/* @ts-ignore */}
             </stripe-pricing-table>
@@ -256,14 +264,12 @@ export function JoinContent(props: {
 }
 
 function useInvited() {
-  const [inviteList, setInviteList] = useState<string[] | null>(null)
+  const [inviteList, setInviteList] = useState<InviteEntry[] | null>(null)
 
   useEffect(() => {
     async function fetchInvites() {
-      const names = await getAirtableData()
-      // Extract first names only
-      const firstNames = names.map((name: string) => name.split(' ')[0])
-      setInviteList(firstNames)
+      const entries = await getAirtableData()
+      setInviteList(entries)
     }
     fetchInvites()
   }, [])
@@ -280,8 +286,9 @@ export default function JoinPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isAuthorized, setIsAuthorized] = useState(false)
   const [specialInvite, setSpecialInvite] = useState<string | null>(null)
+  const [airtableRecordId, setAirtableRecordId] = useState<string | null>(null)
 
-  // Check for invite parameter and prefilled name in URL
+  // Check for invite parameter, prefilled name, and record ID in URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const inviteCode = params.get('invite')
@@ -293,7 +300,28 @@ export default function JoinPage() {
     if (nameParam) {
       setName(nameParam)
     }
+    // If record ID is provided, look up the person directly and skip name gate
+    const idParam = params.get('id')
+    if (idParam) {
+      setAirtableRecordId(idParam)
+      getInviteByRecordId(idParam).then((entry) => {
+        if (entry) {
+          setName(entry.name.split(' ')[0])
+          setIsSubmitted(true)
+          setIsAuthorized(true)
+        }
+      })
+    }
   }, [])
+
+  // Find matching invite entry by first name
+  function findMatch(firstName: string): InviteEntry | undefined {
+    return inviteList?.find(
+      (entry) =>
+        entry.name.split(' ')[0].trim().toLowerCase() ===
+        firstName.trim().toLowerCase()
+    )
+  }
 
   // Auto-authorize if name is prefilled from URL and matches invite list
   useEffect(() => {
@@ -304,11 +332,12 @@ export default function JoinPage() {
 
     if (inviteList === null) return // Wait for invite list to load
 
-    const isOnList = inviteList.some(
-      (allowedName) =>
-        allowedName.trim().toLowerCase() === name.trim().toLowerCase()
-    )
-    if (isOnList) {
+    const match = findMatch(name)
+    if (match) {
+      // Use URL record ID if provided, otherwise fall back to name-matched record
+      if (!airtableRecordId) {
+        setAirtableRecordId(match.recordId)
+      }
       setIsSubmitted(true)
       setIsAuthorized(true)
     }
@@ -328,13 +357,15 @@ export default function JoinPage() {
       alert('Still loading invites')
       await new Promise((resolve) => setTimeout(resolve, 3000))
     }
-    // Check if the name matches case blind; ignore lowercase
-    setIsAuthorized(
-      inviteList?.some(
-        (allowedName) =>
-          allowedName.trim().toLowerCase() === name.trim().toLowerCase()
-      ) ?? false
-    )
+    const match = findMatch(name)
+    if (match) {
+      if (!airtableRecordId) {
+        setAirtableRecordId(match.recordId)
+      }
+      setIsAuthorized(true)
+    } else {
+      setIsAuthorized(false)
+    }
   }
   const niceName =
     name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase()
@@ -342,7 +373,11 @@ export default function JoinPage() {
   if (isAuthorized) {
     return (
       <>
-        <JoinContent firstName={niceName} specialInvite={specialInvite} />
+        <JoinContent
+          firstName={niceName}
+          specialInvite={specialInvite}
+          airtableRecordId={airtableRecordId}
+        />
       </>
     )
   }

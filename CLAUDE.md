@@ -10,6 +10,10 @@ This project uses Bun as its package manager. Use `bun install`
 
 Please help keep these up to date.
 
+## Automations
+
+Automations are auto-discovered by `bun scan-automations` which generates `app/lib/automations-manifest.ts`. The staff dashboard at `/portal/admin/automations` shows all automations. After adding a new automation route, run `bun scan-automations` to regenerate the manifest. See `docs/workflows/automation-dashboard.md` for details.
+
 ## Key Configuration Files
 
 - **`app/lib/env.ts`** - All environment variables (Airtable, Stripe, Discord, Verkada, etc.)

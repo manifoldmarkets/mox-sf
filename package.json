@@ -9,7 +9,8 @@
     "prettier": "prettier --write .",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "scan-automations": "bun scripts/scan-automations.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.1",
