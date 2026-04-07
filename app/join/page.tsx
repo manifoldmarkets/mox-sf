@@ -44,7 +44,7 @@ export function JoinContent(props: {
               Which membership is right for me?
             </h2>
             <p className="text-gray-700">
-              We expect <u className="underline-offset-2">Member</u> to be a
+              We expect <u className="underline-offset-2">Core</u> to be a
               good fit for most. As a member, you can come by anytime: during
               the day for focused work, or evenings and weekends to hang out.
               You'll have full access to our space: hot desks, lounges,
@@ -138,7 +138,7 @@ export function JoinContent(props: {
             <p className="text-gray-700">
               We want Mox to be a place you're proud to show off to your friends
               and family. All memberships come with some free allowances for
-              guests: 1x/week for Friend, 1x/day for Member, and 2x/day for
+              guests: 1x/week for Friend, 1x/day for Core, and 2x/day for
               Resident and Office members. Beyond that, we ask that you or your
               guest purchase a{' '}
               <a
@@ -217,7 +217,7 @@ export function JoinContent(props: {
             <div className="grid grid-cols-3 gap-8">
               {[
                 { type: 'Friend', price: '$160' },
-                { type: 'Member', price: '$380' },
+                { type: 'Core', price: '$380' },
                 { type: 'Resident', price: '$780' },
               ].map((tier) => (
                 <div

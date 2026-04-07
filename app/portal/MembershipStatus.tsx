@@ -40,7 +40,7 @@ export default function MembershipStatus({
   const isPrivateOffice = tier === 'Private Office'
 
   // Format tier display name
-  // Tiers: Staff, Volunteer, Private Office, Program, Resident, Member, Friend, Courtesy, Guest Program, Paused
+  // Tiers: Staff, Volunteer, Private Office, Program, Resident, Core, Friend, Courtesy, Guest Program, Paused
   const getTierDisplay = () => {
     if (!tier) return null
     if (tier === 'Private Office') return 'private office'
@@ -92,7 +92,7 @@ export default function MembershipStatus({
           <p style={{ marginTop: '15px' }}>
             <strong>Friend</strong> $160/mo · drop by up to 2x/week
             <br />
-            <strong>Member</strong> $380/mo · unlimited access, hot desk
+            <strong>Core</strong> $380/mo · unlimited access, hot desk
             <br />
             <strong>Resident</strong> $780/mo · dedicated desk + monitor
           </p>

@@ -18,7 +18,7 @@ Automations are auto-discovered by `bun scan-automations` which generates `app/l
 
 - **`app/lib/env.ts`** - All environment variables (Airtable, Stripe, Discord, Verkada, etc.)
 - **`app/lib/airtable.ts`** - Airtable client + table names
-- **`app/lib/discord-constants.ts`** - Discord guild ID, role IDs (Friend/Member/Resident/Private Office/Program), channel IDs, tier-to-role mappings
+- **`app/lib/discord-constants.ts`** - Discord guild ID, role IDs (Friend/Core/Resident/Private Office/Program), channel IDs, tier-to-role mappings
 - **`app/lib/stripe.ts`** - Stripe client initialization
 - **`app/people/people.ts`** - People table field definitions and queries
 

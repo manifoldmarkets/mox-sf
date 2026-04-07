@@ -11,7 +11,7 @@ Members with specific Airtable tiers are automatically added to Forkable meal cl
 | Private Office | MOX_RESIDENTS (7097) |
 | Program | MOX_MEMBERS (6314) |
 
-This is separate from the Stripe flow (which handles Member/Resident tiers via subscription purchase).
+This is separate from the Stripe flow (which handles Core/Resident tiers via subscription purchase).
 
 ## Airtable Automation Setup
 

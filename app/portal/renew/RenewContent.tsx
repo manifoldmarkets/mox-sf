@@ -47,7 +47,7 @@ export default function RenewContent({
               Which membership is right for me?
             </h2>
             <p className="text-gray-700">
-              We expect <u className="underline-offset-2">Member</u> to be a
+              We expect <u className="underline-offset-2">Core</u> to be a
               good fit for most. As a member, you can come by anytime: during
               the day for focused work, or evenings and weekends to hang out.
               You'll have full access to our space: hot desks, lounges,

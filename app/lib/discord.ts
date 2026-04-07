@@ -4,7 +4,7 @@ import { env } from './env'
 import {
   DISCORD_GUILD_ID,
   TIER_TO_ROLE,
-  ALL_MEMBER_ROLE_IDS,
+  ALL_TIER_ROLE_IDS,
   ACTIVE_TIERS,
   DISCORD_CHANNELS,
 } from './discord-constants'
@@ -208,8 +208,8 @@ export async function syncDiscordRole(
     }
   }
 
-  // Remove any existing member roles (except the one we're assigning)
-  const rolesToRemove = ALL_MEMBER_ROLE_IDS.filter(
+  // Remove any existing tier roles (except the one we're assigning)
+  const rolesToRemove = ALL_TIER_ROLE_IDS.filter(
     (r) => r !== targetRoleId && member.roles.includes(r)
   )
 

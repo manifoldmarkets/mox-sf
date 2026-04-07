@@ -49,7 +49,7 @@ export default function ProfileEditForm({
 
   // Show directory fields for members/applicants who can appear in directory
   // Not for: Guest, Guest Program, Courtesy, Volunteer (just visiting)
-  const directoryEligibleTiers = ['Staff', 'Member', 'Resident', 'Private Office', 'Program', 'Friend']
+  const directoryEligibleTiers = ['Staff', 'Core', 'Resident', 'Private Office', 'Program', 'Friend']
   const applicantStatuses = ['Applied', 'Evaluating', 'Backburner', 'To Invite', 'Invited', 'Waitlisted']
   const showDirectoryFields =
     (profile.tier && directoryEligibleTiers.includes(profile.tier)) ||
