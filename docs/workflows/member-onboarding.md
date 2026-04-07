@@ -23,7 +23,7 @@ flowchart TB
 
     subgraph App["🖥️ Mox App"]
         D1[Determine tier]
-        D2{Member or Resident?}
+        D2{Core or Resident?}
         D3[Call Forkable API]
         D4[Send notification email]
     end
@@ -54,7 +54,7 @@ flowchart TB
 
 | Stripe Product | Airtable Tier | Forkable Club |
 |----------------|---------------|---------------|
-| prod_RpkYg9EMJoi5oi | Member | MOX_MEMBERS |
+| prod_RpkYg9EMJoi5oi | Core | MOX_MEMBERS |
 | prod_RpkufjD9E3esG5 | Resident | MOX_RESIDENTS |
 | prod_Rq9VzfM9QoJwPD | Friend | None |
 

@@ -124,7 +124,7 @@ Get subscription details.
   ```json
   {
     "subscription": {
-      "tier": "Member",
+      "tier": "Core",
       "rate": "$99/month",
       "renewalDate": "2025-02-20",
       "status": "active",
@@ -168,7 +168,7 @@ Create day pass checkout.
 Sync Discord role for user.
 
 - **Auth:** User (own role) or Staff
-- **Body:** `{ "discordUsername": "user", "tier": "Member", "userId": "rec123" }`
+- **Body:** `{ "discordUsername": "user", "tier": "Core", "userId": "rec123" }`
 
 #### POST `/portal/api/bulk-sync-discord-roles`
 Bulk sync all member Discord roles.

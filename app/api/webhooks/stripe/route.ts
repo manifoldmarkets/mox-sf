@@ -46,7 +46,7 @@ const MEMBERSHIP_PRODUCTS: Record<
   { tier: string; forkableClubIds: number[] }
 > = {
   prod_RpkYg9EMJoi5oi: {
-    tier: 'Member',
+    tier: 'Core',
     forkableClubIds: [FORKABLE_CLUBS.MOX_MEMBERS],
   },
   prod_RpkufjD9E3esG5: {

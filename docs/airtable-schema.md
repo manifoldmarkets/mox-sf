@@ -50,7 +50,7 @@ Primary table for user/member management.
 | `Day Passes` | multipleRecordLinks | Purchased day passes | |
 | `Created` | createdTime | Record creation date | |
 
-**Tier options:** Staff, Volunteer, Private Office, Program, Resident, Member, Friend, Courtesy, Guest Program, Paused
+**Tier options:** Staff, Volunteer, Private Office, Program, Resident, Core, Friend, Courtesy, Guest Program, Paused
 
 **Status options:** Applied, Evaluating, Backburner, To Invite, Invited, Guest Program, Joined, Cancelled, Rejected, Payment Issue, Waitlisted, Declined, Visited, Event Host, Paused
 

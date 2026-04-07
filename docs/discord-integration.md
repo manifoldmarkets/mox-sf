@@ -17,7 +17,7 @@ All Discord variables are **optional**. If not configured, Discord features are 
 DISCORD_BOT_TOKEN              # Bot authentication token
 DISCORD_GUILD_ID               # Server ID
 DISCORD_ROLE_FRIEND            # Role ID for Friend tier
-DISCORD_ROLE_MEMBER            # Role ID for Member tier
+DISCORD_ROLE_CORE              # Role ID for Core tier
 DISCORD_ROLE_RESIDENT          # Role ID for Resident tier
 DISCORD_ROLE_PRIVATE_OFFICE    # Role ID for Private Office tier
 DISCORD_ROLE_PROGRAM           # Role ID for Program tier
@@ -30,7 +30,7 @@ DISCORD_PACKAGES_CHANNEL_ID    # Channel for notifications
 | Airtable Tier | Discord Role | Auto-Synced |
 |---------------|--------------|-------------|
 | Friend | Friend | Yes |
-| Member | Member | Yes |
+| Core | Core | Yes |
 | Resident | Resident | Yes |
 | Private Office | Private Office | Yes |
 | Program | Program | Yes |

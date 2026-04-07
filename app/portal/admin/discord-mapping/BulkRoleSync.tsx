@@ -58,7 +58,7 @@ export default function BulkRoleSync() {
       </h2>
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
         Sync Discord roles for all members who have linked their Discord
-        username. Assigns roles based on Airtable tier: Friend, Member,
+        username. Assigns roles based on Airtable tier: Friend, Core,
         Resident, Private Office, Program. Staff roles are managed manually.
       </p>
 

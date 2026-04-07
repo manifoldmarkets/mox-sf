@@ -56,7 +56,7 @@ flowchart TB
 flowchart LR
     subgraph Airtable["Airtable Tiers"]
         T1[Friend]
-        T2[Member]
+        T2[Core]
         T3[Resident]
         T4[Private Office]
         T5[Program]
@@ -65,7 +65,7 @@ flowchart LR
 
     subgraph Discord["Discord Roles"]
         R1[Friend Role]
-        R2[Member Role]
+        R2[Core Role]
         R3[Resident Role]
         R4[Private Office Role]
         R5[Program Role]
