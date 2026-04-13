@@ -119,7 +119,9 @@ export default function DirectoryClient({
                     <div className="program-header">
                       <h3 className="program-title">{group.name}</h3>
                       {roomText && (
-                        <span className="program-room">Room(s) {roomText}</span>
+                        <span className="program-room">
+                          {group.rooms && group.rooms.length > 1 ? 'Rooms' : 'Room'} {roomText}
+                        </span>
                       )}
                     </div>
                     {collapsed ? (
