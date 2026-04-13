@@ -4,6 +4,9 @@ import PeopleGallery from './people-gallery'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
 import DonateBanner from './components/DonateBanner'
+import { getPeople, getOrgs, getPrograms, buildDirectoryData } from './people/people'
+import DirectoryClient from './people/DirectoryClient'
+import './people/people.css'
 
 
 function Link({
@@ -35,10 +38,22 @@ export default async function Component() {
     console.error('Failed to fetch events:', e)
   }
 
+  let people: Awaited<ReturnType<typeof getPeople>> = []
+  let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
+  let programsMap: Awaited<ReturnType<typeof getPrograms>> = new Map()
+  try {
+    ;[people, orgsMap, programsMap] = await Promise.all([
+      getPeople(), getOrgs(), getPrograms(),
+    ])
+  } catch (e) {
+    console.error('Failed to fetch people data:', e)
+  }
+  const { sections, orgsLookup, programsLookup } = buildDirectoryData(people, orgsMap, programsMap)
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Donate banner */}
-      <DonateBanner />
+      {/* <DonateBanner /> */}
 
       {/* Hero section */}
       <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16 pb-12 sm:pb-16 bg-gray-50 dark:bg-gray-900">
@@ -488,6 +503,20 @@ export default async function Component() {
             </h2>
           </div>
           <Gallery />
+        </section>
+      </div>
+
+      {/* People directory */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <section className="mb-12 sm:mb-16">
+          <div className="directory homepage-directory">
+            <DirectoryClient
+              sections={sections}
+              orgsLookup={orgsLookup}
+              programsLookup={programsLookup}
+              memberCount={people.length}
+            />
+          </div>
         </section>
       </div>
 

@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Person, formatUrl } from './people'
 
@@ -189,13 +190,13 @@ function PersonEntry({
     <div className={`person-entry ${!hasContent ? 'person-entry-compact' : ''}`}>
       <div className="person-photo">
         {url ? (
-          <img
+          <Image
             src={url}
             alt={person.name}
             width={90}
             height={90}
+            sizes="90px"
             className="photo-img"
-            loading="lazy"
           />
         ) : (
           <div className="photo-placeholder">{initials}</div>

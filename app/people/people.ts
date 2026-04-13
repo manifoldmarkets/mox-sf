@@ -225,4 +225,3 @@ export function buildDirectoryData(
 
   return { sections, orgsLookup, programsLookup }
 }
-
