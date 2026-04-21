@@ -469,7 +469,7 @@ export default async function Component() {
               className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
             >
               <img
-                src="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
+                src="https://i.imgur.com/rvjRkHZ.png"
                 alt="Timaeus logo"
                 className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter"
               />
