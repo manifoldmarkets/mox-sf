@@ -2,6 +2,7 @@ import {
   Tables,
   findRecords,
   findRecord,
+  getRecord,
   createRecord,
   updateRecord,
   type AirtableRecord,
@@ -11,11 +12,15 @@ import { escapeAirtableString } from './airtable-helpers'
 // Airtable field interfaces
 export interface RoomFields {
   Name: string
-  Floor?: string
+  Floor?: string | string[]
   'Room #'?: string
   'Room Size'?: number
   Status?: string
   Bookable?: boolean
+}
+
+interface FloorRecordFields {
+  Name?: string
 }
 
 export interface RoomBookingFields {
@@ -51,12 +56,28 @@ export interface Booking {
   status: 'Confirmed' | 'Cancelled'
 }
 
-// Transform Airtable record to Room
+async function resolveFloorName(
+  floorField: string | string[] | undefined,
+  floorNameCache: Map<string, string>
+): Promise<string | undefined> {
+  if (!floorField) return undefined
+  if (typeof floorField === 'string') return floorField
+  const id = floorField[0]
+  if (!id) return undefined
+  if (floorNameCache.has(id)) return floorNameCache.get(id)
+  const record = await getRecord<FloorRecordFields>(Tables.Floors, id)
+  const name = record?.fields.Name
+  const floorNumber = name?.replace(/\D/g, '') || name
+  if (floorNumber) floorNameCache.set(id, floorNumber)
+  return floorNumber
+}
+
 function parseRoom(record: AirtableRecord<RoomFields>): Room {
+  const floor = record.fields.Floor
   return {
     id: record.id,
     name: record.fields.Name,
-    floor: record.fields.Floor,
+    floor: typeof floor === 'string' ? floor : undefined,
     roomNumber: record.fields['Room #'],
     size: record.fields['Room Size'],
     status: record.fields.Status,
@@ -86,7 +107,14 @@ function parseBooking(
  */
 export async function getBookableRooms(): Promise<Room[]> {
   const records = await findRecords<RoomFields>(Tables.Rooms, '{Bookable} = TRUE()')
-  return records.map(parseRoom)
+  const floorNameCache = new Map<string, string>()
+  return Promise.all(
+    records.map(async (record) => {
+      const room = parseRoom(record)
+      room.floor = await resolveFloorName(record.fields.Floor, floorNameCache)
+      return room
+    })
+  )
 }
 
 /**
@@ -94,7 +122,10 @@ export async function getBookableRooms(): Promise<Room[]> {
  */
 export async function getRoom(roomId: string): Promise<Room | null> {
   const record = await findRecord<RoomFields>(Tables.Rooms, `RECORD_ID() = '${escapeAirtableString(roomId)}'`)
-  return record ? parseRoom(record) : null
+  if (!record) return null
+  const room = parseRoom(record)
+  room.floor = await resolveFloorName(record.fields.Floor, new Map())
+  return room
 }
 
 /**
