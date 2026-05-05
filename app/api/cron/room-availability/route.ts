@@ -20,8 +20,18 @@ const PORTAL_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://moxsf.com'
 /**
  * Get the availability status for a room
  */
+function formatTimeShort(date: Date): string {
+  return date
+    .toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZone: 'America/Los_Angeles',
+    })
+    .replace(':00', '')
+    .replace(' ', '')
+}
+
 function getRoomStatus(room: Room, bookings: Booking[], now: Date): string {
-  // Filter to bookings happening now or in the future today
   const todayEnd = new Date(now)
   todayEnd.setHours(23, 59, 59, 999)
 
@@ -30,35 +40,23 @@ function getRoomStatus(room: Room, bookings: Booking[], now: Date): string {
     .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
 
   if (relevantBookings.length === 0) {
-    return 'Free all day'
+    return 'Free'
   }
 
-  // Check if there's a booking happening right now
   const currentBooking = relevantBookings.find(
     (b) => b.startDate <= now && b.endDate > now
   )
 
   if (currentBooking) {
-    const endTime = currentBooking.endDate.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      timeZone: 'America/Los_Angeles',
-    })
-    return `Busy until ${endTime}`
+    return `Until ${formatTimeShort(currentBooking.endDate)}`
   }
 
-  // Room is free, find when the next booking starts
   const nextBooking = relevantBookings.find((b) => b.startDate > now)
   if (nextBooking) {
-    const startTime = nextBooking.startDate.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      timeZone: 'America/Los_Angeles',
-    })
-    return `Free until ${startTime}`
+    return `Free til ${formatTimeShort(nextBooking.startDate)}`
   }
 
-  return 'Free all day'
+  return 'Free'
 }
 
 /**
@@ -76,7 +74,6 @@ function formatMessage(
     timeZone: 'America/Los_Angeles',
   })
 
-  // Group rooms by floor, sorted numerically descending (4th floor first)
   const floors = Array.from(new Set(rooms.map((r) => r.room.floor || 'Other')))
     .sort((a, b) => {
       if (a === 'Other') return 1
@@ -84,12 +81,7 @@ function formatMessage(
       return parseInt(b) - parseInt(a)
     })
 
-  // Find the longest room name + capacity for padding
-  const getCapacityStr = (size?: number) =>
-    size && size > 2 ? ` (capacity ${size})` : ''
-  const maxNameLength = Math.max(
-    ...rooms.map((r) => r.room.name.length + getCapacityStr(r.room.size).length)
-  )
+  const maxNameLength = Math.max(...rooms.map((r) => r.room.name.length))
 
   const lines: string[] = []
   for (const floor of floors) {
@@ -97,15 +89,13 @@ function formatMessage(
       .filter((r) => (r.room.floor || 'Other') === floor)
       .sort((a, b) => a.room.name.localeCompare(b.room.name))
 
-    lines.push(`─ FLOOR ${floor} ──────────────────────────────────────`)
+    lines.push(`— Floor ${floor} —`)
     for (const { room, status } of floorRooms) {
-      const capacityStr = getCapacityStr(room.size)
-      const nameWithCapacity = `${room.name}${capacityStr}`.padEnd(maxNameLength)
-      const statusIcon = status.startsWith('Free') ? '🟢' : '🔴'
-      lines.push(`${statusIcon} ${nameWithCapacity}  │  ${status}`)
+      const name = room.name.padEnd(maxNameLength)
+      const statusIcon = status.startsWith('Free') || status === 'Free' ? '🟢' : '🔴'
+      lines.push(`${statusIcon} ${name}  ${status}`)
     }
   }
-  lines.push(`────────────────────────────────────────────────`)
 
   return [
     '**# 🚪 Meeting Room Availability**',
