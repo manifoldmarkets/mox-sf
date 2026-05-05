@@ -81,7 +81,11 @@ function formatMessage(
       return parseInt(b) - parseInt(a)
     })
 
-  const maxNameLength = Math.max(...rooms.map((r) => r.room.name.length))
+  const getCapacityStr = (size?: number) =>
+    size && size > 2 ? ` (fits ${size})` : ''
+  const maxNameLength = Math.max(
+    ...rooms.map((r) => r.room.name.length + getCapacityStr(r.room.size).length)
+  )
 
   const lines: string[] = []
   for (const floor of floors) {
@@ -91,9 +95,9 @@ function formatMessage(
 
     lines.push(`— Floor ${floor} —`)
     for (const { room, status } of floorRooms) {
-      const name = room.name.padEnd(maxNameLength)
+      const nameWithCapacity = `${room.name}${getCapacityStr(room.size)}`.padEnd(maxNameLength)
       const statusIcon = status.startsWith('Free') || status === 'Free' ? '🟢' : '🔴'
-      lines.push(`${statusIcon} ${name}  ${status}`)
+      lines.push(`${statusIcon} ${nameWithCapacity}  ${status}`)
     }
   }
 
