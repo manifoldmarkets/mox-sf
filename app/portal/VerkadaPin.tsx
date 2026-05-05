@@ -19,6 +19,7 @@ export default function VerkadaPin({
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [guestPin, setGuestPin] = useState<string | null>(null)
   const [showAppInfo, setShowAppInfo] = useState<boolean>(false)
+  const [weeklyCode, setWeeklyCode] = useState<string | null>(null)
 
   const isGuestProgram = tier === 'Program' || tier === 'Guest Program'
 
@@ -44,6 +45,21 @@ export default function VerkadaPin({
     }
 
     fetchPin()
+  }, [])
+
+  useEffect(() => {
+    async function fetchWeeklyCode() {
+      try {
+        const response = await fetch('/portal/api/weekly-door-code')
+        if (!response.ok) return
+        const data = await response.json()
+        if (data.code) setWeeklyCode(data.code)
+      } catch (err) {
+        console.error('Failed to fetch weekly door code:', err)
+      }
+    }
+
+    fetchWeeklyCode()
   }, [])
 
   // Fetch guest PIN for guest program members
@@ -110,12 +126,20 @@ export default function VerkadaPin({
     )
   }
 
+  const weeklyCodeBlock = weeklyCode && (
+    <div style={{ marginBottom: '20px' }}>
+      <p style={{ marginBottom: '5px' }}>this week's shared door code:</p>
+      <div className="pin-display">{weeklyCode}#</div>
+    </div>
+  )
+
   if (!hasAccess || !pin) {
     // Show guest PIN for guest program members even if they don't have personal access
     if (isGuestProgram && guestPin) {
       return (
         <>
           <h3>door code</h3>
+          {weeklyCodeBlock}
           <p>as a guest program member, use this shared PIN code to enter:</p>
           <div className="pin-display">{guestPin}#</div>
         </>
@@ -125,6 +149,7 @@ export default function VerkadaPin({
     return (
       <>
         <h3>front door access</h3>
+        {weeklyCodeBlock}
         <p>
           door access is not available for your account. please contact a staff
           member to set up verkada access.
@@ -137,8 +162,10 @@ export default function VerkadaPin({
     <>
       <h3>door code</h3>
 
+      {weeklyCodeBlock}
+
       <p>
-        your personal PIN code (weekly code is in the Discord). this is for guests or deliveries,{' '}
+        your personal PIN code. this is for guests or deliveries,{' '}
         <span
           onClick={() => setShowAppInfo(!showAppInfo)}
           style={{
