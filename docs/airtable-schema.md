@@ -148,7 +148,7 @@ Physical room/desk management.
 | Field | Type | Description |
 |-------|------|-------------|
 | `Name` | singleLineText | Room name |
-| `Floor` | singleSelect | 1, 2, 3, 4 |
+| `Floor` | multipleRecordLinks | Link to a Floors record (resolved to floor number "1"–"4" by `getBookableRooms`) |
 | `Room #` | singleLineText | Room number |
 | `Room Size` | number | Capacity |
 | `Status` | singleSelect | Private Office, Hotdesks, Lounge, Staff, Public Space, Booth |
