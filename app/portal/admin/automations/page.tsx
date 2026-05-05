@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getSession } from '@/app/lib/session'
+import { getSession, isCurrentlyStaff } from '@/app/lib/session'
 import { AUTOMATIONS } from '@/app/lib/automations-manifest'
 import Link from 'next/link'
 import AutomationsList from './AutomationsList'
@@ -15,7 +15,7 @@ export default async function AutomationsPage() {
     redirect('/portal/login')
   }
 
-  if (!session.isStaff) {
+  if (!(await isCurrentlyStaff(session.userId))) {
     redirect('/portal')
   }
 

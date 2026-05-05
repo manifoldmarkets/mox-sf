@@ -1,4 +1,4 @@
-import { getSession } from '@/app/lib/session'
+import { getSession, isCurrentlyStaff } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -38,6 +38,12 @@ export default async function DashboardPage() {
     redirect('/portal/login')
   }
 
+  const isStaff = await isCurrentlyStaff(session.userId)
+
+  if (session.viewingAsUserId && !isStaff) {
+    redirect('/portal/api/view-as?clear=true')
+  }
+
   const effectiveUserId = session.viewingAsUserId || session.userId
   const profile = await getUserProfile(effectiveUserId)
 
@@ -64,7 +70,7 @@ export default async function DashboardPage() {
       <h1>member portal</h1>
       <p className="muted">
         logged in as {session.name || profile.name}
-        {session.isStaff && ' (staff)'}
+        {isStaff && ' (staff)'}
       </p>
 
       {/* Admin banner when viewing as another user */}
@@ -77,7 +83,7 @@ export default async function DashboardPage() {
       )}
 
       {/* Admin tools - collapsible section at top */}
-      {session.isStaff && (
+      {isStaff && (
         <details className="admin-section">
           <summary>admin tools</summary>
           <div style={{ marginTop: '10px' }}>

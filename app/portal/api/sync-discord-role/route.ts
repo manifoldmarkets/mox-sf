@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/app/lib/session'
+import { getSession, isCurrentlyStaff } from '@/app/lib/session'
 import { syncDiscordRole, isDiscordConfigured } from '@/app/lib/discord'
 
 /**
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const { discordUsername, tier, status, userId } = body
 
     // Only allow syncing own role, or staff can sync anyone
-    if (userId !== session.userId && !session.isStaff) {
+    if (userId !== session.userId && !(await isCurrentlyStaff(session.userId))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 

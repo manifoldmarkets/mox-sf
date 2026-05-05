@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/app/lib/session'
+import { getSession, isCurrentlyStaff } from '@/app/lib/session'
 import { cancelBooking } from '@/app/lib/room-bookings'
 import { getRecord, Tables } from '@/app/lib/airtable'
 
@@ -35,7 +35,7 @@ export async function DELETE(
     const userId = session.viewingAsUserId || session.userId
     const bookedBy = booking.fields['Booked By']?.[0]
 
-    if (bookedBy !== userId && !session.isStaff) {
+    if (bookedBy !== userId && !(await isCurrentlyStaff(session.userId))) {
       return NextResponse.json(
         { error: 'You can only cancel your own bookings' },
         { status: 403 }

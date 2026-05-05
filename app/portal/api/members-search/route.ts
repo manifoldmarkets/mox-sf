@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/app/lib/session'
+import { requireStaff } from '@/app/lib/session'
 import { findRecords, Tables } from '@/app/lib/airtable'
 
 // Normalize string by removing accents/diacritics
@@ -13,9 +13,9 @@ interface PersonFields {
 }
 
 export async function GET(request: NextRequest) {
-  const session = await getSession()
+  const session = await requireStaff()
 
-  if (!session.isLoggedIn || !session.isStaff) {
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 

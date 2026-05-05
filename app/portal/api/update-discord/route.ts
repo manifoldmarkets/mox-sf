@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/app/lib/session'
+import { requireStaff } from '@/app/lib/session'
 import { updateRecord, Tables } from '@/app/lib/airtable'
 
 interface UpdateMapping {
@@ -12,9 +12,9 @@ interface PersonFields {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await getSession()
+  const session = await requireStaff()
 
-  if (!session.isLoggedIn || !session.isStaff) {
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 
