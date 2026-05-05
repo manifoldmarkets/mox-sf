@@ -54,20 +54,10 @@ export async function isAuthenticated(): Promise<boolean> {
   return session.isLoggedIn === true
 }
 
-const staffCache = new Map<string, { isStaff: boolean; expiresAt: number }>()
-const STAFF_CACHE_TTL_MS = 60 * 1000
-
 export async function isCurrentlyStaff(userId: string): Promise<boolean> {
-  const cached = staffCache.get(userId)
-  if (cached && Date.now() < cached.expiresAt) {
-    return cached.isStaff
-  }
-
   try {
     const record = await getRecord<{ Tier?: string }>(Tables.People, userId)
-    const isStaff = record?.fields.Tier === 'Staff'
-    staffCache.set(userId, { isStaff, expiresAt: Date.now() + STAFF_CACHE_TTL_MS })
-    return isStaff
+    return record?.fields.Tier === 'Staff'
   } catch (error) {
     console.error('[session] Failed to verify staff status:', error)
     return false

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
-import { requireStaff } from '@/app/lib/session'
+import { getSession, requireStaff } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 
 interface PersonFields {
@@ -11,10 +11,10 @@ interface PersonFields {
 
 // GET handler for clearing view-as mode via link
 export async function GET(request: NextRequest) {
-  const session = await requireStaff()
+  const session = await getSession()
 
-  if (!session) {
-    return NextResponse.redirect(new URL('/portal', request.url))
+  if (!session.isLoggedIn) {
+    return NextResponse.redirect(new URL('/portal/login', request.url))
   }
 
   const clear = request.nextUrl.searchParams.get('clear')

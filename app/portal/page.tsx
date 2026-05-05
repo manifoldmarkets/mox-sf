@@ -39,6 +39,11 @@ export default async function DashboardPage() {
   }
 
   const isStaff = await isCurrentlyStaff(session.userId)
+
+  if (session.viewingAsUserId && !isStaff) {
+    redirect('/portal/api/view-as?clear=true')
+  }
+
   const effectiveUserId = session.viewingAsUserId || session.userId
   const profile = await getUserProfile(effectiveUserId)
 
