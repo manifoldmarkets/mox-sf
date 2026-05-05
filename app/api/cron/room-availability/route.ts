@@ -87,6 +87,10 @@ function formatMessage(
     ...rooms.map((r) => r.room.name.length + getCapacityStr(r.room.size).length)
   )
 
+  const GREEN = '[2;32m'
+  const RED = '[2;31m'
+  const RESET = '[0m'
+
   const lines: string[] = []
   for (const floor of floors) {
     const floorRooms = rooms
@@ -96,14 +100,15 @@ function formatMessage(
     lines.push(`— Floor ${floor} —`)
     for (const { room, status } of floorRooms) {
       const nameWithCapacity = `${room.name}${getCapacityStr(room.size)}`.padEnd(maxNameLength)
-      const statusIcon = status.startsWith('Free') || status === 'Free' ? '🟢' : '🔴'
-      lines.push(`${statusIcon} ${nameWithCapacity}  ${status}`)
+      const isFree = status.startsWith('Free')
+      const color = isFree ? GREEN : RED
+      lines.push(`${nameWithCapacity}  ${color}${status}${RESET}`)
     }
   }
 
   return [
     '**# 🚪 Meeting Room Availability**',
-    '```',
+    '```ansi',
     ...lines,
     '```',
     `_Updated ${timeStr} PT (refreshes every 10 min)_`,
