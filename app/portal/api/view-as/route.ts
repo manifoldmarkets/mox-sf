@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
-import { getSession } from '@/app/lib/session'
+import { requireStaff } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 
 interface PersonFields {
@@ -11,9 +11,9 @@ interface PersonFields {
 
 // GET handler for clearing view-as mode via link
 export async function GET(request: NextRequest) {
-  const session = await getSession()
+  const session = await requireStaff()
 
-  if (!session.isLoggedIn || !session.isStaff) {
+  if (!session) {
     return NextResponse.redirect(new URL('/portal', request.url))
   }
 
@@ -33,9 +33,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await getSession()
+  const session = await requireStaff()
 
-  if (!session.isLoggedIn || !session.isStaff) {
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 

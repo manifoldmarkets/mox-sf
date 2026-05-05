@@ -1,6 +1,7 @@
 import { getIronSession, IronSession, SessionOptions } from 'iron-session'
 import { cookies } from 'next/headers'
 import { env } from './env'
+import { getRecord, Tables } from './airtable'
 
 export interface SessionData {
   userId: string
@@ -19,7 +20,7 @@ const sessionOptions: SessionOptions = {
     httpOnly: true,
     secure: env.isProduction,
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 90, // 90 days
   },
 }
 
@@ -51,4 +52,31 @@ export async function destroySession() {
 export async function isAuthenticated(): Promise<boolean> {
   const session = await getSession()
   return session.isLoggedIn === true
+}
+
+const staffCache = new Map<string, { isStaff: boolean; expiresAt: number }>()
+const STAFF_CACHE_TTL_MS = 60 * 1000
+
+export async function isCurrentlyStaff(userId: string): Promise<boolean> {
+  const cached = staffCache.get(userId)
+  if (cached && Date.now() < cached.expiresAt) {
+    return cached.isStaff
+  }
+
+  try {
+    const record = await getRecord<{ Tier?: string }>(Tables.People, userId)
+    const isStaff = record?.fields.Tier === 'Staff'
+    staffCache.set(userId, { isStaff, expiresAt: Date.now() + STAFF_CACHE_TTL_MS })
+    return isStaff
+  } catch (error) {
+    console.error('[session] Failed to verify staff status:', error)
+    return false
+  }
+}
+
+export async function requireStaff(): Promise<IronSession<SessionData> | null> {
+  const session = await getSession()
+  if (!session.isLoggedIn || !session.userId) return null
+  const isStaff = await isCurrentlyStaff(session.userId)
+  return isStaff ? session : null
 }

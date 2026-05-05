@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getSession } from '@/app/lib/session'
+import { getSession, isCurrentlyStaff } from '@/app/lib/session'
 import DiscordMappingTool from './DiscordMappingTool'
 import BulkRoleSync from './BulkRoleSync'
 import Link from 'next/link'
@@ -15,7 +15,7 @@ export default async function DiscordMappingPage() {
     redirect('/portal/login')
   }
 
-  if (!session.isStaff) {
+  if (!(await isCurrentlyStaff(session.userId))) {
     redirect('/portal')
   }
 

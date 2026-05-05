@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getSession } from '@/app/lib/session'
+import { requireStaff } from '@/app/lib/session'
 import { syncDiscordRole, isDiscordConfigured } from '@/app/lib/discord'
 import { findRecords, Tables } from '@/app/lib/airtable'
 
@@ -23,9 +23,9 @@ interface PersonWithDiscord {
  * Staff only
  */
 export async function POST() {
-  const session = await getSession()
+  const session = await requireStaff()
 
-  if (!session.isLoggedIn || !session.isStaff) {
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 
