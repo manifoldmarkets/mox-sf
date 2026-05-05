@@ -87,24 +87,30 @@ function formatMessage(
     ...rooms.map((r) => r.room.name.length + getCapacityStr(r.room.size).length)
   )
 
+  const ESC = ''
+  const GREEN = `${ESC}[2;32m`
+  const RED = `${ESC}[2;31m`
+  const RESET = `${ESC}[0m`
+
   const lines: string[] = []
   for (const floor of floors) {
     const floorRooms = rooms
       .filter((r) => (r.room.floor || 'Other') === floor)
       .sort((a, b) => a.room.name.localeCompare(b.room.name))
 
-    lines.push(`! — Floor ${floor} —`)
+    lines.push(`— Floor ${floor} —`)
     for (const { room, status } of floorRooms) {
       const nameWithCapacity = `${room.name}${getCapacityStr(room.size)}`.padEnd(maxNameLength)
       const isFree = status.startsWith('Free')
-      const prefix = isFree ? '+ 🟢' : '- 🔴'
-      lines.push(`${prefix} ${nameWithCapacity}  ${status}`)
+      const icon = isFree ? '🟢' : '🔴'
+      const color = isFree ? GREEN : RED
+      lines.push(`${icon} ${nameWithCapacity}  ${color}${status}${RESET}`)
     }
   }
 
   return [
     '**# 🚪 Meeting Room Availability**',
-    '```diff',
+    '```ansi',
     ...lines,
     '```',
     `_Updated ${timeStr} PT (refreshes every 10 min)_`,
