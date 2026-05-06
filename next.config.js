@@ -20,7 +20,7 @@ const redirects = {
   '/onboard': 'https://airtable.com/appkHZ2UvU6SouT5y/pagS1zz7H3u2aoElF/form',
   '/membership': 'https://moxsf.notion.site/memberships',
   '/donate':
-    'https://manifund.org/projects/mox-a-coworking--events-space-in-sf',
+    'https://manifund.org/projects/mox-2026-fundraiser',
 
   // Endpoints mostly for admin/staff
   '/eventz':
