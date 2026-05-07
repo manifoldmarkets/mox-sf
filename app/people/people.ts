@@ -53,7 +53,7 @@ export async function getPeople(): Promise<Person[]> {
   const records = await findRecords<PersonFields>(
     Tables.People,
     'AND({Show in directory}=TRUE(), {Status}="Joined")',
-    {}
+    { revalidate: 300 }
   )
 
   return records.map((record) => ({
@@ -131,6 +131,7 @@ interface OrgFields {
 export async function getOrgs(): Promise<Map<string, Org>> {
   const records = await findRecords<OrgFields>(Tables.Orgs, '', {
     fields: ['Name', 'Stealth', 'Room #'],
+    revalidate: 300,
   })
 
   const orgsMap = new Map<string, Org>()
@@ -154,7 +155,9 @@ interface StaffFields {
 }
 
 export async function getStaff(people: Person[]): Promise<Staff[]> {
-  const records = await findRecords<StaffFields>(Tables.Staff, '', {})
+  const records = await findRecords<StaffFields>(Tables.Staff, '', {
+    revalidate: 300,
+  })
   const peopleById = new Map(people.map((p) => [p.id, p]))
 
   return records.map((record) => {
@@ -179,6 +182,7 @@ interface ProgramFields {
 export async function getPrograms(): Promise<Map<string, Program>> {
   const records = await findRecords<ProgramFields>(Tables.Programs, '', {
     fields: ['Name', 'Room #'],
+    revalidate: 300,
   })
 
   const programsMap = new Map<string, Program>()

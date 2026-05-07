@@ -32,6 +32,11 @@ export interface QueryOptions {
   sort?: Array<{ field: string; direction?: 'asc' | 'desc' }>
   maxRecords?: number
   view?: string
+  /**
+   * Seconds to cache the response in Next's data cache. Omit/0 = no cache.
+   * Use for read-mostly tables on public pages.
+   */
+  revalidate?: number
 }
 
 // Common headers for all requests
@@ -92,7 +97,9 @@ export async function getRecords<T = Record<string, unknown>>(
 
     const res = await fetch(url, {
       headers: getHeaders(),
-      cache: 'no-store',
+      ...(options.revalidate
+        ? { next: { revalidate: options.revalidate } }
+        : { cache: 'no-store' as const }),
       signal: AbortSignal.timeout(5000),
     })
 

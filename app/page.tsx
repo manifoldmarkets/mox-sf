@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { Suspense } from 'react'
 import Gallery from './venue-gallery'
 import PeopleGallery from './people-gallery'
 import EventsCardCompact from './components/EventsCardCompact'
@@ -7,6 +8,41 @@ import DonateBanner from './components/DonateBanner'
 import { getPeople, getOrgs, getPrograms, getStaff, buildDirectoryData } from './people/people'
 import DirectoryClient from './people/DirectoryClient'
 import './people/people.css'
+
+async function HomepageDirectory() {
+  let people: Awaited<ReturnType<typeof getPeople>> = []
+  let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
+  let programsMap: Awaited<ReturnType<typeof getPrograms>> = new Map()
+  let staffEntries: Awaited<ReturnType<typeof getStaff>> = []
+  try {
+    ;[people, orgsMap, programsMap] = await Promise.all([
+      getPeople(), getOrgs(), getPrograms(),
+    ])
+    staffEntries = await getStaff(people)
+  } catch (e) {
+    console.error('Failed to fetch people data:', e)
+  }
+  const { sections, orgsLookup, programsLookup } = buildDirectoryData(
+    people, orgsMap, programsMap, staffEntries
+  )
+
+  return (
+    <DirectoryClient
+      sections={sections}
+      orgsLookup={orgsLookup}
+      programsLookup={programsLookup}
+      memberCount={people.length}
+    />
+  )
+}
+
+function DirectoryFallback() {
+  return (
+    <div className="muted" style={{ padding: '40px 0', textAlign: 'center' }}>
+      loading members…
+    </div>
+  )
+}
 
 
 function Link({
@@ -37,20 +73,6 @@ export default async function Component() {
   } catch (e) {
     console.error('Failed to fetch events:', e)
   }
-
-  let people: Awaited<ReturnType<typeof getPeople>> = []
-  let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
-  let programsMap: Awaited<ReturnType<typeof getPrograms>> = new Map()
-  let staffEntries: Awaited<ReturnType<typeof getStaff>> = []
-  try {
-    ;[people, orgsMap, programsMap] = await Promise.all([
-      getPeople(), getOrgs(), getPrograms(),
-    ])
-    staffEntries = await getStaff(people)
-  } catch (e) {
-    console.error('Failed to fetch people data:', e)
-  }
-  const { sections, orgsLookup, programsLookup } = buildDirectoryData(people, orgsMap, programsMap, staffEntries)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -512,12 +534,9 @@ export default async function Component() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <section className="mb-12 sm:mb-16">
           <div className="directory homepage-directory">
-            <DirectoryClient
-              sections={sections}
-              orgsLookup={orgsLookup}
-              programsLookup={programsLookup}
-              memberCount={people.length}
-            />
+            <Suspense fallback={<DirectoryFallback />}>
+              <HomepageDirectory />
+            </Suspense>
           </div>
         </section>
       </div>
