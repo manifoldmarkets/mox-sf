@@ -4,7 +4,7 @@ import PeopleGallery from './people-gallery'
 import EventsCardCompact from './components/EventsCardCompact'
 import { getEvents } from './lib/events'
 import DonateBanner from './components/DonateBanner'
-import { getPeople, getOrgs, getPrograms, buildDirectoryData } from './people/people'
+import { getPeople, getOrgs, getPrograms, getStaff, buildDirectoryData } from './people/people'
 import DirectoryClient from './people/DirectoryClient'
 import './people/people.css'
 
@@ -41,14 +41,16 @@ export default async function Component() {
   let people: Awaited<ReturnType<typeof getPeople>> = []
   let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
   let programsMap: Awaited<ReturnType<typeof getPrograms>> = new Map()
+  let staffEntries: Awaited<ReturnType<typeof getStaff>> = []
   try {
     ;[people, orgsMap, programsMap] = await Promise.all([
       getPeople(), getOrgs(), getPrograms(),
     ])
+    staffEntries = await getStaff(people)
   } catch (e) {
     console.error('Failed to fetch people data:', e)
   }
-  const { sections, orgsLookup, programsLookup } = buildDirectoryData(people, orgsMap, programsMap)
+  const { sections, orgsLookup, programsLookup } = buildDirectoryData(people, orgsMap, programsMap, staffEntries)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">

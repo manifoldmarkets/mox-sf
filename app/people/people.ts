@@ -27,6 +27,15 @@ export type Program = {
   rooms: string[]
 }
 
+export type Staff = {
+  id: string
+  title: string
+  email: string
+  contactFor: string[]
+  rank: number
+  person: Person | null
+}
+
 interface PersonFields {
   Name?: string
   Tier?: string
@@ -136,6 +145,31 @@ export async function getOrgs(): Promise<Map<string, Org>> {
   return orgsMap
 }
 
+interface StaffFields {
+  Title?: string
+  'Main Record'?: string[]
+  'Staff Email'?: string
+  'Contact for'?: string[]
+  Rank?: number
+}
+
+export async function getStaff(people: Person[]): Promise<Staff[]> {
+  const records = await findRecords<StaffFields>(Tables.Staff, '', {})
+  const peopleById = new Map(people.map((p) => [p.id, p]))
+
+  return records.map((record) => {
+    const personId = record.fields['Main Record']?.[0]
+    return {
+      id: record.id,
+      title: record.fields.Title || '',
+      email: record.fields['Staff Email'] || '',
+      contactFor: record.fields['Contact for'] || [],
+      rank: record.fields.Rank ?? 999,
+      person: personId ? peopleById.get(personId) || null : null,
+    }
+  })
+}
+
 // Fetch all programs with their room numbers
 interface ProgramFields {
   Name?: string
@@ -162,16 +196,30 @@ export async function getPrograms(): Promise<Map<string, Program>> {
 export function buildDirectoryData(
   people: Person[],
   orgsMap: Map<string, Org>,
-  programsMap: Map<string, Program>
+  programsMap: Map<string, Program>,
+  staffEntries: Staff[] = []
 ) {
-  const staff = sortPeopleByCompleteness(
-    people.filter((p) => p.tier === 'Staff')
+  const staffByPersonId = new Map(
+    staffEntries.filter((s) => s.person).map((s) => [s.person!.id, s])
   )
+
+  const staff = [...staffEntries]
+    .filter((s) => s.person)
+    .sort((a, b) => {
+      if (a.rank !== b.rank) return a.rank - b.rank
+      return (a.person?.name || '').localeCompare(b.person?.name || '')
+    })
+
   const privateOffices = sortPeopleByCompleteness(
     people.filter((p) => p.tier === 'Private Office')
   )
   const members = sortPeopleByCompleteness(
-    people.filter((p) => p.tier !== 'Staff' && p.tier !== 'Private Office')
+    people.filter(
+      (p) =>
+        p.tier !== 'Staff' &&
+        p.tier !== 'Private Office' &&
+        !staffByPersonId.has(p.id)
+    )
   )
 
   // Group private offices by org (excluding stealth)
@@ -217,7 +265,7 @@ export function buildDirectoryData(
   programsMap.forEach((program, id) => { programsLookup[id] = { name: program.name } })
 
   const sections = [
-    { type: 'person-section' as const, title: 'Staff', people: staff, affiliationType: 'org' as const },
+    { type: 'staff-section' as const, title: 'Staff', staff },
     { type: 'grouped-section' as const, title: 'Programs', groups: sortedPrograms.map(([id, g]) => ({ id, ...g })) },
     { type: 'grouped-section' as const, title: 'Offices', groups: sortedOrgs.map(([id, g]) => ({ id, ...g })) },
     { type: 'person-section' as const, title: 'Members', people: membersWithoutProgram, affiliationType: 'both' as const },
