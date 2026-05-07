@@ -4,6 +4,7 @@ import {
   getPeople,
   getOrgs,
   getPrograms,
+  getStaff,
   filterPeople,
   buildDirectoryData,
 } from './people'
@@ -18,18 +19,25 @@ export default async function PeoplePage({ searchParams }: { searchParams: Promi
   let people: Awaited<ReturnType<typeof getPeople>> = []
   let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
   let programsMap: Awaited<ReturnType<typeof getPrograms>> = new Map()
+  let staffEntries: Awaited<ReturnType<typeof getStaff>> = []
 
   try {
     ;[people, orgsMap, programsMap] = await Promise.all([
       getPeople(), getOrgs(), getPrograms(),
     ])
+    staffEntries = await getStaff(people)
   } catch (e) {
     console.error('Failed to fetch people data:', e)
   }
 
   const params = await searchParams
   const filteredPeople = filterPeople(people, params.filter)
-  const { sections, orgsLookup, programsLookup } = buildDirectoryData(filteredPeople, orgsMap, programsMap)
+  const { sections, orgsLookup, programsLookup } = buildDirectoryData(
+    filteredPeople,
+    orgsMap,
+    programsMap,
+    staffEntries
+  )
 
   return (
     <div className="directory-wrapper">

@@ -12,6 +12,7 @@ export const Tables = {
   Rooms: 'Rooms',
   RoomBookings: 'Room Bookings',
   Floors: 'Floors',
+  Staff: 'tblbmm9NRs5ANd6IV',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]

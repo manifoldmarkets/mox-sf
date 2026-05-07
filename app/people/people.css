@@ -295,13 +295,8 @@ a.interest.fun:hover {
   padding: 8px 12px;
 }
 
-/* Homepage directory - breakout to ~70% viewport width */
+/* Homepage directory - sits in the page's natural 4xl gutter */
 .homepage-directory {
-  max-width: none;
-  width: 70vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
   padding: 30px 0;
 }
 
@@ -309,9 +304,9 @@ a.interest.fun:hover {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 900px) {
   .homepage-directory .directory-list {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -412,4 +407,105 @@ a.collapsed-name:hover {
   text-align: center;
   padding: 50px 20px;
   font-size: 0.95em;
+}
+
+/* Staff card hierarchy: TITLE > name+is-into > contact-for > email */
+.staff-title {
+  font-size: 0.7em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.staff-entry .person-main {
+  font-size: 1.05em;
+  margin-bottom: 8px;
+}
+
+.staff-contact-for {
+  font-size: 0.85em;
+  margin-bottom: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.staff-contact-label {
+  color: var(--text-secondary);
+  margin-right: 2px;
+}
+
+.staff-contact-tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.95em;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.staff-email-row {
+  font-size: 0.8em;
+}
+
+a.staff-email,
+a.staff-email:visited {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+a.staff-email:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+.staff-email-icon {
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 6px;
+  opacity: 0.8;
+}
+
+/* Staff cards: bigger to accommodate title + name + email + interests + contact-for */
+.staff-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 12px;
+}
+
+.staff-list .person-entry.staff-entry {
+  aspect-ratio: auto;
+  min-height: 150px;
+}
+
+/* Cap the photo column so narrow cards still leave room for text */
+.staff-list .person-entry.staff-entry .person-photo {
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+}
+
+.staff-list .person-entry.staff-entry .person-info {
+  padding: 12px 15px;
+}
+
+@media (max-width: 600px) {
+  .staff-list {
+    grid-template-columns: 1fr;
+  }
+  .staff-list .person-entry.staff-entry .person-photo {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* On homepage, staff cards stack single-column since the page gutter is narrower */
+.homepage-directory .staff-list {
+  grid-template-columns: 1fr;
 }
