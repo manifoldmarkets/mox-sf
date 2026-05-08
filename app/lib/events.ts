@@ -1,5 +1,11 @@
 import { format, parseISO, isSameDay, startOfDay } from 'date-fns'
-import { getRecords, Tables, AirtableRecord } from './airtable'
+import {
+  getRecords,
+  findRecord,
+  Tables,
+  AirtableRecord,
+  escapeAirtableString,
+} from './airtable'
 
 // The raw event fields from Airtable
 interface EventFields {
@@ -15,6 +21,7 @@ interface EventFields {
   'Host Name'?: string
   Featured?: boolean
   Priority?: string
+  'Door Token'?: string
   'Event Poster'?: {
     id: string
     url: string
@@ -64,6 +71,7 @@ export interface Event {
     }
   }
   retro?: string
+  doorToken?: string
 }
 
 export function parseAirtableEvent(record: AirtableEvent): Event {
@@ -92,6 +100,7 @@ export function parseAirtableEvent(record: AirtableEvent): Event {
         }
       : undefined,
     retro: record.fields['Event Retro'],
+    doorToken: record.fields['Door Token'],
   }
 }
 
@@ -115,6 +124,14 @@ const EVENT_FIELDS = [
   'Event Poster',
   'Event Retro',
 ]
+
+export async function getEventByToken(token: string): Promise<Event | null> {
+  if (!/^[A-Za-z0-9]{12}$/.test(token)) return null
+  const escaped = escapeAirtableString(token)
+  const formula = `AND({Status}='Confirmed', {Door Token}='${escaped}')`
+  const rec = await findRecord<EventFields>(Tables.Events, formula)
+  return rec ? parseAirtableEvent(rec) : null
+}
 
 export async function getEvents(): Promise<Event[]> {
   const records = await getRecords<EventFields>(Tables.Events, {

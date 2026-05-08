@@ -41,6 +41,30 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "summary": "Activates a purchased day pass, sets date and reveals door code"
   },
   {
+    "id": "day-pass/activate/unlock-api",
+    "filePath": "app/day-pass/activate/unlock-api/route.ts",
+    "routePath": "/day-pass/activate/unlock-api",
+    "type": "event-action",
+    "httpMethod": "POST",
+    "summary": "Triggers a Verkada admin unlock of the front door from the day-pass activation page"
+  },
+  {
+    "id": "door/unlock",
+    "filePath": "app/door/api/unlock/route.ts",
+    "routePath": "/door/api/unlock",
+    "type": "event-action",
+    "httpMethod": "POST",
+    "summary": "Unlocks the front door for an event attendee with a valid event token, only during the event's hours"
+  },
+  {
+    "id": "door/validate",
+    "filePath": "app/door/api/validate/route.ts",
+    "routePath": "/door/api/validate",
+    "type": "event-action",
+    "httpMethod": "POST",
+    "summary": "Validates an event door token and reports whether the unlock window is currently active"
+  },
+  {
     "id": "eag26/register",
     "filePath": "app/eag26/api/register/route.ts",
     "routePath": "/eag26/api/register",
