@@ -34,6 +34,9 @@ const PORTAL_AUTOMATION_ROUTES = [
 const OTHER_AUTOMATION_ROUTES = [
   'eag26/api/register',
   'day-pass/activate/api',
+  'day-pass/activate/unlock-api',
+  'door/api/validate',
+  'door/api/unlock',
 ]
 
 interface CronConfig {

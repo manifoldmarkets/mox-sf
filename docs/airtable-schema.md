@@ -81,6 +81,7 @@ Manages events and activities.
 | `Event Retro` | multilineText | Post-event retrospective | |
 | `Revenue` | currency | Event revenue | |
 | `Invoice Status` | singleSelect | Payment status | |
+| `Door Token` | singleLineText | 12-char alphanumeric token gating the `/door?evt=…` unlock link. Populated by an Airtable automation when `Status` becomes `Confirmed`. | ✅ Door unlock |
 
 **Status options:** Idea, Maybe, Confirmed, To invoice, Invoiced, Paid, Cancelled, Recurring, Declined
 
