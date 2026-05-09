@@ -35,9 +35,30 @@ export default function MembershipStatus({
   }, [tier, orgId])
 
   const isInvited = status === 'Invited' || status === 'To Invite'
-  const isCancelled = status === 'Cancelled'
-  const hasSubscription = !!stripeCustomerId
   const isPrivateOffice = tier === 'Private Office'
+
+  // Translate Airtable internal statuses to softer user-facing copy.
+  // Statuses not in the map are shown verbatim.
+  const STATUS_DISPLAY: Record<string, string> = {
+    Joined: 'active',
+    Invited: 'invited',
+    'To Invite': 'invited',
+    Applied: 'application received',
+    Evaluating: 'application under review',
+    Waitlisted: 'waitlisted',
+    'Guest Program': 'guest program',
+    'Event Host': 'event host',
+    Paused: 'paused',
+    Cancelled: 'inactive',
+    'Payment Issue': 'payment issue',
+    Visited: 'inactive',
+    Backburner: 'inactive',
+    Rejected: 'inactive',
+    Declined: 'inactive',
+  }
+  const displayStatus = status
+    ? STATUS_DISPLAY[status] || status
+    : 'unknown'
 
   // Format tier display name
   // Tiers: Staff, Volunteer, Private Office, Program, Resident, Core, Friend, Courtesy, Guest Program, Paused
@@ -53,8 +74,8 @@ export default function MembershipStatus({
       <h2>access</h2>
 
       <p>
-        membership status: <strong>{status || 'unknown'}</strong>
-        {tier && !isInvited && (
+        membership status: <strong>{displayStatus}</strong>
+        {tier && !isInvited && displayStatus !== 'inactive' && (
           <>
             {' '}
             · membership type: <strong>{getTierDisplay()}</strong>
@@ -67,18 +88,6 @@ export default function MembershipStatus({
           </>
         )}
       </p>
-
-      {isCancelled && (
-        <div className="alert warning">
-          <p>
-            <strong>your subscription has been cancelled.</strong>
-          </p>
-          <p>
-            we'd love to have you back!{' '}
-            <Link href="/portal/renew">renew membership</Link>
-          </p>
-        </div>
-      )}
 
       {isInvited && (
         <>

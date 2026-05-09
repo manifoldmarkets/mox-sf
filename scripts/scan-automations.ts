@@ -28,6 +28,7 @@ const PORTAL_AUTOMATION_ROUTES = [
   'portal/api/bulk-sync-discord-roles',
   'portal/api/pause-subscription',
   'portal/api/send-magic-link',
+  'portal/api/unlock-door',
 ]
 
 // Other known automation routes outside standard dirs

@@ -1,35 +1,18 @@
 import { getSession, isCurrentlyStaff } from '@/app/lib/session'
-import { getRecord, Tables } from '@/app/lib/airtable'
+import { isActiveMember, canIssueGuestDayPass } from '@/app/lib/membership'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import LogoutButton from './LogoutButton'
-import ProfileEditForm from './profile/edit/ProfileEditForm'
 import HostedEvents from './HostedEvents'
 import VerkadaPin from './VerkadaPin'
 import AdminViewAsSelector from './AdminViewAsSelector'
 import MembershipStatus from './MembershipStatus'
 import DayPassPurchase from './DayPassPurchase'
 import SubscriptionInfo from './SubscriptionInfo'
+import { getUserProfile } from './profile'
 
 // Disable caching - session data (view-as) must be fresh on every request
 export const dynamic = 'force-dynamic'
-
-interface ProfileFields {
-  Name?: string
-  Email?: string
-  Website?: string
-  Photo?: Array<{ url: string }>
-  'Show in directory'?: boolean
-  'Stripe Customer ID'?: string
-  Status?: string
-  Tier?: string
-  Org?: string[]
-  'Discord Username'?: string
-  'Work thing'?: string
-  'Work thing URL'?: string
-  'Fun thing'?: string
-  'Fun thing URL'?: string
-}
 
 export default async function DashboardPage() {
   const session = await getSession()
@@ -46,6 +29,13 @@ export default async function DashboardPage() {
 
   const effectiveUserId = session.viewingAsUserId || session.userId
   const profile = await getUserProfile(effectiveUserId)
+
+  const activeMember = profile
+    ? isActiveMember({ status: profile.status, tier: profile.tier })
+    : false
+  const canDayPass = profile
+    ? canIssueGuestDayPass({ status: profile.status, tier: profile.tier })
+    : false
 
   if (!profile) {
     return (
@@ -120,31 +110,37 @@ export default async function DashboardPage() {
 
       {/* Door Access */}
       <section>
-        <VerkadaPin key={effectiveUserId} isViewingAs={!!session.viewingAsUserId} tier={profile.tier} />
+        <VerkadaPin key={effectiveUserId} isViewingAs={!!session.viewingAsUserId} tier={profile.tier} isActiveMember={activeMember} />
       </section>
 
-      <hr />
+      {/* Day Pass — paying members only */}
+      {canDayPass && (
+        <>
+          <hr />
+          <section>
+            <DayPassPurchase
+              stripeCustomerId={profile.stripeCustomerId}
+              userName={profile.name}
+              userEmail={profile.email}
+            />
+          </section>
+        </>
+      )}
 
-      {/* Day Pass */}
-      <section>
-        <DayPassPurchase
-          stripeCustomerId={profile.stripeCustomerId}
-          userName={profile.name}
-          userEmail={profile.email}
-        />
-      </section>
-
-      <hr />
-
-      {/* Room Booking */}
-      <section>
-        <h2>book a room</h2>
-        <p>
-          <Link href="/portal/book-room">
-            reserve a meeting room or call booth
-          </Link>
-        </p>
-      </section>
+      {/* Room Booking — active members only */}
+      {activeMember && (
+        <>
+          <hr />
+          <section>
+            <h2>book a room</h2>
+            <p>
+              <Link href="/portal/book-room">
+                reserve a meeting room or call booth
+              </Link>
+            </p>
+          </section>
+        </>
+      )}
 
       <hr />
 
@@ -158,7 +154,9 @@ export default async function DashboardPage() {
       {/* Profile */}
       <section>
         <h2>profile</h2>
-        <ProfileEditForm profile={profile} userId={effectiveUserId} />
+        <p>
+          <Link href="/portal/profile/edit">edit your profile</Link>
+        </p>
       </section>
 
       <hr />
@@ -166,48 +164,4 @@ export default async function DashboardPage() {
       <LogoutButton />
     </>
   )
-}
-
-async function getUserProfile(recordId: string): Promise<{
-  name: string
-  email: string
-  website: string
-  photo: string | null
-  directoryVisible: boolean
-  stripeCustomerId: string | null
-  status: string | null
-  tier: string | null
-  orgId: string | null
-  discordUsername: string | null
-  workThing: string | null
-  workThingUrl: string | null
-  funThing: string | null
-  funThingUrl: string | null
-  error?: string
-} | null> {
-  const record = await getRecord<ProfileFields>(Tables.People, recordId)
-
-  if (!record) {
-    return null
-  }
-
-  const fields = record.fields
-  const showInDirectory = fields['Show in directory']
-
-  return {
-    name: fields.Name || '',
-    email: fields.Email || '',
-    website: fields.Website || '',
-    photo: fields.Photo?.[0]?.url || null,
-    directoryVisible: showInDirectory === true,
-    stripeCustomerId: fields['Stripe Customer ID'] || null,
-    status: fields.Status || null,
-    tier: fields.Tier || null,
-    orgId: fields.Org?.[0] || null,
-    discordUsername: fields['Discord Username'] || null,
-    workThing: fields['Work thing'] || null,
-    workThingUrl: fields['Work thing URL'] || null,
-    funThing: fields['Fun thing'] || null,
-    funThingUrl: fields['Fun thing URL'] || null,
-  }
 }
