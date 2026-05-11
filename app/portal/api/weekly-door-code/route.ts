@@ -1,5 +1,7 @@
 import { getSession } from '@/app/lib/session'
 import { env } from '@/app/lib/env'
+import { getRecord, Tables } from '@/app/lib/airtable'
+import { isActiveMember } from '@/app/lib/membership'
 
 let cachedToken: string | null = null
 let tokenExpiresAt: number = 0
@@ -48,6 +50,20 @@ export async function GET() {
     const session = await getSession()
     if (!session.isLoggedIn) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const effectiveUserId = session.viewingAsUserId || session.userId
+    const record = await getRecord<{ Status?: string; Tier?: string }>(
+      Tables.People,
+      effectiveUserId
+    )
+    if (
+      !isActiveMember({
+        status: record?.fields.Status ?? null,
+        tier: record?.fields.Tier ?? null,
+      })
+    ) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     if (!env.VERKADA_WEEKLY_ACCESS_USER_ID) {

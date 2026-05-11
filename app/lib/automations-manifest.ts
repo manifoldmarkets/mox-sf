@@ -113,6 +113,14 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "summary": "Syncs a single member's Discord role to match their Airtable tier"
   },
   {
+    "id": "portal/unlock-door",
+    "filePath": "app/portal/api/unlock-door/route.ts",
+    "routePath": "/portal/api/unlock-door",
+    "type": "portal-action",
+    "httpMethod": "POST",
+    "summary": "Unlocks the front door for an active member from the portal homepage"
+  },
+  {
     "id": "webhooks/discord",
     "filePath": "app/api/webhooks/discord/route.ts",
     "routePath": "/api/webhooks/discord",

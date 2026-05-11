@@ -5,11 +5,13 @@ import { useState, useEffect } from 'react'
 interface VerkadaPinProps {
   isViewingAs?: boolean
   tier?: string | null
+  isActiveMember?: boolean
 }
 
 export default function VerkadaPin({
   isViewingAs = false,
   tier,
+  isActiveMember = false,
 }: VerkadaPinProps) {
   const [pin, setPin] = useState<string | null>(null)
   const [hasAccess, setHasAccess] = useState<boolean>(false)
@@ -20,10 +22,17 @@ export default function VerkadaPin({
   const [guestPin, setGuestPin] = useState<string | null>(null)
   const [showAppInfo, setShowAppInfo] = useState<boolean>(false)
   const [weeklyCode, setWeeklyCode] = useState<string | null>(null)
+  const [unlocking, setUnlocking] = useState<boolean>(false)
+  const [unlockedAt, setUnlockedAt] = useState<number | null>(null)
+  const [unlockError, setUnlockError] = useState<string | null>(null)
 
   const isGuestProgram = tier === 'Program' || tier === 'Guest Program'
 
   useEffect(() => {
+    if (!isActiveMember) {
+      setLoading(false)
+      return
+    }
     async function fetchPin() {
       try {
         const response = await fetch('/portal/api/verkada-pin')
@@ -45,9 +54,10 @@ export default function VerkadaPin({
     }
 
     fetchPin()
-  }, [])
+  }, [isActiveMember])
 
   useEffect(() => {
+    if (!isActiveMember) return
     async function fetchWeeklyCode() {
       try {
         const response = await fetch('/portal/api/weekly-door-code')
@@ -60,11 +70,11 @@ export default function VerkadaPin({
     }
 
     fetchWeeklyCode()
-  }, [])
+  }, [isActiveMember])
 
   // Fetch guest PIN for guest program members
   useEffect(() => {
-    if (!isGuestProgram) return
+    if (!isGuestProgram || !isActiveMember) return
 
     async function fetchGuestPin() {
       try {
@@ -80,7 +90,31 @@ export default function VerkadaPin({
     }
 
     fetchGuestPin()
-  }, [isGuestProgram])
+  }, [isGuestProgram, isActiveMember])
+
+  useEffect(() => {
+    if (unlockedAt === null) return
+    const timer = setTimeout(() => setUnlockedAt(null), 6000)
+    return () => clearTimeout(timer)
+  }, [unlockedAt])
+
+  const handleUnlock = async () => {
+    setUnlocking(true)
+    setUnlockError(null)
+    try {
+      const res = await fetch('/portal/api/unlock-door', { method: 'POST' })
+      const data = await res.json()
+      if (data.success) {
+        setUnlockedAt(Date.now())
+      } else {
+        setUnlockError(data.error || "couldn't unlock")
+      }
+    } catch {
+      setUnlockError("couldn't unlock")
+    } finally {
+      setUnlocking(false)
+    }
+  }
 
   const handleRegenerate = async () => {
     setShowConfirm(false)
@@ -117,6 +151,19 @@ export default function VerkadaPin({
     )
   }
 
+  if (!isActiveMember) {
+    return (
+      <>
+        <h3>door code</h3>
+        <p>
+          your membership isn&apos;t active right now, so door codes aren&apos;t
+          available. email{' '}
+          <a href="mailto:team@moxsf.com">team@moxsf.com</a> to sort it out.
+        </p>
+      </>
+    )
+  }
+
   if (error) {
     return (
       <>
@@ -126,10 +173,27 @@ export default function VerkadaPin({
     )
   }
 
+  const justUnlocked = unlockedAt !== null
   const weeklyCodeBlock = weeklyCode && (
     <div style={{ marginBottom: '20px' }}>
-      <p style={{ marginBottom: '5px' }}>this week's shared door code:</p>
-      <div className="pin-display">{weeklyCode}#</div>
+      <p style={{ marginBottom: '5px' }}>this week&apos;s shared door code:</p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        <div className="pin-display">{weeklyCode}#</div>
+        <button
+          onClick={handleUnlock}
+          disabled={unlocking || justUnlocked || isViewingAs}
+          className={justUnlocked ? '' : 'primary'}
+        >
+          {unlocking
+            ? 'unlocking…'
+            : justUnlocked
+              ? '✓ unlocked'
+              : 'unlock door'}
+        </button>
+      </div>
+      {unlockError && (
+        <p className="error" style={{ marginTop: '8px' }}>{unlockError}</p>
+      )}
     </div>
   )
 
@@ -164,8 +228,9 @@ export default function VerkadaPin({
 
       {weeklyCodeBlock}
 
-      <p>
-        your personal PIN code. this is for guests or deliveries,{' '}
+      <p className="muted" style={{ fontSize: '0.9em' }}>
+        your personal PIN (for guests/deliveries): <code>{pin}#</code>
+        {' · '}
         <span
           onClick={() => setShowAppInfo(!showAppInfo)}
           style={{
@@ -176,7 +241,28 @@ export default function VerkadaPin({
         >
           or use the app
         </span>
-        .
+        {' · '}
+        {!showConfirm ? (
+          <span
+            onClick={() => !regenerating && !isViewingAs && setShowConfirm(true)}
+            style={{
+              textDecoration: 'underline',
+              textDecorationStyle: 'dotted',
+              cursor: regenerating || isViewingAs ? 'not-allowed' : 'pointer',
+              opacity: regenerating || isViewingAs ? 0.5 : 1,
+            }}
+          >
+            {regenerating ? 'regenerating…' : 'regenerate'}
+          </span>
+        ) : (
+          <>
+            confirm regenerate?{' '}
+            <button onClick={handleRegenerate} className="danger">
+              yes
+            </button>{' '}
+            <button onClick={() => setShowConfirm(false)}>cancel</button>
+          </>
+        )}
       </p>
 
       {showAppInfo && (
@@ -205,33 +291,9 @@ export default function VerkadaPin({
         </div>
       )}
 
-      <div className="pin-display">{pin}#</div>
-      <br />
-      {!showConfirm ? (
-        <button
-          onClick={() => setShowConfirm(true)}
-          disabled={regenerating || isViewingAs}
-        >
-          {regenerating ? 'generating...' : 'regenerate PIN'}
-        </button>
-      ) : (
-        <div className="alert warning">
-          <p>
-            <strong>confirm regenerate PIN?</strong> this is mainly for if you gave it to
-            someone you shouldn't have.
-          </p>
-          <div style={{ marginTop: '10px' }}>
-            <button onClick={handleRegenerate} className="danger">
-              yes, regenerate
-            </button>{' '}
-            <button onClick={() => setShowConfirm(false)}>cancel</button>
-          </div>
-        </div>
-      )}
-
       {isViewingAs && (
         <p className="muted" style={{ marginTop: '10px' }}>
-          to change this user's PIN, use the verkada admin portal
+          to change this user&apos;s PIN, use the verkada admin portal
         </p>
       )}
     </>

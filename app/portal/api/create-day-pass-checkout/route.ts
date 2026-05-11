@@ -1,6 +1,8 @@
 import { getSession } from '@/app/lib/session';
 import { stripe } from '@/app/lib/stripe';
 import { env } from '@/app/lib/env';
+import { getRecord, Tables } from '@/app/lib/airtable';
+import { canIssueGuestDayPass } from '@/app/lib/membership';
 
 export async function POST(request: Request) {
   try {
@@ -8,6 +10,23 @@ export async function POST(request: Request) {
 
     if (!session.isLoggedIn) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const effectiveUserId = session.viewingAsUserId || session.userId;
+    const record = await getRecord<{ Status?: string; Tier?: string }>(
+      Tables.People,
+      effectiveUserId
+    );
+    if (
+      !canIssueGuestDayPass({
+        status: record?.fields.Status ?? null,
+        tier: record?.fields.Tier ?? null,
+      })
+    ) {
+      return Response.json(
+        { error: 'Guest day passes are only available to active paying members.' },
+        { status: 403 }
+      );
     }
 
     const body = await request.json();
