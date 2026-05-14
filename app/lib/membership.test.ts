@@ -13,9 +13,10 @@ describe('isActiveMember', () => {
     }
   })
 
-  it('accepts Joined Program and Guest Program', () => {
+  it('accepts Joined Program, Guest Program, and Volunteer', () => {
     expect(isActiveMember({ status: 'Joined', tier: 'Program' })).toBe(true)
     expect(isActiveMember({ status: 'Joined', tier: 'Guest Program' })).toBe(true)
+    expect(isActiveMember({ status: 'Joined', tier: 'Volunteer' })).toBe(true)
   })
 
   it('rejects non-Joined statuses for non-Staff', () => {
@@ -25,7 +26,7 @@ describe('isActiveMember', () => {
   })
 
   it('rejects inactive tiers even when Joined', () => {
-    for (const tier of ['Volunteer', 'Courtesy', 'Paused', null, undefined]) {
+    for (const tier of ['Courtesy', 'Paused', null, undefined]) {
       expect(isActiveMember({ status: 'Joined', tier })).toBe(false)
     }
   })
@@ -36,8 +37,8 @@ describe('canIssueGuestDayPass', () => {
     expect(canIssueGuestDayPass({ status: 'Applied', tier: 'Staff' })).toBe(true)
   })
 
-  it('accepts Joined paying tiers', () => {
-    for (const tier of ['Friend', 'Core', 'Resident', 'Private Office']) {
+  it('accepts Joined paying tiers and Volunteer', () => {
+    for (const tier of ['Friend', 'Core', 'Resident', 'Private Office', 'Volunteer']) {
       expect(canIssueGuestDayPass({ status: 'Joined', tier })).toBe(true)
     }
   })
@@ -54,7 +55,7 @@ describe('canIssueGuestDayPass', () => {
   })
 
   it('rejects inactive tiers', () => {
-    for (const tier of ['Volunteer', 'Courtesy', 'Paused']) {
+    for (const tier of ['Courtesy', 'Paused']) {
       expect(canIssueGuestDayPass({ status: 'Joined', tier })).toBe(false)
     }
   })
