@@ -3,6 +3,12 @@ import { stripe } from '@/app/lib/stripe';
 import { env } from '@/app/lib/env';
 import { getRecord, Tables } from '@/app/lib/airtable';
 import { canIssueGuestDayPass } from '@/app/lib/membership';
+import { getPassType } from '@/app/lib/day-pass-pricing';
+
+interface PurchaserPersonFields {
+  Status?: string;
+  Tier?: string;
+}
 
 export async function POST(request: Request) {
   try {
@@ -13,69 +19,88 @@ export async function POST(request: Request) {
     }
 
     const effectiveUserId = session.viewingAsUserId || session.userId;
-    const record = await getRecord<{ Status?: string; Tier?: string }>(
+    const record = await getRecord<PurchaserPersonFields>(
       Tables.People,
       effectiveUserId
     );
-    if (
-      !canIssueGuestDayPass({
-        status: record?.fields.Status ?? null,
-        tier: record?.fields.Tier ?? null,
-      })
-    ) {
+    const purchaserMembership = {
+      status: record?.fields.Status ?? null,
+      tier: record?.fields.Tier ?? null,
+    };
+    if (!canIssueGuestDayPass(purchaserMembership)) {
       return Response.json(
-        { error: 'Guest day passes are only available to active paying members.' },
+        { error: 'Guest day passes are only available to active members.' },
         { status: 403 }
       );
     }
 
     const body = await request.json();
-    const { stripeCustomerId, userName, userEmail } = body;
+    const {
+      stripeCustomerId,
+      purchaserName,
+      purchaserEmail,
+      guestName,
+      guestEmail,
+      passTypeId,
+    } = body;
 
-    if (!stripeCustomerId || !userName || !userEmail) {
-      return Response.json({ error: 'Missing required information' }, { status: 400 });
+    if (!purchaserName || !purchaserEmail || !guestName || !guestEmail || !passTypeId) {
+      return Response.json(
+        { error: 'Missing required information' },
+        { status: 400 }
+      );
     }
 
-    // Get the base URL from the request or environment variable
-    const requestUrl = new URL(request.url);
-    const baseUrl = env.NEXT_PUBLIC_BASE_URL || `${requestUrl.protocol}//${requestUrl.host}`;
+    const passType = getPassType(passTypeId);
+    if (
+      !passType ||
+      passType.memberPriceCents === null ||
+      passType.stripeMemberPriceId === null
+    ) {
+      return Response.json(
+        { error: 'This pass type is not available for members' },
+        { status: 400 }
+      );
+    }
 
-    // Create a checkout session for a $25 day pass
-    // The payment intent ID will be stored in Airtable after successful payment
+    const requestUrl = new URL(request.url);
+    const baseUrl =
+      env.NEXT_PUBLIC_BASE_URL ||
+      `${requestUrl.protocol}//${requestUrl.host}`;
+
+    // Charge goes to the purchaser's Stripe customer (existing or created
+    // on the fly via email). Guest details ride in metadata so the webhook
+    // can create the DayPass under the guest's identity.
+    const customerFields = stripeCustomerId
+      ? { customer: stripeCustomerId }
+      : { customer_email: purchaserEmail };
+
+    // Reference the member Price by id so product-scoped coupons can attach.
     const checkoutSession = await stripe.checkout.sessions.create({
-      customer: stripeCustomerId,
+      ...customerFields,
       mode: 'payment',
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            unit_amount: 2500, // $25.00
-            product_data: {
-              name: 'Mox Member Day Pass',
-              description: 'Single day access pass for existing Mox members',
-            },
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: `${baseUrl}/day-pass/activate?id={CHECKOUT_SESSION_ID}`,
+      allow_promotion_codes: true,
+      line_items: [{ price: passType.stripeMemberPriceId, quantity: 1 }],
+      success_url: `${baseUrl}/portal?day_pass_purchased=1`,
       cancel_url: `${baseUrl}/portal`,
       metadata: {
         type: 'member_day_pass',
-        userName: userName,
-        userEmail: userEmail,
+        passTypeId: passType.id,
+        passTypeLabel: passType.label,
+        guestName,
+        guestEmail,
+        purchaserUserId: effectiveUserId,
+        purchaserEmail,
       },
     });
 
     return Response.json({ url: checkoutSession.url });
   } catch (error) {
     console.error('Error creating day pass checkout session:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     return Response.json(
-      {
-        error: 'Failed to create checkout session',
-        details: errorMessage
-      },
+      { error: 'Failed to create checkout session', details: errorMessage },
       { status: 500 }
     );
   }
