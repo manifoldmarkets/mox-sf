@@ -1,5 +1,7 @@
 // Day Pass Activation Email
-// Edit the text below to customize the email content
+// Sent to a day-pass recipient after Stripe checkout completes. The link
+// is a one-time magic link into the member portal; the recipient activates
+// the pass from there when they arrive at Mox.
 
 export function getDayPassActivationEmail({
   customerName,
@@ -12,7 +14,7 @@ export function getDayPassActivationEmail({
   passDescription: string;
   activationLink: string;
 }) {
-  const subject = `Your Mox ${passType} is Ready!`;
+  const subject = `Your Mox ${passType} is ready`;
 
   const text = `
 Hi ${customerName},
@@ -21,14 +23,18 @@ Thanks for getting a ${passType}!
 
 ${passDescription}
 
-On the day you're planning to visit, click this link to get your door code:
+To get in: click the link below to access your member portal. If it's your
+first time, we'll ask for a quick photo so staff can recognize you at the
+door. Then on the day you visit, hit "activate" to reveal your door code.
+
 ${activationLink}
+
+This link expires in 24 hours. If it expires before you visit, head to
+moxsf.com/portal and sign in with this same email — your pass will be
+waiting.
 
 ADDRESS
 1680 Mission St, San Francisco, CA 94103
-
-ENTRY
-Use the door code on the keypad to enter. The code will be displayed after you click the activation link above.
 
 Questions? Just reply to this email or reach us at team@moxsf.com
 
