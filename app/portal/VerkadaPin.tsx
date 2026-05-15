@@ -28,6 +28,16 @@ export default function VerkadaPin({
 
   const isGuestProgram = tier === 'Program' || tier === 'Guest Program'
 
+  function accessDescription(tier?: string | null): string | null {
+    if (!tier) return null
+    if (tier === 'Friend') return 'you have drop-in access up to 2x/week.'
+    if (['Core', 'Resident', 'Private Office', 'Staff', 'Volunteer'].includes(tier))
+      return 'you have 24/7 access.'
+    return null
+  }
+
+  const accessDesc = accessDescription(tier)
+
   useEffect(() => {
     if (!isActiveMember) {
       setLoading(false)
@@ -143,57 +153,49 @@ export default function VerkadaPin({
   }
 
   if (loading) {
-    return (
-      <>
-        <h3>door code</h3>
-        <p className="loading">loading...</p>
-      </>
-    )
+    return <p className="loading">loading...</p>
   }
 
   if (!isActiveMember) {
     return (
-      <>
-        <h3>door code</h3>
-        <p>
-          your membership isn&apos;t active right now, so door codes aren&apos;t
-          available. email{' '}
-          <a href="mailto:team@moxsf.com">team@moxsf.com</a> to sort it out.
-        </p>
-      </>
+      <p>
+        your membership isn&apos;t active right now, so door codes aren&apos;t
+        available. email{' '}
+        <a href="mailto:team@moxsf.com">team@moxsf.com</a> to sort it out.
+      </p>
     )
   }
 
   if (error) {
-    return (
-      <>
-        <h3>door code</h3>
-        <p className="error">{error}</p>
-      </>
-    )
+    return <p className="error">{error}</p>
   }
 
   const justUnlocked = unlockedAt !== null
   const weeklyCodeBlock = weeklyCode && (
-    <div style={{ marginBottom: '20px' }}>
-      <p style={{ marginBottom: '5px' }}>this week&apos;s shared door code:</p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-        <div className="pin-display">{weeklyCode}#</div>
-        <button
-          onClick={handleUnlock}
-          disabled={unlocking || justUnlocked || isViewingAs}
-          className={justUnlocked ? '' : 'primary'}
-        >
-          {unlocking
-            ? 'unlocking…'
-            : justUnlocked
-              ? '✓ unlocked'
-              : 'unlock door'}
-        </button>
-      </div>
+    <div
+      style={{
+        border: '2px solid var(--border-dark)',
+        background: 'var(--bg-secondary)',
+        padding: '15px',
+        marginBottom: '20px',
+      }}
+    >
+      {accessDesc && (
+        <p className="muted" style={{ marginBottom: '10px', fontSize: '0.85em' }}>{accessDesc}</p>
+      )}
+      <button
+        onClick={handleUnlock}
+        disabled={unlocking || justUnlocked}
+        className={justUnlocked ? '' : 'primary'}
+      >
+        {unlocking ? 'unlocking…' : justUnlocked ? '✓ unlocked' : 'unlock door'}
+      </button>
       {unlockError && (
         <p className="error" style={{ marginTop: '8px' }}>{unlockError}</p>
       )}
+      <p className="muted" style={{ marginTop: '10px', fontSize: '0.85em' }}>
+        Or enter <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: 'var(--text)', letterSpacing: '0.08em' }}>{weeklyCode}#</span> on the keypad.
+      </p>
     </div>
   )
 
@@ -202,7 +204,6 @@ export default function VerkadaPin({
     if (isGuestProgram && guestPin) {
       return (
         <>
-          <h3>door code</h3>
           {weeklyCodeBlock}
           <p>as a guest program member, use this shared PIN code to enter:</p>
           <div className="pin-display">{guestPin}#</div>
@@ -212,7 +213,6 @@ export default function VerkadaPin({
 
     return (
       <>
-        <h3>front door access</h3>
         {weeklyCodeBlock}
         <p>
           door access is not available for your account. please contact a staff
@@ -224,7 +224,6 @@ export default function VerkadaPin({
 
   return (
     <>
-      <h3>door code</h3>
 
       {weeklyCodeBlock}
 

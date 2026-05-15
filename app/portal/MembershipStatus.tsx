@@ -39,6 +39,16 @@ export default function MembershipStatus({
 
   // Translate Airtable internal statuses to softer user-facing copy.
   // Statuses not in the map are shown verbatim.
+  const STATUS_BADGE: Record<string, string> = {
+    active: 'confirmed',
+    invited: 'paused',
+    paused: 'paused',
+    'payment issue': 'cancelled',
+    inactive: 'cancelled',
+    'guest program': 'confirmed',
+    'event host': '',
+  }
+
   const STATUS_DISPLAY: Record<string, string> = {
     Joined: 'active',
     Invited: 'invited',
@@ -56,9 +66,8 @@ export default function MembershipStatus({
     Rejected: 'inactive',
     Declined: 'inactive',
   }
-  const displayStatus = status
-    ? STATUS_DISPLAY[status] || status
-    : 'unknown'
+  const isVisitor = !status
+  const displayStatus = status ? STATUS_DISPLAY[status] || status : 'visitor'
 
   // Format tier display name
   // Tiers: Staff, Volunteer, Private Office, Program, Resident, Core, Friend, Courtesy, Guest Program, Paused
@@ -71,23 +80,40 @@ export default function MembershipStatus({
 
   return (
     <>
-      <h2>access</h2>
+      <h2>membership</h2>
 
       <p>
-        membership status: <strong>{displayStatus}</strong>
         {tier && !isInvited && displayStatus !== 'inactive' && (
-          <>
-            {' '}
-            · membership type: <strong>{getTierDisplay()}</strong>
-          </>
+          <span style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
+            <span className="badge">{getTierDisplay()}</span>
+            <span className={`badge ${STATUS_BADGE[displayStatus] ?? ''}`}>{displayStatus}</span>
+            {isPrivateOffice && orgId && (
+              <span className="muted">
+                ({loadingOrg ? 'loading...' : orgName || 'no office assigned'})
+              </span>
+            )}
+          </span>
         )}
-        {isPrivateOffice && orgId && (
+        {(!tier || isInvited || displayStatus === 'inactive') && (
           <>
-            {' '}
-            ({loadingOrg ? 'loading...' : orgName || 'no office assigned'})
+            membership status: <strong>{displayStatus}</strong>
+            {isPrivateOffice && orgId && (
+              <> ({loadingOrg ? 'loading...' : orgName || 'no office assigned'})</>
+            )}
           </>
         )}
       </p>
+
+      {(isVisitor || displayStatus === 'inactive') && !stripeCustomerId && (
+        <p style={{ marginTop: '15px' }}>
+          <Link
+            href={`/join?name=${encodeURIComponent(firstName)}`}
+            className="btn primary"
+          >
+            apply for membership
+          </Link>
+        </p>
+      )}
 
       {isInvited && (
         <>

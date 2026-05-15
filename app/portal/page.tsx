@@ -7,7 +7,6 @@ import HostedEvents from './HostedEvents'
 import VerkadaPin from './VerkadaPin'
 import AdminViewAsSelector from './AdminViewAsSelector'
 import MembershipStatus from './MembershipStatus'
-import DayPassPurchase from './DayPassPurchase'
 import MyDayPasses from './MyDayPasses'
 import SubscriptionInfo from './SubscriptionInfo'
 import { getUserProfile } from './profile'
@@ -103,6 +102,20 @@ export default async function DashboardPage() {
         </details>
       )}
 
+      {/* Door Access — always first for anyone who can get in */}
+      {(activeMember || dayPasses.length > 0) && (
+        <>
+          <section>
+            <h2>door access</h2>
+            {activeMember ? (
+              <VerkadaPin key={effectiveUserId} isViewingAs={!!session.viewingAsUserId} tier={profile.tier} isActiveMember={activeMember} />
+            ) : (
+              <MyDayPasses passes={dayPasses} isActiveMember={activeMember} hideHeading />
+            )}
+          </section>
+          <hr />
+        </>
+      )}
 
       {/* Membership Status */}
       <section>
@@ -122,15 +135,8 @@ export default async function DashboardPage() {
         </section>
       )}
 
-      <hr />
-
-      {/* Door Access */}
-      <section>
-        <VerkadaPin key={effectiveUserId} isViewingAs={!!session.viewingAsUserId} tier={profile.tier} isActiveMember={activeMember} />
-      </section>
-
-      {/* User's own day passes (if any) */}
-      {dayPasses.length > 0 && (
+      {/* Active members' day passes below membership info */}
+      {activeMember && dayPasses.length > 0 && (
         <>
           <hr />
           <MyDayPasses passes={dayPasses} isActiveMember={activeMember} />
@@ -142,11 +148,10 @@ export default async function DashboardPage() {
         <>
           <hr />
           <section>
-            <DayPassPurchase
-              stripeCustomerId={profile.stripeCustomerId}
-              userName={profile.name}
-              userEmail={profile.email}
-            />
+            <h2>guest day passes</h2>
+            <p>
+              <Link href="/portal/buy-day-pass">buy a day pass for a guest</Link>
+            </p>
           </section>
         </>
       )}
