@@ -1,16 +1,14 @@
 import { Resend } from 'resend'
-import crypto from 'crypto'
 import { isValidEmail, escapeAirtableString } from '@/app/lib/airtable-helpers'
-import { findRecord, updateRecord, Tables } from '@/app/lib/airtable'
+import { findRecord, Tables } from '@/app/lib/airtable'
 import { env } from '@/app/lib/env'
+import { createMagicLink } from '@/app/lib/magic-link'
 
 const resend = new Resend(env.RESEND_API_KEY)
 
 interface PersonFields {
   Name?: string
   Email?: string
-  magic_link_token?: string
-  token_expires?: string
 }
 
 // Simple in-memory rate limiting (replace with Redis in production)
@@ -73,21 +71,13 @@ export async function POST(request: Request) {
       })
     }
 
-    // Generate secure token
-    const token = crypto.randomBytes(32).toString('hex')
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
-
-    // Update user record with token
-    await updateUserToken(user.id, token, expiresAt)
-
     // Get the base URL - use request URL in development, env var in production
     const requestUrl = new URL(request.url)
     const baseUrl = env.isDevelopment
       ? `${requestUrl.protocol}//${requestUrl.host}`
       : env.NEXT_PUBLIC_BASE_URL
 
-    // Send email with magic link
-    const magicLink = `${baseUrl}/portal/verify?token=${token}`
+    const magicLink = await createMagicLink(user.id, baseUrl)
 
     const emailResult = await resend.emails.send({
       from: 'Mox SF <noreply@account.moxsf.com>',
@@ -146,13 +136,3 @@ async function findUserByEmail(email: string) {
   }
 }
 
-async function updateUserToken(
-  recordId: string,
-  token: string,
-  expiresAt: Date
-) {
-  await updateRecord<PersonFields>(Tables.People, recordId, {
-    magic_link_token: token,
-    token_expires: expiresAt.toISOString(),
-  })
-}

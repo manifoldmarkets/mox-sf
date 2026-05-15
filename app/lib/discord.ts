@@ -286,12 +286,23 @@ export async function renameDiscordChannel(
   }
 }
 
+export interface DiscordEmbed {
+  title?: string
+  description?: string
+  color?: number
+  thumbnail?: { url: string }
+  image?: { url: string }
+  fields?: Array<{ name: string; value: string; inline?: boolean }>
+}
+
 /**
- * Send a message to a Discord channel
+ * Send a message to a Discord channel. Content and embeds are both optional;
+ * at least one must be provided.
  */
 export async function sendChannelMessage(
   channelId: string,
-  content: string
+  content: string,
+  embeds?: DiscordEmbed[]
 ): Promise<{ success: boolean; messageId?: string }> {
   if (!env.DISCORD_BOT_TOKEN) {
     console.error('[Discord] Bot token not configured')
@@ -308,6 +319,7 @@ export async function sendChannelMessage(
         },
         body: JSON.stringify({
           content,
+          ...(embeds && embeds.length > 0 ? { embeds } : {}),
         }),
       }
     )

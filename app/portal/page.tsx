@@ -8,8 +8,10 @@ import VerkadaPin from './VerkadaPin'
 import AdminViewAsSelector from './AdminViewAsSelector'
 import MembershipStatus from './MembershipStatus'
 import DayPassPurchase from './DayPassPurchase'
+import MyDayPasses from './MyDayPasses'
 import SubscriptionInfo from './SubscriptionInfo'
 import { getUserProfile } from './profile'
+import { fetchUserDayPasses } from './dayPasses'
 
 // Disable caching - session data (view-as) must be fresh on every request
 export const dynamic = 'force-dynamic'
@@ -29,6 +31,7 @@ export default async function DashboardPage() {
 
   const effectiveUserId = session.viewingAsUserId || session.userId
   const profile = await getUserProfile(effectiveUserId)
+  const dayPasses = profile ? await fetchUserDayPasses(profile.email) : []
 
   const activeMember = profile
     ? isActiveMember({ status: profile.status, tier: profile.tier })
@@ -49,6 +52,14 @@ export default async function DashboardPage() {
         </p>
       </>
     )
+  }
+
+  // Welcome gate: day-pass holders without a name or photo need to complete
+  // their profile before continuing. Skipped for admins viewing as a user.
+  const needsWelcome =
+    dayPasses.length > 0 && (!profile.name.trim() || !profile.photo)
+  if (needsWelcome && !session.viewingAsUserId) {
+    redirect('/portal/welcome')
   }
 
   return (
@@ -83,6 +94,11 @@ export default async function DashboardPage() {
                 → discord username mapping tool
               </Link>
             </p>
+            <p style={{ marginTop: '10px' }}>
+              <Link href="/portal/admin/issue-day-pass">
+                → issue a day pass
+              </Link>
+            </p>
           </div>
         </details>
       )}
@@ -112,6 +128,14 @@ export default async function DashboardPage() {
       <section>
         <VerkadaPin key={effectiveUserId} isViewingAs={!!session.viewingAsUserId} tier={profile.tier} isActiveMember={activeMember} />
       </section>
+
+      {/* User's own day passes (if any) */}
+      {dayPasses.length > 0 && (
+        <>
+          <hr />
+          <MyDayPasses passes={dayPasses} isActiveMember={activeMember} />
+        </>
+      )}
 
       {/* Day Pass — paying members only */}
       {canDayPass && (
