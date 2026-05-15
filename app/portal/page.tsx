@@ -94,6 +94,11 @@ export default async function DashboardPage() {
                 → discord username mapping tool
               </Link>
             </p>
+            <p style={{ marginTop: '10px' }}>
+              <Link href="/portal/admin/issue-day-pass">
+                → issue a day pass
+              </Link>
+            </p>
           </div>
         </details>
       )}
@@ -128,7 +133,7 @@ export default async function DashboardPage() {
       {dayPasses.length > 0 && (
         <>
           <hr />
-          <MyDayPasses passes={dayPasses} />
+          <MyDayPasses passes={dayPasses} isActiveMember={activeMember} />
         </>
       )}
 

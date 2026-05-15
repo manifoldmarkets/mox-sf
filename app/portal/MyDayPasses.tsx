@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DayPass, computeExpiresAt, isExpired } from './dayPasses'
 
 interface MyDayPassesProps {
   passes: DayPass[]
+  isActiveMember: boolean
 }
 
 interface ActivatedState {
@@ -30,26 +31,48 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
   const [activated, setActivated] = useState<ActivatedState | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [unlocking, setUnlocking] = useState(false)
+  const [unlockError, setUnlockError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (alreadyActivated) activate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const fetchDoorCode = async (): Promise<{ doorCode: string; expiresAt: string | null } | null> => {
+    const res = await fetch('/portal/api/activate-day-pass', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ passId: pass.id }),
+    })
+    const data = await res.json()
+    if (res.ok) return { doorCode: data.doorCode, expiresAt: data.expiresAt }
+    throw new Error(data.error || 'failed')
+  }
 
   const activate = async () => {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/portal/api/activate-day-pass', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ passId: pass.id }),
-      })
-      const data = await res.json()
-      if (res.ok) {
-        setActivated({ doorCode: data.doorCode, expiresAt: data.expiresAt })
-      } else {
-        setError(data.error || 'failed to activate. try again.')
-      }
-    } catch {
-      setError('network error. try again.')
+      const result = await fetchDoorCode()
+      if (result) setActivated(result)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'failed to activate. try again.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const unlock = async () => {
+    setUnlocking(true)
+    setUnlockError(null)
+    try {
+      const result = await fetchDoorCode()
+      if (result) setActivated(result)
+    } catch (e) {
+      setUnlockError(e instanceof Error ? e.message : 'failed to get door code. try again.')
+    } finally {
+      setUnlocking(false)
     }
   }
 
@@ -59,83 +82,49 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
         style={{
           border: '2px solid var(--border-dark)',
           background: 'var(--bg-secondary)',
-          padding: '20px',
+          padding: '15px',
           marginBottom: '10px',
-          textAlign: 'center',
         }}
       >
-        <div className="muted" style={{ fontSize: '0.9em' }}>
-          door code
-        </div>
-        <div
-          style={{
-            fontSize: '2.5em',
-            fontWeight: 'bold',
-            letterSpacing: '0.1em',
-            fontFamily: 'monospace',
-            margin: '8px 0',
-          }}
-        >
-          {activated.doorCode}#
-        </div>
-        <div className="muted">
-          {pass.passType}
-          {activated.expiresAt && (
-            <> · expires 11pm {formatDate(activated.expiresAt)}</>
-          )}
-        </div>
-        <p
-          className="muted"
-          style={{ marginTop: '12px', fontSize: '0.9em' }}
-        >
-          enter on the keypad at 1680 mission st.
+        <button onClick={unlock} disabled={unlocking} className="primary">
+          {unlocking ? 'unlocking...' : 'unlock door'}
+        </button>
+        {unlockError && <p className="error" style={{ marginTop: '8px' }}>{unlockError}</p>}
+        <p className="muted" style={{ marginTop: '10px', fontSize: '0.85em' }}>
+          Or enter <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: 'var(--text)', letterSpacing: '0.08em' }}>{activated.doorCode}#</span>
+          {' on the keypad.'}
+          {activated.expiresAt && <> Good until 11pm {formatDate(activated.expiresAt)}</>}.
         </p>
       </div>
     )
   }
 
-  const buttonLabel = alreadyActivated ? 'show door code' : 'activate'
-  const loadingLabel = alreadyActivated ? 'loading...' : 'activating...'
-
   return (
     <div
       style={{
-        border: alreadyActivated
-          ? '2px solid var(--border-dark)'
-          : '1px solid var(--border)',
-        background: alreadyActivated ? 'var(--bg-secondary)' : undefined,
+        border: '1px solid var(--border)',
         padding: '15px',
         marginBottom: '10px',
       }}
     >
-      <div>
-        <strong>{pass.passType}</strong>
-      </div>
-      <div className="muted">
-        {alreadyActivated
-          ? `activated · expires 11pm ${formatDate(computeExpiresAt(pass))}`
-          : `purchased ${formatDate(pass.datePurchased?.split('T')[0] || null)}`}
-      </div>
-      {error && (
-        <p className="error" style={{ marginTop: '8px' }}>
-          {error}
-        </p>
-      )}
+      <strong>{pass.passType}</strong>
+      <span className="muted" style={{ marginLeft: '8px', fontSize: '0.9em' }}>
+        {pass.datePurchased ? `purchased ${formatDate(pass.datePurchased.split('T')[0])}` : ''}
+      </span>
+      {error && <p className="error" style={{ marginTop: '8px' }}>{error}</p>}
       <p style={{ marginTop: '10px' }}>
         <button onClick={activate} disabled={loading} className="primary">
-          {loading ? loadingLabel : buttonLabel}
+          {loading ? 'activating...' : 'activate'}
         </button>
       </p>
-      {!alreadyActivated && (
-        <p className="muted" style={{ marginTop: '5px', fontSize: '0.9em' }}>
-          activate when you arrive at mox. expires 11pm same day.
-        </p>
-      )}
+      <p className="muted" style={{ marginTop: '6px', fontSize: '0.9em' }}>
+        tap when you arrive — reveals your door code, good until 11pm.
+      </p>
     </div>
   )
 }
 
-export default function MyDayPasses({ passes }: MyDayPassesProps) {
+export default function MyDayPasses({ passes, isActiveMember }: MyDayPassesProps) {
   if (passes.length === 0) return null
 
   const unused = passes.filter((p) => p.status === 'Unused' && !isExpired(p))
@@ -152,7 +141,6 @@ export default function MyDayPasses({ passes }: MyDayPassesProps) {
 
       {active.length > 0 && (
         <div style={{ marginBottom: '20px' }}>
-          <h3>active today</h3>
           {active.map((pass) => (
             <PassCard key={pass.id} pass={pass} alreadyActivated />
           ))}
@@ -161,7 +149,6 @@ export default function MyDayPasses({ passes }: MyDayPassesProps) {
 
       {unused.length > 0 && (
         <div style={{ marginBottom: '20px' }}>
-          <h3>ready to activate</h3>
           {unused.map((pass) => (
             <PassCard key={pass.id} pass={pass} />
           ))}
@@ -170,18 +157,31 @@ export default function MyDayPasses({ passes }: MyDayPassesProps) {
 
       {past.length > 0 && (
         <details>
-          <summary>past passes ({past.length})</summary>
-          <ul style={{ marginTop: '10px' }}>
+          <summary className="muted" style={{ fontSize: '0.9em', cursor: 'pointer' }}>
+            {past.length} past {past.length === 1 ? 'pass' : 'passes'}
+          </summary>
+          <ul style={{ marginTop: '8px' }}>
             {past.map((pass) => (
-              <li key={pass.id}>
-                {pass.passType} —{' '}
+              <li key={pass.id} className="muted" style={{ fontSize: '0.9em' }}>
+                {pass.passType}
                 {pass.dateActivated
-                  ? `activated ${formatDate(pass.dateActivated)}`
-                  : 'expired unused'}
+                  ? ` · used ${formatDate(pass.dateActivated)}`
+                  : ' · expired unused'}
               </li>
             ))}
           </ul>
         </details>
+      )}
+
+      {!isActiveMember && (
+        <p className="muted" style={{ marginTop: '16px', fontSize: '0.9em' }}>
+          need another?{' '}
+          <a href="https://buy.stripe.com/00weVf3UY3g5f7V7qubbG02">day ($70)</a>
+          {' · '}
+          <a href="https://buy.stripe.com/dRm9AV636cQF8Jx26abbG03">happy hour ($40)</a>
+          {' · '}
+          <a href="https://buy.stripe.com/5kQ7sNezC5od8JxcKObbG01">week ($250)</a>
+        </p>
       )}
     </section>
   )
