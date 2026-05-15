@@ -32,6 +32,7 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [unlocking, setUnlocking] = useState(false)
+  const [unlocked, setUnlocked] = useState(false)
   const [unlockError, setUnlockError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -67,10 +68,12 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
     setUnlocking(true)
     setUnlockError(null)
     try {
-      const result = await fetchDoorCode()
-      if (result) setActivated(result)
+      const res = await fetch('/portal/api/unlock-door', { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'failed')
+      setUnlocked(true)
     } catch (e) {
-      setUnlockError(e instanceof Error ? e.message : 'failed to get door code. try again.')
+      setUnlockError(e instanceof Error ? e.message : "couldn't unlock. try the code on the keypad.")
     } finally {
       setUnlocking(false)
     }
@@ -86,8 +89,8 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
           marginBottom: '10px',
         }}
       >
-        <button onClick={unlock} disabled={unlocking} className="primary">
-          {unlocking ? 'unlocking...' : 'unlock door'}
+        <button onClick={unlock} disabled={unlocking || unlocked} className="primary">
+          {unlocking ? 'unlocking...' : unlocked ? '✓ unlocked' : 'unlock door'}
         </button>
         {unlockError && <p className="error" style={{ marginTop: '8px' }}>{unlockError}</p>}
         <p className="muted" style={{ marginTop: '10px', fontSize: '0.85em' }}>

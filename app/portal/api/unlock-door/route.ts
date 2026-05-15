@@ -2,6 +2,7 @@ import { getSession } from '@/app/lib/session'
 import { getRecord, Tables } from '@/app/lib/airtable'
 import { isActiveMember } from '@/app/lib/membership'
 import { adminUnlockDoor } from '@/app/lib/verkada'
+import { fetchUserDayPasses } from '@/app/portal/dayPasses'
 
 const throttleMap = new Map<string, { count: number; resetAt: number }>()
 const THROTTLE_WINDOW_MS = 30_000
@@ -35,17 +36,25 @@ export async function POST() {
       )
     }
 
-    const record = await getRecord<{ Status?: string; Tier?: string }>(
+    const record = await getRecord<{ Status?: string; Tier?: string; Email?: string }>(
       Tables.People,
       effectiveUserId
     )
-    if (
-      !isActiveMember({
-        status: record?.fields.Status ?? null,
-        tier: record?.fields.Tier ?? null,
-      })
-    ) {
-      return Response.json({ success: false, error: 'Forbidden' }, { status: 403 })
+
+    const memberOk = isActiveMember({
+      status: record?.fields.Status ?? null,
+      tier: record?.fields.Tier ?? null,
+    })
+
+    if (!memberOk) {
+      // Also allow users with an active (non-expired, activated) day pass.
+      const email = record?.fields.Email
+      const hasActivePass = email
+        ? (await fetchUserDayPasses(email)).some((p) => p.status === 'Activated')
+        : false
+      if (!hasActivePass) {
+        return Response.json({ success: false, error: 'Forbidden' }, { status: 403 })
+      }
     }
 
     const result = await adminUnlockDoor()
