@@ -6,6 +6,7 @@ import { DayPass, computeExpiresAt, isExpired } from './dayPasses'
 interface MyDayPassesProps {
   passes: DayPass[]
   isActiveMember: boolean
+  hideHeading?: boolean
 }
 
 interface ActivatedState {
@@ -24,21 +25,15 @@ function formatDate(dateString: string | null): string {
 
 interface PassCardProps {
   pass: DayPass
-  alreadyActivated?: boolean
 }
 
-function PassCard({ pass, alreadyActivated }: PassCardProps) {
+function PassCard({ pass }: PassCardProps) {
   const [activated, setActivated] = useState<ActivatedState | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [unlocking, setUnlocking] = useState(false)
   const [unlocked, setUnlocked] = useState(false)
   const [unlockError, setUnlockError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (alreadyActivated) activate()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const fetchDoorCode = async (): Promise<{ doorCode: string; expiresAt: string | null } | null> => {
     const res = await fetch('/portal/api/activate-day-pass', {
@@ -79,7 +74,14 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
     }
   }
 
-  if (activated) {
+  useEffect(() => {
+    if (pass.status === 'Activated') activate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const isAlreadyActivated = pass.status === 'Activated' && !activated
+
+  if (activated || isAlreadyActivated) {
     return (
       <div
         style={{
@@ -89,15 +91,28 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
           marginBottom: '10px',
         }}
       >
+        <div style={{ marginBottom: '10px' }}>
+          <strong>{pass.passType}</strong>
+          <span className="muted" style={{ marginLeft: '8px', fontSize: '0.9em' }}>
+            {pass.dateActivated
+              ? `activated ${formatDate(pass.dateActivated)}`
+              : pass.datePurchased
+                ? `purchased ${formatDate(pass.datePurchased.split('T')[0])}`
+                : ''}
+          </span>
+        </div>
         <button onClick={unlock} disabled={unlocking || unlocked} className="primary">
           {unlocking ? 'unlocking...' : unlocked ? '✓ unlocked' : 'unlock door'}
         </button>
         {unlockError && <p className="error" style={{ marginTop: '8px' }}>{unlockError}</p>}
-        <p className="muted" style={{ marginTop: '10px', fontSize: '0.85em' }}>
-          Or enter <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: 'var(--text)', letterSpacing: '0.08em' }}>{activated.doorCode}#</span>
-          {' on the keypad.'}
-          {activated.expiresAt && <> Good until 11pm {formatDate(activated.expiresAt)}</>}.
-        </p>
+        {activated && (
+          <p className="muted" style={{ marginTop: '10px', fontSize: '0.85em' }}>
+            Or enter <span style={{ fontFamily: 'monospace', fontWeight: 'bold', color: 'var(--text)', letterSpacing: '0.08em' }}>{activated.doorCode}#</span>
+            {' on the keypad.'}
+            {activated.expiresAt && <> Good until 11pm {formatDate(activated.expiresAt)}</>}.
+          </p>
+        )}
+        {error && <p className="error" style={{ marginTop: '8px' }}>{error}</p>}
       </div>
     )
   }
@@ -127,7 +142,7 @@ function PassCard({ pass, alreadyActivated }: PassCardProps) {
   )
 }
 
-export default function MyDayPasses({ passes, isActiveMember }: MyDayPassesProps) {
+export default function MyDayPasses({ passes, isActiveMember, hideHeading }: MyDayPassesProps) {
   if (passes.length === 0) return null
 
   const unused = passes.filter((p) => p.status === 'Unused' && !isExpired(p))
@@ -140,12 +155,12 @@ export default function MyDayPasses({ passes, isActiveMember }: MyDayPassesProps
 
   return (
     <section>
-      <h2>my day passes</h2>
+      {!hideHeading && <h2>my day passes</h2>}
 
       {active.length > 0 && (
         <div style={{ marginBottom: '20px' }}>
           {active.map((pass) => (
-            <PassCard key={pass.id} pass={pass} alreadyActivated />
+            <PassCard key={pass.id} pass={pass} />
           ))}
         </div>
       )}
