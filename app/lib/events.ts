@@ -1,4 +1,7 @@
-import { format, parseISO, isSameDay, startOfDay } from 'date-fns'
+import { parseISO, isSameDay, startOfDay } from 'date-fns'
+import { formatInTimeZone } from 'date-fns-tz'
+
+const PACIFIC_TZ = 'America/Los_Angeles'
 import {
   getRecords,
   findRecord,
@@ -150,17 +153,17 @@ export async function getEvents(): Promise<Event[]> {
 }
 
 export function formatEventTime(event: Event, showDate = false): string {
-  const startTime = format(event.startDate, 'h:mm a').replace(':00', '')
+  const startTime = formatInTimeZone(event.startDate, PACIFIC_TZ, 'h:mm a').replace(':00', '')
 
   if (!event.endDate) {
     return showDate
-      ? `${format(event.startDate, 'EEEE, MMMM d')}, ${startTime}`
+      ? `${formatInTimeZone(event.startDate, PACIFIC_TZ, 'EEEE, MMMM d')}, ${startTime} PT`
       : startTime
   }
 
-  const endTime = format(event.endDate, 'h:mm a').replace(':00', '')
+  const endTime = formatInTimeZone(event.endDate, PACIFIC_TZ, 'h:mm a').replace(':00', '')
   return showDate
-    ? `${format(event.startDate, 'EEEE, MMMM d')}, ${startTime} - ${endTime}`
+    ? `${formatInTimeZone(event.startDate, PACIFIC_TZ, 'EEEE, MMMM d')}, ${startTime} - ${endTime} PT`
     : `${startTime} - ${endTime}`
 }
 
