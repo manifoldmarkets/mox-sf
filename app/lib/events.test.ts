@@ -110,11 +110,12 @@ describe('parseAirtableEvent', () => {
 })
 
 describe('formatEventTime', () => {
+  // March 15 2024 is PDT (UTC-7). 6 PM PT = 01:00 UTC the next day.
   it('formats time only for event without end date', () => {
     const event: Event = {
       id: '1',
       name: 'Test',
-      startDate: new Date('2024-03-15T18:00:00'),
+      startDate: new Date('2024-03-16T01:00:00Z'),
     }
 
     expect(formatEventTime(event)).toBe('6 PM')
@@ -124,8 +125,8 @@ describe('formatEventTime', () => {
     const event: Event = {
       id: '1',
       name: 'Test',
-      startDate: new Date('2024-03-15T18:00:00'),
-      endDate: new Date('2024-03-15T21:00:00'),
+      startDate: new Date('2024-03-16T01:00:00Z'),
+      endDate: new Date('2024-03-16T04:00:00Z'),
     }
 
     expect(formatEventTime(event)).toBe('6 PM - 9 PM')
@@ -135,32 +136,32 @@ describe('formatEventTime', () => {
     const event: Event = {
       id: '1',
       name: 'Test',
-      startDate: new Date('2024-03-15T18:30:00'),
-      endDate: new Date('2024-03-15T21:45:00'),
+      startDate: new Date('2024-03-16T01:30:00Z'),
+      endDate: new Date('2024-03-16T04:45:00Z'),
     }
 
     expect(formatEventTime(event)).toBe('6:30 PM - 9:45 PM')
   })
 
-  it('includes date when showDate is true', () => {
+  it('includes date and PT suffix when showDate is true', () => {
     const event: Event = {
       id: '1',
       name: 'Test',
-      startDate: new Date('2024-03-15T18:00:00'),
+      startDate: new Date('2024-03-16T01:00:00Z'),
     }
 
-    expect(formatEventTime(event, true)).toBe('Friday, March 15, 6 PM')
+    expect(formatEventTime(event, true)).toBe('Friday, March 15, 6 PM PT')
   })
 
-  it('includes date and time range when showDate is true with end date', () => {
+  it('includes date, time range, and PT suffix when showDate is true with end date', () => {
     const event: Event = {
       id: '1',
       name: 'Test',
-      startDate: new Date('2024-03-15T18:00:00'),
-      endDate: new Date('2024-03-15T21:00:00'),
+      startDate: new Date('2024-03-16T01:00:00Z'),
+      endDate: new Date('2024-03-16T04:00:00Z'),
     }
 
-    expect(formatEventTime(event, true)).toBe('Friday, March 15, 6 PM - 9 PM')
+    expect(formatEventTime(event, true)).toBe('Friday, March 15, 6 PM - 9 PM PT')
   })
 })
 
