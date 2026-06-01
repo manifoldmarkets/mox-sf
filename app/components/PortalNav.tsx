@@ -15,8 +15,9 @@ export default function PortalNav() {
   const [bannerHeight, setBannerHeight] = useState(0)
   const [weeklyCode, setWeeklyCode] = useState<string | null>(null)
 
-  // Don't render on portal pages
-  const isPortalPage = pathname?.startsWith('/portal')
+  // Don't render on portal pages or lobby display
+  const isPortalPage =
+    pathname?.startsWith('/portal') || pathname?.startsWith('/lobby')
 
   useEffect(() => {
     if (isPortalPage) return
@@ -65,7 +66,7 @@ export default function PortalNav() {
     }
   }, [pathname])
 
-  // Don't render on portal pages or while loading
+  // Don't render on portal/lobby pages or while loading
   if (isPortalPage || !session) {
     return null
   }
