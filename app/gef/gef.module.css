@@ -457,17 +457,20 @@
   display: grid;
   gap: 0;
   list-style: none;
-  margin: clamp(34px, 6vw, 74px) 0 0;
+  margin: clamp(34px, 6vw, 74px) auto 0;
+  max-width: 1420px;
   padding: 0;
 }
 
 .pathSteps li {
-  align-items: start;
+  align-content: center;
+  align-items: center;
   border-top: 1px solid var(--line);
   display: grid;
-  gap: 20px clamp(28px, 4.5vw, 72px);
-  grid-template-columns: minmax(110px, 0.24fr) minmax(210px, 0.5fr) minmax(360px, 0.92fr);
-  padding: 34px 0;
+  gap: 8px clamp(30px, 4vw, 64px);
+  grid-template-columns: clamp(90px, 9vw, 142px) minmax(220px, 340px) minmax(360px, 640px);
+  min-height: clamp(124px, 12vw, 168px);
+  padding: 26px 0;
 }
 
 .pathSteps li::before {
@@ -475,10 +478,11 @@
   content: "0" counter(step);
   counter-increment: step;
   font-family: var(--display);
-  font-size: clamp(42px, 5.8vw, 78px);
+  font-size: clamp(56px, 6vw, 92px);
   grid-column: 1;
   grid-row: 1 / span 2;
   line-height: 0.8;
+  place-self: center start;
 }
 
 .path .time {
@@ -494,10 +498,11 @@
 }
 
 .pathSteps p {
+  align-self: center;
   grid-column: 3;
   grid-row: 1 / span 2;
   margin: 0;
-  max-width: 560px;
+  max-width: none;
 }
 
 .darkRoom {
