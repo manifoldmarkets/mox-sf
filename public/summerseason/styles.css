@@ -3448,3 +3448,11 @@ body {
     display: none;
   }
 }
+
+/* Align the About copy block to the right side of its desktop row. */
+@media (min-width: 981px) {
+  .about-section > div {
+    justify-self: end;
+    width: min(100%, 920px);
+  }
+}
