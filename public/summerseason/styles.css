@@ -3399,3 +3399,52 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Jun 16 review: event rows should never dip below 16px. */
+.custom-tv .event-row {
+  grid-template-columns: 70px minmax(0, 1fr) auto 24px;
+  gap: 18px;
+  padding: 18px;
+}
+
+.custom-tv .event-date span:first-child,
+.custom-tv .event-time,
+.custom-tv .event-place,
+.custom-tv .event-row > span:last-child {
+  font-size: 1rem;
+}
+
+.custom-tv .event-date span:last-child {
+  font-size: 1.9rem;
+}
+
+.custom-tv .event-time {
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+}
+
+.custom-tv .event-name {
+  font-size: clamp(1.15rem, 1.45vw, 1.35rem);
+  line-height: 1.18;
+}
+
+.custom-tv .event-place {
+  line-height: 1.35;
+}
+
+.custom-tv .tag {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  padding: 7px 12px;
+}
+
+@media (max-width: 760px) {
+  .custom-tv .event-row {
+    grid-template-columns: 60px minmax(0, 1fr) 22px;
+  }
+
+  .custom-tv .event-row .tag {
+    display: none;
+  }
+}

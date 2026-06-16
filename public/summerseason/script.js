@@ -2,7 +2,7 @@ const categories = {
   ai: { label: "AI Safety", className: "blue" },
   vibes: { label: "Vibestemics", className: "purple" },
   research: { label: "New frontiers", className: "green" },
-  social: { label: "Socials & Workshops", className: "gold" },
+  social: { label: "Socials & Misc", className: "gold" },
   tbd: { label: "Save the Date", className: "tbd" }
 };
 
