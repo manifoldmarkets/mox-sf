@@ -26,7 +26,7 @@ export default function SummerSeasonPage() {
       }}
     >
       <iframe
-        src="/summerseason/index.html"
+        src="/summerseason/index.html?v=20260616-about-right-2"
         title="Mox Summer Season"
         style={{
           display: 'block',
