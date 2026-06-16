@@ -206,7 +206,15 @@ const detailLocation = document.querySelector(".detail-location");
 const detailDescription = document.querySelector(".detail-description");
 const speakerName = document.querySelector(".speaker-name");
 const speakerRole = document.querySelector(".speaker-role");
+const speakerAvatar = document.querySelector(".speaker-avatar");
 const rsvpLink = document.querySelector(".rsvp-link");
+const integrationStatus = document.querySelector("[data-integration-status]");
+
+function setIntegrationStatus(state, message, details) {
+  if (!integrationStatus) return;
+  integrationStatus.className = `integration-status is-${state}`;
+  integrationStatus.textContent = details ? `${message} ${details}` : message;
+}
 
 function formatMonth(dateString) {
   return new Date(`${dateString}T12:00:00`).toLocaleDateString("en-US", { month: "short" }).toUpperCase();
@@ -305,6 +313,15 @@ function renderDetail() {
   detailLocation.textContent = event.location;
   speakerName.textContent = event.speaker;
   speakerRole.textContent = event.role;
+  if (speakerAvatar) {
+    if (event.speakerPhoto) {
+      speakerAvatar.classList.add("has-photo");
+      speakerAvatar.style.backgroundImage = `url("${event.speakerPhoto}")`;
+    } else {
+      speakerAvatar.classList.remove("has-photo");
+      speakerAvatar.style.backgroundImage = "";
+    }
+  }
   detailDescription.textContent = event.description;
   rsvpLink.hidden = !event.rsvp;
   if (event.rsvp) rsvpLink.href = event.rsvp;
@@ -435,23 +452,92 @@ function initEvents() {
 initEvents();
 updateHeroParallax();
 
-// Live events come from the mox-sf API when hosted there, or from the
-// CI-synced events.json; the embedded fallback keeps the page rendering
-// offline or over file://
+async function checkSummerSeasonHealth() {
+  try {
+    const response = await fetch("/api/summerseason/health", { cache: "no-store" });
+    const data = await response.json().catch(() => null);
+    return {
+      ok: response.ok && Boolean(data?.ok),
+      status: response.status,
+      data
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      status: 0,
+      data: { error: error instanceof Error ? error.message : "Unable to reach health endpoint" }
+    };
+  }
+}
+
+function healthDetails(health) {
+  if (!health?.data) return "";
+  if (health.ok) {
+    return `Env: ${health.data.env?.AIRTABLE_API_KEY ? "API key present" : "missing API key"}, ${health.data.env?.AIRTABLE_BASE_ID ? "base id present" : "missing base id"}. Airtable matched ${health.data.rawRecordCount} records, rendered ${health.data.eventCount} events, ${health.data.saveTheDateCount} save-the-date.`;
+  }
+  return `Status ${health.status || "network"}: ${health.data.error || "health check failed"}`;
+}
+
+// Live events come from the mox-sf API when hosted there; events.json and the
+// embedded fallback keep the page rendering offline / over file://.
 async function loadLiveEvents() {
+  if (window.location.protocol === "file:") {
+    setIntegrationStatus(
+      "warning",
+      "LOCAL FILE MODE:",
+      "Airtable API routes cannot run from file://. Open the Vercel preview or localhost route to test live integration."
+    );
+  } else {
+    setIntegrationStatus("checking", "CHECKING AIRTABLE:", "Calling /api/summerseason/health...");
+  }
+
+  const health = window.location.protocol === "file:" ? null : await checkSummerSeasonHealth();
+
   for (const source of ["/api/summerseason/events", "events.json"]) {
     try {
       const response = await fetch(source, { cache: "no-store" });
-      if (!response.ok) continue;
+      if (!response.ok) {
+        if (source === "/api/summerseason/events") {
+          setIntegrationStatus(
+            "error",
+            "AIRTABLE EVENTS API FAILED:",
+            healthDetails(health)
+          );
+        }
+        continue;
+      }
       const data = await response.json();
       if (Array.isArray(data) && data.length) {
         events = data;
         initEvents();
+        if (source === "/api/summerseason/events") {
+          setIntegrationStatus(
+            "success",
+            "AIRTABLE LIVE:",
+            `Loaded ${data.length} events from /api/summerseason/events. ${healthDetails(health)}`
+          );
+        } else if (window.location.protocol !== "file:") {
+          setIntegrationStatus(
+            "warning",
+            "STATIC FALLBACK:",
+            `Using events.json with ${data.length} events. ${healthDetails(health)}`
+          );
+        }
         return;
       }
     } catch {
-      // try the next source
+      if (source === "/api/summerseason/events") {
+        setIntegrationStatus(
+          "error",
+          "AIRTABLE EVENTS API THREW:",
+          healthDetails(health)
+        );
+      }
     }
+  }
+
+  if (window.location.protocol !== "file:") {
+    setIntegrationStatus("error", "NO EVENT DATA LOADED:", healthDetails(health));
   }
 }
 
