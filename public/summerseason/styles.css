@@ -3451,8 +3451,17 @@ body {
 
 /* Align the About copy block to the right side of its desktop row. */
 @media (min-width: 981px) {
+  .about-section {
+    grid-template-columns: 260px minmax(0, 1fr) minmax(540px, 920px);
+  }
+
+  .about-section > .eyebrow {
+    grid-column: 1;
+  }
+
   .about-section > div {
-    justify-self: end;
-    width: min(100%, 920px);
+    grid-column: 3;
+    justify-self: stretch;
+    width: auto;
   }
 }
