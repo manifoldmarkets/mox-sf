@@ -25,6 +25,7 @@ type SummerSeasonFields = {
   'End Date'?: string
   Type?: string
   Status?: string
+  'MSS 26 Status'?: string
   'Public Blurb'?: string
   'Public Location'?: string
   'RSVP Link'?: string
@@ -120,7 +121,7 @@ function mapRecord(record: AirtableRecord<SummerSeasonFields>): SummerSeasonEven
   const publicBlurb =
     firstString(fields['Public Blurb']) || firstString(fields['Event Description'])
   const rsvp = firstString(fields['RSVP Link']) || firstString(fields.URL)
-  const isSaveTheDate = !channelCategory || !publicBlurb || !rsvp
+  const category = channelCategory || 'social'
 
   const publicLocation =
     firstString(fields['Public Location']) ||
@@ -135,34 +136,23 @@ function mapRecord(record: AirtableRecord<SummerSeasonFields>): SummerSeasonEven
 
   return {
     id: record.id,
-    category: isSaveTheDate ? 'tbd' : channelCategory,
-    title: isSaveTheDate
-      ? 'Save the date - to be announced'
-      : firstString(fields.Name) || 'Untitled event',
+    category,
+    title: firstString(fields.Name) || 'Untitled event',
     date: formatInTimeZone(startDate, PACIFIC_TZ, 'yyyy-MM-dd'),
     dayLabel: formatInTimeZone(startDate, PACIFIC_TZ, 'EEEE'),
     time: formatTime(startDate, endDate),
-    location: isSaveTheDate ? 'TBA, San Francisco, CA' : publicLocation,
-    listLocation: isSaveTheDate ? 'TBA, San Francisco, CA' : publicLocation,
-    speaker: isSaveTheDate
-      ? 'To be announced'
-      : firstString(fields['Speaker Name']) ||
-        firstString(fields['Host Name']) ||
-        'Mox',
-    role: isSaveTheDate
-      ? 'Save the date'
-      : firstString(fields['Speaker Role']) || 'Speaker',
-    description: isSaveTheDate
-      ? "We're holding this spot on the calendar. Speaker and topic coming soon - check back, or add the season calendar so it lands in yours automatically."
-      : publicBlurb,
-    rsvp: isSaveTheDate ? null : rsvp,
-    ...(isSaveTheDate ? { tbd: true } : {}),
+    location: publicLocation,
+    listLocation: publicLocation,
+    speaker: firstString(fields['Speaker Name']) || 'To be announced',
+    role: firstString(fields['Speaker Role']) || 'Speaker',
+    description: publicBlurb || 'Details coming soon.',
+    rsvp: rsvp || null,
     ...(speakerPhoto ? { speakerPhoto } : {}),
   }
 }
 
 export async function getSummerSeasonEvents(): Promise<SummerSeasonQueryResult> {
-  const filterByFormula = `AND(FIND(${airtableStringLiteral(SUMMER_SEASON_TAG)}, ARRAYJOIN({Tags}, ",")), {Type} = "Public", {Status} = "Confirmed")`
+  const filterByFormula = `AND(FIND(${airtableStringLiteral(SUMMER_SEASON_TAG)}, ARRAYJOIN({Tags}, ",")), {Type} = "Public", {MSS 26 Status} = "Confirmed")`
   const records = await getRecords<SummerSeasonFields>(Tables.Events, {
     filterByFormula,
     sort: [{ field: 'Start Date', direction: 'asc' }],
