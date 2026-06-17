@@ -26,7 +26,7 @@ export default function SummerSeasonPage() {
       }}
     >
       <iframe
-        src="/summerseason/index.html?v=20260616-airtable-debug"
+        src="/summerseason/index.html?v=20260617-live"
         title="Mox Summer Season"
         style={{
           display: 'block',
