@@ -35,6 +35,7 @@ type SummerSeasonFields = {
   Location?: string
   URL?: string
   'Host Name'?: string
+  'Name (from Assigned Rooms)'?: string[]
 }
 
 export type SummerSeasonCategory =
@@ -116,13 +117,15 @@ function mapRecord(record: AirtableRecord<SummerSeasonFields>): SummerSeasonEven
   if (Number.isNaN(startDate.getTime())) return null
 
   const channelCategory = normalizeChannel(fields.Channel)
-  const publicBlurb = firstString(fields['Public Blurb'])
-  const rsvp = firstString(fields['RSVP Link'])
+  const publicBlurb =
+    firstString(fields['Public Blurb']) || firstString(fields['Event Description'])
+  const rsvp = firstString(fields['RSVP Link']) || firstString(fields.URL)
   const isSaveTheDate = !channelCategory || !publicBlurb || !rsvp
 
   const publicLocation =
     firstString(fields['Public Location']) ||
     firstString(fields.Location) ||
+    firstString(fields['Name (from Assigned Rooms)']) ||
     'Mox, San Francisco, CA'
 
   const speakerPhoto =
