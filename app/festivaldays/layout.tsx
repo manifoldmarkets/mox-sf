@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
-import '../portal/portal.css'
+import './summerseason.css'
 
 export const metadata: Metadata = {
-  title: 'Festival Days | Mox',
+  title: 'Mox Summer Season',
   description:
-    'Festival-season coworking at Mox during LessOnline & Manifest, June 3–16 2026.',
+    'A summer season of Mox talks, workshops, discussions, and social events at the frontier of ideas.',
 }
 
 export default function FestivalDaysLayout({
@@ -12,5 +12,5 @@ export default function FestivalDaysLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <div className="portal">{children}</div>
+  return children
 }
