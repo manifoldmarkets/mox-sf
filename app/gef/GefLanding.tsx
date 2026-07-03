@@ -17,6 +17,8 @@ const marqueeWords = [
 export default function GefLanding() {
   const marqueeTrackRef = useRef<HTMLDivElement>(null)
   const [formMessage, setFormMessage] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
     const track = marqueeTrackRef.current
@@ -40,9 +42,42 @@ export default function GefLanding() {
     }
   }, [])
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setFormMessage('Form draft captured locally. We can wire this to the real destination next.')
+    if (submitting) return
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const payload = Object.fromEntries(formData.entries())
+
+    setSubmitting(true)
+    setFormMessage('Sending your interest...')
+
+    try {
+      const response = await fetch('/gef/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        setFormMessage(
+          data.error || 'Something went wrong. Please try again in a moment.'
+        )
+        return
+      }
+
+      form.reset()
+      setSubmitted(true)
+      setFormMessage(
+        'Thanks! Your interest is on its way. We’ll be in touch about next steps.'
+      )
+    } catch {
+      setFormMessage('Could not reach the server. Please try again in a moment.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -327,7 +362,9 @@ export default function GefLanding() {
           </label>
           <div className={styles.formFooter}>
             <p>Five minutes is enough. If there is a fit, the next step is a short conversation.</p>
-            <button type="submit">Submit interest</button>
+            <button type="submit" disabled={submitting || submitted}>
+              {submitting ? 'Sending...' : submitted ? 'Interest sent' : 'Submit interest'}
+            </button>
           </div>
           <p className={styles.formNote} role="status" aria-live="polite">
             {formMessage}

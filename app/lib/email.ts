@@ -5,6 +5,8 @@ interface EmailOptions {
   subject: string
   text: string
   from?: string
+  html?: string
+  replyTo?: string
 }
 
 const DEFAULT_FROM = 'Member Portal <portal@account.moxsf.com>'
@@ -17,6 +19,8 @@ export async function sendEmail({
   subject,
   text,
   from = DEFAULT_FROM,
+  html,
+  replyTo,
 }: EmailOptions): Promise<boolean> {
   const resendApiKey = env.RESEND_API_KEY
 
@@ -37,6 +41,8 @@ export async function sendEmail({
         to: Array.isArray(to) ? to : [to],
         subject,
         text,
+        ...(html ? { html } : {}),
+        ...(replyTo ? { reply_to: replyTo } : {}),
       }),
     })
 
