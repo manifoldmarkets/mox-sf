@@ -58,7 +58,7 @@ export default function ProfileEditForm({
   const [discordSyncMessage, setDiscordSyncMessage] = useState('')
 
   // Show directory fields for members/applicants who can appear in directory
-  // Not for: Guest, Guest Program, Courtesy, Volunteer (just visiting)
+  // Not for: Guest, Guest Program, Courtesy (just visiting)
   const directoryEligibleTiers = [
     'Staff',
     'Core',
@@ -66,6 +66,7 @@ export default function ProfileEditForm({
     'Private Office',
     'Program',
     'Friend',
+    'Volunteer',
   ]
   const applicantStatuses = [
     'Applied',
