@@ -15,6 +15,15 @@ export interface AutomationManifestEntry {
 export const AUTOMATIONS: AutomationManifestEntry[] = 
 [
   {
+    "id": "cron/gef-weekly-digest",
+    "filePath": "app/api/cron/gef-weekly-digest/route.ts",
+    "routePath": "/api/cron/gef-weekly-digest",
+    "type": "cron",
+    "cronSchedule": "0 16 * * 1",
+    "httpMethod": "GET",
+    "summary": "Emails Carolina a Monday-morning summary of GEF fellow attendance for the past week, flagging fellows not seen in 7+ days."
+  },
+  {
     "id": "cron/room-availability",
     "filePath": "app/api/cron/room-availability/route.ts",
     "routePath": "/api/cron/room-availability",
@@ -31,6 +40,15 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "cronSchedule": "0 17 * * 1",
     "httpMethod": "GET",
     "summary": "Rotates weekly Verkada door code, updates Discord channel name and posts notification"
+  },
+  {
+    "id": "cron/sync-checkins",
+    "filePath": "app/api/cron/sync-checkins/route.ts",
+    "routePath": "/api/cron/sync-checkins",
+    "type": "cron",
+    "cronSchedule": "0 9 * * *",
+    "httpMethod": "GET",
+    "summary": "Nightly: pulls Verkada door-access events and writes one Attendance record per person per day (powers the GEF dashboard)."
   },
   {
     "id": "day-pass/activate/api",

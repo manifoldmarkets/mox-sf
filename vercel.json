@@ -7,6 +7,14 @@
     {
       "path": "/api/cron/room-availability",
       "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/sync-checkins",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/gef-weekly-digest",
+      "schedule": "0 16 * * 1"
     }
   ]
 }

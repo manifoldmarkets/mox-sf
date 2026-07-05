@@ -173,6 +173,58 @@ The SVG floorplans themselves are stored as static files in `/public/floorplans/
 
 ---
 
+### Attendance
+
+Door-presence tracking: one record per person per Pacific day. Written by the
+`sync-checkins` cron from Verkada door-access events; read by the GEF fellows
+dashboard and weekly digest. Not to be confused with **Check-ins** (staff 1:1
+conversation tracker).
+
+| Field | Type | Description | Used by App |
+|-------|------|-------------|-------------|
+| `Name` | singleLineText | "Person — date", set by the sync cron | ✅ Sync cron |
+| `Person` | multipleRecordLinks | Link to People | ✅ Sync cron, GEF dashboard |
+| `Date` | date | The Pacific-time day this record covers | ✅ Sync cron, GEF dashboard |
+| `First seen` | dateTime | First door event that day | ✅ Sync cron |
+| `Last seen` | dateTime | Last door event that day | ✅ Sync cron |
+| `Source` | singleSelect | Verkada, Day Pass, Manual | ✅ Sync cron |
+
+---
+
+### Check-ins
+
+Staff 1:1 conversation tracker (pre-existing). The GEF admin dashboard reads
+recent notes and writes new ones here.
+
+| Field | Type | Description | Used by App |
+|-------|------|-------------|-------------|
+| `Name` | formula | Person name + record creation date | |
+| `Notes` | multilineText | Conversation notes | ✅ GEF dashboard note form |
+| `Assignee` | singleCollaborator | Staff owner | |
+| `Status` | singleSelect | Check-in status | |
+| `People` | multipleRecordLinks | Who the check-in is about | ✅ GEF dashboard note form |
+| `Created` | createdTime | When the note was logged | ✅ GEF dashboard (sort) |
+| `Logged by` | singleLineText | Staff member who logged via the portal | ✅ GEF dashboard note form |
+
+---
+
+### GEF Applications
+
+Global Expert Fellowship interest-form submissions from `/gef`.
+
+| Field | Type | Description | Used by App |
+|-------|------|-------------|-------------|
+| `Name` | singleLineText | Applicant name | ✅ GEF form |
+| `Email` | email | Applicant email | ✅ GEF form |
+| `Country` | singleLineText | Current country | ✅ GEF form |
+| `Focus area` | singleLineText | Primary focus area | ✅ GEF form |
+| `Background` | multilineText | Background | ✅ GEF form |
+| `Proud of` | multilineText | Work they are proud of | ✅ GEF form |
+| `Intentions` | multilineText | What they would work on in SF | ✅ GEF form |
+| `Status` | singleSelect | New, Reviewing, Interviewing, Accepted, Rejected | ✅ GEF form (sets "New") |
+
+---
+
 ### Other Tables (not used by app)
 
 - **Investments** - Investment tracking

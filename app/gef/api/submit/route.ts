@@ -1,4 +1,5 @@
 import { isValidEmail } from '@/app/lib/airtable-helpers'
+import { createRecord, Tables } from '@/app/lib/airtable'
 import { sendEmail } from '@/app/lib/email'
 
 const RECIPIENT = 'carolina@moxsf.com'
@@ -62,6 +63,28 @@ export async function POST(request: Request) {
       { error: 'Please enter a valid email address.' },
       { status: 400 }
     )
+  }
+
+  // Record the application in Airtable so the pipeline is queryable. The
+  // email below is the primary notification, so an Airtable failure is
+  // logged but doesn't block the submission.
+  try {
+    await createRecord(
+      Tables.GefApplications,
+      {
+        Name: values.name,
+        Email: values.email,
+        Country: values.country,
+        'Focus area': values.focus,
+        Background: values.background,
+        'Proud of': values.proud,
+        Intentions: values.intentions,
+        Status: 'New',
+      },
+      { typecast: true }
+    )
+  } catch (error) {
+    console.error('[GEF] Error saving application to Airtable:', error)
   }
 
   const text = FIELDS.map(({ key, label }) => `${label}:\n${values[key]}`).join(
