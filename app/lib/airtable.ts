@@ -13,6 +13,12 @@ export const Tables = {
   RoomBookings: 'Room Bookings',
   Floors: 'Floors',
   Staff: 'tblbmm9NRs5ANd6IV',
+  // Door-presence records written by the sync-checkins cron (NOT the same as
+  // "Check-ins", which is the staff 1:1 conversation tracker).
+  Attendance: 'Attendance',
+  CheckIns: 'Check-ins',
+  GefApplications: 'GEF Applications',
+  Roles: 'Roles',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]
@@ -48,12 +54,18 @@ function getHeaders(): HeadersInit {
 }
 
 // Build URL with query params for list operations
-function buildListUrl(table: TableName, options: QueryOptions, offset?: string): string {
+function buildListUrl(
+  table: TableName,
+  options: QueryOptions,
+  offset?: string
+): string {
   const base = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
   const params: string[] = []
 
   if (options.filterByFormula) {
-    params.push(`filterByFormula=${encodeURIComponent(options.filterByFormula)}`)
+    params.push(
+      `filterByFormula=${encodeURIComponent(options.filterByFormula)}`
+    )
   }
   if (options.maxRecords) {
     params.push(`maxRecords=${options.maxRecords}`)
@@ -155,7 +167,10 @@ export async function getRecord<T = Record<string, unknown>>(
         return null
       }
       const errorData = await res.json().catch(() => ({}))
-      console.error(`Error fetching record ${recordId} from ${table}:`, errorData)
+      console.error(
+        `Error fetching record ${recordId} from ${table}:`,
+        errorData
+      )
       return null
     }
 
@@ -181,14 +196,18 @@ export async function getRecord<T = Record<string, unknown>>(
 export async function updateRecord<T = Record<string, unknown>>(
   table: TableName,
   recordId: string,
-  fields: Partial<T>
+  fields: Partial<T>,
+  options: { typecast?: boolean } = {}
 ): Promise<AirtableRecord<T>> {
   const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
 
   const res = await fetch(url, {
     method: 'PATCH',
     headers: getHeaders(),
-    body: JSON.stringify({ fields }),
+    body: JSON.stringify({
+      fields,
+      ...(options.typecast ? { typecast: true } : {}),
+    }),
   })
 
   if (!res.ok) {
@@ -214,14 +233,18 @@ export async function updateRecord<T = Record<string, unknown>>(
  */
 export async function createRecord<T = Record<string, unknown>>(
   table: TableName,
-  fields: Partial<T>
+  fields: Partial<T>,
+  options: { typecast?: boolean } = {}
 ): Promise<AirtableRecord<T>> {
   const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: getHeaders(),
-    body: JSON.stringify({ fields }),
+    body: JSON.stringify({
+      fields,
+      ...(options.typecast ? { typecast: true } : {}),
+    }),
   })
 
   if (!res.ok) {
@@ -236,6 +259,49 @@ export async function createRecord<T = Record<string, unknown>>(
     id: data.id,
     fields: data.fields as T,
   }
+}
+
+/**
+ * Creates multiple records, batching 10 per request (the Airtable API limit).
+ * This operation is NOT cached.
+ *
+ * @param table - Table name
+ * @param records - Field sets for the new records
+ * @returns The created records, in input order
+ */
+export async function createRecords<T = Record<string, unknown>>(
+  table: TableName,
+  records: Partial<T>[],
+  options: { typecast?: boolean } = {}
+): Promise<AirtableRecord<T>[]> {
+  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+  const created: AirtableRecord<T>[] = []
+
+  for (let i = 0; i < records.length; i += 10) {
+    const batch = records.slice(i, i + 10)
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        records: batch.map((fields) => ({ fields })),
+        ...(options.typecast ? { typecast: true } : {}),
+      }),
+    })
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}))
+      throw new Error(
+        `Airtable create error: ${res.status} ${res.statusText} - ${JSON.stringify(errorData)}`
+      )
+    }
+
+    const data = await res.json()
+    for (const record of data.records || []) {
+      created.push({ id: record.id, fields: record.fields as T })
+    }
+  }
+
+  return created
 }
 
 /**
@@ -282,7 +348,10 @@ export async function findRecord<T = Record<string, unknown>>(
  * @param recordId - Airtable record ID
  * @returns true if deleted, false if not found
  */
-export async function deleteRecord(table: TableName, recordId: string): Promise<boolean> {
+export async function deleteRecord(
+  table: TableName,
+  recordId: string
+): Promise<boolean> {
   const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
 
   const res = await fetch(url, {
