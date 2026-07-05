@@ -49,6 +49,11 @@ Primary table for user/member management.
 | `Events` | multipleRecordLinks | Events attended/hosted | |
 | `Day Passes` | multipleRecordLinks | Purchased day passes | |
 | `Created` | createdTime | Record creation date | |
+| `Job status` | singleSelect | **STAFF-ONLY.** Looking now / Open to offers / Not looking | ✅ Profile career section, careers admin |
+| `Hiring` | checkbox | **STAFF-ONLY.** Member says they're hiring | ✅ Profile career section, careers admin |
+| `LinkedIn` | url | **STAFF-ONLY.** | ✅ Profile career section, careers admin |
+| `Career notes` | multilineText | **STAFF-ONLY.** Free-text for staff | ✅ Profile career section, careers admin |
+| `Event digest` | checkbox | Opt-in to weekly personalized event email | ✅ Profile, event-suggestions cron |
 
 **Tier options:** Staff, Volunteer, Private Office, Program, Resident, Core, Friend, Courtesy, Guest Program, Paused
 
@@ -101,6 +106,8 @@ Organization/company management.
 | `People` | multipleRecordLinks | Organization members | |
 | `Rooms` | multipleRecordLinks | Assigned offices | |
 | `Notes` | multilineText | Internal notes | |
+| `Hiring` | checkbox | Org is actively hiring | ✅ Careers admin |
+| `Careers URL` | url | Careers page, scraped weekly into Roles | ✅ scrape-roles cron |
 
 **Status options:** Tried once, To reach out, Normal membership, Guest program, Joined, Declined, Tried twice, In contact, Short-term, Left
 
@@ -188,6 +195,28 @@ conversation tracker, not used by the app).
 | `First seen` | dateTime | First door event that day | ✅ Sync cron |
 | `Last seen` | dateTime | Last door event that day | ✅ Sync cron |
 | `Source` | singleSelect | Verkada, Day Pass, Manual | ✅ Sync cron |
+
+---
+
+### Roles
+
+Open roles in and around the Mox community, shown publicly at `/jobs`. Fed by
+the weekly `scrape-roles` cron (LLM-extracts openings from member orgs'
+`Careers URL` pages) and manual entry.
+
+| Field | Type | Description | Used by App |
+|-------|------|-------------|-------------|
+| `Title` | singleLineText | Role title | ✅ /jobs, scraper |
+| `Org` | multipleRecordLinks | Link to Orgs (stealth orgs never shown publicly) | ✅ /jobs, scraper |
+| `Company` | singleLineText | Company name for non-member orgs | ✅ /jobs |
+| `URL` | url | Job posting link | ✅ /jobs |
+| `Location` | singleLineText | | ✅ /jobs |
+| `Tags` | multipleSelects | AI Safety, Research, Engineering, Policy, Operations, Comms, Design, Other | ✅ /jobs, matching |
+| `Status` | singleSelect | Open (shown), Stale, Filled, Closed | ✅ /jobs, scraper |
+| `Source` | singleSelect | Careers page, Manual, Member | ✅ Scraper (only touches its own) |
+| `Posted` | date | First seen | ✅ Scraper |
+| `Last verified` | date | Last seen on the careers page | ✅ Scraper |
+| `Notes` | multilineText | | |
 
 ---
 

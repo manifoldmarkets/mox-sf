@@ -18,6 +18,7 @@ export const Tables = {
   Attendance: 'Attendance',
   CheckIns: 'Check-ins',
   GefApplications: 'GEF Applications',
+  Roles: 'Roles',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]

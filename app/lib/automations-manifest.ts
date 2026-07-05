@@ -15,6 +15,24 @@ export interface AutomationManifestEntry {
 export const AUTOMATIONS: AutomationManifestEntry[] = 
 [
   {
+    "id": "cron/career-matching",
+    "filePath": "app/api/cron/career-matching/route.ts",
+    "routePath": "/api/cron/career-matching",
+    "type": "cron",
+    "cronSchedule": "0 17 * * 2",
+    "httpMethod": "GET",
+    "summary": "Weekly: Claude matches job seekers to open roles and emails suggestions to STAFF ONLY (members never receive this)."
+  },
+  {
+    "id": "cron/event-suggestions",
+    "filePath": "app/api/cron/event-suggestions/route.ts",
+    "routePath": "/api/cron/event-suggestions",
+    "type": "cron",
+    "cronSchedule": "0 17 * * 3",
+    "httpMethod": "GET",
+    "summary": "Weekly: emails opted-in members their top 3 upcoming events, picked by Claude from their profile interests."
+  },
+  {
     "id": "cron/gef-weekly-digest",
     "filePath": "app/api/cron/gef-weekly-digest/route.ts",
     "routePath": "/api/cron/gef-weekly-digest",
@@ -40,6 +58,15 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "cronSchedule": "0 17 * * 1",
     "httpMethod": "GET",
     "summary": "Rotates weekly Verkada door code, updates Discord channel name and posts notification"
+  },
+  {
+    "id": "cron/scrape-roles",
+    "filePath": "app/api/cron/scrape-roles/route.ts",
+    "routePath": "/api/cron/scrape-roles",
+    "type": "cron",
+    "cronSchedule": "0 11 * * 1",
+    "httpMethod": "GET",
+    "summary": "Weekly: fetches each org's Careers URL, Claude extracts openings into the Roles table (new/verified/stale) for /jobs."
   },
   {
     "id": "cron/sync-checkins",

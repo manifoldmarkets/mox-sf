@@ -15,6 +15,18 @@
     {
       "path": "/api/cron/gef-weekly-digest",
       "schedule": "0 16 * * 1"
+    },
+    {
+      "path": "/api/cron/scrape-roles",
+      "schedule": "0 11 * * 1"
+    },
+    {
+      "path": "/api/cron/career-matching",
+      "schedule": "0 17 * * 2"
+    },
+    {
+      "path": "/api/cron/event-suggestions",
+      "schedule": "0 17 * * 3"
     }
   ]
 }
