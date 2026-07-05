@@ -79,8 +79,6 @@ export async function GET(request: Request) {
       `GEF attendance for ${lastWeekStart} – ${lastWeekEnd}`,
       '',
       ...textLines,
-      '',
-      `Dashboard: ${env.NEXT_PUBLIC_BASE_URL}/portal/admin/gef`,
     ].join('\n')
 
     const tableRows = rows
@@ -112,9 +110,6 @@ export async function GET(request: Request) {
           </thead>
           <tbody>${tableRows}</tbody>
         </table>
-        <p style="margin-top: 16px;">
-          <a href="${env.NEXT_PUBLIC_BASE_URL}/portal/admin/gef">Open the GEF dashboard</a>
-        </p>
       </div>`
 
     const sent = await sendEmail({

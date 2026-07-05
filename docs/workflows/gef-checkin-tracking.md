@@ -1,7 +1,8 @@
 # GEF Fellow Check-in Tracking
 
-Tracks Global Expert Fellowship (GEF) fellows' physical attendance at Mox and
-staff 1:1 conversation notes, with a staff dashboard and a Monday digest email.
+Tracks Global Expert Fellowship (GEF) fellows' physical attendance at Mox,
+with a Monday digest email. (A staff dashboard at `/portal/admin/gef` is a
+planned follow-up.)
 
 ## Who counts as a fellow
 
@@ -35,24 +36,14 @@ Notes:
   (`unmatchedEmails`) and logged.
 - Day-pass activations are not yet folded in (future enhancement).
 
-### 2. Staff dashboard — `/portal/admin/gef`
-
-Staff-only. Shows each fellow: last seen, days in this week, days in the last
-4 weeks, and a 28-day presence strip. Fellows not seen in 7+ days
-(`GEF_ABSENCE_FLAG_DAYS` in `app/lib/gef.ts`) are flagged.
-
-Below the table: recent 1:1 notes for fellows and a form to add one. Notes are
-stored in the pre-existing **Check-ins** table (the staff conversation
-tracker) with `People` linked, `Notes`, and `Logged by` set — so notes made in
-Airtable directly show up too.
-
-### 3. Weekly digest — `/api/cron/gef-weekly-digest` (Mondays, 16:00 UTC)
+### 2. Weekly digest — `/api/cron/gef-weekly-digest` (Mondays, 16:00 UTC)
 
 Emails carolina@moxsf.com a table of last week's attendance (Mon–Sun) per
-fellow with flags, and a link to the dashboard. `?to=<x>@moxsf.com` overrides
-the recipient for testing. Skips sending when no fellows exist.
+fellow, flagging fellows not seen in 7+ days (`GEF_ABSENCE_FLAG_DAYS` in
+`app/lib/gef.ts`). `?to=<x>@moxsf.com` overrides the recipient for testing.
+Skips sending when no fellows exist.
 
-### 4. GEF interest form — `/gef`
+### 3. GEF interest form — `/gef`
 
 Submissions now also create a **GEF Applications** record (Status "New") in
 addition to the notification email. An Airtable failure is logged but doesn't
@@ -60,8 +51,8 @@ block the submission or email.
 
 ## Airtable tables
 
-See [airtable-schema.md](../airtable-schema.md): `Attendance` (new),
-`Check-ins` (pre-existing, + new `Logged by` field), `GEF Applications` (new).
+See [airtable-schema.md](../airtable-schema.md): `Attendance` (new) and
+`GEF Applications` (new).
 
 ## Key files
 
@@ -70,5 +61,3 @@ See [airtable-schema.md](../airtable-schema.md): `Attendance` (new),
 - `app/lib/gef.ts` — fellow lookup + attendance report
 - `app/api/cron/sync-checkins/route.ts`
 - `app/api/cron/gef-weekly-digest/route.ts`
-- `app/portal/admin/gef/page.tsx` + `GefNoteForm.tsx`
-- `app/portal/api/admin/gef-note/route.ts`

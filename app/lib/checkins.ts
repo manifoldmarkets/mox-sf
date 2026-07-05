@@ -4,7 +4,7 @@ import { findRecords, Tables } from './airtable'
 /**
  * Attendance tracking: one Airtable "Attendance" record per person per
  * Pacific day, written by the sync-checkins cron (Verkada door events) and
- * read by the GEF dashboard + weekly digest.
+ * read by the GEF weekly digest.
  *
  * Not to be confused with the "Check-ins" table, which tracks staff 1:1
  * conversations.

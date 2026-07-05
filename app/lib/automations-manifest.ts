@@ -48,7 +48,7 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "type": "cron",
     "cronSchedule": "0 9 * * *",
     "httpMethod": "GET",
-    "summary": "Nightly: pulls Verkada door-access events and writes one Attendance record per person per day (powers the GEF dashboard)."
+    "summary": "Nightly: pulls Verkada door-access events and writes one Attendance record per person per day (powers the GEF weekly digest)."
   },
   {
     "id": "day-pass/activate/api",

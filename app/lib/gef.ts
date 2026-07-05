@@ -8,14 +8,14 @@ import {
 } from './checkins'
 
 /**
- * GEF (Global Expert Fellowship) fellow tracking, shared by the
- * /portal/admin/gef dashboard and the gef-weekly-digest cron.
+ * GEF (Global Expert Fellowship) fellow tracking, used by the
+ * gef-weekly-digest cron.
  */
 
 /** Flag fellows not seen in this many days. */
 export const GEF_ABSENCE_FLAG_DAYS = 7
 
-/** How many days of attendance history the dashboard/digest look at. */
+/** How many days of attendance history the digest looks at. */
 export const GEF_WINDOW_DAYS = 28
 
 export interface GefFellow {
