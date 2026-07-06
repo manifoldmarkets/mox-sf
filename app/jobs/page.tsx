@@ -51,9 +51,15 @@ function formatDate(iso: string): string {
   })
 }
 
+// Keep expanded cards short: at most an intro line plus this many bullets.
+const MAX_DESCRIPTION_LINES = 5
+
 /** Render the stored description: "- " lines become bullets, others paragraphs. */
 function Description({ text }: { text: string }) {
-  const lines = text.split('\n').filter((line) => line.trim())
+  const lines = text
+    .split('\n')
+    .filter((line) => line.trim())
+    .slice(0, MAX_DESCRIPTION_LINES)
   const blocks: { type: 'p' | 'ul'; items: string[] }[] = []
   for (const line of lines) {
     const isBullet = line.trim().startsWith('- ')
@@ -67,10 +73,10 @@ function Description({ text }: { text: string }) {
     }
   }
   return (
-    <div className="space-y-2 text-slate-700">
+    <div className="space-y-1 text-sm text-slate-700 leading-snug">
       {blocks.map((block, i) =>
         block.type === 'ul' ? (
-          <ul key={i} className="list-disc pl-5 space-y-1">
+          <ul key={i} className="list-disc pl-4 space-y-0.5">
             {block.items.map((item, j) => (
               <li key={j}>{item}</li>
             ))}
@@ -111,7 +117,7 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
 
   if (!hasDetails) {
     return (
-      <div className="border border-slate-200 rounded-lg p-5 bg-white/60">
+      <div className="border border-slate-200 rounded-lg p-4 bg-white/60">
         {role.url ? (
           <a
             href={role.url}
@@ -129,42 +135,34 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
   }
 
   return (
-    <details className="group border border-slate-200 rounded-lg p-5 bg-white/60">
+    <details className="group border border-slate-200 rounded-lg p-4 bg-white/60">
       <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
         {header}
       </summary>
 
-      <div className="mt-4 space-y-4">
+      <div className="mt-3 space-y-2">
         {role.description && <Description text={role.description} />}
 
         {(role.deadline || role.salary) && (
-          <div className="flex flex-wrap gap-x-12 gap-y-2 text-sm">
-            {role.deadline && (
-              <div>
-                <div className="font-semibold text-slate-800">
-                  Application deadline
-                </div>
-                <div className="text-slate-600">
-                  {formatDate(role.deadline)}
-                </div>
-              </div>
-            )}
+          <p className="text-sm text-slate-600">
             {role.salary && (
-              <div>
-                <div className="font-semibold text-slate-800">Salary</div>
-                <div className="text-slate-600">{role.salary}</div>
-              </div>
+              <>
+                <span className="font-semibold text-slate-800">Salary:</span>{' '}
+                {role.salary}
+              </>
             )}
-          </div>
+            {role.salary && role.deadline && ' · '}
+            {role.deadline && (
+              <>
+                <span className="font-semibold text-slate-800">Deadline:</span>{' '}
+                {formatDate(role.deadline)}
+              </>
+            )}
+          </p>
         )}
 
         {group.about && (
-          <div className="text-sm">
-            <div className="font-semibold text-slate-800">
-              About the organization
-            </div>
-            <p className="text-slate-600 mt-1">{group.about}</p>
-          </div>
+          <p className="text-xs text-slate-500 leading-snug">{group.about}</p>
         )}
 
         {role.url && (
@@ -172,7 +170,7 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
             href={role.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-amber-800 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-md"
+            className="inline-block bg-amber-800 hover:bg-amber-700 text-white text-sm font-medium px-3 py-1.5 rounded-md"
           >
             {role.url.startsWith('mailto:')
               ? 'Apply by email'

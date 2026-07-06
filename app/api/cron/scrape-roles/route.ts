@@ -73,7 +73,7 @@ const DETAIL_SCHEMA = {
     description: {
       type: ['string', 'null'],
       description:
-        'Short summary: one intro sentence, then 3-6 lines starting with "- " covering responsibilities, requirements, and schedule/type. Null if the page has no real detail.',
+        'Short summary: one intro sentence, then at most 4 lines starting with "- " covering the most important responsibilities, requirements, and schedule/type. Keep each line under 15 words. Null if the page has no real detail.',
     },
     salary: {
       type: ['string', 'null'],
