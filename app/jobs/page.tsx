@@ -1,30 +1,34 @@
 import Link from 'next/link'
-import { getOpenRoles, type OpenRole } from '@/app/lib/careers'
-import { getOrgs } from '@/app/people/people'
+import {
+  getJobsOrgInfo,
+  getOpenRoles,
+  type JobsOrgInfo,
+  type OpenRole,
+} from '@/app/lib/careers'
 
 export const metadata = {
   title: 'Jobs | Mox',
-  description:
-    'Open roles at organizations in and around Mox — AI safety, research, and startups in San Francisco.',
+  description: 'Open roles at organizations in the Mox community.',
 }
 
 export const revalidate = 300
 
 interface RoleGroup {
   name: string
+  about: string | null
   roles: OpenRole[]
 }
 
 function groupRoles(
   roles: OpenRole[],
-  orgNames: Map<string, string>
+  orgs: Map<string, JobsOrgInfo>
 ): RoleGroup[] {
   const groups = new Map<string, RoleGroup>()
   for (const role of roles) {
-    const name =
-      (role.orgId && orgNames.get(role.orgId)) || role.company || 'Other'
+    const org = role.orgId ? orgs.get(role.orgId) : null
+    const name = org?.name || role.company || 'Other'
     if (!groups.has(name)) {
-      groups.set(name, { name, roles: [] })
+      groups.set(name, { name, about: org?.about || null, roles: [] })
     }
     groups.get(name)!.roles.push(role)
   }
@@ -39,22 +43,161 @@ function groupRoles(
   })
 }
 
+function formatDate(iso: string): string {
+  return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+/** Render the stored description: "- " lines become bullets, others paragraphs. */
+function Description({ text }: { text: string }) {
+  const lines = text.split('\n').filter((line) => line.trim())
+  const blocks: { type: 'p' | 'ul'; items: string[] }[] = []
+  for (const line of lines) {
+    const isBullet = line.trim().startsWith('- ')
+    const content = isBullet ? line.trim().slice(2) : line.trim()
+    const last = blocks[blocks.length - 1]
+    if (isBullet) {
+      if (last?.type === 'ul') last.items.push(content)
+      else blocks.push({ type: 'ul', items: [content] })
+    } else {
+      blocks.push({ type: 'p', items: [content] })
+    }
+  }
+  return (
+    <div className="space-y-2 text-slate-700">
+      {blocks.map((block, i) =>
+        block.type === 'ul' ? (
+          <ul key={i} className="list-disc pl-5 space-y-1">
+            {block.items.map((item, j) => (
+              <li key={j}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p key={i}>{block.items[0]}</p>
+        )
+      )}
+    </div>
+  )
+}
+
+function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
+  const hasDetails = !!(
+    role.description ||
+    role.salary ||
+    role.deadline ||
+    group.about
+  )
+  const meta = [role.location, ...role.tags].filter(Boolean).join(' · ')
+
+  const header = (
+    <div className="flex items-start justify-between gap-4">
+      <div>
+        <span className="font-semibold text-lg">{role.title}</span>
+        {meta && <div className="text-sm text-slate-500 mt-1">{meta}</div>}
+      </div>
+      {hasDetails && (
+        <span
+          aria-hidden
+          className="text-slate-400 mt-1 transition-transform group-open:rotate-180"
+        >
+          ▾
+        </span>
+      )}
+    </div>
+  )
+
+  if (!hasDetails) {
+    return (
+      <div className="border border-slate-200 rounded-lg p-5 bg-white/60">
+        {role.url ? (
+          <a
+            href={role.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block hover:text-amber-800"
+          >
+            {header}
+          </a>
+        ) : (
+          header
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <details className="group border border-slate-200 rounded-lg p-5 bg-white/60">
+      <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        {header}
+      </summary>
+
+      <div className="mt-4 space-y-4">
+        {role.description && <Description text={role.description} />}
+
+        {(role.deadline || role.salary) && (
+          <div className="flex flex-wrap gap-x-12 gap-y-2 text-sm">
+            {role.deadline && (
+              <div>
+                <div className="font-semibold text-slate-800">
+                  Application deadline
+                </div>
+                <div className="text-slate-600">
+                  {formatDate(role.deadline)}
+                </div>
+              </div>
+            )}
+            {role.salary && (
+              <div>
+                <div className="font-semibold text-slate-800">Salary</div>
+                <div className="text-slate-600">{role.salary}</div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {group.about && (
+          <div className="text-sm">
+            <div className="font-semibold text-slate-800">
+              About the organization
+            </div>
+            <p className="text-slate-600 mt-1">{group.about}</p>
+          </div>
+        )}
+
+        {role.url && (
+          <a
+            href={role.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-amber-800 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-md"
+          >
+            {role.url.startsWith('mailto:')
+              ? 'Apply by email'
+              : 'Open listing ↗'}
+          </a>
+        )}
+      </div>
+    </details>
+  )
+}
+
 export default async function JobsPage() {
   let groups: RoleGroup[] = []
   let loadError = false
   try {
-    const [roles, orgsMap] = await Promise.all([
+    const [roles, orgs] = await Promise.all([
       getOpenRoles({ revalidate: 300 }),
-      getOrgs(),
+      getJobsOrgInfo(),
     ])
-    const orgNames = new Map<string, string>()
-    orgsMap.forEach((org, id) => {
-      if (!org.stealth) orgNames.set(id, org.name)
-    })
     groups = groupRoles(
       // Roles at stealth orgs stay off the public board entirely.
-      roles.filter((role) => !role.orgId || orgNames.has(role.orgId)),
-      orgNames
+      roles.filter(
+        (role) => !role.orgId || orgs.get(role.orgId)?.stealth !== true
+      ),
+      orgs
     )
   } catch (error) {
     console.error('[Jobs] Failed to load roles:', error)
@@ -74,8 +217,7 @@ export default async function JobsPage() {
 
       <h1 className="text-4xl font-bold mt-6 mb-2">Jobs around Mox</h1>
       <p className="text-slate-600 mb-10">
-        Open roles at organizations in the Mox community — heavy on AI safety,
-        research, and early-stage startups in San Francisco.
+        Open roles at organizations in the Mox community.
         {totalRoles > 0 &&
           ` ${totalRoles} open role${totalRoles === 1 ? '' : 's'}.`}
       </p>
@@ -92,27 +234,11 @@ export default async function JobsPage() {
         groups.map((group) => (
           <section key={group.name} className="mb-10">
             <h2 className="text-2xl font-semibold mb-3">{group.name}</h2>
-            <ul className="space-y-3">
+            <div className="space-y-4">
               {group.roles.map((role) => (
-                <li key={role.id} className="border-b border-slate-200 pb-3">
-                  {role.url ? (
-                    <a
-                      href={role.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
-                    >
-                      {role.title}
-                    </a>
-                  ) : (
-                    <span className="font-medium">{role.title}</span>
-                  )}
-                  <div className="text-sm text-slate-500 mt-1">
-                    {[role.location, ...role.tags].filter(Boolean).join(' · ')}
-                  </div>
-                </li>
+                <RoleCard key={role.id} role={role} group={group} />
               ))}
-            </ul>
+            </div>
           </section>
         ))
       )}

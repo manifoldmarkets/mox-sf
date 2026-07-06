@@ -108,6 +108,7 @@ Organization/company management.
 | `Notes` | multilineText | Internal notes | |
 | `Hiring` | checkbox | Org is actively hiring | ✅ Careers admin |
 | `Careers URL` | url | Careers page, scraped weekly into Roles | ✅ scrape-roles cron |
+| `About` | multilineText | Public 1-2 sentence blurb on /jobs; auto-generated from Website when empty (never overwrites hand edits) | ✅ /jobs, scrape-roles cron |
 
 **Status options:** Tried once, To reach out, Normal membership, Guest program, Joined, Declined, Tried twice, In contact, Short-term, Left
 
@@ -217,6 +218,9 @@ the weekly `scrape-roles` cron (LLM-extracts openings from member orgs'
 | `Posted` | date | First seen | ✅ Scraper |
 | `Last verified` | date | Last seen on the careers page | ✅ Scraper |
 | `Notes` | multilineText | | |
+| `Description` | multilineText | Expandable summary on /jobs ("- " lines render as bullets); auto-extracted from the posting page | ✅ /jobs, scraper |
+| `Salary` | singleLineText | As listed on the posting (auto-extracted) | ✅ /jobs, scraper |
+| `Deadline` | date | Application deadline if listed (auto-extracted) | ✅ /jobs, scraper |
 
 ---
 
