@@ -58,12 +58,6 @@ export function JoinContent(props: {
               better fit. This includes a dedicated desk where you can leave
               belongings, and external monitor.
               <br /> <br />
-              Finally, if you're not usually in SF, or expect to be coming
-              infrequently, we'd love to have you as a{' '}
-              <u className="underline-offset-2">Friend</u>. Beyond all of our
-              public and members events, you're welcome to drop by up to twice a
-              week!
-              <br /> <br />
               We want you to be confident that Mox is the right choice, so every
               membership comes with a 1-week free trial. You can also update or
               cancel your membership at any time.
@@ -138,8 +132,8 @@ export function JoinContent(props: {
             <p className="text-gray-700">
               We want Mox to be a place you're proud to show off to your friends
               and family. All memberships come with some free allowances for
-              guests: 1x/week for Friend, 1x/day for Core, and 2x/day for
-              Resident and Office members. Beyond that, we ask that you or your
+              guests: 1x/day for Core, and 2x/day for Resident and Office
+              members. Beyond that, we ask that you or your
               guest purchase a{' '}
               <a
                 href="/day-pass"
@@ -214,9 +208,8 @@ export function JoinContent(props: {
             {/* <div className="absolute -top-8 left-6 bg-amber-100 text-gray-800 font-bold text-xs px-2 py-1 rounded">
               Prices during beta
             </div> */}
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 gap-8">
               {[
-                { type: 'Friend', price: '$160' },
                 { type: 'Core', price: '$380' },
                 { type: 'Resident', price: '$780' },
               ].map((tier) => (
