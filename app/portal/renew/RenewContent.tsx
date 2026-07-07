@@ -58,12 +58,6 @@ export default function RenewContent({
               <u className="underline-offset-2">Resident</u> option may be a
               better fit. This includes a dedicated desk where you can leave
               belongings, and external monitor.
-              <br /> <br />
-              Finally, if you're not usually in SF, or expect to be coming
-              infrequently, we'd love to have you as a{' '}
-              <u className="underline-offset-2">Friend</u>. Beyond all of our
-              public and members events, you're welcome to drop by up to twice a
-              week!
             </p>
           </section>
         </div>
