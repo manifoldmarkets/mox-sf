@@ -149,6 +149,9 @@ export interface RoleFields {
   Posted?: string
   'Last verified'?: string
   Notes?: string
+  Description?: string
+  Salary?: string
+  Deadline?: string
 }
 
 export interface OpenRole {
@@ -160,6 +163,9 @@ export interface OpenRole {
   location: string | null
   tags: string[]
   posted: string | null
+  description: string | null
+  salary: string | null
+  deadline: string | null
 }
 
 /** Roles with Status = Open, for the /jobs board. Public data. */
@@ -170,7 +176,18 @@ export async function getOpenRoles(
     Tables.Roles,
     `{Status}="Open"`,
     {
-      fields: ['Title', 'Org', 'Company', 'URL', 'Location', 'Tags', 'Posted'],
+      fields: [
+        'Title',
+        'Org',
+        'Company',
+        'URL',
+        'Location',
+        'Tags',
+        'Posted',
+        'Description',
+        'Salary',
+        'Deadline',
+      ],
       ...(options.revalidate ? { revalidate: options.revalidate } : {}),
     }
   )
@@ -183,5 +200,32 @@ export async function getOpenRoles(
     location: record.fields.Location || null,
     tags: record.fields.Tags || [],
     posted: record.fields.Posted || null,
+    description: record.fields.Description || null,
+    salary: record.fields.Salary || null,
+    deadline: record.fields.Deadline || null,
   }))
+}
+
+export interface JobsOrgInfo {
+  name: string
+  stealth: boolean
+  about: string | null
+}
+
+/** Org names + public blurbs for the /jobs board. */
+export async function getJobsOrgInfo(): Promise<Map<string, JobsOrgInfo>> {
+  const records = await findRecords<HiringOrgFields & { About?: string }>(
+    Tables.Orgs,
+    '',
+    { fields: ['Name', 'Stealth', 'About'], revalidate: 300 }
+  )
+  const map = new Map<string, JobsOrgInfo>()
+  for (const record of records) {
+    map.set(record.id, {
+      name: record.fields.Name || '(no name)',
+      stealth: record.fields.Stealth || false,
+      about: record.fields.About || null,
+    })
+  }
+  return map
 }

@@ -46,6 +46,14 @@ them against the Roles table by normalized title:
   Manual/Member entries are never auto-touched)
 
 `/jobs` lists Open roles grouped by org, Mox's own openings pinned first.
+Each role is an expandable card: description bullets, salary, application
+deadline, an "About the organization" blurb, and an open-listing/apply
+button. All of that detail is **inferred, not hand-entered**: for each new
+role with its own posting page the scraper fetches it and extracts
+description/salary/deadline (capped at 8 per org per run), and each org's
+`About` blurb is generated once from its public `Website` (never
+overwriting a hand-edited value).
+
 Manual options: `?org=recXXX` (single org), `?dry=1` (no writes). Diff logic
 lives in `app/lib/roles.ts` (unit tested).
 
