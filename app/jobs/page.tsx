@@ -73,7 +73,7 @@ function Description({ text }: { text: string }) {
     }
   }
   return (
-    <div className="space-y-1 text-sm text-slate-700 leading-snug">
+    <div className="space-y-1 text-sm text-gray-700 dark:text-gray-300 leading-snug">
       {blocks.map((block, i) =>
         block.type === 'ul' ? (
           <ul key={i} className="list-disc pl-4 space-y-0.5">
@@ -101,13 +101,19 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
   const header = (
     <div className="flex items-start justify-between gap-4">
       <div>
-        <span className="font-semibold text-lg">{role.title}</span>
-        {meta && <div className="text-sm text-slate-500 mt-1">{meta}</div>}
+        <span className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+          {role.title}
+        </span>
+        {meta && (
+          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {meta}
+          </div>
+        )}
       </div>
       {hasDetails && (
         <span
           aria-hidden
-          className="text-slate-400 mt-1 transition-transform group-open:rotate-180"
+          className="text-gray-400 dark:text-gray-500 mt-1 transition-transform group-open:rotate-180"
         >
           ▾
         </span>
@@ -117,13 +123,13 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
 
   if (!hasDetails) {
     return (
-      <div className="border border-slate-200 rounded-lg p-4 bg-white/60">
+      <div className="border border-gray-200 dark:border-gray-600 p-4 bg-white dark:bg-gray-800">
         {role.url ? (
           <a
             href={role.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block hover:text-amber-800"
+            className="block hover:text-amber-900 dark:hover:text-amber-400"
           >
             {header}
           </a>
@@ -135,8 +141,8 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
   }
 
   return (
-    <details className="group border border-slate-200 rounded-lg p-4 bg-white/60">
-      <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+    <details className="group border border-gray-200 dark:border-gray-600 p-4 bg-white dark:bg-gray-800">
+      <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:opacity-80 transition-opacity">
         {header}
       </summary>
 
@@ -144,17 +150,21 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
         {role.description && <Description text={role.description} />}
 
         {(role.deadline || role.salary) && (
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             {role.salary && (
               <>
-                <span className="font-semibold text-slate-800">Salary:</span>{' '}
+                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                  Salary:
+                </span>{' '}
                 {role.salary}
               </>
             )}
             {role.salary && role.deadline && ' · '}
             {role.deadline && (
               <>
-                <span className="font-semibold text-slate-800">Deadline:</span>{' '}
+                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                  Deadline:
+                </span>{' '}
                 {formatDate(role.deadline)}
               </>
             )}
@@ -162,7 +172,9 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
         )}
 
         {group.about && (
-          <p className="text-xs text-slate-500 leading-snug">{group.about}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 leading-snug">
+            {group.about}
+          </p>
         )}
 
         {role.url && (
@@ -170,7 +182,7 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
             href={role.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-amber-800 hover:bg-amber-700 text-white text-sm font-medium px-3 py-1.5 rounded-md"
+            className="inline-block bg-amber-900 hover:bg-amber-950 dark:bg-amber-700 dark:hover:bg-amber-600 text-white text-sm font-medium px-3 py-1.5"
           >
             {role.url.startsWith('mailto:')
               ? 'Apply by email'
@@ -205,52 +217,58 @@ export default async function JobsPage() {
   const totalRoles = groups.reduce((sum, group) => sum + group.roles.length, 0)
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12">
-      <Link
-        href="/"
-        className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
-      >
-        &larr; moxsf.com
-      </Link>
-
-      <h1 className="text-4xl font-bold mt-6 mb-2">Jobs around Mox</h1>
-      <p className="text-slate-600 mb-10">
-        Open roles at organizations in the Mox community.
-        {totalRoles > 0 &&
-          ` ${totalRoles} open role${totalRoles === 1 ? '' : 's'}.`}
-      </p>
-
-      {loadError ? (
-        <p className="text-slate-600">
-          Couldn&apos;t load roles right now — try again in a minute.
-        </p>
-      ) : groups.length === 0 ? (
-        <p className="text-slate-600">
-          No open roles listed yet — check back soon.
-        </p>
-      ) : (
-        groups.map((group) => (
-          <section key={group.name} className="mb-10">
-            <h2 className="text-2xl font-semibold mb-3">{group.name}</h2>
-            <div className="space-y-4">
-              {group.roles.map((role) => (
-                <RoleCard key={role.id} role={role} group={group} />
-              ))}
-            </div>
-          </section>
-        ))
-      )}
-
-      <p className="text-sm text-slate-500 mt-12">
-        Hiring at a Mox org and missing from this list? Ping{' '}
-        <a
-          href="mailto:team@moxsf.com"
-          className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Link
+          href="/"
+          className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
         >
-          team@moxsf.com
-        </a>
-        .
-      </p>
-    </main>
+          &larr; moxsf.com
+        </Link>
+
+        <h1 className="text-3xl sm:text-4xl font-bold font-display text-gray-900 dark:text-white mt-6 mb-2">
+          Jobs around Mox
+        </h1>
+        <p className="text-gray-700 dark:text-gray-300 mb-10">
+          Open roles at organizations in the Mox community.
+          {totalRoles > 0 &&
+            ` ${totalRoles} open role${totalRoles === 1 ? '' : 's'}.`}
+        </p>
+
+        {loadError ? (
+          <p className="text-gray-600 dark:text-gray-400">
+            Couldn&apos;t load roles right now — try again in a minute.
+          </p>
+        ) : groups.length === 0 ? (
+          <p className="text-gray-600 dark:text-gray-400">
+            No open roles listed yet — check back soon.
+          </p>
+        ) : (
+          groups.map((group) => (
+            <section key={group.name} className="mb-10">
+              <h2 className="text-2xl font-bold font-display text-gray-900 dark:text-white mb-3">
+                {group.name}
+              </h2>
+              <div className="grid gap-4 items-start md:grid-cols-2 xl:grid-cols-3">
+                {group.roles.map((role) => (
+                  <RoleCard key={role.id} role={role} group={group} />
+                ))}
+              </div>
+            </section>
+          ))
+        )}
+
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-12">
+          Hiring at a Mox org and missing from this list? Ping{' '}
+          <a
+            href="mailto:team@moxsf.com"
+            className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
+          >
+            team@moxsf.com
+          </a>
+          .
+        </p>
+      </main>
+    </div>
   )
 }
