@@ -100,20 +100,18 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
 
   const header = (
     <div className="flex items-start justify-between gap-4">
-      <div>
-        <span className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+      <div className="min-w-0">
+        <span className="block font-semibold text-lg leading-snug text-gray-900 dark:text-gray-100 line-clamp-2 min-h-[3.5rem]">
           {role.title}
         </span>
-        {meta && (
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {meta}
-          </div>
-        )}
+        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 min-h-[2.5rem]">
+          {meta}
+        </div>
       </div>
       {hasDetails && (
         <span
           aria-hidden
-          className="text-gray-400 dark:text-gray-500 mt-1 transition-transform group-open:rotate-180"
+          className="shrink-0 text-gray-400 dark:text-gray-500 mt-1 transition-transform group-open:rotate-180"
         >
           ▾
         </span>
