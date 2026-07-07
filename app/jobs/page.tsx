@@ -218,7 +218,7 @@ export default async function JobsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Link
           href="/"
           className="text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
@@ -249,7 +249,7 @@ export default async function JobsPage() {
               <h2 className="text-2xl font-bold font-display text-gray-900 dark:text-white mb-3">
                 {group.name}
               </h2>
-              <div className="space-y-4">
+              <div className="grid gap-4 items-start md:grid-cols-2 xl:grid-cols-3">
                 {group.roles.map((role) => (
                   <RoleCard key={role.id} role={role} group={group} />
                 ))}
