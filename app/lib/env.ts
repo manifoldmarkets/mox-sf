@@ -84,6 +84,17 @@ export const env = {
   // EAG Guest Code
   get EAG_GUEST_CODE() { return required('EAG_GUEST_CODE') },
 
+  // Task board — public Google sign-in for claimers (scoped to /tasks only).
+  get TASKS_GOOGLE_CLIENT_ID() { return optional('TASKS_GOOGLE_CLIENT_ID') },
+  get TASKS_GOOGLE_CLIENT_SECRET() { return optional('TASKS_GOOGLE_CLIENT_SECRET') },
+  // Same-day turnaround clock (hours); optional overrides.
+  get TASKS_NUDGE_HOURS() { return optional('TASKS_NUDGE_HOURS', '8') },
+  get TASKS_RELEASE_HOURS() { return optional('TASKS_RELEASE_HOURS', '24') },
+  // Comma-separated fallback organizer emails (staff are recognized via session).
+  get TASKS_ORGANIZER_EMAILS() { return optional('TASKS_ORGANIZER_EMAILS') },
+  // Public base URL for the board (used in email/Discord links).
+  get TASKS_BASE_URL() { return optional('TASKS_BASE_URL', 'https://tasks.moxsf.com') },
+
   // Shared/public
   NODE_ENV,
   NEXT_PUBLIC_BASE_URL,

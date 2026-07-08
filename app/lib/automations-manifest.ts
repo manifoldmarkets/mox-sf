@@ -78,6 +78,24 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "summary": "Nightly: pulls Verkada door-access events and writes one Attendance record per person per day (powers the GEF weekly digest)."
   },
   {
+    "id": "cron/tasks-digest",
+    "filePath": "app/api/cron/tasks-digest/route.ts",
+    "routePath": "/api/cron/tasks-digest",
+    "type": "cron",
+    "cronSchedule": "0 16 * * *",
+    "httpMethod": "GET",
+    "summary": "TODO: describe cron/tasks-digest"
+  },
+  {
+    "id": "cron/tasks-sweep",
+    "filePath": "app/api/cron/tasks-sweep/route.ts",
+    "routePath": "/api/cron/tasks-sweep",
+    "type": "cron",
+    "cronSchedule": "*/15 * * * *",
+    "httpMethod": "GET",
+    "summary": "TODO: describe cron/tasks-sweep"
+  },
+  {
     "id": "day-pass/activate/api",
     "filePath": "app/day-pass/activate/api/route.ts",
     "routePath": "/day-pass/activate/api",

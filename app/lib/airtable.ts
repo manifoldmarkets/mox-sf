@@ -19,6 +19,9 @@ export const Tables = {
   CheckIns: 'Check-ins',
   GefApplications: 'GEF Applications',
   Roles: 'Roles',
+  // Public task board (app/tasks, served at tasks.moxsf.com)
+  Tasks: 'Tasks',
+  TaskClaims: 'Task Claims',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]
