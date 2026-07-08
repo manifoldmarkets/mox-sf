@@ -99,21 +99,19 @@ function RoleCard({ role, group }: { role: OpenRole; group: RoleGroup }) {
   const meta = [role.location, ...role.tags].filter(Boolean).join(' · ')
 
   const header = (
-    <div className="flex items-start justify-between gap-4">
-      <div>
-        <span className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+    <div className="flex items-start justify-between gap-4 min-h-[6rem]">
+      <div className="min-w-0">
+        <span className="block font-semibold text-lg leading-snug text-gray-900 dark:text-gray-100 line-clamp-2">
           {role.title}
         </span>
-        {meta && (
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {meta}
-          </div>
-        )}
+        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+          {meta}
+        </div>
       </div>
       {hasDetails && (
         <span
           aria-hidden
-          className="text-gray-400 dark:text-gray-500 mt-1 transition-transform group-open:rotate-180"
+          className="shrink-0 text-gray-400 dark:text-gray-500 mt-1 transition-transform group-open:rotate-180"
         >
           ▾
         </span>
