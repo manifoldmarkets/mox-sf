@@ -19,6 +19,9 @@ export const DISCORD_CHANNELS = {
   PACKAGES: '1409615290353844397',
   NOTIFICATIONS: '1465054507816980523',
   ROOM_AVAILABILITY: '1466343013146951774',
+  // Task board completions/approvals. The Mox bot (DISCORD_BOT_TOKEN) must have
+  // View Channel + Read Message History here for the ✅-approval sweep to work.
+  TASKS: '1523782328118149130',
 } as const
 
 // Message ID for the room availability status message that gets edited

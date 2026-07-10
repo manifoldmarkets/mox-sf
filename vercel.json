@@ -27,6 +27,14 @@
     {
       "path": "/api/cron/event-suggestions",
       "schedule": "0 17 * * 3"
+    },
+    {
+      "path": "/api/cron/tasks-sweep",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/tasks-digest",
+      "schedule": "0 16 * * *"
     }
   ]
 }

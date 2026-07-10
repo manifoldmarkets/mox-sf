@@ -19,7 +19,8 @@ export default function PortalNav() {
   const isPortalPage =
     pathname?.startsWith('/portal') ||
     pathname?.startsWith('/lobby') ||
-    pathname?.startsWith('/summerseason')
+    pathname?.startsWith('/summerseason') ||
+    pathname?.startsWith('/tasks') // task board has its own header
 
   useEffect(() => {
     if (isPortalPage) return
