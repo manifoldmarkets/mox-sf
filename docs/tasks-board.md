@@ -3,8 +3,8 @@
 A public board of small, well-scoped tasks. Anyone can browse; **claiming
 requires Google sign-in**. A claim means "I'm doing this today": a nudge email
 after `TASKS_NUDGE_HOURS` (8h) and auto-release after `TASKS_RELEASE_HOURS`
-(24h). Completing with a photo closes the task instantly; without a photo it
-waits for organizer review, which happens by reacting ✅ on Discord.
+(24h). Every completion waits for organizer review — approve by reacting ✅ on
+the Discord message. A proof photo can be attached but never auto-closes.
 
 ## Auth (deliberately isolated)
 
@@ -45,7 +45,7 @@ Rooftop has no plan.
 
 - Every task records its creator (`Created by name/email`, set from the acting
   session when posted on the site). Creators are **emailed** when their task is
-  claimed, completed (auto-closed or needs-review), released, or auto-released.
+  claimed, completed (needs review), released, or auto-released.
 - **Edit / Archive**: organizers and the task's creator see "Edit task" and
   "Archive" on the task page (PATCH/DELETE `/api/tasks/[id]`). Archive is a
   soft delete (Status = Archived); hard-delete happens in Airtable.
