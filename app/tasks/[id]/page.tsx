@@ -234,7 +234,7 @@ export default async function TaskDetail({
               {hoursLeft !== null && (
                 <p className="text-[13px] text-gray-500 dark:text-gray-400">
                   Auto-releases in about {hoursLeft}h. Finish and mark it done —
-                  a photo closes it on the spot.
+                  add a proof photo if you can.
                 </p>
               )}
               <DonePanel taskId={task.id} />
