@@ -3,6 +3,7 @@ import { canManageTask, getTaskActor } from '@/app/lib/tasks-auth'
 import {
   getTask,
   logTaskEvent,
+  PRIORITIES,
   REPEATS,
   updateTask,
   uploadTaskImage,
@@ -47,6 +48,9 @@ export async function PATCH(
     Effort: str('effort') || null,
     Skills: skills,
     Repeat: (REPEATS as readonly string[]).includes(repeat) ? repeat : null,
+    Priority: (PRIORITIES as readonly string[]).includes(str('priority'))
+      ? str('priority')
+      : null,
     'Map point': /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(mp) ? mp : null,
   }
 

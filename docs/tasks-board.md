@@ -53,6 +53,13 @@ Rooftop has no plan.
   back to Open that long after completion (sweep pass), with a 🔁 marker on the
   board and a Discord ping.
 
+## Floors & priority
+
+The board groups open tasks by floor (1st → Rooftop, then "Anywhere"), and
+within each group sorts by urgency. Each card shows a glowing priority dot on
+the right: blue = Low, yellow = Medium, red = High (pulses). Unset priority
+counts as Medium. Set it in the task form or the `Priority` field in Airtable.
+
 ## Discord + email + crons
 
 - Completions post to `DISCORD_CHANNELS.TASKS` via `sendChannelMessage`. **The

@@ -19,6 +19,7 @@ const SKILLS = [
 const FLOORS = ['1st floor', '2nd floor', '3rd floor', '4th floor', 'Rooftop']
 const EFFORTS = ['< 1h', '1–2h', '2–3h']
 const REPEATS = ['Weekly', 'Monthly']
+const PRIORITIES = ['Low', 'Medium', 'High']
 const MAX_DIM = 1600
 
 const LABEL =
@@ -40,6 +41,7 @@ export interface TaskFormInitial {
   effort: string
   floor: string
   repeat: string
+  priority: string
   mapPoint: { x: number; y: number } | null
   refPhotoCount: number
 }
@@ -169,7 +171,7 @@ function TaskFormModal({
               className={FIELD}
             />
           </label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <label className={LABEL}>
               Floor
               <select
@@ -215,6 +217,20 @@ function TaskFormModal({
                 {REPEATS.map((r) => (
                   <option key={r} value={r}>
                     {r}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={LABEL}>
+              Priority
+              <select
+                name="priority"
+                defaultValue={initial?.priority || 'Medium'}
+                className={FIELD}
+              >
+                {PRIORITIES.map((pr) => (
+                  <option key={pr} value={pr}>
+                    {pr}
                   </option>
                 ))}
               </select>

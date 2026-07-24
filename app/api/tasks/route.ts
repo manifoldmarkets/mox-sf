@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getTaskActor, isOrganizer } from '@/app/lib/tasks-auth'
 import {
   createTask,
+  PRIORITIES,
   REPEATS,
   updateTask,
   uploadTaskImage,
@@ -38,6 +39,8 @@ export async function POST(request: NextRequest) {
   if (skills.length) fields['Skills'] = skills
   if ((REPEATS as readonly string[]).includes(str('repeat')))
     fields['Repeat'] = str('repeat')
+  if ((PRIORITIES as readonly string[]).includes(str('priority')))
+    fields['Priority'] = str('priority')
 
   // Record who posted it — they get notifications and edit rights.
   const actor = await getTaskActor()

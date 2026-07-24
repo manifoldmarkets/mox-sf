@@ -45,6 +45,18 @@ export const FLOORS = [
 export const NUDGE_HOURS = Number(env.TASKS_NUDGE_HOURS) || 8
 export const RELEASE_HOURS = Number(env.TASKS_RELEASE_HOURS) || 24
 
+// Urgency levels; unset counts as Medium. Lower rank = more urgent.
+export const PRIORITIES = ['Low', 'Medium', 'High'] as const
+export const PRIORITY_RANK: Record<string, number> = {
+  High: 0,
+  Medium: 1,
+  Low: 2,
+}
+
+export function priorityOf(task: { priority: string }): string {
+  return PRIORITY_RANK[task.priority] !== undefined ? task.priority : 'Medium'
+}
+
 // Periodic tasks: how long after completion a repeating task reopens.
 export const REPEATS = ['Weekly', 'Monthly'] as const
 export const REPEAT_DAYS: Record<string, number> = { Weekly: 7, Monthly: 30 }
@@ -90,6 +102,7 @@ interface TaskFields {
   'Proof photo'?: AirtableAttachment[]
   'Reference photos'?: AirtableAttachment[]
   'Discord message id'?: string
+  Priority?: string
   'Created by name'?: string
   'Created by email'?: string
   Repeat?: string
@@ -122,6 +135,7 @@ export interface Task {
   hasProofPhoto: boolean
   refPhotos: TaskPhoto[]
   discordMessageId: string
+  priority: string
   createdByName: string
   createdByEmail: string
   repeat: string
@@ -177,6 +191,7 @@ function toTask(rec: { id: string; fields: TaskFields }): Task {
     hasProofPhoto: (f['Proof photo']?.length ?? 0) > 0,
     refPhotos: parsePhotos(f['Reference photos']),
     discordMessageId: f['Discord message id'] ?? '',
+    priority: f.Priority ?? '',
     createdByName: f['Created by name'] ?? '',
     createdByEmail: f['Created by email'] ?? '',
     repeat: f.Repeat ?? '',

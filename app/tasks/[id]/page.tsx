@@ -1,11 +1,23 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getTask, RELEASE_HOURS, storyForFloor } from '@/app/lib/tasks'
+import {
+  getTask,
+  priorityOf,
+  RELEASE_HOURS,
+  storyForFloor,
+} from '@/app/lib/tasks'
 import { canManageTask, getClaimer } from '@/app/lib/tasks-auth'
 import FloorMap from '../FloorMap'
 import { ClaimButton, DonePanel } from '../TaskActions'
 import { ManageTaskButtons } from '../TaskForm'
-import { CHIP_BASE, FLOOR_CHIP, Prose, SKILL_CHIP, STATUS_BADGE } from '../ui'
+import {
+  CHIP_BASE,
+  FLOOR_CHIP,
+  PriorityDot,
+  Prose,
+  SKILL_CHIP,
+  STATUS_BADGE,
+} from '../ui'
 
 export const dynamic = 'force-dynamic'
 
@@ -89,6 +101,10 @@ export default async function TaskDetail({
                     : task.status}
               </span>
             )}
+            <span className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-gray-500 dark:text-gray-400">
+              <PriorityDot priority={task.priority} />
+              {priorityOf(task)} priority
+            </span>
             {task.repeat && (
               <span
                 className={`${CHIP_BASE} bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300`}
@@ -113,6 +129,7 @@ export default async function TaskDetail({
                   effort: task.effort,
                   floor: task.floor,
                   repeat: task.repeat,
+                  priority: task.priority,
                   mapPoint: task.mapPoint,
                   refPhotoCount: task.refPhotos.length,
                 }}
