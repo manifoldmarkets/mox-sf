@@ -28,11 +28,17 @@ export default function TaskCard({
       />
 
       <div className="flex items-center justify-between gap-2">
-        {task.effort && (
-          <span className="text-xs font-semibold text-green-700 dark:text-green-400">
-            {task.effort}
-          </span>
-        )}
+        <span className="text-xs font-semibold text-green-700 dark:text-green-400">
+          {task.effort}
+          {task.repeat && (
+            <span
+              className="ml-1.5 text-cyan-700 dark:text-cyan-400"
+              title={`Repeats ${task.repeat.toLowerCase()}`}
+            >
+              🔁
+            </span>
+          )}
+        </span>
         {task.status === 'Claimed' && (
           <span
             className={`${CHIP_BASE} bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300`}

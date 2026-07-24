@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { isOrganizer } from '@/app/lib/tasks-auth'
-import { createTask, updateTask, uploadTaskImage } from '@/app/lib/tasks'
+import { getTaskActor, isOrganizer } from '@/app/lib/tasks-auth'
+import {
+  createTask,
+  REPEATS,
+  updateTask,
+  uploadTaskImage,
+} from '@/app/lib/tasks'
 
 const MAX_PHOTO_BYTES = 4 * 1024 * 1024
 const MAX_PHOTOS = 4
@@ -31,6 +36,15 @@ export async function POST(request: NextRequest) {
   if (str('floor')) fields['Floor'] = str('floor')
   if (str('effort')) fields['Effort'] = str('effort')
   if (skills.length) fields['Skills'] = skills
+  if ((REPEATS as readonly string[]).includes(str('repeat')))
+    fields['Repeat'] = str('repeat')
+
+  // Record who posted it — they get notifications and edit rights.
+  const actor = await getTaskActor()
+  if (actor) {
+    fields['Created by name'] = actor.name
+    fields['Created by email'] = actor.email
+  }
 
   const mp = str('mapPoint')
   if (/^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(mp)) fields['Map point'] = mp

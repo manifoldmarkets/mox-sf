@@ -45,6 +45,10 @@ export const FLOORS = [
 export const NUDGE_HOURS = Number(env.TASKS_NUDGE_HOURS) || 8
 export const RELEASE_HOURS = Number(env.TASKS_RELEASE_HOURS) || 24
 
+// Periodic tasks: how long after completion a repeating task reopens.
+export const REPEATS = ['Weekly', 'Monthly'] as const
+export const REPEAT_DAYS: Record<string, number> = { Weekly: 7, Monthly: 30 }
+
 export type TaskStatus = 'Open' | 'Claimed' | 'In review' | 'Done' | 'Archived'
 export type TaskEventType =
   | 'Claimed'
@@ -52,6 +56,7 @@ export type TaskEventType =
   | 'Released'
   | 'Auto-released'
   | 'Approved'
+  | 'Reopened'
 
 export interface ContextLink {
   label: string
@@ -85,6 +90,9 @@ interface TaskFields {
   'Proof photo'?: AirtableAttachment[]
   'Reference photos'?: AirtableAttachment[]
   'Discord message id'?: string
+  'Created by name'?: string
+  'Created by email'?: string
+  Repeat?: string
 }
 
 interface AirtableAttachment {
@@ -114,6 +122,9 @@ export interface Task {
   hasProofPhoto: boolean
   refPhotos: TaskPhoto[]
   discordMessageId: string
+  createdByName: string
+  createdByEmail: string
+  repeat: string
 }
 
 function parseContextLinks(raw: string): ContextLink[] {
@@ -166,6 +177,9 @@ function toTask(rec: { id: string; fields: TaskFields }): Task {
     hasProofPhoto: (f['Proof photo']?.length ?? 0) > 0,
     refPhotos: parsePhotos(f['Reference photos']),
     discordMessageId: f['Discord message id'] ?? '',
+    createdByName: f['Created by name'] ?? '',
+    createdByEmail: f['Created by email'] ?? '',
+    repeat: f.Repeat ?? '',
   }
 }
 
@@ -233,6 +247,7 @@ const EVENT_VERB: Record<TaskEventType, string> = {
   Released: 'released',
   'Auto-released': 'was auto-released from',
   Approved: 'approved',
+  Reopened: 'reopened',
 }
 
 export async function logTaskEvent(opts: {
