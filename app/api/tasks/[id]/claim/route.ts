@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getClaimer } from '@/app/lib/tasks-auth'
-import { getTask, listTasks, logTaskEvent, updateTask } from '@/app/lib/tasks'
+import { notifyTaskCreator, taskUrl } from '@/app/lib/tasks-notify'
+import {
+  getTask,
+  listTasks,
+  logTaskEvent,
+  RELEASE_HOURS,
+  updateTask,
+} from '@/app/lib/tasks'
 
 const MAX_ACTIVE_CLAIMS = 3
 
@@ -52,6 +59,13 @@ export async function POST(
     email: claimer.email,
     type: 'Claimed',
   })
+  await notifyTaskCreator(
+    task,
+    claimer.email,
+    `${claimer.name} claimed “${task.title}”`,
+    `<p><strong>${claimer.name}</strong> just claimed your task <a href="${taskUrl(task)}" style="color:#78350f">${task.title}</a> — that means they're on it today. It auto-releases after ${RELEASE_HOURS}h if it isn't finished.</p>`,
+    `${claimer.name} just claimed your task "${task.title}" — they're on it today. ${taskUrl(task)}`
+  )
 
   return NextResponse.json({ ok: true })
 }

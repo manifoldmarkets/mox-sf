@@ -3,29 +3,25 @@
  *   1. ✅ approvals — close "In review" tasks whose Discord message got a ✅.
  *   2. Nudge — email claimers who've gone quiet past NUDGE_HOURS.
  *   3. Auto-release — return stale claims (past RELEASE_HOURS) to Open.
+ *   4. Reopen — put completed Weekly/Monthly tasks back on the board.
  */
 import { sendChannelMessage } from './discord'
 import { DISCORD_CHANNELS } from './discord-constants'
 import { sendEmail } from './email'
 import { env } from './env'
+import { notifyTaskCreator, TASKS_FROM, taskEmailShell } from './tasks-notify'
 import {
   listTasks,
   logTaskEvent,
   NUDGE_HOURS,
   RELEASE_HOURS,
+  REPEAT_DAYS,
   updateTask,
   type Task,
 } from './tasks'
 
 const BASE = env.TASKS_BASE_URL
-
-function emailShell(body: string): string {
-  return `<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1f2937;line-height:1.55">
-  <p style="font-weight:700;letter-spacing:0.08em;font-size:13px;color:#78350f;margin:0 0 20px">MOX ᴛᴀꜱᴋꜱ</p>
-  ${body}
-  <p style="color:#6b7280;font-size:13px;margin-top:28px">— the Mox task board, ${BASE}</p>
-</div>`
-}
+const emailShell = taskEmailShell
 
 async function hasCheckReaction(messageId: string): Promise<boolean> {
   const token = env.DISCORD_BOT_TOKEN
@@ -44,6 +40,42 @@ async function hasCheckReaction(messageId: string): Promise<boolean> {
     console.error('[tasks-sweep] reaction check failed:', err)
     return false
   }
+}
+
+/** Reopens completed Weekly/Monthly tasks once their interval has passed. */
+async function processReopens(tasks: Task[]): Promise<string[]> {
+  const reopened: string[] = []
+  const now = Date.now()
+  for (const task of tasks) {
+    if (task.status !== 'Done' || !task.repeat || !task.completedAt) continue
+    const days = REPEAT_DAYS[task.repeat]
+    if (!days) continue
+    if (now - Date.parse(task.completedAt) < days * 24 * 3600_000) continue
+
+    await updateTask(task.id, {
+      Status: 'Open',
+      'Claimant name': null,
+      'Claimant email': null,
+      'Claimed at': null,
+      'Nudged at': null,
+      'Completed at': null,
+      'Completion note': null,
+      'Discord message id': null,
+    })
+    await logTaskEvent({
+      taskId: task.id,
+      taskTitle: task.title,
+      name: 'Mox board',
+      type: 'Reopened',
+      note: `${task.repeat} repeat`,
+    })
+    await sendChannelMessage(
+      DISCORD_CHANNELS.TASKS,
+      `🔁 **${task.title}** is due again (${task.repeat.toLowerCase()}) — back on the board.\n<${BASE}/tasks/${task.id}>`
+    )
+    reopened.push(task.title)
+  }
+  return reopened
 }
 
 async function processApprovals(tasks: Task[]): Promise<string[]> {
@@ -72,9 +104,11 @@ export async function sweepTasks(): Promise<{
   approved: string[]
   nudged: string[]
   released: string[]
+  reopened: string[]
 }> {
   const tasks = await listTasks()
   const approved = await processApprovals(tasks)
+  const reopened = await processReopens(tasks)
   const nudged: string[] = []
   const released: string[] = []
   const now = Date.now()
@@ -104,7 +138,7 @@ export async function sweepTasks(): Promise<{
       if (task.claimantEmail) {
         await sendEmail({
           to: task.claimantEmail,
-          from: 'Mox Tasks <portal@account.moxsf.com>',
+          from: TASKS_FROM,
           subject: `“${task.title}” went back on the board`,
           text: `Hey ${first}, no worries — "${task.title}" wasn't marked done within ${RELEASE_HOURS} hours, so it's back on the board. Grab another anytime: ${BASE}`,
           html: emailShell(
@@ -114,13 +148,20 @@ export async function sweepTasks(): Promise<{
           ),
         })
       }
+      await notifyTaskCreator(
+        task,
+        null,
+        `“${task.title}” is back on the board`,
+        `<p><strong>${task.claimantName || 'The claimer'}</strong> didn't finish <a href="${BASE}/tasks/${task.id}" style="color:#78350f">${task.title}</a> within ${RELEASE_HOURS}h, so it auto-released and is open again.</p>`,
+        `"${task.title}" auto-released after ${RELEASE_HOURS}h and is open again. ${BASE}/tasks/${task.id}`
+      )
       released.push(task.title)
     } else if (hours >= NUDGE_HOURS && !task.nudgedAt) {
       await updateTask(task.id, { 'Nudged at': new Date().toISOString() })
       if (task.claimantEmail) {
         await sendEmail({
           to: task.claimantEmail,
-          from: 'Mox Tasks <portal@account.moxsf.com>',
+          from: TASKS_FROM,
           subject: `Still on “${task.title}”?`,
           text: `Hey ${first}, you claimed "${task.title}" about ${Math.round(hours)}h ago. Claims auto-release after ${RELEASE_HOURS}h. Mark it done or release it: ${taskUrl}`,
           html: emailShell(
@@ -134,5 +175,5 @@ export async function sweepTasks(): Promise<{
     }
   }
 
-  return { approved, nudged, released }
+  return { approved, nudged, released, reopened }
 }

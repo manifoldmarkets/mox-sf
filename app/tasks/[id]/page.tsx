@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getTask, RELEASE_HOURS, storyForFloor } from '@/app/lib/tasks'
-import { getClaimer } from '@/app/lib/tasks-auth'
+import { canManageTask, getClaimer } from '@/app/lib/tasks-auth'
 import FloorMap from '../FloorMap'
 import { ClaimButton, DonePanel } from '../TaskActions'
+import { ManageTaskButtons } from '../TaskForm'
 import { CHIP_BASE, FLOOR_CHIP, Prose, SKILL_CHIP, STATUS_BADGE } from '../ui'
 
 export const dynamic = 'force-dynamic'
@@ -20,6 +21,7 @@ export default async function TaskDetail({
   const [task, claimer] = await Promise.all([getTask(id), getClaimer()])
   if (!task || task.status === 'Archived') notFound()
 
+  const canManage = await canManageTask(task.createdByEmail)
   const isMine = !!claimer && task.claimantEmail === claimer.email
   const firstName = task.claimantName.split(' ')[0]
   const story = storyForFloor(task.floor)
@@ -86,6 +88,35 @@ export default async function TaskDetail({
                     ? 'Wrapping up'
                     : task.status}
               </span>
+            )}
+            {task.repeat && (
+              <span
+                className={`${CHIP_BASE} bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300`}
+              >
+                🔁 {task.repeat}
+              </span>
+            )}
+            {canManage && (
+              <ManageTaskButtons
+                task={{
+                  id: task.id,
+                  title: task.title,
+                  summary: task.summary,
+                  brief: task.brief,
+                  doneCriteria: task.doneCriteria,
+                  contextLinks: task.contextLinks
+                    .map((l) =>
+                      l.label === l.url ? l.url : `${l.label} | ${l.url}`
+                    )
+                    .join('\n'),
+                  skills: task.skills,
+                  effort: task.effort,
+                  floor: task.floor,
+                  repeat: task.repeat,
+                  mapPoint: task.mapPoint,
+                  refPhotoCount: task.refPhotos.length,
+                }}
+              />
             )}
           </div>
 

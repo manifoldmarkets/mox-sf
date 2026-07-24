@@ -41,6 +41,18 @@ images with no room coordinates, so it can't drive clickable pins — hence the
 dedicated snapshot. `Floor` (1st–4th) maps to a plan story via `storyForFloor`;
 Rooftop has no plan.
 
+## Creators, editing, periodic tasks (mox-sf#100)
+
+- Every task records its creator (`Created by name/email`, set from the acting
+  session when posted on the site). Creators are **emailed** when their task is
+  claimed, completed (auto-closed or needs-review), released, or auto-released.
+- **Edit / Archive**: organizers and the task's creator see "Edit task" and
+  "Archive" on the task page (PATCH/DELETE `/api/tasks/[id]`). Archive is a
+  soft delete (Status = Archived); hard-delete happens in Airtable.
+- **Periodic tasks**: a task with `Repeat` = Weekly/Monthly automatically goes
+  back to Open that long after completion (sweep pass), with a 🔁 marker on the
+  board and a Discord ping.
+
 ## Discord + email + crons
 
 - Completions post to `DISCORD_CHANNELS.TASKS` via `sendChannelMessage`. **The

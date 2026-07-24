@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getClaimer, isOrganizer } from '@/app/lib/tasks-auth'
-import AddTask from './AddTask'
+import { AddTaskButton } from './TaskForm'
 
 export const metadata: Metadata = {
   title: 'Mox ᴛᴀꜱᴋꜱ',
@@ -30,7 +30,7 @@ export default async function TasksLayout({
             </sup>
           </Link>
           <nav className="flex items-center gap-3 font-sans text-sm">
-            {organizer && <AddTask />}
+            {organizer && <AddTaskButton />}
             {claimer ? (
               <>
                 <Link
