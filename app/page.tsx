@@ -173,10 +173,8 @@ export default async function Component() {
                     'Musicians',
                     'Community builders',
                     'Hackers',
-                    'Thinkers',
-                    'Figgie players',
-                    'd/accs',
-                    'Members of technical and untechnical staff',
+                    'Designers',
+                    'Gamers',
                   ].map((label) => (
                     <div
                       key={label}
