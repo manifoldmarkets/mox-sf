@@ -216,7 +216,7 @@ export default function GuestsPage() {
             <PartnerCard
               name="Redwood"
               url="https://redwoodresearch.org"
-              logoUrl="https://www.openphilanthropy.org/wp-content/uploads/redwood-logo.jpg"
+              logoUrl="/logos/redwood.svg"
               bgColor="bg-white"
             />
             <PartnerCard
