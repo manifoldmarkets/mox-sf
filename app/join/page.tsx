@@ -174,7 +174,7 @@ export function JoinContent(props: {
             </h2>
             <p className="text-gray-700">
               Reach out to{' '}
-              <a href="mailto:rachel@moxsf.com">rachel@moxsf.com</a>! We have a
+              <a href="mailto:robin@moxsf.com">robin@moxsf.com</a>! We have a
               limited number of private offices available, starting at $4k/mo
               for a 4-person office. And if you're a startup, we may be
               interested in investing a small amount as well, to align our
@@ -244,10 +244,10 @@ export function JoinContent(props: {
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           Questions? Ping{' '}
           <a
-            href="mailto:rachel@moxsf.com"
+            href="mailto:robin@moxsf.com"
             className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
           >
-            rachel@moxsf.com
+            robin@moxsf.com
           </a>
           ~
         </div>
@@ -412,10 +412,10 @@ export default function JoinPage() {
                 <p className="mt-4 text-red-600 text-sm">
                   Sorry, we might not be ready to onboard you yet — reach out to{' '}
                   <a
-                    href="mailto:rachel@moxsf.com"
+                    href="mailto:robin@moxsf.com"
                     className="underline hover:text-red-700"
                   >
-                    rachel@moxsf.com
+                    robin@moxsf.com
                   </a>{' '}
                   if this seems like a mistake!
                 </p>

@@ -142,7 +142,7 @@ export default function MembershipStatus({
           </p>
 
           <p className="muted" style={{ marginTop: '15px' }}>
-            questions? <a href="mailto:rachel@moxsf.com">rachel@moxsf.com</a>
+            questions? <a href="mailto:robin@moxsf.com">robin@moxsf.com</a>
           </p>
         </>
       )}

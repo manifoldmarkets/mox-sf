@@ -81,10 +81,10 @@ export default function RenewContent({
         <div className="max-w-4xl mx-auto px-6 text-center text-gray-500">
           Questions? Ping{' '}
           <a
-            href="mailto:rachel@moxsf.com"
+            href="mailto:robin@moxsf.com"
             className="text-amber-800 hover:text-amber-600 underline decoration-dotted underline-offset-2"
           >
-            rachel@moxsf.com
+            robin@moxsf.com
           </a>
         </div>
       </footer>

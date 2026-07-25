@@ -556,7 +556,7 @@ export default async function Component() {
           </p>
           <p className="text-gray-500 dark:text-gray-400">
             Questions? Contact{' '}
-            <Link href="mailto:rachel@moxsf.com">rachel@moxsf.com</Link>
+            <Link href="mailto:robin@moxsf.com">robin@moxsf.com</Link>
           </p>
         </div>
       </footer>
