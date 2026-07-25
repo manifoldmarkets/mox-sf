@@ -360,6 +360,9 @@ a.interest.fun:hover {
 }
 
 .collapsed-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: 0.95em;
   font-weight: bold;
   white-space: nowrap;
@@ -369,6 +372,21 @@ a.interest.fun:hover {
   color: var(--text-primary);
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Avatar runs flush to the pill's left edge, full height, no padding around
+   it — at this size any inset reads as a gap rather than a frame */
+.collapsed-name:has(.collapsed-photo) {
+  padding-left: 0;
+}
+
+.collapsed-photo {
+  align-self: stretch;
+  height: auto;
+  width: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 a.collapsed-name {
