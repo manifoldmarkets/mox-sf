@@ -24,4 +24,4 @@ Reply to this email, or email us at team@moxsf.com
 
 See you soon!
 
---Robin, Mattie, and Jake
+--Robin, Carolina, and Jake
