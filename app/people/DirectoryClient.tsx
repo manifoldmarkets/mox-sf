@@ -194,9 +194,9 @@ function CollapsedList({ people }: { people: Person[] }) {
               <Image
                 src={photoUrl}
                 alt=""
-                width={40}
-                height={40}
-                sizes="40px"
+                width={56}
+                height={56}
+                sizes="28px"
                 className="collapsed-photo"
               />
             )}

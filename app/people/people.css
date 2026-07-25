@@ -363,6 +363,8 @@ a.interest.fun:hover {
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  box-sizing: border-box;
+  height: 30px;
   font-size: 0.95em;
   font-weight: bold;
   white-space: nowrap;
@@ -374,17 +376,19 @@ a.interest.fun:hover {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Avatar runs flush to the pill's left edge, full height, no padding around
-   it — at this size any inset reads as a gap rather than a frame */
+/* Avatar runs flush to the pill's left, top and bottom edges — at this size
+   any inset reads as a gap rather than a frame. The fixed height on
+   .collapsed-name is what keeps this square: the avatar fills the content
+   box vertically (30px pill - 2px border = 28px) and matches that in width,
+   and pills with and without a photo stay the same height. */
 .collapsed-name:has(.collapsed-photo) {
   padding-left: 0;
+  padding-block: 0;
 }
 
 .collapsed-photo {
-  align-self: stretch;
-  height: auto;
-  width: auto;
-  aspect-ratio: 1 / 1;
+  width: 28px;
+  height: 100%;
   object-fit: cover;
   flex-shrink: 0;
 }
