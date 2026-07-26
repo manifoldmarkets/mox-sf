@@ -3,8 +3,8 @@
 A public board of small, well-scoped tasks. Anyone can browse; **claiming
 requires Google sign-in**. A claim means "I'm doing this today": a nudge email
 after `TASKS_NUDGE_HOURS` (8h) and auto-release after `TASKS_RELEASE_HOURS`
-(24h). Completing with a photo closes the task instantly; without a photo it
-waits for organizer review, which happens by reacting ✅ on Discord.
+(24h). Every completion waits for organizer review — approve by reacting ✅ on
+the Discord message. A proof photo can be attached but never auto-closes.
 
 ## Auth (deliberately isolated)
 
@@ -40,6 +40,25 @@ plans (real room polygons, floor-frame inches) used to render the pin picker
 images with no room coordinates, so it can't drive clickable pins — hence the
 dedicated snapshot. `Floor` (1st–4th) maps to a plan story via `storyForFloor`;
 Rooftop has no plan.
+
+## Creators, editing, periodic tasks (mox-sf#100)
+
+- Every task records its creator (`Created by name/email`, set from the acting
+  session when posted on the site). Creators are **emailed** when their task is
+  claimed, completed (needs review), released, or auto-released.
+- **Edit / Archive**: organizers and the task's creator see "Edit task" and
+  "Archive" on the task page (PATCH/DELETE `/api/tasks/[id]`). Archive is a
+  soft delete (Status = Archived); hard-delete happens in Airtable.
+- **Periodic tasks**: a task with `Repeat` = Weekly/Monthly automatically goes
+  back to Open that long after completion (sweep pass), with a 🔁 marker on the
+  board and a Discord ping.
+
+## Floors & priority
+
+The board groups open tasks by floor (1st → Rooftop, then "Anywhere"), and
+within each group sorts by urgency. Each card shows a glowing priority dot on
+the right: blue = Low, yellow = Medium, red = High (pulses). Unset priority
+counts as Medium. Set it in the task form or the `Priority` field in Airtable.
 
 ## Discord + email + crons
 

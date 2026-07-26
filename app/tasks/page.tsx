@@ -1,5 +1,11 @@
 import Link from 'next/link'
-import { listTasks, type Task } from '@/app/lib/tasks'
+import {
+  FLOORS,
+  listTasks,
+  PRIORITY_RANK,
+  priorityOf,
+  type Task,
+} from '@/app/lib/tasks'
 import TaskCard from './TaskCard'
 
 export const dynamic = 'force-dynamic'
@@ -36,8 +42,29 @@ export default async function TasksBoard({
   const matchesTag = (t: Task) =>
     !!tag && (t.skills.includes(tag) || t.floor === tag)
   let open = tasks.filter((t) => t.status === 'Open')
+  // Most urgent first within each floor group (unset priority = Medium).
+  open = [...open].sort(
+    (a, b) =>
+      (PRIORITY_RANK[priorityOf(a)] ?? 1) - (PRIORITY_RANK[priorityOf(b)] ?? 1)
+  )
   if (tag)
     open = [...open.filter(matchesTag), ...open.filter((t) => !matchesTag(t))]
+
+  // Group open tasks by floor: 1st → Rooftop, then floorless ("Anywhere").
+  // A floor tag filter lifts that floor's group to the top.
+  const groupOrder: string[] = [...FLOORS, '']
+  if (tag && (FLOORS as readonly string[]).includes(tag)) {
+    groupOrder.splice(groupOrder.indexOf(tag), 1)
+    groupOrder.unshift(tag)
+  }
+  const floorGroups = groupOrder
+    .map((floor) => ({
+      floor,
+      label: floor || 'Anywhere',
+      tasks: open.filter((t) => (t.floor || '') === floor),
+    }))
+    .filter((g) => g.tasks.length > 0)
+
   const inProgress = tasks.filter(
     (t) => t.status === 'Claimed' || t.status === 'In review'
   )
@@ -94,9 +121,21 @@ export default async function TasksBoard({
             The board is warming up — check back in a little while.
           </div>
         ) : open.length > 0 ? (
-          <div className="grid gap-4 items-start sm:grid-cols-2 xl:grid-cols-3">
-            {open.map((t) => (
-              <TaskCard key={t.id} task={t} activeTag={tag} />
+          <div className="flex flex-col gap-8">
+            {floorGroups.map((g) => (
+              <div key={g.label}>
+                <h3 className="mb-3 font-sans text-[13px] font-bold text-gray-500 dark:text-gray-400">
+                  {g.floor ? `📍 ${g.label}` : g.label}{' '}
+                  <span className="font-normal text-gray-400 dark:text-gray-500">
+                    · {g.tasks.length}
+                  </span>
+                </h3>
+                <div className="grid gap-4 items-start sm:grid-cols-2 xl:grid-cols-3">
+                  {g.tasks.map((t) => (
+                    <TaskCard key={t.id} task={t} activeTag={tag} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         ) : (
