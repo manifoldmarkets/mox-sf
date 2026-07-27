@@ -131,7 +131,7 @@ export default async function DashboardPage() {
       {/* Subscription details (if has Stripe customer) */}
       {profile.stripeCustomerId && (
         <section>
-          <SubscriptionInfo key={effectiveUserId} stripeCustomerId={profile.stripeCustomerId} />
+          <SubscriptionInfo key={effectiveUserId} stripeCustomerId={profile.stripeCustomerId} userId={effectiveUserId} />
         </section>
       )}
 
