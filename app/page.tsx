@@ -9,10 +9,7 @@ import { getPeople, getOrgs, getPrograms, getStaff, buildDirectoryData } from '.
 import DirectoryClient from './people/DirectoryClient'
 import './people/people.css'
 
-// The three hero cards render their photo at ~1/3 of the max-w-7xl grid on
-// desktop, a 192px thumbnail at md, and full-bleed on mobile. Without this,
-// next/image has no layout hint and falls back to the largest device size —
-// a 3840px-wide, 700KB+ variant preloaded as a priority image.
+// Without this hint next/image serves a 3840px variant at every viewport.
 const CARD_IMAGE_SIZES =
   '(min-width: 1024px) 420px, (min-width: 768px) 192px, 100vw'
 
