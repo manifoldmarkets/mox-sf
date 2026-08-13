@@ -9,6 +9,10 @@ import { getPeople, getOrgs, getPrograms, getStaff, buildDirectoryData } from '.
 import DirectoryClient from './people/DirectoryClient'
 import './people/people.css'
 
+// Without this hint next/image serves a 3840px variant at every viewport.
+const CARD_IMAGE_SIZES =
+  '(min-width: 1024px) 420px, (min-width: 768px) 192px, 100vw'
+
 async function HomepageDirectory() {
   let people: Awaited<ReturnType<typeof getPeople>> = []
   let orgsMap: Awaited<ReturnType<typeof getOrgs>> = new Map()
@@ -125,9 +129,10 @@ export default async function Component() {
               <Image
                 src="/images/014.jpg"
                 alt="Mox events"
-                width={2016}
-                height={1512}
+                width={4032}
+                height={3024}
                 priority
+                sizes={CARD_IMAGE_SIZES}
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -153,9 +158,10 @@ export default async function Component() {
               <Image
                 src="/images/023.jpg"
                 alt="Mox community"
-                width={2016}
-                height={1512}
+                width={2000}
+                height={1333}
                 priority
+                sizes={CARD_IMAGE_SIZES}
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -203,9 +209,10 @@ export default async function Component() {
               <Image
                 src="/images/003.jpg"
                 alt="Mox space"
-                width={2016}
-                height={1512}
+                width={1512}
+                height={1009}
                 priority
+                sizes={CARD_IMAGE_SIZES}
                 className="w-full md:w-48 lg:w-full h-48 md:h-auto lg:h-48 object-cover flex-shrink-0"
               />
               <div className="p-4 sm:p-6 flex flex-col flex-1">
