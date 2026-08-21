@@ -21,6 +21,7 @@ const redirects = {
   '/membership': 'https://moxsf.notion.site/memberships',
   '/donate':
     'https://manifund.org/projects/mox-2026-fundraiser',
+  '/hiring': 'https://moxsf.notion.site/interest',
 
   // Endpoints mostly for admin/staff
   '/eventz':
