@@ -228,7 +228,7 @@ export default function GuestProgramPage() {
             <PartnerCard
               name="Palisade Research"
               url="https://palisaderesearch.org/"
-              logoUrl="https://palisaderesearch.org/assets/images/logos/palisade.svg"
+              logoUrl="/logos/palisade.svg"
               bgColor="bg-white"
             />
             <PartnerCard
@@ -252,7 +252,7 @@ export default function GuestProgramPage() {
             <PartnerCard
               name="Timaeus"
               url="https://timaeus.co/"
-              logoUrl="https://timaeus.co/_astro/sun-1.fDKlafeL_1rjScY.webp"
+              logoUrl="/logos/timaeus.png"
               bgColor="bg-white"
             />
             <PartnerCard
