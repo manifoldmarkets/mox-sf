@@ -5,14 +5,21 @@ import { CHIP_BASE, FLOOR_CHIP, PriorityDot, SKILL_CHIP } from './ui'
 export default function TaskCard({
   task,
   activeTag,
+  typeParam,
 }: {
   task: Task
   activeTag?: string
+  /** Current board tab ('contractor' or undefined) — kept in tag links. */
+  typeParam?: string
 }) {
   const claimed = task.status !== 'Open'
   const firstName = task.claimantName.split(' ')[0]
+  const typeQuery = typeParam ? `type=${typeParam}` : ''
+  const boardHref = typeQuery ? `/tasks?${typeQuery}` : '/tasks'
   const tagHref = (t: string) =>
-    activeTag === t ? '/tasks' : `/tasks?tag=${encodeURIComponent(t)}`
+    activeTag === t
+      ? boardHref
+      : `/tasks?${typeQuery ? `${typeQuery}&` : ''}tag=${encodeURIComponent(t)}`
 
   return (
     <article

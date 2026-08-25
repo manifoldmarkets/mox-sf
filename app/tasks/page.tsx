@@ -5,10 +5,18 @@ import {
   PRIORITY_RANK,
   priorityOf,
   type Task,
+  type TaskType,
 } from '@/app/lib/tasks'
 import TaskCard from './TaskCard'
 
 export const dynamic = 'force-dynamic'
+
+const TAB_BASE =
+  'inline-flex items-center gap-2 border-b-2 px-1 pb-2.5 font-sans text-sm font-semibold transition-colors'
+const TAB_ACTIVE =
+  'border-amber-900 dark:border-amber-400 text-gray-900 dark:text-white'
+const TAB_IDLE =
+  'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
 
 const SECTION_TITLE =
   'font-sans text-sm font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-4'
@@ -26,18 +34,24 @@ const ERROR_MESSAGES: Record<string, string> = {
 export default async function TasksBoard({
   searchParams,
 }: {
-  searchParams: Promise<{ tag?: string; error?: string }>
+  searchParams: Promise<{ tag?: string; error?: string; type?: string }>
 }) {
-  const { tag, error } = await searchParams
+  const { tag, error, type } = await searchParams
+  const activeType: TaskType = type === 'contractor' ? 'Contractor' : 'Volunteer'
+  const typeParam = activeType === 'Contractor' ? 'contractor' : undefined
 
-  let tasks: Task[] = []
+  let allTasks: Task[] = []
   let unavailable = false
   try {
-    tasks = await listTasks()
+    allTasks = await listTasks()
   } catch (err) {
     console.error('[tasks] board fetch failed:', err)
     unavailable = true
   }
+
+  const openCount = (tt: TaskType) =>
+    allTasks.filter((t) => t.status === 'Open' && t.taskType === tt).length
+  const tasks = allTasks.filter((t) => t.taskType === activeType)
 
   const matchesTag = (t: Task) =>
     !!tag && (t.skills.includes(tag) || t.floor === tag)
@@ -102,6 +116,31 @@ export default async function TasksBoard({
         </p>
       </section>
 
+      <div className="mb-8 flex gap-6 border-b border-gray-200 dark:border-gray-700">
+        <Link
+          href="/tasks"
+          className={`${TAB_BASE} ${activeType === 'Volunteer' ? TAB_ACTIVE : TAB_IDLE}`}
+        >
+          Volunteer tasks
+          {!unavailable && (
+            <span className="font-normal text-gray-400 dark:text-gray-500">
+              {openCount('Volunteer')}
+            </span>
+          )}
+        </Link>
+        <Link
+          href="/tasks?type=contractor"
+          className={`${TAB_BASE} ${activeType === 'Contractor' ? TAB_ACTIVE : TAB_IDLE}`}
+        >
+          Contractor tasks
+          {!unavailable && (
+            <span className="font-normal text-gray-400 dark:text-gray-500">
+              {openCount('Contractor')}
+            </span>
+          )}
+        </Link>
+      </div>
+
       <section className="mb-12">
         <h2 className={SECTION_TITLE}>Open tasks</h2>
         {tag && (
@@ -111,7 +150,10 @@ export default async function TasksBoard({
               {tag}
             </span>{' '}
             tasks first ·{' '}
-            <Link href="/tasks" className="underline underline-offset-2">
+            <Link
+              href={typeParam ? `/tasks?type=${typeParam}` : '/tasks'}
+              className="underline underline-offset-2"
+            >
               clear
             </Link>
           </p>
@@ -132,7 +174,12 @@ export default async function TasksBoard({
                 </h3>
                 <div className="grid gap-4 items-start sm:grid-cols-2 xl:grid-cols-3">
                   {g.tasks.map((t) => (
-                    <TaskCard key={t.id} task={t} activeTag={tag} />
+                    <TaskCard
+                      key={t.id}
+                      task={t}
+                      activeTag={tag}
+                      typeParam={typeParam}
+                    />
                   ))}
                 </div>
               </div>
@@ -151,7 +198,12 @@ export default async function TasksBoard({
           <h2 className={SECTION_TITLE}>In progress</h2>
           <div className="grid gap-4 items-start sm:grid-cols-2 xl:grid-cols-3">
             {inProgress.map((t) => (
-              <TaskCard key={t.id} task={t} activeTag={tag} />
+              <TaskCard
+                key={t.id}
+                task={t}
+                activeTag={tag}
+                typeParam={typeParam}
+              />
             ))}
           </div>
         </section>

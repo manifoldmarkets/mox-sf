@@ -5,6 +5,7 @@ import {
   logTaskEvent,
   PRIORITIES,
   REPEATS,
+  TASK_TYPES,
   updateTask,
   uploadTaskImage,
 } from '@/app/lib/tasks'
@@ -39,7 +40,7 @@ export async function PATCH(
   const mp = str('mapPoint')
 
   const fields: Record<string, unknown> = {
-    Name: title,
+    Title: title,
     Summary: str('summary') || null,
     Brief: str('brief') || null,
     'Done criteria': str('doneCriteria') || null,
@@ -53,22 +54,28 @@ export async function PATCH(
       : null,
     'Map point': /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(mp) ? mp : null,
   }
+  // Which board tab it shows under (empty/unset counts as Volunteer).
+  if ((TASK_TYPES as readonly string[]).includes(str('type')))
+    fields['Task type'] = str('type')
 
-  // New photos are appended to the existing reference photos.
+  // Reference photos: keep the surviving originals (by attachment id, sent as
+  // keepPhotoIds) and append any newly uploaded ones.
+  const keepIds = new Set(form.getAll('keepPhotoIds').map(String))
+  const kept = task.refPhotos
+    .filter((p) => p.id && keepIds.has(p.id))
+    .map((p) => ({ id: p.id }))
+  const urls: ({ id: string } | { url: string })[] = [...kept]
   const photos = form
     .getAll('photos')
     .filter((p): p is File => p instanceof File && p.size > 0)
-  if (photos.length) {
-    const urls: { url: string }[] = task.refPhotos.map((p) => ({ url: p.url }))
-    for (const photo of photos.slice(0, MAX_PHOTOS)) {
-      if (photo.size > MAX_PHOTO_BYTES || !photo.type.startsWith('image/'))
-        continue
-      const base64 = Buffer.from(await photo.arrayBuffer()).toString('base64')
-      const url = await uploadTaskImage(base64)
-      if (url) urls.push({ url })
-    }
-    fields['Reference photos'] = urls
+  for (const photo of photos.slice(0, Math.max(0, MAX_PHOTOS - kept.length))) {
+    if (photo.size > MAX_PHOTO_BYTES || !photo.type.startsWith('image/'))
+      continue
+    const base64 = Buffer.from(await photo.arrayBuffer()).toString('base64')
+    const url = await uploadTaskImage(base64)
+    if (url) urls.push({ url })
   }
+  fields['Reference photos'] = urls
 
   await updateTask(id, fields)
   return NextResponse.json({ ok: true })

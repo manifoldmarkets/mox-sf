@@ -84,6 +84,9 @@ export const env = {
   // EAG Guest Code
   get EAG_GUEST_CODE() { return required('EAG_GUEST_CODE') },
 
+  // Task board — the Tasks/Claims tables live in their own base ("Mox ᴛᴀꜱᴋꜱ"),
+  // not the main Mox base. Same AIRTABLE_API_KEY.
+  get TASKS_AIRTABLE_BASE_ID() { return optional('TASKS_AIRTABLE_BASE_ID', 'appkShwDFk3Z3Yruc') },
   // Task board — public Google sign-in for claimers (scoped to /tasks only).
   get TASKS_GOOGLE_CLIENT_ID() { return optional('TASKS_GOOGLE_CLIENT_ID') },
   get TASKS_GOOGLE_CLIENT_SECRET() { return optional('TASKS_GOOGLE_CLIENT_SECRET') },

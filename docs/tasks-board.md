@@ -20,14 +20,26 @@ Google sign-in is scoped to `/tasks` **only** and never touches member auth:
 
 ## Data (`app/lib/tasks.ts`)
 
-Two tables in the Mox base, read/written through the shared `app/lib/airtable.ts`:
+Two tables in the **dedicated task-board base** (`TASKS_AIRTABLE_BASE_ID`, the
+"Mox ᴛᴀꜱᴋꜱ" base — _not_ the main Mox base), read/written through the shared
+`app/lib/airtable.ts` (which routes these tables to that base):
 
-- **Tasks** — one row per task; `Status = Open` shows publicly. Fields: Name,
+- **Tasks** — one row per task; `Status = Open` shows publicly. Fields: Title,
   Summary, Brief, Done criteria, Context links, Skills, Effort, Status, Floor,
-  Map point, Claimant name/email, Claimed/Nudged/Completed at, Completion note,
-  Proof photo, Reference photos, Discord message id.
-- **Task Claims** — append-only activity log (Claimed / Completed / Released /
-  Auto-released / Approved).
+  Map point, Task type (Volunteer/Contractor — drives the board tabs; empty
+  counts as Volunteer), Priority, Repeat, Created by name/email, Claimant
+  name/email, Claimed/Nudged/Completed at, Completion note, Proof photo,
+  Reference photos, Discord message ID.
+- **Claims** — append-only activity log (Claimed / Completed / Released /
+  Auto-released / Approved / Reopened). Fields: Event, Task, Name, Email,
+  Type, At, Note.
+
+## Volunteer / Contractor tabs
+
+The board has two tabs — **Volunteer tasks** (default, `/`) and **Contractor
+tasks** (`/?type=contractor`) — split by the Task type field. Tag links, card
+links back from the task page, and the add/edit form all carry the tab
+through; the form's "Who's it for?" picker sets the field.
 
 Attachments follow the repo convention: upload to ImgBB (`IMGBB_API_KEY`), store
 the URL (`uploadTaskImage`).
@@ -79,6 +91,7 @@ under `/tasks/*`.
 
 | Var                                                     | Purpose                                                                                                                      |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `TASKS_AIRTABLE_BASE_ID`                                | The dedicated task-board base (defaults to the "Mox ᴛᴀꜱᴋꜱ" base, `appkShwDFk3Z3Yruc`). Uses the same `AIRTABLE_API_KEY`      |
 | `TASKS_GOOGLE_CLIENT_ID` / `TASKS_GOOGLE_CLIENT_SECRET` | Google OAuth for claimers. Redirect URI: `https://moxsf.com/tasks/auth/google/callback` (and the tasks.moxsf.com equivalent) |
 | `TASKS_ORGANIZER_EMAILS`                                | Comma-separated fallback organizers (staff are auto-recognized)                                                              |
 | `TASKS_NUDGE_HOURS` / `TASKS_RELEASE_HOURS`             | Clock, default 8 / 24                                                                                                        |

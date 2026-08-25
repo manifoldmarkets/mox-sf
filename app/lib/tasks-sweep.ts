@@ -60,7 +60,7 @@ async function processReopens(tasks: Task[]): Promise<string[]> {
       'Nudged at': null,
       'Completed at': null,
       'Completion note': null,
-      'Discord message id': null,
+      'Discord message ID': null,
     })
     await logTaskEvent({
       taskId: task.id,

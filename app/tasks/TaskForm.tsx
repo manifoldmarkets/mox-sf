@@ -20,6 +20,8 @@ const FLOORS = ['1st floor', '2nd floor', '3rd floor', '4th floor', 'Rooftop']
 const EFFORTS = ['< 1h', '1–2h', '2–3h']
 const REPEATS = ['Weekly', 'Monthly']
 const PRIORITIES = ['Low', 'Medium', 'High']
+const TASK_TYPES = ['Volunteer', 'Contractor']
+const MAX_PHOTOS = 4
 const MAX_DIM = 1600
 
 const LABEL =
@@ -42,8 +44,9 @@ export interface TaskFormInitial {
   floor: string
   repeat: string
   priority: string
+  taskType: string
   mapPoint: { x: number; y: number } | null
-  refPhotoCount: number
+  refPhotos: { id: string; thumbUrl: string; filename: string }[]
 }
 
 async function compressImage(file: File): Promise<Blob> {
@@ -74,14 +77,18 @@ function TaskFormModal({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [skills, setSkills] = useState<string[]>(initial?.skills ?? [])
+  const [taskType, setTaskType] = useState(initial?.taskType || 'Volunteer')
   const [photoCount, setPhotoCount] = useState(0)
   const [floor, setFloor] = useState(initial?.floor ?? '')
   const [pin, setPin] = useState<{ x: number; y: number } | null>(
     initial?.mapPoint ?? null
   )
+  // Existing reference photos still attached; × removes one on save.
+  const [keptPhotos, setKeptPhotos] = useState(initial?.refPhotos ?? [])
   const photosRef = useRef<HTMLInputElement>(null)
 
   const story = storyForFloor(floor)
+  const maxNewPhotos = MAX_PHOTOS - keptPhotos.length
 
   function toggleSkill(s: string) {
     setSkills((prev) =>
@@ -97,8 +104,15 @@ function TaskFormModal({
       const form = new FormData(e.currentTarget)
       form.delete('photos')
       for (const s of skills) form.append('skills', s)
+      form.set('type', taskType)
       if (story && pin) form.set('mapPoint', `${pin.x},${pin.y}`)
-      const files = Array.from(photosRef.current?.files ?? []).slice(0, 4)
+      if (editing) {
+        for (const p of keptPhotos) form.append('keepPhotoIds', p.id)
+      }
+      const files = Array.from(photosRef.current?.files ?? []).slice(
+        0,
+        Math.max(0, maxNewPhotos)
+      )
       for (const file of files) {
         let blob: Blob = file
         try {
@@ -171,6 +185,27 @@ function TaskFormModal({
               className={FIELD}
             />
           </label>
+          <div className="flex flex-col gap-2">
+            <span className={LABEL}>Who&rsquo;s it for?</span>
+            <div className="flex gap-1.5">
+              {TASK_TYPES.map((t) => (
+                <button
+                  type="button"
+                  key={t}
+                  onClick={() => setTaskType(t)}
+                  className={`${CHIP_BASE} cursor-pointer ${
+                    taskType === t
+                      ? t === 'Contractor'
+                        ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300'
+                        : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                      : 'border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400'
+                  }`}
+                >
+                  {t === 'Volunteer' ? 'Volunteers' : 'Contractors'}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <label className={LABEL}>
               Floor
@@ -309,28 +344,57 @@ function TaskFormModal({
               className={FIELD}
             />
           </label>
-          <label
-            className={`flex cursor-pointer items-center gap-2 border border-dashed px-3 py-3 text-sm ${
-              photoCount
-                ? 'border-green-600 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30'
-                : 'border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400'
-            }`}
-          >
-            <input
-              ref={photosRef}
-              name="photos"
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              onChange={(e) => setPhotoCount(e.target.files?.length ?? 0)}
-            />
-            {photoCount
-              ? `📸 ${photoCount} photo${photoCount > 1 ? 's' : ''} to ${editing ? 'add' : 'attach'}`
-              : editing && initial.refPhotoCount > 0
-                ? `📷 ${initial.refPhotoCount} photo${initial.refPhotoCount > 1 ? 's' : ''} attached — add more (up to 4)`
-                : '📷 Add reference photos (optional, up to 4)'}
-          </label>
+          {keptPhotos.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <span className={LABEL}>Current photos</span>
+              <div className="flex flex-wrap gap-2">
+                {keptPhotos.map((p) => (
+                  <div key={p.id} className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={p.thumbUrl}
+                      alt={p.filename}
+                      className="h-16 w-16 border border-gray-200 dark:border-gray-600 object-cover"
+                    />
+                    <button
+                      type="button"
+                      aria-label={`Remove ${p.filename}`}
+                      onClick={() =>
+                        setKeptPhotos((prev) =>
+                          prev.filter((x) => x.id !== p.id)
+                        )
+                      }
+                      className="absolute -right-1.5 -top-1.5 h-5 w-5 bg-gray-900/80 text-xs leading-none text-white"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {maxNewPhotos > 0 && (
+            <label
+              className={`flex cursor-pointer items-center gap-2 border border-dashed px-3 py-3 text-sm ${
+                photoCount
+                  ? 'border-green-600 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30'
+                  : 'border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400'
+              }`}
+            >
+              <input
+                ref={photosRef}
+                name="photos"
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={(e) => setPhotoCount(e.target.files?.length ?? 0)}
+              />
+              {photoCount
+                ? `📸 ${photoCount} photo${photoCount > 1 ? 's' : ''} to ${editing ? 'add' : 'attach'}`
+                : `📷 Add reference photos (optional, up to ${maxNewPhotos})`}
+            </label>
+          )}
           {error && (
             <p className="bg-red-50 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-3 py-2 text-sm">
               {error}

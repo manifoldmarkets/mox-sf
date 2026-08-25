@@ -46,10 +46,16 @@ export default async function TaskDetail({
       )
     : null
 
+  // Board links go back to the tab this task lives under.
+  const typeQuery = task.taskType === 'Contractor' ? 'type=contractor' : ''
+  const boardHref = typeQuery ? `/tasks?${typeQuery}` : '/tasks'
+  const tagHref = (t: string) =>
+    `/tasks?${typeQuery ? `${typeQuery}&` : ''}tag=${encodeURIComponent(t)}`
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <Link
-        href="/tasks"
+        href={boardHref}
         className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
       >
         ← All tasks
@@ -62,7 +68,7 @@ export default async function TaskDetail({
               {task.skills.map((s) => (
                 <Link
                   key={s}
-                  href={`/tasks?tag=${encodeURIComponent(s)}`}
+                  href={tagHref(s)}
                   className={`${CHIP_BASE} ${SKILL_CHIP[s] ?? ''}`}
                 >
                   {s}
@@ -84,9 +90,16 @@ export default async function TaskDetail({
                 {task.effort}
               </span>
             )}
+            {task.taskType === 'Contractor' && (
+              <span
+                className={`${CHIP_BASE} bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300`}
+              >
+                Contractor task
+              </span>
+            )}
             {task.floor && (
               <Link
-                href={`/tasks?tag=${encodeURIComponent(task.floor)}`}
+                href={tagHref(task.floor)}
                 className={FLOOR_CHIP}
               >
                 📍 {task.floor}
@@ -130,8 +143,13 @@ export default async function TaskDetail({
                   floor: task.floor,
                   repeat: task.repeat,
                   priority: task.priority,
+                  taskType: task.taskType,
                   mapPoint: task.mapPoint,
-                  refPhotoCount: task.refPhotos.length,
+                  refPhotos: task.refPhotos.map((p) => ({
+                    id: p.id,
+                    thumbUrl: p.thumbUrl,
+                    filename: p.filename,
+                  })),
                 }}
               />
             )}

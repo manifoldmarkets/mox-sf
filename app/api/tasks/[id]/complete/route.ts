@@ -80,7 +80,7 @@ export async function POST(
     `🔎 **${claimer.name}** marked **${task.title}** as done${photoNote} — react with ✅ to approve & close it.${noteLine}\n<${airtableTaskUrl(id)}>`
   )
   if (result.messageId)
-    await updateTask(id, { 'Discord message id': result.messageId })
+    await updateTask(id, { 'Discord message ID': result.messageId })
 
   const noteHtml = note ? `<p>Their note: “${note}”</p>` : ''
   await notifyTaskCreator(
