@@ -83,3 +83,35 @@ export async function isOrganizer(): Promise<boolean> {
   if (!claimer) return false
   return organizerAllowlist().includes(claimer.email.toLowerCase())
 }
+
+export interface TaskActor {
+  email: string
+  name: string
+  isStaff: boolean
+}
+
+/**
+ * Whoever is acting on the task board right now: a staff member (email-based
+ * member session) takes precedence, else the Google claimer. Used to record
+ * task creators and to check edit permission.
+ */
+export async function getTaskActor(): Promise<TaskActor | null> {
+  const staff = await requireStaff()
+  if (staff) {
+    return {
+      email: staff.email,
+      name: staff.name || staff.email,
+      isStaff: true,
+    }
+  }
+  const claimer = await getClaimer()
+  return claimer ? { ...claimer, isStaff: false } : null
+}
+
+/** Organizers can manage any task; creators can manage their own. */
+export async function canManageTask(createdByEmail: string): Promise<boolean> {
+  if (await isOrganizer()) return true
+  if (!createdByEmail) return false
+  const actor = await getTaskActor()
+  return !!actor && actor.email.toLowerCase() === createdByEmail.toLowerCase()
+}

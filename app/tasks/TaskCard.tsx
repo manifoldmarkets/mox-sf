@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Task } from '@/app/lib/tasks'
-import { CHIP_BASE, FLOOR_CHIP, SKILL_CHIP } from './ui'
+import { CHIP_BASE, FLOOR_CHIP, PriorityDot, SKILL_CHIP } from './ui'
 
 export default function TaskCard({
   task,
@@ -28,25 +28,34 @@ export default function TaskCard({
       />
 
       <div className="flex items-center justify-between gap-2">
-        {task.effort && (
-          <span className="text-xs font-semibold text-green-700 dark:text-green-400">
-            {task.effort}
-          </span>
-        )}
-        {task.status === 'Claimed' && (
-          <span
-            className={`${CHIP_BASE} bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300`}
-          >
-            In progress
-          </span>
-        )}
-        {task.status === 'In review' && (
-          <span
-            className={`${CHIP_BASE} bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300`}
-          >
-            Wrapping up
-          </span>
-        )}
+        <span className="text-xs font-semibold text-green-700 dark:text-green-400">
+          {task.effort}
+          {task.repeat && (
+            <span
+              className="ml-1.5 text-cyan-700 dark:text-cyan-400"
+              title={`Repeats ${task.repeat.toLowerCase()}`}
+            >
+              🔁
+            </span>
+          )}
+        </span>
+        <span className="flex items-center gap-2">
+          {task.status === 'Claimed' && (
+            <span
+              className={`${CHIP_BASE} bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300`}
+            >
+              In progress
+            </span>
+          )}
+          {task.status === 'In review' && (
+            <span
+              className={`${CHIP_BASE} bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300`}
+            >
+              Wrapping up
+            </span>
+          )}
+          <PriorityDot priority={task.priority} />
+        </span>
       </div>
 
       <h3 className="font-display text-xl font-bold leading-tight text-gray-900 dark:text-white">

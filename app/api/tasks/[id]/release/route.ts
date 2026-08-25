@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getClaimer } from '@/app/lib/tasks-auth'
+import { notifyTaskCreator, taskUrl } from '@/app/lib/tasks-notify'
 import { getTask, logTaskEvent, updateTask } from '@/app/lib/tasks'
 
 export async function POST(
@@ -35,6 +36,13 @@ export async function POST(
     email: claimer.email,
     type: 'Released',
   })
+  await notifyTaskCreator(
+    task,
+    claimer.email,
+    `“${task.title}” is back on the board`,
+    `<p><strong>${claimer.name}</strong> released <a href="${taskUrl(task)}" style="color:#78350f">${task.title}</a> — it's open again for someone else to claim.</p>`,
+    `${claimer.name} released "${task.title}" — it's open again. ${taskUrl(task)}`
+  )
 
   return NextResponse.json({ ok: true })
 }

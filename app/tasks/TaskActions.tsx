@@ -141,15 +141,13 @@ export function DonePanel({ taskId }: { taskId: string }) {
           className="hidden"
           onChange={(e) => setFileName(e.target.files?.[0]?.name || '')}
         />
-        {fileName
-          ? `📸 ${fileName}`
-          : '📷 Add a photo — closes the task instantly'}
+        {fileName ? `📸 ${fileName}` : '📷 Add a proof photo (optional)'}
       </label>
       <button className={PRIMARY} onClick={markDone} disabled={busy}>
         {busy ? 'Saving…' : 'Mark as done'}
       </button>
       <p className="text-[13px] text-gray-500 dark:text-gray-400">
-        Without a photo, the Mox team gives it a quick look before closing.
+        The Mox team gives every completion a quick look before closing it.
       </p>
       {error && <p className={ERROR}>{error}</p>}
       <hr className="border-gray-200 dark:border-gray-700" />

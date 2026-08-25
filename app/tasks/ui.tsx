@@ -70,3 +70,27 @@ export function Prose({
     </div>
   )
 }
+
+// Priority cue: a glowing dot — blue (Low), yellow (Medium), red (High).
+// Unset priority renders as Medium. High pulses.
+export const PRIORITY_DOT: Record<string, string> = {
+  Low: 'bg-blue-500 shadow-[0_0_8px_2px_rgba(59,130,246,0.55)]',
+  Medium: 'bg-yellow-400 shadow-[0_0_8px_2px_rgba(234,179,8,0.55)]',
+  High: 'bg-red-500 shadow-[0_0_9px_3px_rgba(239,68,68,0.6)] animate-pulse',
+}
+
+export function PriorityDot({
+  priority,
+  className = '',
+}: {
+  priority: string
+  className?: string
+}) {
+  const level = PRIORITY_DOT[priority] ? priority : 'Medium'
+  return (
+    <span
+      title={`${level} priority`}
+      className={`inline-block h-2.5 w-2.5 shrink-0 rounded-full ${PRIORITY_DOT[level]} ${className}`}
+    />
+  )
+}
