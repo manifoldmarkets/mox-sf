@@ -11,16 +11,6 @@ import TaskCard from './TaskCard'
 
 export const dynamic = 'force-dynamic'
 
-const TAB_BASE =
-  'inline-flex items-center gap-2 border-b-2 px-1 pb-2.5 font-sans text-sm font-semibold transition-colors'
-const TAB_ACTIVE =
-  'border-amber-900 dark:border-amber-400 text-gray-900 dark:text-white'
-const TAB_IDLE =
-  'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
-
-const SECTION_TITLE =
-  'font-sans text-sm font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-4'
-
 const ERROR_MESSAGES: Record<string, string> = {
   google_not_configured: 'Google sign-in isn’t configured yet.',
   google_denied: 'Sign-in was cancelled.',
@@ -94,85 +84,68 @@ export default async function TasksBoard({
     .slice(0, 8)
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div className="container">
       {error && ERROR_MESSAGES[error] && (
-        <p className="mb-6 bg-red-50 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-4 py-3 text-sm">
+        <p className="error" style={{ marginTop: 24 }}>
           {ERROR_MESSAGES[error]}
         </p>
       )}
 
-      <section className="mb-10">
-        <h1 className="font-display text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-          Help make Mox better.
-        </h1>
-        <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+      <section className="hero">
+        <h1>Help make Mox better.</h1>
+        <p>
           Small, well-scoped tasks — most take an hour or two. Claim one, do it
           today, and it&rsquo;s yours.{' '}
           {!unavailable && (
-            <span className="font-semibold text-amber-900 dark:text-amber-400">
-              {open.length} open right now.
-            </span>
+            <span className="open-count">{open.length} open right now.</span>
           )}
         </p>
       </section>
 
-      <div className="mb-8 flex gap-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="tabs">
         <Link
           href="/tasks"
-          className={`${TAB_BASE} ${activeType === 'Volunteer' ? TAB_ACTIVE : TAB_IDLE}`}
+          className={`tab${activeType === 'Volunteer' ? ' tab-active' : ''}`}
         >
           Volunteer tasks
           {!unavailable && (
-            <span className="font-normal text-gray-400 dark:text-gray-500">
-              {openCount('Volunteer')}
-            </span>
+            <span className="tab-count">{openCount('Volunteer')}</span>
           )}
         </Link>
         <Link
           href="/tasks?type=contractor"
-          className={`${TAB_BASE} ${activeType === 'Contractor' ? TAB_ACTIVE : TAB_IDLE}`}
+          className={`tab${activeType === 'Contractor' ? ' tab-active' : ''}`}
         >
           Contractor tasks
           {!unavailable && (
-            <span className="font-normal text-gray-400 dark:text-gray-500">
-              {openCount('Contractor')}
-            </span>
+            <span className="tab-count">{openCount('Contractor')}</span>
           )}
         </Link>
       </div>
 
-      <section className="mb-12">
-        <h2 className={SECTION_TITLE}>Open tasks</h2>
+      <section className="section">
+        <h2 className="section-title">Open tasks</h2>
         {tag && (
-          <p className="-mt-2 mb-4 font-sans text-sm text-gray-500 dark:text-gray-400">
-            Showing{' '}
-            <span className="font-bold text-amber-900 dark:text-amber-400">
-              {tag}
-            </span>{' '}
-            tasks first ·{' '}
-            <Link
-              href={typeParam ? `/tasks?type=${typeParam}` : '/tasks'}
-              className="underline underline-offset-2"
-            >
+          <p className="filter-note">
+            Showing <span className="filter-tag">{tag}</span> tasks first ·{' '}
+            <Link href={typeParam ? `/tasks?type=${typeParam}` : '/tasks'}>
               clear
             </Link>
           </p>
         )}
         {unavailable ? (
-          <div className="border border-dashed border-gray-300 dark:border-gray-600 p-12 text-center text-gray-500 dark:text-gray-400">
+          <div className="empty-state">
             The board is warming up — check back in a little while.
           </div>
         ) : open.length > 0 ? (
-          <div className="flex flex-col gap-8">
+          <div className="floor-groups">
             {floorGroups.map((g) => (
               <div key={g.label}>
-                <h3 className="mb-3 font-sans text-[13px] font-bold text-gray-500 dark:text-gray-400">
+                <h3 className="floor-group-title">
                   {g.floor ? `📍 ${g.label}` : g.label}{' '}
-                  <span className="font-normal text-gray-400 dark:text-gray-500">
-                    · {g.tasks.length}
-                  </span>
+                  <span className="count">· {g.tasks.length}</span>
                 </h3>
-                <div className="grid gap-4 items-start sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid">
                   {g.tasks.map((t) => (
                     <TaskCard
                       key={t.id}
@@ -186,7 +159,7 @@ export default async function TasksBoard({
             ))}
           </div>
         ) : (
-          <div className="border border-dashed border-gray-300 dark:border-gray-600 p-12 text-center text-gray-500 dark:text-gray-400">
+          <div className="empty-state">
             Nothing open right now — everything&rsquo;s claimed or done. Check
             back soon!
           </div>
@@ -194,9 +167,9 @@ export default async function TasksBoard({
       </section>
 
       {inProgress.length > 0 && (
-        <section className="mb-12">
-          <h2 className={SECTION_TITLE}>In progress</h2>
-          <div className="grid gap-4 items-start sm:grid-cols-2 xl:grid-cols-3">
+        <section className="section">
+          <h2 className="section-title">In progress</h2>
+          <div className="grid">
             {inProgress.map((t) => (
               <TaskCard
                 key={t.id}
@@ -210,20 +183,15 @@ export default async function TasksBoard({
       )}
 
       {recentlyDone.length > 0 && (
-        <section className="mb-12">
-          <h2 className={SECTION_TITLE}>Recently completed 🎉</h2>
-          <div className="flex flex-col gap-2">
+        <section className="section">
+          <h2 className="section-title">Recently completed 🎉</h2>
+          <div className="done-list">
             {recentlyDone.map((t) => (
-              <div
-                key={t.id}
-                className="grid grid-cols-[110px_1fr] gap-3 text-sm items-baseline"
-              >
-                <span className="font-semibold text-gray-900 dark:text-gray-100">
+              <div key={t.id} className="done-item">
+                <span className="who">
                   {t.claimantName.split(' ')[0] || 'Someone'}
                 </span>
-                <span className="text-gray-600 dark:text-gray-400">
-                  {t.title}
-                </span>
+                <span>{t.title}</span>
               </div>
             ))}
           </div>

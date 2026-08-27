@@ -33,6 +33,20 @@ Two tables in the **dedicated task-board base** (`TASKS_AIRTABLE_BASE_ID`, the
 - **Claims** — append-only activity log (Claimed / Completed / Released /
   Auto-released / Approved / Reopened). Fields: Event, Task, Name, Email,
   Type, At, Note.
+- **Task Comments** — conversation threads on task pages. Fields: Name,
+  Task, Author name, Author email, Comment, At, Task rec id (plain record
+  id of the linked task, used to filter a task's thread by formula).
+
+## Design
+
+The board's visual identity lives in `app/tasks/tasks.css` — a hand-crafted
+stylesheet (recovered from the original July 2026 standalone mox-tasks app):
+neutral gray surfaces, Playfair Display headings, Fira Sans UI, rounded cards
+with soft shadows, and amber reserved for links/accents (gold in dark mode).
+Every selector is scoped under the `.tasksui` wrapper (applied in
+`app/tasks/layout.tsx` and re-applied on the portal-rendered modal) so nothing
+leaks into the rest of moxsf.com. The header wordmark is
+`/images/mox_logo_text.svg` + small-caps ᴛᴀꜱᴋꜱ, inverted in dark mode.
 
 ## Volunteer / Contractor tabs
 
@@ -72,6 +86,14 @@ within each group sorts by urgency. Each card shows a glowing priority dot on
 the right: blue = Low, yellow = Medium, red = High (pulses). Unset priority
 counts as Medium. Set it in the task form or the `Priority` field in Airtable.
 
+## Comments
+
+Every task page has a Conversation section. Any signed-in visitor (Google
+claimer or staff member) can comment (POST `/api/tasks/[id]/comments`, max
+2000 chars). Each comment posts to the tasks Discord channel and emails
+everyone already in the thread — the creator, the claimant, and earlier
+commenters — minus the poster.
+
 ## Discord + email + crons
 
 - Completions post to `DISCORD_CHANNELS.TASKS` via `sendChannelMessage`. **The
@@ -91,7 +113,8 @@ under `/tasks/*`.
 
 | Var                                                     | Purpose                                                                                                                      |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `TASKS_AIRTABLE_BASE_ID`                                | The dedicated task-board base (defaults to the "Mox ᴛᴀꜱᴋꜱ" base, `appkShwDFk3Z3Yruc`). Uses the same `AIRTABLE_API_KEY`      |
+| `TASKS_AIRTABLE_BASE_ID`                                | The dedicated task-board base (defaults to the "Mox ᴛᴀꜱᴋꜱ" base, `appkShwDFk3Z3Yruc`)                                        |
+| `TASKS_AIRTABLE_API_KEY`                                | Optional dedicated token for that base, when the main `AIRTABLE_API_KEY` has no access to it (falls back to the main key)    |
 | `TASKS_GOOGLE_CLIENT_ID` / `TASKS_GOOGLE_CLIENT_SECRET` | Google OAuth for claimers. Redirect URI: `https://moxsf.com/tasks/auth/google/callback` (and the tasks.moxsf.com equivalent) |
 | `TASKS_ORGANIZER_EMAILS`                                | Comma-separated fallback organizers (staff are auto-recognized)                                                              |
 | `TASKS_NUDGE_HOURS` / `TASKS_RELEASE_HOURS`             | Clock, default 8 / 24                                                                                                        |

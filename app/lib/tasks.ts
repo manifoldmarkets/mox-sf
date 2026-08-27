@@ -331,6 +331,67 @@ export async function listRecentTaskEvents(
   return events
 }
 
+// --- comments ---------------------------------------------------------------
+
+// Task Comments table: conversation threads on task pages (claimers asking
+// questions, creators clarifying). 'Task rec id' stores the plain record id of
+// the linked task so the thread can be filtered by formula (linked fields
+// render as names in formulas).
+interface TaskCommentFields {
+  Name?: string
+  Task?: string[]
+  'Author name'?: string
+  'Author email'?: string
+  Comment?: string
+  At?: string
+  'Task rec id'?: string
+}
+
+export interface TaskComment {
+  id: string
+  authorName: string
+  authorEmail: string
+  text: string
+  at: string
+}
+
+export async function listTaskComments(taskId: string): Promise<TaskComment[]> {
+  const records = await getRecords<TaskCommentFields>(Tables.TaskComments, {
+    filterByFormula: `{Task rec id} = '${taskId}'`,
+    sort: [{ field: 'At', direction: 'asc' }],
+    maxRecords: 200,
+  })
+  return records.map((rec) => ({
+    id: rec.id,
+    authorName: rec.fields['Author name'] ?? '',
+    authorEmail: rec.fields['Author email'] ?? '',
+    text: rec.fields.Comment ?? '',
+    at: rec.fields.At ?? '',
+  }))
+}
+
+export async function addTaskComment(opts: {
+  taskId: string
+  taskTitle: string
+  authorName: string
+  authorEmail: string
+  text: string
+}): Promise<void> {
+  await createRecord<TaskCommentFields>(
+    Tables.TaskComments,
+    {
+      Name: `${opts.authorName.split(' ')[0] || opts.authorEmail} on: ${opts.taskTitle}`,
+      Task: [opts.taskId],
+      'Author name': opts.authorName,
+      'Author email': opts.authorEmail,
+      Comment: opts.text,
+      At: new Date().toISOString(),
+      'Task rec id': opts.taskId,
+    },
+    { typecast: true }
+  )
+}
+
 // --- attachments ------------------------------------------------------------
 
 /**

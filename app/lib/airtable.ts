@@ -23,6 +23,7 @@ export const Tables = {
   // their own base (env.TASKS_AIRTABLE_BASE_ID), not the main Mox base.
   Tasks: 'Tasks',
   TaskClaims: 'Claims',
+  TaskComments: 'Task Comments',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]
@@ -31,6 +32,7 @@ export type TableName = (typeof Tables)[keyof typeof Tables]
 const TASKS_BASE_TABLES: readonly TableName[] = [
   Tables.Tasks,
   Tables.TaskClaims,
+  Tables.TaskComments,
 ]
 
 function baseIdFor(table: TableName): string {
@@ -61,10 +63,14 @@ export interface QueryOptions {
   revalidate?: number
 }
 
-// Common headers for all requests
-function getHeaders(): HeadersInit {
+// Common headers for all requests. The task-board tables can use their own
+// token (TASKS_AIRTABLE_API_KEY) when the main key has no access to that base.
+function getHeaders(table: TableName): HeadersInit {
+  const key = TASKS_BASE_TABLES.includes(table)
+    ? env.TASKS_AIRTABLE_API_KEY || env.AIRTABLE_API_KEY
+    : env.AIRTABLE_API_KEY
   return {
-    Authorization: `Bearer ${env.AIRTABLE_API_KEY}`,
+    Authorization: `Bearer ${key}`,
     'Content-Type': 'application/json',
   }
 }
@@ -124,7 +130,7 @@ export async function getRecords<T = Record<string, unknown>>(
     const url = buildListUrl(table, options, offset)
 
     const res = await fetch(url, {
-      headers: getHeaders(),
+      headers: getHeaders(table),
       ...(options.revalidate
         ? { next: { revalidate: options.revalidate } }
         : { cache: 'no-store' as const }),
@@ -173,7 +179,7 @@ export async function getRecord<T = Record<string, unknown>>(
     const url = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}/${recordId}`
 
     const res = await fetch(url, {
-      headers: getHeaders(),
+      headers: getHeaders(table),
       cache: 'no-store',
       signal: AbortSignal.timeout(5000),
     })
@@ -219,7 +225,7 @@ export async function updateRecord<T = Record<string, unknown>>(
 
   const res = await fetch(url, {
     method: 'PATCH',
-    headers: getHeaders(),
+    headers: getHeaders(table),
     body: JSON.stringify({
       fields,
       ...(options.typecast ? { typecast: true } : {}),
@@ -256,7 +262,7 @@ export async function createRecord<T = Record<string, unknown>>(
 
   const res = await fetch(url, {
     method: 'POST',
-    headers: getHeaders(),
+    headers: getHeaders(table),
     body: JSON.stringify({
       fields,
       ...(options.typecast ? { typecast: true } : {}),
@@ -297,7 +303,7 @@ export async function createRecords<T = Record<string, unknown>>(
     const batch = records.slice(i, i + 10)
     const res = await fetch(url, {
       method: 'POST',
-      headers: getHeaders(),
+      headers: getHeaders(table),
       body: JSON.stringify({
         records: batch.map((fields) => ({ fields })),
         ...(options.typecast ? { typecast: true } : {}),
@@ -372,7 +378,7 @@ export async function deleteRecord(
 
   const res = await fetch(url, {
     method: 'DELETE',
-    headers: getHeaders(),
+    headers: getHeaders(table),
   })
 
   if (!res.ok) {

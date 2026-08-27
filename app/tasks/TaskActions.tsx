@@ -3,10 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
-const PRIMARY =
-  'inline-flex w-full items-center justify-center gap-2 bg-amber-900 hover:bg-amber-950 dark:bg-amber-700 dark:hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 disabled:opacity-50 disabled:cursor-default transition-colors'
-const ERROR =
-  'text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/40 px-3 py-2'
+const PRIMARY = 'btn btn-primary btn-block'
+const ERROR = 'error'
 
 async function readError(res: Response): Promise<string> {
   try {
@@ -35,12 +33,12 @@ export function ClaimButton({ taskId }: { taskId: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <>
       <button className={PRIMARY} onClick={claim} disabled={busy}>
         {busy ? 'Claiming…' : 'Claim this task'}
       </button>
       {error && <p className={ERROR}>{error}</p>}
-    </div>
+    </>
   )
 }
 
@@ -120,25 +118,17 @@ export function DonePanel({ taskId }: { taskId: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <>
       <textarea
         ref={noteRef}
         rows={3}
         placeholder="Anything to note? (optional)"
-        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
       />
-      <label
-        className={`flex cursor-pointer items-center gap-2 border border-dashed px-3 py-3 text-sm ${
-          fileName
-            ? 'border-green-600 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30'
-            : 'border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400'
-        }`}
-      >
+      <label className={`file-label${fileName ? ' has-file' : ''}`}>
         <input
           ref={fileRef}
           type="file"
           accept="image/*"
-          className="hidden"
           onChange={(e) => setFileName(e.target.files?.[0]?.name || '')}
         />
         {fileName ? `📸 ${fileName}` : '📷 Add a proof photo (optional)'}
@@ -146,18 +136,14 @@ export function DonePanel({ taskId }: { taskId: string }) {
       <button className={PRIMARY} onClick={markDone} disabled={busy}>
         {busy ? 'Saving…' : 'Mark as done'}
       </button>
-      <p className="text-[13px] text-gray-500 dark:text-gray-400">
+      <p className="hint">
         The Mox team gives every completion a quick look before closing it.
       </p>
       {error && <p className={ERROR}>{error}</p>}
-      <hr className="border-gray-200 dark:border-gray-700" />
-      <button
-        onClick={release}
-        disabled={busy}
-        className="text-[13px] text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 underline underline-offset-2"
-      >
+      <hr className="divider" />
+      <button onClick={release} disabled={busy} className="btn-quiet">
         Can&rsquo;t get to it today? Release the task
       </button>
-    </div>
+    </>
   )
 }

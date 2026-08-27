@@ -2,27 +2,19 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
   getTask,
+  listTaskComments,
   priorityOf,
   RELEASE_HOURS,
   storyForFloor,
 } from '@/app/lib/tasks'
-import { canManageTask, getClaimer } from '@/app/lib/tasks-auth'
+import { canManageTask, getClaimer, getTaskActor } from '@/app/lib/tasks-auth'
+import CommentForm from '../CommentForm'
 import FloorMap from '../FloorMap'
 import { ClaimButton, DonePanel } from '../TaskActions'
 import { ManageTaskButtons } from '../TaskForm'
-import {
-  CHIP_BASE,
-  FLOOR_CHIP,
-  PriorityDot,
-  Prose,
-  SKILL_CHIP,
-  STATUS_BADGE,
-} from '../ui'
+import { PriorityDot, Prose, STATUS_BADGE, STATUS_LABEL } from '../ui'
 
 export const dynamic = 'force-dynamic'
-
-const SECTION_H =
-  'font-sans text-sm font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2.5'
 
 export default async function TaskDetail({
   params,
@@ -30,10 +22,17 @@ export default async function TaskDetail({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const [task, claimer] = await Promise.all([getTask(id), getClaimer()])
+  const [task, claimer, actor] = await Promise.all([
+    getTask(id),
+    getClaimer(),
+    getTaskActor(),
+  ])
   if (!task || task.status === 'Archived') notFound()
+  const [canManage, comments] = await Promise.all([
+    canManageTask(task.createdByEmail),
+    listTaskComments(id).catch(() => []),
+  ])
 
-  const canManage = await canManageTask(task.createdByEmail)
   const isMine = !!claimer && task.claimantEmail === claimer.email
   const firstName = task.claimantName.split(' ')[0]
   const story = storyForFloor(task.floor)
@@ -53,77 +52,44 @@ export default async function TaskDetail({
     `/tasks?${typeQuery ? `${typeQuery}&` : ''}tag=${encodeURIComponent(t)}`
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        href={boardHref}
-        className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
-      >
+    <div className="container">
+      <Link href={boardHref} className="back-link">
         ← All tasks
       </Link>
-
-      <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] items-start">
-        <article>
+      <div className="task-page">
+        <article className="task-detail">
           {task.skills.length > 0 && (
-            <div className="mb-3 flex flex-wrap gap-1.5">
+            <div className="chips">
               {task.skills.map((s) => (
-                <Link
-                  key={s}
-                  href={tagHref(s)}
-                  className={`${CHIP_BASE} ${SKILL_CHIP[s] ?? ''}`}
-                >
+                <Link key={s} href={tagHref(s)} className="chip" data-skill={s}>
                   {s}
                 </Link>
               ))}
             </div>
           )}
-          <h1 className="font-display text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-            {task.title}
-          </h1>
-          {task.summary && (
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-5">
-              {task.summary}
-            </p>
-          )}
-          <div className="mb-8 flex flex-wrap items-center gap-2">
-            {task.effort && (
-              <span className="text-xs font-semibold text-green-700 dark:text-green-400">
-                {task.effort}
-              </span>
-            )}
+          <h1>{task.title}</h1>
+          {task.summary && <p className="lede">{task.summary}</p>}
+          <div className="meta-row">
+            {task.effort && <span className="effort">{task.effort}</span>}
             {task.taskType === 'Contractor' && (
-              <span
-                className={`${CHIP_BASE} bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300`}
-              >
-                Contractor task
-              </span>
+              <span className="chip chip-contractor">Contractor task</span>
             )}
             {task.floor && (
-              <Link
-                href={tagHref(task.floor)}
-                className={FLOOR_CHIP}
-              >
+              <Link href={tagHref(task.floor)} className="chip chip-floor">
                 📍 {task.floor}
               </Link>
             )}
             {STATUS_BADGE[task.status] && (
-              <span className={`${CHIP_BASE} ${STATUS_BADGE[task.status]}`}>
-                {task.status === 'Claimed'
-                  ? 'In progress'
-                  : task.status === 'In review'
-                    ? 'Wrapping up'
-                    : task.status}
+              <span className={`badge ${STATUS_BADGE[task.status]}`}>
+                {STATUS_LABEL[task.status] ?? task.status}
               </span>
             )}
-            <span className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="prio-label">
               <PriorityDot priority={task.priority} />
               {priorityOf(task)} priority
             </span>
             {task.repeat && (
-              <span
-                className={`${CHIP_BASE} bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300`}
-              >
-                🔁 {task.repeat}
-              </span>
+              <span className="chip">🔁 {task.repeat}</span>
             )}
             {canManage && (
               <ManageTaskButtons
@@ -156,38 +122,32 @@ export default async function TaskDetail({
           </div>
 
           {task.brief && (
-            <section className="mb-7">
-              <h2 className={SECTION_H}>The task</h2>
-              <Prose
-                text={task.brief}
-                className="text-gray-700 dark:text-gray-300"
-              />
+            <section className="detail-section">
+              <h2>The task</h2>
+              <Prose text={task.brief} />
             </section>
           )}
 
           {task.mapPoint && story && (
-            <section className="mb-7">
-              <h2 className={SECTION_H}>Where to find it</h2>
+            <section className="detail-section">
+              <h2>Where to find it</h2>
               <FloorMap story={story} pin={task.mapPoint} height={280} />
             </section>
           )}
 
           {task.doneCriteria && (
-            <section className="mb-7">
-              <h2 className={SECTION_H}>What done looks like</h2>
-              <div className="bg-green-50 dark:bg-green-900/20 p-4">
-                <Prose
-                  text={task.doneCriteria}
-                  className="text-green-900 dark:text-green-200"
-                />
+            <section className="detail-section">
+              <h2>What done looks like</h2>
+              <div className="done-criteria">
+                <Prose text={task.doneCriteria} />
               </div>
             </section>
           )}
 
           {task.refPhotos.length > 0 && (
-            <section className="mb-7">
-              <h2 className={SECTION_H}>Photos</h2>
-              <div className="grid gap-2.5 grid-cols-2 sm:grid-cols-3">
+            <section className="detail-section">
+              <h2>Photos</h2>
+              <div className="photo-grid">
                 {task.refPhotos.map((p) => (
                   <a
                     key={p.url}
@@ -196,12 +156,7 @@ export default async function TaskDetail({
                     rel="noopener noreferrer"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={p.thumbUrl}
-                      alt={p.filename}
-                      loading="lazy"
-                      className="h-36 w-full border border-gray-200 dark:border-gray-600 object-cover"
-                    />
+                    <img src={p.thumbUrl} alt={p.filename} loading="lazy" />
                   </a>
                 ))}
               </div>
@@ -209,17 +164,12 @@ export default async function TaskDetail({
           )}
 
           {task.contextLinks.length > 0 && (
-            <section className="mb-7">
-              <h2 className={SECTION_H}>Useful links</h2>
-              <ul className="flex flex-col gap-1.5">
+            <section className="detail-section">
+              <h2>Useful links</h2>
+              <ul className="link-list">
                 {task.contextLinks.map((l) => (
                   <li key={l.url}>
-                    <a
-                      href={l.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium text-amber-900 dark:text-amber-400 underline decoration-dotted underline-offset-2"
-                    >
+                    <a href={l.url} target="_blank" rel="noopener noreferrer">
                       {l.label} ↗
                     </a>
                   </li>
@@ -227,16 +177,54 @@ export default async function TaskDetail({
               </ul>
             </section>
           )}
+
+          <section className="detail-section">
+            <h2>Conversation</h2>
+            {comments.length > 0 ? (
+              <div className="comments-list">
+                {comments.map((c) => (
+                  <div key={c.id} className="comment">
+                    <div className="comment-head">
+                      <span className="comment-author">
+                        {c.authorName || c.authorEmail}
+                      </span>
+                      {c.at && (
+                        <span className="comment-when">
+                          {new Date(c.at).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </span>
+                      )}
+                    </div>
+                    <Prose text={c.text} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="comments-empty">
+                No comments yet — questions and context welcome.
+              </p>
+            )}
+            {actor ? (
+              <CommentForm taskId={task.id} />
+            ) : (
+              <p className="comments-empty">
+                <Link href={`/tasks/auth/google?redirect=/tasks/${task.id}`}>
+                  Sign in
+                </Link>{' '}
+                to join the conversation.
+              </p>
+            )}
+          </section>
         </article>
 
-        <aside className="lg:sticky lg:top-24 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 p-6 flex flex-col gap-3.5">
+        <aside className="card action-card">
           {task.status === 'Open' &&
             (claimer ? (
               <>
-                <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                  Take it on
-                </h2>
-                <p className="text-[13px] text-gray-500 dark:text-gray-400">
+                <h2>Take it on</h2>
+                <p className="hint">
                   Claiming means &ldquo;I&rsquo;m doing this today.&rdquo; It
                   goes back on the board after {RELEASE_HOURS}h if it
                   isn&rsquo;t finished — no hard feelings.
@@ -245,16 +233,14 @@ export default async function TaskDetail({
               </>
             ) : (
               <>
-                <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                  Take it on
-                </h2>
-                <p className="text-[13px] text-gray-500 dark:text-gray-400">
+                <h2>Take it on</h2>
+                <p className="hint">
                   Sign in with Google to claim this task. Claiming means
                   &ldquo;I&rsquo;m doing this today.&rdquo;
                 </p>
                 <Link
                   href={`/tasks/auth/google?redirect=/tasks/${task.id}`}
-                  className="inline-flex w-full items-center justify-center gap-2 bg-amber-900 hover:bg-amber-950 dark:bg-amber-700 dark:hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 transition-colors"
+                  className="btn btn-primary btn-block"
                 >
                   Sign in with Google
                 </Link>
@@ -263,13 +249,11 @@ export default async function TaskDetail({
 
           {task.status === 'Claimed' && isMine && (
             <>
-              <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                You&rsquo;re on it 💪
-              </h2>
+              <h2>You&rsquo;re on it 💪</h2>
               {hoursLeft !== null && (
-                <p className="text-[13px] text-gray-500 dark:text-gray-400">
+                <p className="hint">
                   Auto-releases in about {hoursLeft}h. Finish and mark it done —
-                  add a proof photo if you can.
+                  the Mox team gives it a quick look and closes it out.
                 </p>
               )}
               <DonePanel taskId={task.id} />
@@ -278,10 +262,8 @@ export default async function TaskDetail({
 
           {task.status === 'Claimed' && !isMine && (
             <>
-              <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                {firstName || 'Someone'} is on it
-              </h2>
-              <p className="text-[13px] text-gray-500 dark:text-gray-400">
+              <h2>{firstName || 'Someone'} is on it</h2>
+              <p className="hint">
                 If it isn&rsquo;t finished within {RELEASE_HOURS} hours it goes
                 back on the board automatically — check back later.
               </p>
@@ -290,10 +272,8 @@ export default async function TaskDetail({
 
           {task.status === 'In review' && (
             <>
-              <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                Almost done ✨
-              </h2>
-              <p className="text-[13px] text-gray-500 dark:text-gray-400">
+              <h2>Almost done ✨</h2>
+              <p className="hint">
                 {isMine
                   ? 'Nice work! The Mox team will give it a quick look and close it out.'
                   : `${firstName || 'Someone'} finished this — the Mox team is giving it a quick look.`}
@@ -303,12 +283,10 @@ export default async function TaskDetail({
 
           {task.status === 'Done' && (
             <>
-              <h2 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                Completed 🎉
-              </h2>
-              <p className="text-[13px] text-gray-500 dark:text-gray-400">
-                {firstName ? `Done by ${firstName}. ` : ''}Thanks for making Mox
-                better.
+              <h2>Completed 🎉</h2>
+              <p className="hint">
+                {firstName ? `Done by ${firstName}. ` : ''}Thanks for making
+                Mox better.
               </p>
             </>
           )}

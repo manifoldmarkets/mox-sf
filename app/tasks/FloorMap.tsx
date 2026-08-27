@@ -113,12 +113,12 @@ export default function FloorMap({
         : null
 
   return (
-    <div className="border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-2.5">
+    <div className="floormap">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${fp.w} ${fp.h}`}
         style={{ height, cursor: interactive ? 'crosshair' : 'default' }}
-        className="block h-auto w-full"
+        className="fm-svg"
         onClick={
           interactive
             ? (e) => {
@@ -130,7 +130,7 @@ export default function FloorMap({
       >
         <path
           d={nonroomD}
-          className="fill-gray-200/60 dark:fill-gray-700/50"
+          className="fm-nonroom"
           fillRule="evenodd"
         />
         {roomPaths.map((r) => (
@@ -140,9 +140,7 @@ export default function FloorMap({
             fillRule="evenodd"
             strokeWidth={pinRoom?.gid === r.gid ? 3 : 2}
             className={
-              pinRoom?.gid === r.gid
-                ? 'fill-brand/25 stroke-brand'
-                : 'fill-brand/5 stroke-gray-400 dark:stroke-gray-500 hover:fill-brand/15'
+              pinRoom?.gid === r.gid ? 'fm-room fm-room-active' : 'fm-room'
             }
             onMouseEnter={interactive ? () => setHoverRoom(r.gid) : undefined}
             onMouseLeave={interactive ? () => setHoverRoom(null) : undefined}
@@ -153,10 +151,10 @@ export default function FloorMap({
             const { sx, sy } = tf(pin)
             return (
               <g transform={`translate(${sx} ${sy})`}>
-                <circle r={pinR * 2.2} className="fill-brand/20" />
+                <circle r={pinR * 2.2} className="fm-pin-halo" />
                 <circle
                   r={pinR}
-                  className="fill-brand stroke-white dark:stroke-gray-900"
+                  className="fm-pin-dot"
                   strokeWidth={pinR * 0.32}
                 />
               </g>
@@ -164,7 +162,7 @@ export default function FloorMap({
           })()}
       </svg>
       {caption && (
-        <p className="mt-2 px-0.5 font-sans text-[13px] font-semibold text-gray-500 dark:text-gray-400">
+        <p className="floormap-caption">
           {caption}
         </p>
       )}
