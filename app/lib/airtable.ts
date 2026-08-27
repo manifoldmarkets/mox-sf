@@ -23,6 +23,7 @@ export const Tables = {
   // their own base (env.TASKS_AIRTABLE_BASE_ID), not the main Mox base.
   Tasks: 'Tasks',
   TaskClaims: 'Claims',
+  TaskComments: 'Task Comments',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]
@@ -31,6 +32,7 @@ export type TableName = (typeof Tables)[keyof typeof Tables]
 const TASKS_BASE_TABLES: readonly TableName[] = [
   Tables.Tasks,
   Tables.TaskClaims,
+  Tables.TaskComments,
 ]
 
 function baseIdFor(table: TableName): string {

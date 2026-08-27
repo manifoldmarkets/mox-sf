@@ -33,6 +33,9 @@ Two tables in the **dedicated task-board base** (`TASKS_AIRTABLE_BASE_ID`, the
 - **Claims** — append-only activity log (Claimed / Completed / Released /
   Auto-released / Approved / Reopened). Fields: Event, Task, Name, Email,
   Type, At, Note.
+- **Task Comments** — conversation threads on task pages. Fields: Name,
+  Task, Author name, Author email, Comment, At, Task rec id (plain record
+  id of the linked task, used to filter a task's thread by formula).
 
 ## Design
 
@@ -82,6 +85,14 @@ The board groups open tasks by floor (1st → Rooftop, then "Anywhere"), and
 within each group sorts by urgency. Each card shows a glowing priority dot on
 the right: blue = Low, yellow = Medium, red = High (pulses). Unset priority
 counts as Medium. Set it in the task form or the `Priority` field in Airtable.
+
+## Comments
+
+Every task page has a Conversation section. Any signed-in visitor (Google
+claimer or staff member) can comment (POST `/api/tasks/[id]/comments`, max
+2000 chars). Each comment posts to the tasks Discord channel and emails
+everyone already in the thread — the creator, the claimant, and earlier
+commenters — minus the poster.
 
 ## Discord + email + crons
 

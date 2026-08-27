@@ -1,7 +1,14 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getTask, priorityOf, RELEASE_HOURS, storyForFloor } from '@/app/lib/tasks'
-import { canManageTask, getClaimer } from '@/app/lib/tasks-auth'
+import {
+  getTask,
+  listTaskComments,
+  priorityOf,
+  RELEASE_HOURS,
+  storyForFloor,
+} from '@/app/lib/tasks'
+import { canManageTask, getClaimer, getTaskActor } from '@/app/lib/tasks-auth'
+import CommentForm from '../CommentForm'
 import FloorMap from '../FloorMap'
 import { ClaimButton, DonePanel } from '../TaskActions'
 import { ManageTaskButtons } from '../TaskForm'
@@ -15,9 +22,16 @@ export default async function TaskDetail({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const [task, claimer] = await Promise.all([getTask(id), getClaimer()])
+  const [task, claimer, actor] = await Promise.all([
+    getTask(id),
+    getClaimer(),
+    getTaskActor(),
+  ])
   if (!task || task.status === 'Archived') notFound()
-  const canManage = await canManageTask(task.createdByEmail)
+  const [canManage, comments] = await Promise.all([
+    canManageTask(task.createdByEmail),
+    listTaskComments(id).catch(() => []),
+  ])
 
   const isMine = !!claimer && task.claimantEmail === claimer.email
   const firstName = task.claimantName.split(' ')[0]
@@ -163,6 +177,46 @@ export default async function TaskDetail({
               </ul>
             </section>
           )}
+
+          <section className="detail-section">
+            <h2>Conversation</h2>
+            {comments.length > 0 ? (
+              <div className="comments-list">
+                {comments.map((c) => (
+                  <div key={c.id} className="comment">
+                    <div className="comment-head">
+                      <span className="comment-author">
+                        {c.authorName || c.authorEmail}
+                      </span>
+                      {c.at && (
+                        <span className="comment-when">
+                          {new Date(c.at).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </span>
+                      )}
+                    </div>
+                    <Prose text={c.text} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="comments-empty">
+                No comments yet — questions and context welcome.
+              </p>
+            )}
+            {actor ? (
+              <CommentForm taskId={task.id} />
+            ) : (
+              <p className="comments-empty">
+                <Link href={`/tasks/auth/google?redirect=/tasks/${task.id}`}>
+                  Sign in
+                </Link>{' '}
+                to join the conversation.
+              </p>
+            )}
+          </section>
         </article>
 
         <aside className="card action-card">
