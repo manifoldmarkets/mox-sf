@@ -1,9 +1,11 @@
 /**
  * Data layer for the public task board (app/tasks, served at tasks.moxsf.com).
  *
- * Built on the shared Airtable helpers. Two tables in the Mox base:
- *   - Tasks       — one row per task; rows with Status "Open" show publicly.
- *   - Task Claims — append-only activity log (claims/completions/releases…).
+ * Built on the shared Airtable helpers. Two tables in the dedicated task-board
+ * base (env.TASKS_AIRTABLE_BASE_ID, the "Mox ᴛᴀꜱᴋꜱ" base — NOT the main Mox
+ * base):
+ *   - Tasks  — one row per task; rows with Status "Open" show publicly.
+ *   - Claims — append-only activity log (claims/completions/releases…).
  *
  * Note on the map: the pin uses app/lib/tasks-floorplans.ts (a snapshot of the
  * internal room-map service with real room polygons). The repo's own Floors
@@ -34,6 +36,9 @@ export const SKILLS = [
 ] as const
 
 export const EFFORTS = ['< 1h', '1–2h', '2–3h'] as const
+// Which board tab a task shows under. Tasks with no type count as Volunteer.
+export const TASK_TYPES = ['Volunteer', 'Contractor'] as const
+export type TaskType = (typeof TASK_TYPES)[number]
 export const FLOORS = [
   '1st floor',
   '2nd floor',
@@ -45,6 +50,22 @@ export const FLOORS = [
 export const NUDGE_HOURS = Number(env.TASKS_NUDGE_HOURS) || 8
 export const RELEASE_HOURS = Number(env.TASKS_RELEASE_HOURS) || 24
 
+// Urgency levels; unset counts as Medium. Lower rank = more urgent.
+export const PRIORITIES = ['Low', 'Medium', 'High'] as const
+export const PRIORITY_RANK: Record<string, number> = {
+  High: 0,
+  Medium: 1,
+  Low: 2,
+}
+
+export function priorityOf(task: { priority: string }): string {
+  return PRIORITY_RANK[task.priority] !== undefined ? task.priority : 'Medium'
+}
+
+// Periodic tasks: how long after completion a repeating task reopens.
+export const REPEATS = ['Weekly', 'Monthly'] as const
+export const REPEAT_DAYS: Record<string, number> = { Weekly: 7, Monthly: 30 }
+
 export type TaskStatus = 'Open' | 'Claimed' | 'In review' | 'Done' | 'Archived'
 export type TaskEventType =
   | 'Claimed'
@@ -52,6 +73,7 @@ export type TaskEventType =
   | 'Released'
   | 'Auto-released'
   | 'Approved'
+  | 'Reopened'
 
 export interface ContextLink {
   label: string
@@ -59,6 +81,8 @@ export interface ContextLink {
 }
 
 export interface TaskPhoto {
+  /** Airtable attachment id — needed to keep an existing photo on edit. */
+  id: string
   url: string
   thumbUrl: string
   filename: string
@@ -66,7 +90,7 @@ export interface TaskPhoto {
 
 // Raw Airtable field shape (by name) for the Tasks table.
 interface TaskFields {
-  Name?: string
+  Title?: string
   Summary?: string
   Brief?: string
   'Done criteria'?: string
@@ -76,6 +100,7 @@ interface TaskFields {
   Status?: TaskStatus
   Floor?: string
   'Map point'?: string
+  'Task type'?: string
   'Claimant name'?: string
   'Claimant email'?: string
   'Claimed at'?: string
@@ -84,10 +109,15 @@ interface TaskFields {
   'Completion note'?: string
   'Proof photo'?: AirtableAttachment[]
   'Reference photos'?: AirtableAttachment[]
-  'Discord message id'?: string
+  'Discord message ID'?: string
+  Priority?: string
+  'Created by name'?: string
+  'Created by email'?: string
+  Repeat?: string
 }
 
 interface AirtableAttachment {
+  id?: string
   url: string
   filename?: string
   thumbnails?: { large?: { url: string } }
@@ -105,6 +135,7 @@ export interface Task {
   status: TaskStatus
   floor: string
   mapPoint: { x: number; y: number } | null
+  taskType: TaskType
   claimantName: string
   claimantEmail: string
   claimedAt: string | null
@@ -114,6 +145,10 @@ export interface Task {
   hasProofPhoto: boolean
   refPhotos: TaskPhoto[]
   discordMessageId: string
+  priority: string
+  createdByName: string
+  createdByEmail: string
+  repeat: string
 }
 
 function parseContextLinks(raw: string): ContextLink[] {
@@ -137,6 +172,7 @@ function parseMapPoint(raw?: string): { x: number; y: number } | null {
 
 function parsePhotos(atts?: AirtableAttachment[]): TaskPhoto[] {
   return (atts ?? []).map((a) => ({
+    id: a.id ?? '',
     url: a.url,
     thumbUrl: a.thumbnails?.large?.url ?? a.url,
     filename: a.filename ?? 'photo',
@@ -147,7 +183,7 @@ function toTask(rec: { id: string; fields: TaskFields }): Task {
   const f = rec.fields
   return {
     id: rec.id,
-    title: f.Name ?? '',
+    title: f.Title ?? '',
     summary: f.Summary ?? '',
     brief: f.Brief ?? '',
     doneCriteria: f['Done criteria'] ?? '',
@@ -157,6 +193,7 @@ function toTask(rec: { id: string; fields: TaskFields }): Task {
     status: (f.Status ?? 'Open') as TaskStatus,
     floor: f.Floor ?? '',
     mapPoint: parseMapPoint(f['Map point']),
+    taskType: f['Task type'] === 'Contractor' ? 'Contractor' : 'Volunteer',
     claimantName: f['Claimant name'] ?? '',
     claimantEmail: f['Claimant email'] ?? '',
     claimedAt: f['Claimed at'] ?? null,
@@ -165,7 +202,11 @@ function toTask(rec: { id: string; fields: TaskFields }): Task {
     completionNote: f['Completion note'] ?? '',
     hasProofPhoto: (f['Proof photo']?.length ?? 0) > 0,
     refPhotos: parsePhotos(f['Reference photos']),
-    discordMessageId: f['Discord message id'] ?? '',
+    discordMessageId: f['Discord message ID'] ?? '',
+    priority: f.Priority ?? '',
+    createdByName: f['Created by name'] ?? '',
+    createdByEmail: f['Created by email'] ?? '',
+    repeat: f.Repeat ?? '',
   }
 }
 
@@ -218,10 +259,10 @@ export async function deleteTask(id: string): Promise<boolean> {
 // --- activity log -----------------------------------------------------------
 
 interface TaskClaimFields {
-  Name?: string
+  Event?: string
   Task?: string[]
-  'Claimant name'?: string
-  'Claimant email'?: string
+  Name?: string
+  Email?: string
   Type?: TaskEventType
   At?: string
   Note?: string
@@ -233,6 +274,7 @@ const EVENT_VERB: Record<TaskEventType, string> = {
   Released: 'released',
   'Auto-released': 'was auto-released from',
   Approved: 'approved',
+  Reopened: 'reopened',
 }
 
 export async function logTaskEvent(opts: {
@@ -246,10 +288,10 @@ export async function logTaskEvent(opts: {
   await createRecord<TaskClaimFields>(
     Tables.TaskClaims,
     {
-      Name: `${opts.name || opts.email} ${EVENT_VERB[opts.type]}: ${opts.taskTitle}`,
+      Event: `${opts.name || opts.email} ${EVENT_VERB[opts.type]}: ${opts.taskTitle}`,
       Task: [opts.taskId],
-      'Claimant name': opts.name,
-      ...(opts.email ? { 'Claimant email': opts.email } : {}),
+      Name: opts.name,
+      ...(opts.email ? { Email: opts.email } : {}),
       Type: opts.type,
       At: new Date().toISOString(),
       ...(opts.note ? { Note: opts.note } : {}),
@@ -279,11 +321,11 @@ export async function listRecentTaskEvents(
     const at = rec.fields.At ? Date.parse(rec.fields.At) : 0
     if (at < since) break
     events.push({
-      name: rec.fields['Claimant name'] ?? '',
-      email: rec.fields['Claimant email'] ?? '',
+      name: rec.fields.Name ?? '',
+      email: rec.fields.Email ?? '',
       type: rec.fields.Type ?? 'Claimed',
       at: rec.fields.At ?? '',
-      summary: rec.fields.Name ?? '',
+      summary: rec.fields.Event ?? '',
     })
   }
   return events
@@ -314,5 +356,5 @@ export async function uploadTaskImage(base64: string): Promise<string | null> {
 }
 
 export function airtableTaskUrl(taskId: string): string {
-  return `https://airtable.com/${env.AIRTABLE_BASE_ID}/${Tables.Tasks}/${taskId}`
+  return `https://airtable.com/${env.TASKS_AIRTABLE_BASE_ID}/${Tables.Tasks}/${taskId}`
 }

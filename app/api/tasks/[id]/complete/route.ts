@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sendChannelMessage } from '@/app/lib/discord'
 import { DISCORD_CHANNELS } from '@/app/lib/discord-constants'
 import { getClaimer } from '@/app/lib/tasks-auth'
+import { notifyTaskCreator, taskUrl } from '@/app/lib/tasks-notify'
 import {
   airtableTaskUrl,
   getTask,
@@ -53,11 +54,11 @@ export async function POST(
     photoUrl = await uploadTaskImage(base64)
   }
 
-  // Photo proof auto-closes the task; without a photo it waits for review.
+  // Every completion waits for organizer review (✅ on Discord); a photo is
+  // attached as proof but never auto-closes the task.
   const hasPhoto = !!photoUrl
-  const newStatus = hasPhoto ? 'Done' : 'In review'
   await updateTask(id, {
-    Status: newStatus,
+    Status: 'In review',
     'Completed at': new Date().toISOString(),
     ...(note ? { 'Completion note': note } : {}),
     ...(photoUrl ? { 'Proof photo': [{ url: photoUrl }] } : {}),
@@ -73,19 +74,22 @@ export async function POST(
   })
 
   const noteLine = note ? `\n> ${note.replace(/\n/g, ' ')}` : ''
-  if (hasPhoto) {
-    await sendChannelMessage(
-      DISCORD_CHANNELS.TASKS,
-      `✅ **${claimer.name}** finished **${task.title}** — photo proof uploaded, auto-closed.${noteLine}\n<${airtableTaskUrl(id)}>`
-    )
-  } else {
-    const result = await sendChannelMessage(
-      DISCORD_CHANNELS.TASKS,
-      `🔎 **${claimer.name}** marked **${task.title}** as done — react with ✅ to approve & close it.${noteLine}\n<${airtableTaskUrl(id)}>`
-    )
-    if (result.messageId)
-      await updateTask(id, { 'Discord message id': result.messageId })
-  }
+  const photoNote = hasPhoto ? ' (proof photo attached)' : ''
+  const result = await sendChannelMessage(
+    DISCORD_CHANNELS.TASKS,
+    `🔎 **${claimer.name}** marked **${task.title}** as done${photoNote} — react with ✅ to approve & close it.${noteLine}\n<${airtableTaskUrl(id)}>`
+  )
+  if (result.messageId)
+    await updateTask(id, { 'Discord message ID': result.messageId })
 
-  return NextResponse.json({ ok: true, status: newStatus })
+  const noteHtml = note ? `<p>Their note: “${note}”</p>` : ''
+  await notifyTaskCreator(
+    task,
+    claimer.email,
+    `“${task.title}” needs your review`,
+    `<p><strong>${claimer.name}</strong> marked <a href="${taskUrl(task)}" style="color:#78350f">${task.title}</a> as done${hasPhoto ? ' and attached a proof photo' : ''}. React with ✅ on the Discord message (or flip it in Airtable) to approve & close it.</p>${noteHtml}`,
+    `${claimer.name} marked "${task.title}" as done${hasPhoto ? ' with a proof photo' : ''} — react ✅ on Discord to approve. ${taskUrl(task)}`
+  )
+
+  return NextResponse.json({ ok: true, status: 'In review' })
 }

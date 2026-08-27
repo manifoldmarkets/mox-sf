@@ -1,10 +1,23 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getTask, RELEASE_HOURS, storyForFloor } from '@/app/lib/tasks'
-import { getClaimer } from '@/app/lib/tasks-auth'
+import {
+  getTask,
+  priorityOf,
+  RELEASE_HOURS,
+  storyForFloor,
+} from '@/app/lib/tasks'
+import { canManageTask, getClaimer } from '@/app/lib/tasks-auth'
 import FloorMap from '../FloorMap'
 import { ClaimButton, DonePanel } from '../TaskActions'
-import { CHIP_BASE, FLOOR_CHIP, Prose, SKILL_CHIP, STATUS_BADGE } from '../ui'
+import { ManageTaskButtons } from '../TaskForm'
+import {
+  CHIP_BASE,
+  FLOOR_CHIP,
+  PriorityDot,
+  Prose,
+  SKILL_CHIP,
+  STATUS_BADGE,
+} from '../ui'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +33,7 @@ export default async function TaskDetail({
   const [task, claimer] = await Promise.all([getTask(id), getClaimer()])
   if (!task || task.status === 'Archived') notFound()
 
+  const canManage = await canManageTask(task.createdByEmail)
   const isMine = !!claimer && task.claimantEmail === claimer.email
   const firstName = task.claimantName.split(' ')[0]
   const story = storyForFloor(task.floor)
@@ -32,10 +46,16 @@ export default async function TaskDetail({
       )
     : null
 
+  // Board links go back to the tab this task lives under.
+  const typeQuery = task.taskType === 'Contractor' ? 'type=contractor' : ''
+  const boardHref = typeQuery ? `/tasks?${typeQuery}` : '/tasks'
+  const tagHref = (t: string) =>
+    `/tasks?${typeQuery ? `${typeQuery}&` : ''}tag=${encodeURIComponent(t)}`
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <Link
-        href="/tasks"
+        href={boardHref}
         className="text-sm text-amber-900 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 underline decoration-dotted underline-offset-2"
       >
         ← All tasks
@@ -48,7 +68,7 @@ export default async function TaskDetail({
               {task.skills.map((s) => (
                 <Link
                   key={s}
-                  href={`/tasks?tag=${encodeURIComponent(s)}`}
+                  href={tagHref(s)}
                   className={`${CHIP_BASE} ${SKILL_CHIP[s] ?? ''}`}
                 >
                   {s}
@@ -70,9 +90,16 @@ export default async function TaskDetail({
                 {task.effort}
               </span>
             )}
+            {task.taskType === 'Contractor' && (
+              <span
+                className={`${CHIP_BASE} bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300`}
+              >
+                Contractor task
+              </span>
+            )}
             {task.floor && (
               <Link
-                href={`/tasks?tag=${encodeURIComponent(task.floor)}`}
+                href={tagHref(task.floor)}
                 className={FLOOR_CHIP}
               >
                 📍 {task.floor}
@@ -86,6 +113,45 @@ export default async function TaskDetail({
                     ? 'Wrapping up'
                     : task.status}
               </span>
+            )}
+            <span className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-gray-500 dark:text-gray-400">
+              <PriorityDot priority={task.priority} />
+              {priorityOf(task)} priority
+            </span>
+            {task.repeat && (
+              <span
+                className={`${CHIP_BASE} bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300`}
+              >
+                🔁 {task.repeat}
+              </span>
+            )}
+            {canManage && (
+              <ManageTaskButtons
+                task={{
+                  id: task.id,
+                  title: task.title,
+                  summary: task.summary,
+                  brief: task.brief,
+                  doneCriteria: task.doneCriteria,
+                  contextLinks: task.contextLinks
+                    .map((l) =>
+                      l.label === l.url ? l.url : `${l.label} | ${l.url}`
+                    )
+                    .join('\n'),
+                  skills: task.skills,
+                  effort: task.effort,
+                  floor: task.floor,
+                  repeat: task.repeat,
+                  priority: task.priority,
+                  taskType: task.taskType,
+                  mapPoint: task.mapPoint,
+                  refPhotos: task.refPhotos.map((p) => ({
+                    id: p.id,
+                    thumbUrl: p.thumbUrl,
+                    filename: p.filename,
+                  })),
+                }}
+              />
             )}
           </div>
 
@@ -203,7 +269,7 @@ export default async function TaskDetail({
               {hoursLeft !== null && (
                 <p className="text-[13px] text-gray-500 dark:text-gray-400">
                   Auto-releases in about {hoursLeft}h. Finish and mark it done —
-                  a photo closes it on the spot.
+                  add a proof photo if you can.
                 </p>
               )}
               <DonePanel taskId={task.id} />

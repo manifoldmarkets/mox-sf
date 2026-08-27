@@ -9,11 +9,16 @@
 // Cache for lazy-loaded values
 const cache = new Map<string, string>()
 
-// Get required env var (throws if missing), with lazy caching
+// Get required env var (throws if missing), with lazy caching.
+// With BUILD_WITHOUT_ENV=1 (set only in `next build` commands that run without
+// the app's env vars, e.g. deploys where secrets are runtime-only), a missing
+// var yields an inert placeholder instead of failing the build's page-data
+// collection. Runtime never sets the flag, so real requests still throw.
 function required(name: string): string {
   if (cache.has(name)) return cache.get(name)!
   const value = process.env[name]
   if (!value) {
+    if (process.env.BUILD_WITHOUT_ENV === '1') return `unset-${name}`
     throw new Error(`Missing required environment variable: ${name}`)
   }
   cache.set(name, value)
@@ -84,6 +89,9 @@ export const env = {
   // EAG Guest Code
   get EAG_GUEST_CODE() { return required('EAG_GUEST_CODE') },
 
+  // Task board — the Tasks/Claims tables live in their own base ("Mox ᴛᴀꜱᴋꜱ"),
+  // not the main Mox base. Same AIRTABLE_API_KEY.
+  get TASKS_AIRTABLE_BASE_ID() { return optional('TASKS_AIRTABLE_BASE_ID', 'appkShwDFk3Z3Yruc') },
   // Task board — public Google sign-in for claimers (scoped to /tasks only).
   get TASKS_GOOGLE_CLIENT_ID() { return optional('TASKS_GOOGLE_CLIENT_ID') },
   get TASKS_GOOGLE_CLIENT_SECRET() { return optional('TASKS_GOOGLE_CLIENT_SECRET') },

@@ -19,22 +19,26 @@ export interface ClaimerSession {
   loggedIn: boolean
 }
 
-const claimerOptions: SessionOptions = {
-  password: env.SESSION_SECRET,
-  cookieName: 'mox-tasks',
-  cookieOptions: {
-    httpOnly: true,
-    secure: env.isProduction,
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
-  },
+// Built lazily so importing this module never reads env (which would break
+// `next build` in environments without the app's env vars).
+function claimerOptions(): SessionOptions {
+  return {
+    password: env.SESSION_SECRET,
+    cookieName: 'mox-tasks',
+    cookieOptions: {
+      httpOnly: true,
+      secure: env.isProduction,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    },
+  }
 }
 
 export async function getClaimerSession(): Promise<
   IronSession<ClaimerSession>
 > {
   const cookieStore = await cookies()
-  return getIronSession<ClaimerSession>(cookieStore, claimerOptions)
+  return getIronSession<ClaimerSession>(cookieStore, claimerOptions())
 }
 
 export interface Claimer {
@@ -82,4 +86,36 @@ export async function isOrganizer(): Promise<boolean> {
   const claimer = await getClaimer()
   if (!claimer) return false
   return organizerAllowlist().includes(claimer.email.toLowerCase())
+}
+
+export interface TaskActor {
+  email: string
+  name: string
+  isStaff: boolean
+}
+
+/**
+ * Whoever is acting on the task board right now: a staff member (email-based
+ * member session) takes precedence, else the Google claimer. Used to record
+ * task creators and to check edit permission.
+ */
+export async function getTaskActor(): Promise<TaskActor | null> {
+  const staff = await requireStaff()
+  if (staff) {
+    return {
+      email: staff.email,
+      name: staff.name || staff.email,
+      isStaff: true,
+    }
+  }
+  const claimer = await getClaimer()
+  return claimer ? { ...claimer, isStaff: false } : null
+}
+
+/** Organizers can manage any task; creators can manage their own. */
+export async function canManageTask(createdByEmail: string): Promise<boolean> {
+  if (await isOrganizer()) return true
+  if (!createdByEmail) return false
+  const actor = await getTaskActor()
+  return !!actor && actor.email.toLowerCase() === createdByEmail.toLowerCase()
 }

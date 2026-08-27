@@ -19,12 +19,25 @@ export const Tables = {
   CheckIns: 'Check-ins',
   GefApplications: 'GEF Applications',
   Roles: 'Roles',
-  // Public task board (app/tasks, served at tasks.moxsf.com)
+  // Public task board (app/tasks, served at tasks.moxsf.com). These live in
+  // their own base (env.TASKS_AIRTABLE_BASE_ID), not the main Mox base.
   Tasks: 'Tasks',
-  TaskClaims: 'Task Claims',
+  TaskClaims: 'Claims',
 } as const
 
 export type TableName = (typeof Tables)[keyof typeof Tables]
+
+// Tables that live in the dedicated task-board base rather than the main base.
+const TASKS_BASE_TABLES: readonly TableName[] = [
+  Tables.Tasks,
+  Tables.TaskClaims,
+]
+
+function baseIdFor(table: TableName): string {
+  return TASKS_BASE_TABLES.includes(table)
+    ? env.TASKS_AIRTABLE_BASE_ID
+    : env.AIRTABLE_BASE_ID
+}
 
 // Generic type for Airtable records - use Record<string, unknown> for flexibility
 export interface AirtableRecord<T = Record<string, unknown>> {
@@ -62,7 +75,7 @@ function buildListUrl(
   options: QueryOptions,
   offset?: string
 ): string {
-  const base = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+  const base = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}`
   const params: string[] = []
 
   if (options.filterByFormula) {
@@ -157,7 +170,7 @@ export async function getRecord<T = Record<string, unknown>>(
   recordId: string
 ): Promise<AirtableRecord<T> | null> {
   try {
-    const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
+    const url = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}/${recordId}`
 
     const res = await fetch(url, {
       headers: getHeaders(),
@@ -202,7 +215,7 @@ export async function updateRecord<T = Record<string, unknown>>(
   fields: Partial<T>,
   options: { typecast?: boolean } = {}
 ): Promise<AirtableRecord<T>> {
-  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
+  const url = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}/${recordId}`
 
   const res = await fetch(url, {
     method: 'PATCH',
@@ -239,7 +252,7 @@ export async function createRecord<T = Record<string, unknown>>(
   fields: Partial<T>,
   options: { typecast?: boolean } = {}
 ): Promise<AirtableRecord<T>> {
-  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+  const url = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -277,7 +290,7 @@ export async function createRecords<T = Record<string, unknown>>(
   records: Partial<T>[],
   options: { typecast?: boolean } = {}
 ): Promise<AirtableRecord<T>[]> {
-  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`
+  const url = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}`
   const created: AirtableRecord<T>[] = []
 
   for (let i = 0; i < records.length; i += 10) {
@@ -355,7 +368,7 @@ export async function deleteRecord(
   table: TableName,
   recordId: string
 ): Promise<boolean> {
-  const url = `${AIRTABLE_API_URL}/${env.AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
+  const url = `${AIRTABLE_API_URL}/${baseIdFor(table)}/${encodeURIComponent(table)}/${recordId}`
 
   const res = await fetch(url, {
     method: 'DELETE',
