@@ -36,7 +36,7 @@ export interface TaskFormInitial {
   floor: string
   repeat: string
   priority: string
-  taskType: string
+  taskTypes: string[]
   mapPoint: { x: number; y: number } | null
   refPhotos: { id: string; thumbUrl: string; filename: string }[]
 }
@@ -69,7 +69,9 @@ function TaskFormModal({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [skills, setSkills] = useState<string[]>(initial?.skills ?? [])
-  const [taskType, setTaskType] = useState(initial?.taskType || 'Volunteer')
+  const [taskTypes, setTaskTypes] = useState<string[]>(
+    initial?.taskTypes?.length ? initial.taskTypes : ['Volunteer']
+  )
   const [photoCount, setPhotoCount] = useState(0)
   const [floor, setFloor] = useState(initial?.floor ?? '')
   const [pin, setPin] = useState<{ x: number; y: number } | null>(
@@ -88,6 +90,12 @@ function TaskFormModal({
     )
   }
 
+  function toggleType(t: string) {
+    setTaskTypes((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+    )
+  }
+
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setBusy(true)
@@ -96,7 +104,7 @@ function TaskFormModal({
       const form = new FormData(e.currentTarget)
       form.delete('photos')
       for (const s of skills) form.append('skills', s)
-      form.set('type', taskType)
+      for (const t of taskTypes) form.append('types', t)
       if (story && pin) form.set('mapPoint', `${pin.x},${pin.y}`)
       if (editing) {
         for (const p of keptPhotos) form.append('keepPhotoIds', p.id)
@@ -171,15 +179,17 @@ function TaskFormModal({
             />
           </label>
           <div className="skill-picker">
-            <span className="picker-label">Who&rsquo;s it for?</span>
+            <span className="picker-label">
+              Who&rsquo;s it for? <span style={{ fontWeight: 400 }}>(one or both)</span>
+            </span>
             <div className="chips">
               {TASK_TYPES.map((t) => (
                 <button
                   type="button"
                   key={t}
                   data-type={t}
-                  onClick={() => setTaskType(t)}
-                  className={`chip chip-toggle${taskType === t ? ' chip-on' : ''}`}
+                  onClick={() => toggleType(t)}
+                  className={`chip chip-toggle${taskTypes.includes(t) ? ' chip-on' : ''}`}
                 >
                   {t === 'Volunteer' ? 'Volunteers' : 'Contractors'}
                 </button>

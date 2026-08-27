@@ -45,8 +45,12 @@ export default async function TaskDetail({
       )
     : null
 
-  // Board links go back to the tab this task lives under.
-  const typeQuery = task.taskType === 'Contractor' ? 'type=contractor' : ''
+  // Board links go back to the tab this task lives under (a contractor-only
+  // task returns to the contractor tab; anything else to the default).
+  const typeQuery =
+    task.taskTypes.includes('Contractor') && !task.taskTypes.includes('Volunteer')
+      ? 'type=contractor'
+      : ''
   const boardHref = typeQuery ? `/tasks?${typeQuery}` : '/tasks'
   const tagHref = (t: string) =>
     `/tasks?${typeQuery ? `${typeQuery}&` : ''}tag=${encodeURIComponent(t)}`
@@ -71,7 +75,7 @@ export default async function TaskDetail({
           {task.summary && <p className="lede">{task.summary}</p>}
           <div className="meta-row">
             {task.effort && <span className="effort">{task.effort}</span>}
-            {task.taskType === 'Contractor' && (
+            {task.taskTypes.includes('Contractor') && (
               <span className="chip chip-contractor">Contractor task</span>
             )}
             {task.floor && (
@@ -109,7 +113,7 @@ export default async function TaskDetail({
                   floor: task.floor,
                   repeat: task.repeat,
                   priority: task.priority,
-                  taskType: task.taskType,
+                  taskTypes: task.taskTypes,
                   mapPoint: task.mapPoint,
                   refPhotos: task.refPhotos.map((p) => ({
                     id: p.id,

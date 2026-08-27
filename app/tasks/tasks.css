@@ -73,6 +73,15 @@
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  /* The board's background must cover the whole viewport (the site body under
+     it is light); footer pins to the bottom on short pages. */
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tasksui main {
+  flex: 1;
 }
 
 .tasksui h1, .tasksui h2, .tasksui h3 {

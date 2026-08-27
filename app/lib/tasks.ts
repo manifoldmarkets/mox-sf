@@ -36,7 +36,9 @@ export const SKILLS = [
 ] as const
 
 export const EFFORTS = ['< 1h', '1–2h', '2–3h'] as const
-// Which board tab a task shows under. Tasks with no type count as Volunteer.
+// Which board tab(s) a task shows under. The Airtable field is a
+// multi-select — a task can be for volunteers, contractors, or both; tasks
+// with no type count as Volunteer.
 export const TASK_TYPES = ['Volunteer', 'Contractor'] as const
 export type TaskType = (typeof TASK_TYPES)[number]
 export const FLOORS = [
@@ -100,7 +102,7 @@ interface TaskFields {
   Status?: TaskStatus
   Floor?: string
   'Map point'?: string
-  'Task type'?: string
+  'Task type'?: string[]
   'Claimant name'?: string
   'Claimant email'?: string
   'Claimed at'?: string
@@ -135,7 +137,7 @@ export interface Task {
   status: TaskStatus
   floor: string
   mapPoint: { x: number; y: number } | null
-  taskType: TaskType
+  taskTypes: TaskType[]
   claimantName: string
   claimantEmail: string
   claimedAt: string | null
@@ -149,6 +151,13 @@ export interface Task {
   createdByName: string
   createdByEmail: string
   repeat: string
+}
+
+function parseTaskTypes(raw?: string[]): TaskType[] {
+  const types = (raw ?? []).filter((t): t is TaskType =>
+    (TASK_TYPES as readonly string[]).includes(t)
+  )
+  return types.length > 0 ? types : ['Volunteer']
 }
 
 function parseContextLinks(raw: string): ContextLink[] {
@@ -193,7 +202,7 @@ function toTask(rec: { id: string; fields: TaskFields }): Task {
     status: (f.Status ?? 'Open') as TaskStatus,
     floor: f.Floor ?? '',
     mapPoint: parseMapPoint(f['Map point']),
-    taskType: f['Task type'] === 'Contractor' ? 'Contractor' : 'Volunteer',
+    taskTypes: parseTaskTypes(f['Task type']),
     claimantName: f['Claimant name'] ?? '',
     claimantEmail: f['Claimant email'] ?? '',
     claimedAt: f['Claimed at'] ?? null,
