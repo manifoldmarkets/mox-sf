@@ -34,6 +34,17 @@ Two tables in the **dedicated task-board base** (`TASKS_AIRTABLE_BASE_ID`, the
   Auto-released / Approved / Reopened). Fields: Event, Task, Name, Email,
   Type, At, Note.
 
+## Design
+
+The board's visual identity lives in `app/tasks/tasks.css` — a hand-crafted
+stylesheet (recovered from the original July 2026 standalone mox-tasks app):
+neutral gray surfaces, Playfair Display headings, Fira Sans UI, rounded cards
+with soft shadows, and amber reserved for links/accents (gold in dark mode).
+Every selector is scoped under the `.tasksui` wrapper (applied in
+`app/tasks/layout.tsx` and re-applied on the portal-rendered modal) so nothing
+leaks into the rest of moxsf.com. The header wordmark is
+`/images/mox_logo_text.svg` + small-caps ᴛᴀꜱᴋꜱ, inverted in dark mode.
+
 ## Volunteer / Contractor tabs
 
 The board has two tabs — **Volunteer tasks** (default, `/`) and **Contractor
@@ -91,7 +102,8 @@ under `/tasks/*`.
 
 | Var                                                     | Purpose                                                                                                                      |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `TASKS_AIRTABLE_BASE_ID`                                | The dedicated task-board base (defaults to the "Mox ᴛᴀꜱᴋꜱ" base, `appkShwDFk3Z3Yruc`). Uses the same `AIRTABLE_API_KEY`      |
+| `TASKS_AIRTABLE_BASE_ID`                                | The dedicated task-board base (defaults to the "Mox ᴛᴀꜱᴋꜱ" base, `appkShwDFk3Z3Yruc`)                                        |
+| `TASKS_AIRTABLE_API_KEY`                                | Optional dedicated token for that base, when the main `AIRTABLE_API_KEY` has no access to it (falls back to the main key)    |
 | `TASKS_GOOGLE_CLIENT_ID` / `TASKS_GOOGLE_CLIENT_SECRET` | Google OAuth for claimers. Redirect URI: `https://moxsf.com/tasks/auth/google/callback` (and the tasks.moxsf.com equivalent) |
 | `TASKS_ORGANIZER_EMAILS`                                | Comma-separated fallback organizers (staff are auto-recognized)                                                              |
 | `TASKS_NUDGE_HOURS` / `TASKS_RELEASE_HOURS`             | Clock, default 8 / 24                                                                                                        |

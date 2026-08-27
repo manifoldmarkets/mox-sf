@@ -92,6 +92,9 @@ export const env = {
   // Task board — the Tasks/Claims tables live in their own base ("Mox ᴛᴀꜱᴋꜱ"),
   // not the main Mox base. Same AIRTABLE_API_KEY.
   get TASKS_AIRTABLE_BASE_ID() { return optional('TASKS_AIRTABLE_BASE_ID', 'appkShwDFk3Z3Yruc') },
+  // Optional dedicated token for the task-board base, when the main
+  // AIRTABLE_API_KEY has no access to it. Falls back to AIRTABLE_API_KEY.
+  get TASKS_AIRTABLE_API_KEY() { return optional('TASKS_AIRTABLE_API_KEY') },
   // Task board — public Google sign-in for claimers (scoped to /tasks only).
   get TASKS_GOOGLE_CLIENT_ID() { return optional('TASKS_GOOGLE_CLIENT_ID') },
   get TASKS_GOOGLE_CLIENT_SECRET() { return optional('TASKS_GOOGLE_CLIENT_SECRET') },

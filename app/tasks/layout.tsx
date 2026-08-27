@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getClaimer, isOrganizer } from '@/app/lib/tasks-auth'
 import { AddTaskButton } from './TaskForm'
+import './tasks.css'
 
 export const metadata: Metadata = {
   title: 'Mox ᴛᴀꜱᴋꜱ',
@@ -17,33 +18,31 @@ export default async function TasksLayout({
   const [claimer, organizer] = await Promise.all([getClaimer(), isOrganizer()])
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <header className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700 bg-gray-50/85 dark:bg-gray-900/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/tasks"
-            className="inline-flex items-start font-display text-xl font-bold text-gray-900 dark:text-white"
-          >
-            Mox
-            <sup className="ml-px text-[0.62em] font-semibold text-amber-900 dark:text-amber-400">
-              ᴛᴀꜱᴋꜱ
-            </sup>
+    <div className="tasksui">
+      <header className="site-header">
+        <div className="container header-inner">
+          <Link href="/tasks" className="wordmark">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/mox_logo_text.svg"
+              alt="Mox"
+              className="wordmark-logo"
+            />
+            <span>ᴛᴀꜱᴋꜱ</span>
           </Link>
-          <nav className="flex items-center gap-3 font-sans text-sm">
+          <nav>
             {organizer && <AddTaskButton />}
             {claimer ? (
               <>
-                <Link
-                  href="/tasks/my"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
+                <Link href="/tasks/my" className="nav-link">
                   My tasks
                 </Link>
-                <form action="/tasks/auth/signout" method="post">
-                  <button
-                    type="submit"
-                    className="border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  >
+                <form
+                  action="/tasks/auth/signout"
+                  method="post"
+                  className="inline-form"
+                >
+                  <button type="submit" className="btn btn-ghost">
                     Sign out
                   </button>
                 </form>
@@ -51,7 +50,7 @@ export default async function TasksLayout({
             ) : (
               <Link
                 href="/tasks/auth/google?redirect=/tasks"
-                className="border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                className="btn btn-ghost"
               >
                 Sign in
               </Link>
@@ -62,17 +61,11 @@ export default async function TasksLayout({
 
       <main>{children}</main>
 
-      <footer className="mt-10 border-t border-gray-200 dark:border-gray-700 py-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-4 sm:px-6 lg:px-8 text-sm text-gray-500 dark:text-gray-400">
+      <footer className="site-footer">
+        <div className="container">
           <span>
-            A community board by{' '}
-            <a
-              href="https://moxsf.com"
-              className="text-amber-900 dark:text-amber-400"
-            >
-              Mox
-            </a>{' '}
-            · San Francisco
+            A community board by <a href="https://moxsf.com">Mox</a> · San
+            Francisco
           </span>
           <span>Claim a task, do it today, make the space better.</span>
         </div>

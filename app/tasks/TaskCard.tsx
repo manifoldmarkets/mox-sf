@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Task } from '@/app/lib/tasks'
-import { CHIP_BASE, FLOOR_CHIP, PriorityDot, SKILL_CHIP } from './ui'
+import { PriorityDot } from './ui'
 
 export default function TaskCard({
   task,
@@ -22,62 +22,43 @@ export default function TaskCard({
       : `/tasks?${typeQuery ? `${typeQuery}&` : ''}tag=${encodeURIComponent(t)}`
 
   return (
-    <article
-      className={`relative flex flex-col gap-2.5 border border-gray-200 dark:border-gray-600 p-4 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/70 transition-colors ${
-        claimed ? 'opacity-75' : ''
-      }`}
-    >
-      {/* Stretched link makes the whole card clickable; chips sit above it. */}
-      <Link
-        href={`/tasks/${task.id}`}
-        className="absolute inset-0"
-        aria-label={task.title}
-      />
-
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold text-green-700 dark:text-green-400">
-          {task.effort}
+    <article className={`card task-card${claimed ? ' is-claimed' : ''}`}>
+      <div className="card-top">
+        <span className="effort-wrap">
+          {task.effort && <span className="effort">{task.effort}</span>}
           {task.repeat && (
             <span
-              className="ml-1.5 text-cyan-700 dark:text-cyan-400"
+              className="repeat-mark"
               title={`Repeats ${task.repeat.toLowerCase()}`}
             >
               🔁
             </span>
           )}
         </span>
-        <span className="flex items-center gap-2">
+        <span className="card-top-right">
           {task.status === 'Claimed' && (
-            <span
-              className={`${CHIP_BASE} bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300`}
-            >
-              In progress
-            </span>
+            <span className="badge badge-claimed">In progress</span>
           )}
           {task.status === 'In review' && (
-            <span
-              className={`${CHIP_BASE} bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300`}
-            >
-              Wrapping up
-            </span>
+            <span className="badge badge-review">Wrapping up</span>
           )}
           <PriorityDot priority={task.priority} />
         </span>
       </div>
-
-      <h3 className="font-display text-xl font-bold leading-tight text-gray-900 dark:text-white">
-        {task.title}
+      <h3>
+        {/* card-link stretches over the whole card; chips sit above it */}
+        <Link href={`/tasks/${task.id}`} className="card-link">
+          {task.title}
+        </Link>
       </h3>
-      {task.summary && (
-        <p className="flex-1 text-sm text-gray-600 dark:text-gray-300">
-          {task.summary}
-        </p>
-      )}
-
+      <p>{task.summary}</p>
       {(task.floor || task.skills.length > 0) && (
-        <div className="relative z-10 flex flex-wrap gap-1.5">
+        <div className="chips">
           {task.floor && (
-            <Link href={tagHref(task.floor)} className={FLOOR_CHIP}>
+            <Link
+              href={tagHref(task.floor)}
+              className={`chip chip-floor${activeTag === task.floor ? ' chip-active' : ''}`}
+            >
               📍 {task.floor}
             </Link>
           )}
@@ -85,19 +66,15 @@ export default function TaskCard({
             <Link
               key={s}
               href={tagHref(s)}
-              className={`${CHIP_BASE} ${SKILL_CHIP[s] ?? ''}`}
+              data-skill={s}
+              className={`chip${activeTag === s ? ' chip-active' : ''}`}
             >
               {s}
             </Link>
           ))}
         </div>
       )}
-
-      {claimed && firstName && (
-        <p className="text-[13px] font-medium text-amber-800 dark:text-amber-400">
-          Claimed by {firstName}
-        </p>
-      )}
+      {claimed && firstName && <p className="claimed-by">Claimed by {firstName}</p>}
     </article>
   )
 }
