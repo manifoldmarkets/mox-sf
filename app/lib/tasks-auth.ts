@@ -19,22 +19,26 @@ export interface ClaimerSession {
   loggedIn: boolean
 }
 
-const claimerOptions: SessionOptions = {
-  password: env.SESSION_SECRET,
-  cookieName: 'mox-tasks',
-  cookieOptions: {
-    httpOnly: true,
-    secure: env.isProduction,
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
-  },
+// Built lazily so importing this module never reads env (which would break
+// `next build` in environments without the app's env vars).
+function claimerOptions(): SessionOptions {
+  return {
+    password: env.SESSION_SECRET,
+    cookieName: 'mox-tasks',
+    cookieOptions: {
+      httpOnly: true,
+      secure: env.isProduction,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    },
+  }
 }
 
 export async function getClaimerSession(): Promise<
   IronSession<ClaimerSession>
 > {
   const cookieStore = await cookies()
-  return getIronSession<ClaimerSession>(cookieStore, claimerOptions)
+  return getIronSession<ClaimerSession>(cookieStore, claimerOptions())
 }
 
 export interface Claimer {
