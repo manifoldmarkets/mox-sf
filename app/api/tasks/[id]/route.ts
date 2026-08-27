@@ -54,9 +54,11 @@ export async function PATCH(
       : null,
     'Map point': /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(mp) ? mp : null,
   }
-  // Which board tab it shows under (empty/unset counts as Volunteer).
-  if ((TASK_TYPES as readonly string[]).includes(str('type')))
-    fields['Task type'] = str('type')
+  // Which board tab(s) it shows under (multi-select; empty counts as Volunteer).
+  fields['Task type'] = form
+    .getAll('types')
+    .map(String)
+    .filter((t) => (TASK_TYPES as readonly string[]).includes(t))
 
   // Reference photos: keep the surviving originals (by attachment id, sent as
   // keepPhotoIds) and append any newly uploaded ones.

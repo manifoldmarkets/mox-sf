@@ -42,9 +42,12 @@ export async function POST(request: NextRequest) {
     fields['Repeat'] = str('repeat')
   if ((PRIORITIES as readonly string[]).includes(str('priority')))
     fields['Priority'] = str('priority')
-  // Which board tab it shows under (empty/unset counts as Volunteer).
-  if ((TASK_TYPES as readonly string[]).includes(str('type')))
-    fields['Task type'] = str('type')
+  // Which board tab(s) it shows under (multi-select; empty counts as Volunteer).
+  const types = form
+    .getAll('types')
+    .map(String)
+    .filter((t) => (TASK_TYPES as readonly string[]).includes(t))
+  if (types.length) fields['Task type'] = types
 
   // Record who posted it — they get notifications and edit rights.
   const actor = await getTaskActor()

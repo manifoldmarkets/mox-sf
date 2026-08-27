@@ -40,8 +40,9 @@ export default async function TasksBoard({
   }
 
   const openCount = (tt: TaskType) =>
-    allTasks.filter((t) => t.status === 'Open' && t.taskType === tt).length
-  const tasks = allTasks.filter((t) => t.taskType === activeType)
+    allTasks.filter((t) => t.status === 'Open' && t.taskTypes.includes(tt))
+      .length
+  const tasks = allTasks.filter((t) => t.taskTypes.includes(activeType))
 
   const matchesTag = (t: Task) =>
     !!tag && (t.skills.includes(tag) || t.floor === tag)
