@@ -765,7 +765,7 @@
   padding: 2px 8px;
 }
 
-.modal-close:hover { color: var(--ink); }
+.tasksui .modal-close:hover { color: var(--ink); }
 
 .tasksui .task-form {
   display: flex;
