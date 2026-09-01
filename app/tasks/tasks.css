@@ -710,12 +710,17 @@
   font-size: 14px;
 }
 
-.tasksui .modal-backdrop {
+/* The form portals to document.body with class="tasksui modal-backdrop", so
+   the backdrop is the .tasksui element itself, not a descendant — match both. */
+.tasksui .modal-backdrop,
+.tasksui.modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(17, 24, 39, 0.5);
   z-index: 50;
   display: flex;
+  /* row, explicitly: the base .tasksui rule is a column flexbox */
+  flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   padding: 6vh 16px 32px;
