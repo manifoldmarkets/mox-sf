@@ -46,10 +46,6 @@ export default async function ActiveMembersPage() {
         <p className="muted">
           {data.total} active members as of {generated}, across {data.activeOffices} private
           offices and {data.activePrograms} {data.activePrograms === 1 ? 'fellowship' : 'fellowships'}.
-          Counts come from Airtable cross-checked against Stripe: paused and cancelled
-          subscriptions are excluded; people covered by an active office or a current
-          fellowship are included whether or not they pay personally. Visit frequency is
-          what each tier entitles.
           See also the full <Link href="/people">directory</Link>.
         </p>
 
