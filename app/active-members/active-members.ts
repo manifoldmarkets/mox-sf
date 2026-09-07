@@ -9,7 +9,8 @@ import { stripe } from '../lib/stripe'
  *   - they have a live (active / trialing / past_due) Stripe subscription
  *     that is not paused and not scheduled to cancel, or
  *   - their Airtable Tier is "Private Office" and they belong to an Org
- *     whose Status is "Joined" (an active office), regardless of Stripe.
+ *     whose Status is "Joined" (an active office), regardless of Stripe, or
+ *   - they're a Joined participant in a current fellowship (CURRENT_PROGRAMS).
  *
  * Tier comes from the Stripe product for personal payers (Stripe is the
  * source of truth for what someone is paying for), and from Airtable for
@@ -17,7 +18,14 @@ import { stripe } from '../lib/stripe'
  * measurement — door data isn't reliable enough to count visits.
  */
 
-export type MemberTier = 'Private Office' | 'Resident' | 'Core' | 'Friend'
+export type MemberTier = 'Private Office' | 'Resident' | 'Core' | 'Friend' | 'Program'
+
+// Fellowships currently in residence. Participants count in the Office +
+// Resident group. Matched on the Airtable Programs name (like
+// PINNED_PROGRAMS in people.ts), so update this when a cohort starts or
+// wraps up — Programs has no reliable "current" flag (Sentient Futures
+// Residency is still Confirmed with no end date).
+export const CURRENT_PROGRAMS = ['Surplus', 'Frame Fellowship #2']
 
 export type ActiveMember = {
   id: string
@@ -25,14 +33,16 @@ export type ActiveMember = {
   tier: MemberTier
   /** Names of active offices (Orgs with Status "Joined") this person belongs to */
   orgs: string[]
-  /** Room numbers for those offices */
+  /** Names of current fellowships (CURRENT_PROGRAMS) this person is in */
+  programs: string[]
+  /** Room numbers for those offices / programs */
   rooms: string[]
   website: string
   photoUrl: string | null
   /** Airtable "Show in directory" — false means count but don't list by name */
   listed: boolean
-  /** Why they're here: paying personally, or covered by an office */
-  via: 'stripe' | 'office'
+  /** Why they're here: paying personally, covered by an office, or a fellow */
+  via: 'stripe' | 'office' | 'program'
 }
 
 export type TierGroup = {
@@ -47,6 +57,8 @@ export type ActiveMembersData = {
   groups: TierGroup[]
   total: number
   activeOffices: number
+  /** Current fellowships with at least one Joined participant */
+  activePrograms: number
   /** Members counted in the stats but not named (opted out of the directory) */
   unlisted: number
   generatedAt: string
@@ -57,6 +69,7 @@ interface PersonFields {
   Tier?: string
   Status?: string
   Org?: string[]
+  Program?: string[]
   Website?: string
   Photo?: any[]
   'Show in directory'?: boolean
@@ -66,6 +79,11 @@ interface PersonFields {
 interface OrgFields {
   Name?: string
   Status?: string
+  'Room #'?: string[]
+}
+
+interface ProgramFields {
+  Name?: string
   'Room #'?: string[]
 }
 
@@ -138,14 +156,15 @@ async function loadStripeStates(): Promise<Map<string, StripeState>> {
 }
 
 export async function getActiveMembers(): Promise<ActiveMembersData> {
-  const [people, orgs, stripeStates] = await Promise.all([
+  const [people, orgs, programs, stripeStates] = await Promise.all([
     findRecords<PersonFields>(Tables.People, '', {
       fields: [
-        'Name', 'Tier', 'Status', 'Org', 'Website', 'Photo',
+        'Name', 'Tier', 'Status', 'Org', 'Program', 'Website', 'Photo',
         'Show in directory', 'Stripe Customer ID',
       ],
     }),
     findRecords<OrgFields>(Tables.Orgs, '', { fields: ['Name', 'Status', 'Room #'] }),
+    findRecords<ProgramFields>(Tables.Programs, '', { fields: ['Name', 'Room #'] }),
     loadStripeStates(),
   ])
 
@@ -155,6 +174,12 @@ export async function getActiveMembers(): Promise<ActiveMembersData> {
       .map((o) => [o.id, { name: o.fields.Name || '', rooms: o.fields['Room #'] || [] }])
   )
 
+  const currentPrograms = new Map(
+    programs
+      .filter((p) => CURRENT_PROGRAMS.includes(p.fields.Name || ''))
+      .map((p) => [p.id, { name: p.fields.Name || '', rooms: p.fields['Room #'] || [] }])
+  )
+
   const members: ActiveMember[] = []
   for (const record of people) {
     const f = record.fields
@@ -162,19 +187,27 @@ export async function getActiveMembers(): Promise<ActiveMembersData> {
     const stripeState: StripeState = customerId
       ? stripeStates.get(customerId) || { kind: 'none' }
       : { kind: 'none' }
-    const personOrgs = (f.Org || []).map((id) => activeOrgs.get(id)).filter(Boolean) as {
-      name: string
-      rooms: string[]
-    }[]
+    type Group = { name: string; rooms: string[] }
+    const personOrgs = (f.Org || []).map((id) => activeOrgs.get(id)).filter(Boolean) as Group[]
+    const personPrograms = (f.Program || [])
+      .map((id) => currentPrograms.get(id))
+      .filter(Boolean) as Group[]
 
+    // Office and fellowship come first: someone covered by either is in the
+    // building full-time even if they also carry a personal subscription.
     let tier: MemberTier | null = null
     let via: ActiveMember['via'] | null = null
-    if (stripeState.kind === 'active') {
-      tier = stripeState.tier ?? tierFromAirtable(f.Tier)
-      via = 'stripe'
-    } else if (personOrgs.length > 0 && f.Tier === 'Private Office') {
+    if (personOrgs.length > 0 && f.Tier === 'Private Office') {
       tier = 'Private Office'
       via = 'office'
+    } else if (personPrograms.length > 0 && f.Status === 'Joined') {
+      // Fellows don't pay through Stripe, so Status is the only signal that
+      // they're still in the cohort (dropouts get marked Cancelled).
+      tier = 'Program'
+      via = 'program'
+    } else if (stripeState.kind === 'active') {
+      tier = stripeState.tier ?? tierFromAirtable(f.Tier)
+      via = 'stripe'
     }
     if (!tier || !via) continue
 
@@ -183,7 +216,8 @@ export async function getActiveMembers(): Promise<ActiveMembersData> {
       name: f.Name || '',
       tier,
       orgs: personOrgs.map((o) => o.name),
-      rooms: personOrgs.flatMap((o) => o.rooms),
+      programs: personPrograms.map((p) => p.name),
+      rooms: [...personOrgs, ...personPrograms].flatMap((g) => g.rooms),
       website: f.Website || '',
       photoUrl: f.Photo?.[0]?.thumbnails?.large?.url || null,
       listed: !!f['Show in directory'],
@@ -193,18 +227,18 @@ export async function getActiveMembers(): Promise<ActiveMembersData> {
 
   const byName = (a: ActiveMember, b: ActiveMember) => a.name.localeCompare(b.name)
   const office = members
-    .filter((m) => m.tier === 'Private Office' || m.tier === 'Resident')
+    .filter((m) => ['Private Office', 'Resident', 'Program'].includes(m.tier))
     .sort((a, b) => {
-      // Offices grouped together (by org name), then residents, then independents
-      const ao = a.orgs[0] || (a.tier === 'Resident' ? '~resident' : '~~')
-      const bo = b.orgs[0] || (b.tier === 'Resident' ? '~resident' : '~~')
+      // Grouped by office / fellowship name, then residents, then independents
+      const ao = a.orgs[0] || a.programs[0] || (a.tier === 'Resident' ? '~resident' : '~~')
+      const bo = b.orgs[0] || b.programs[0] || (b.tier === 'Resident' ? '~resident' : '~~')
       return ao.localeCompare(bo) || byName(a, b)
     })
   const core = members.filter((m) => m.tier === 'Core').sort(byName)
   const friend = members.filter((m) => m.tier === 'Friend').sort(byName)
 
   const groups: TierGroup[] = [
-    { key: 'office', title: 'Office + Resident', entitlement: '20+ visits/mo', members: office },
+    { key: 'office', title: 'Office + Resident + Fellow', entitlement: '20+ visits/mo', members: office },
     { key: 'core', title: 'Core', entitlement: '10+ visits/mo', members: core },
     { key: 'friend', title: 'Friend', entitlement: '2+ visits/mo', members: friend },
   ]
@@ -213,6 +247,7 @@ export async function getActiveMembers(): Promise<ActiveMembersData> {
     groups,
     total: members.length,
     activeOffices: new Set(office.flatMap((m) => m.orgs)).size,
+    activePrograms: new Set(office.flatMap((m) => m.programs)).size,
     unlisted: members.filter((m) => !m.listed).length,
     generatedAt: new Date().toISOString(),
   }

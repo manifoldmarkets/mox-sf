@@ -44,10 +44,12 @@ export default async function ActiveMembersPage() {
         <Link href="/" className="back-link">&larr; back to home</Link>
         <h1>Active members of Mox</h1>
         <p className="muted">
-          {data.total} paying members as of {generated}, across {data.activeOffices} private offices.
+          {data.total} active members as of {generated}, across {data.activeOffices} private
+          offices and {data.activePrograms} {data.activePrograms === 1 ? 'fellowship' : 'fellowships'}.
           Counts come from Airtable cross-checked against Stripe: paused and cancelled
-          subscriptions are excluded; people covered by an active office are included
-          whether or not they pay personally. Visit frequency is what each tier entitles.
+          subscriptions are excluded; people covered by an active office or a current
+          fellowship are included whether or not they pay personally. Visit frequency is
+          what each tier entitles.
           See also the full <Link href="/people">directory</Link>.
         </p>
 
@@ -97,14 +99,16 @@ function TierSection({ group }: { group: TierGroup }) {
   const listed = group.members.filter((m) => m.listed)
   const hidden = group.members.length - listed.length
 
-  // Office tier: sub-group by org so a reader can see who sits together.
+  // Office tier: sub-group by org / fellowship so a reader can see who sits together.
   if (group.key === 'office') {
     const byOrg = new Map<string, { rooms: string[]; members: ActiveMember[] }>()
     const residents: ActiveMember[] = []
     const independents: ActiveMember[] = []
     for (const m of listed) {
-      if (m.orgs.length > 0) {
-        const key = m.orgs.join(' · ')
+      if (m.orgs.length > 0 || m.programs.length > 0) {
+        const key = m.orgs.length > 0
+          ? m.orgs.join(' · ')
+          : `${m.programs.join(' · ')} (fellowship)`
         if (!byOrg.has(key)) byOrg.set(key, { rooms: m.rooms, members: [] })
         byOrg.get(key)!.members.push(m)
       } else if (m.tier === 'Resident') {

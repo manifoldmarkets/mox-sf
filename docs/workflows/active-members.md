@@ -13,7 +13,12 @@ Cross-references Airtable People with Stripe. A person is active when either:
   (`cancel_at_period_end`), or
 - their Airtable `Tier` is `Private Office` and any linked Org has
   `Status = Joined` (an active office). Office members are included whether
-  or not they pay personally.
+  or not they pay personally, or
+- they have `Status = Joined` and are linked (via `Program`) to a current
+  fellowship. Current fellowships are the explicit `CURRENT_PROGRAMS` list in
+  `active-members.ts` (currently Surplus and Frame Fellowship #2), because
+  the Programs table has no reliable "current" flag. Update the list when a
+  cohort starts or wraps up.
 
 Airtable `Status` is deliberately ignored: Stripe is the source of truth for
 paying members, and a few paying members are still marked `Invited`.
@@ -22,14 +27,16 @@ paying members, and a few paying members are still marked `Invited`.
 
 - Personal payers: from the Stripe product name (`Mox Membership - Core`,
   etc.), falling back to Airtable `Tier`. Stripe wins when they disagree.
-- Office members: `Private Office`.
+- Office members: `Private Office`. Fellows: `Program`. Both are checked
+  before Stripe, so a fellow who also pays for Friend still lands in the top
+  group.
 
 Tiers are presented as three groups with their plan entitlement (not a
 measured visit count — door data isn't reliable enough for that):
 
 | Group | Tiers | Entitlement |
 |-------|-------|-------------|
-| Office + Resident | Private Office, Resident | 20+ visits/mo |
+| Office + Resident + Fellow | Private Office, Resident, Program | 20+ visits/mo |
 | Core | Core | 10+ visits/mo |
 | Friend | Friend | 2+ visits/mo |
 
