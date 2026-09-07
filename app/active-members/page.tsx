@@ -67,8 +67,8 @@ export default async function ActiveMembersPage() {
               <tr key={g.key}>
                 <td><a href={`#${g.key}`}>{g.title}</a></td>
                 <td>{g.entitlement}</td>
-                <td className="num">{g.members.length}</td>
-                <td className="num">{Math.round((100 * g.members.length) / data.total)}%</td>
+                <td className="num">{g.count}</td>
+                <td className="num">{Math.round((100 * g.count) / data.total)}%</td>
               </tr>
             ))}
             <tr className="total">
@@ -123,6 +123,20 @@ function TierSection({ group }: { group: TierGroup }) {
     return (
       <div className="directory-section" id={group.key}>
         <SectionTitle group={group} hidden={hidden} />
+        {group.placeholders.map((p) => (
+          <div key={p.name} className="program-section">
+            <div className="program-header">
+              <h3 className="program-title">{p.name} (fellowship)</h3>
+              <span className="program-room">
+                {p.rooms.length > 0 && <span>room {p.rooms.join(', ')} · </span>}
+                {p.count}
+              </span>
+            </div>
+            <p className="muted placeholder-note">
+              {p.count} fellows in residence; roster not yet in the directory.
+            </p>
+          </div>
+        ))}
         {orgEntries.map(([name, g]) => (
           <div key={name} className="program-section">
             <div className="program-header">
@@ -170,7 +184,7 @@ function SectionTitle({ group, hidden }: { group: TierGroup; hidden: number }) {
     <h2 className="section-title">
       {group.title}
       <span className="section-count">
-        {' '}{group.members.length} · {group.entitlement}
+        {' '}{group.count} · {group.entitlement}
         {hidden > 0 && ` · ${hidden} unlisted`}
       </span>
     </h2>

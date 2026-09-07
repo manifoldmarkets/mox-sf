@@ -20,6 +20,12 @@ Cross-references Airtable People with Stripe. A person is active when either:
   the Programs table has no reliable "current" flag. Update the list when a
   cohort starts or wraps up.
 
+Cohorts with no roster linked yet can be carried as a headcount via
+`PLACEHOLDER_PROGRAMS` (currently Frame Fellowship #2, 10 fellows). They count
+in the stats and show as a headcount-only group. A placeholder is ignored
+automatically once any Joined person is linked to that program, so remove the
+entry when the roster lands.
+
 Airtable `Status` is deliberately ignored: Stripe is the source of truth for
 paying members, and a few paying members are still marked `Invited`.
 

@@ -27,6 +27,13 @@ export type MemberTier = 'Private Office' | 'Resident' | 'Core' | 'Friend' | 'Pr
 // Residency is still Confirmed with no end date).
 export const CURRENT_PROGRAMS = ['Surplus', 'Frame Fellowship #2']
 
+// Cohorts whose roster isn't linked in Airtable yet. Counted in the stats
+// and shown as a headcount-only group; drop the entry once the People are
+// linked to the program (linked Joined fellows take precedence).
+export const PLACEHOLDER_PROGRAMS: { name: string; count: number; rooms?: string[] }[] = [
+  { name: 'Frame Fellowship #2', count: 10 },
+]
+
 export type ActiveMember = {
   id: string
   name: string
@@ -51,6 +58,10 @@ export type TierGroup = {
   /** Plan entitlement, e.g. "20+ visits/mo" */
   entitlement: string
   members: ActiveMember[]
+  /** Headcount-only cohorts (PLACEHOLDER_PROGRAMS) with no roster in Airtable */
+  placeholders: { name: string; count: number; rooms: string[] }[]
+  /** members.length plus placeholder headcounts */
+  count: number
 }
 
 export type ActiveMembersData = {
@@ -237,17 +248,27 @@ export async function getActiveMembers(): Promise<ActiveMembersData> {
   const core = members.filter((m) => m.tier === 'Core').sort(byName)
   const friend = members.filter((m) => m.tier === 'Friend').sort(byName)
 
+  // Placeholder cohorts only apply while nobody is linked to that program.
+  const linkedPrograms = new Set(office.flatMap((m) => m.programs))
+  const placeholders = PLACEHOLDER_PROGRAMS.filter((p) => !linkedPrograms.has(p.name)).map(
+    (p) => ({ name: p.name, count: p.count, rooms: p.rooms || [] })
+  )
+  const placeholderCount = placeholders.reduce((n, p) => n + p.count, 0)
+
   const groups: TierGroup[] = [
-    { key: 'office', title: 'Office + Resident + Fellow', entitlement: '20+ visits/mo', members: office },
-    { key: 'core', title: 'Core', entitlement: '10+ visits/mo', members: core },
-    { key: 'friend', title: 'Friend', entitlement: '2+ visits/mo', members: friend },
+    {
+      key: 'office', title: 'Office + Resident + Fellow', entitlement: '20+ visits/mo',
+      members: office, placeholders, count: office.length + placeholderCount,
+    },
+    { key: 'core', title: 'Core', entitlement: '10+ visits/mo', members: core, placeholders: [], count: core.length },
+    { key: 'friend', title: 'Friend', entitlement: '2+ visits/mo', members: friend, placeholders: [], count: friend.length },
   ]
 
   return {
     groups,
-    total: members.length,
+    total: members.length + placeholderCount,
     activeOffices: new Set(office.flatMap((m) => m.orgs)).size,
-    activePrograms: new Set(office.flatMap((m) => m.programs)).size,
+    activePrograms: linkedPrograms.size + placeholders.length,
     unlisted: members.filter((m) => !m.listed).length,
     generatedAt: new Date().toISOString(),
   }
