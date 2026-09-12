@@ -106,6 +106,10 @@ export const env = {
   // Public base URL for the board (used in email/Discord links).
   get TASKS_BASE_URL() { return optional('TASKS_BASE_URL', 'https://tasks.moxsf.com') },
 
+  // Studio calendar — service account with write access to the shared calendar.
+  get STUDIO_CALENDAR_SERVICE_ACCOUNT_EMAIL() { return optional('STUDIO_CALENDAR_SERVICE_ACCOUNT_EMAIL') },
+  get STUDIO_CALENDAR_PRIVATE_KEY() { return optional('STUDIO_CALENDAR_PRIVATE_KEY') },
+
   // Shared/public
   NODE_ENV,
   NEXT_PUBLIC_BASE_URL,

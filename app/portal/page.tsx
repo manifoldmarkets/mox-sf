@@ -161,6 +161,15 @@ export default async function DashboardPage() {
         <>
           <hr />
           <section>
+            <h2>studio calendar</h2>
+            <p>
+              <Link href="/portal/studio">
+                view studio availability and schedule
+              </Link>
+            </p>
+          </section>
+          <hr />
+          <section>
             <h2>book a room</h2>
             <p>
               <Link href="/portal/book-room">
