@@ -17,9 +17,9 @@ never grant Google access. The backend inserts into the fixed studio calendar.
 3. Enable Google Calendar API in the existing OAuth client's Cloud project.
    Its existing registered callback `/tasks/auth/google/callback` is reused;
    studio state, PKCE and session are isolated from task-claimer login.
-4. Deploy, sign into the member portal as `carolina@moxsf.com`, open
+4. Deploy, sign into the member portal as `carolinaollive@gmail.com`, open
    `/portal/studio/connect`, and approve Calendar event access with that Google
-   account. It must have permission to modify the studio calendar.
+   account (`carolina@moxsf.com`). It must have permission to modify the studio calendar.
 5. Verify a member can create a booking and it appears in the studio calendar.
    Verify more than three hours returns exactly `3h limit exceeded`.
 

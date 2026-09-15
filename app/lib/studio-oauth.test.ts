@@ -37,7 +37,7 @@ vi.mock('./studio-calendar', () => ({
 beforeEach(() => {
   vi.clearAllMocks()
   mocks.staff.mockResolvedValue({
-    email: 'carolina@moxsf.com',
+    email: 'carolinaollive@gmail.com',
     userId: 'person',
   })
   Object.assign(mocks.pending, {
@@ -75,6 +75,7 @@ describe('studio consent authorization', () => {
     const url = new URL(response.headers.get('location')!)
     expect(response.status).toBe(303)
     expect(url.searchParams.get('access_type')).toBe('offline')
+    expect(url.searchParams.get('login_hint')).toBe('carolina@moxsf.com')
     expect(url.searchParams.get('code_challenge_method')).toBe('S256')
     expect(url.searchParams.get('redirect_uri')).toBe(
       'https://moxsf.com/tasks/auth/google/callback'

@@ -35,7 +35,8 @@ async function pendingConsent() {
 
 export async function studioOwner() {
   const staff = await requireStaff()
-  return staff?.email.toLowerCase() === STUDIO_OWNER_EMAIL &&
+  // Portal identity and the Google calendar owner are separate accounts.
+  return staff?.email.toLowerCase() === 'carolinaollive@gmail.com' &&
     !staff.viewingAsUserId
     ? staff
     : null
@@ -58,7 +59,7 @@ export async function startStudioConsent(request: NextRequest) {
   const owner = await studioOwner()
   if (!owner)
     return result(
-      'Sign in to the member portal as Carolina to connect the studio calendar.',
+      'Sign in to the member portal as carolinaollive@gmail.com to connect the studio calendar.',
       403
     )
   if (
@@ -105,7 +106,7 @@ export async function finishStudioConsent(request: NextRequest) {
   const owner = await studioOwner()
   if (!owner)
     return result(
-      'Sign in to the member portal as Carolina and reconnect.',
+      'Sign in to the member portal as carolinaollive@gmail.com and reconnect.',
       403
     )
   const pending = await pendingConsent()
