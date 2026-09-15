@@ -28,7 +28,8 @@ export default function StudioCalendarClient({
     setSubmitting(true)
     setError('')
 
-    const form = new FormData(event.currentTarget)
+    const formElement = event.currentTarget
+    const form = new FormData(formElement)
     const body = Object.fromEntries(form.entries())
     const start = new Date(String(body.start))
     const end = new Date(String(body.end))
@@ -41,7 +42,7 @@ export default function StudioCalendarClient({
 
     try {
       if (isLocalPreview) {
-        await new Promise((resolve) => setTimeout(resolve, 450))
+        throw new Error('Preview only. Sign in to book the studio.')
       } else {
         const response = await fetch('/portal/api/studio-events', {
           method: 'POST',
@@ -54,7 +55,7 @@ export default function StudioCalendarClient({
 
       setCreated(true)
       setCalendarKey((key) => key + 1)
-      event.currentTarget.reset()
+      formElement.reset()
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Could not add event')
     } finally {
