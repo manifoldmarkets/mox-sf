@@ -6,7 +6,9 @@ never grant Google access. The backend inserts into the fixed studio calendar.
 
 ## One-time deployment setup
 
-1. In the main Mox Airtable base, create `Studio Calendar Connection` with primary
+1. The owner's Connect button automatically creates the credential table if the
+   existing Airtable token has schema read/write access. Otherwise, in the main
+   Mox Airtable base, create `Studio Calendar Connection` with primary
    `Name` (single-line text) and `Credential` (long text). Leave it empty.
    The existing AIRTABLE_API_KEY must have record read/write access to that table.
 2. Keep the existing `TASKS_GOOGLE_CLIENT_ID`, `TASKS_GOOGLE_CLIENT_SECRET`,

@@ -42,7 +42,34 @@ async function connectionRow(): Promise<RecordRow | undefined> {
 
 // Checked before consent, so setup failures never strand a Google credential.
 export async function checkStudioStorage() {
-  await connectionRow()
+  try {
+    await connectionRow()
+    return
+  } catch (originalError) {
+    // Only the owner's authenticated, same-origin setup POST calls this.
+    // Never create or alter schema from member booking requests.
+    const url = `https://api.airtable.com/v0/meta/bases/${env.AIRTABLE_BASE_ID}/tables`
+    const schema = await fetch(url, {
+      headers: storageHeaders(),
+      cache: 'no-store',
+    })
+    if (!schema.ok) throw originalError
+    const { tables } = (await schema.json()) as { tables: { name: string }[] }
+    if (tables.some((table) => table.name === TABLE)) throw originalError
+    const created = await fetch(url, {
+      method: 'POST',
+      headers: storageHeaders(),
+      body: JSON.stringify({
+        name: TABLE,
+        fields: [
+          { name: 'Name', type: 'singleLineText' },
+          { name: 'Credential', type: 'multilineText' },
+        ],
+      }),
+    })
+    if (!created.ok) throw originalError
+    await connectionRow()
+  }
 }
 
 export async function saveStudioConnection(connection: Connection) {

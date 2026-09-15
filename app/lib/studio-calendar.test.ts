@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { sealData } from 'iron-session'
 import {
+  checkStudioStorage,
   getStudioAccessToken,
   saveStudioConnection,
   STUDIO_OWNER_EMAIL,
@@ -22,6 +23,26 @@ const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status })
 
 describe('studio Google account credentials', () => {
+  it('prepares missing credential storage before consent', async () => {
+    fetchMock
+      .mockResolvedValueOnce(json({}, 404))
+      .mockResolvedValueOnce(json({ tables: [] }))
+      .mockResolvedValueOnce(json({ id: 'table' }))
+      .mockResolvedValueOnce(json({ records: [] }))
+    await checkStudioStorage()
+    const request = fetchMock.mock.calls[2][1]
+    expect(request.method).toBe('POST')
+    expect(JSON.parse(request.body).name).toBe('Studio Calendar Connection')
+  })
+  it('never overwrites an existing table when storage is misconfigured', async () => {
+    fetchMock
+      .mockResolvedValueOnce(json({}, 422))
+      .mockResolvedValueOnce(
+        json({ tables: [{ name: 'Studio Calendar Connection' }] })
+      )
+    await expect(checkStudioStorage()).rejects.toThrow('storage is unavailable')
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
   it('does not use Google when no account is connected', async () => {
     fetchMock.mockResolvedValueOnce(json({ records: [] }))
     await expect(getStudioAccessToken()).rejects.toThrow('not connected')
