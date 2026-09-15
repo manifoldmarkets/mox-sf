@@ -106,6 +106,9 @@ export const env = {
   // Public base URL for the board (used in email/Discord links).
   get TASKS_BASE_URL() { return optional('TASKS_BASE_URL', 'https://tasks.moxsf.com') },
 
+  // Google studio connection: sensitive Production-only Vercel configuration.
+  get STUDIO_CALENDAR_CONNECTION() { return optional('STUDIO_CALENDAR_CONNECTION') },
+
   // Shared/public
   NODE_ENV,
   NEXT_PUBLIC_BASE_URL,

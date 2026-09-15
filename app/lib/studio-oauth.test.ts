@@ -28,8 +28,7 @@ vi.mock('./session', () => ({ requireStaff: mocks.staff }))
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 vi.mock('iron-session', () => ({ getIronSession: async () => mocks.pending }))
 vi.mock('./studio-calendar', () => ({
-  checkStudioStorage: mocks.storage,
-  saveStudioConnection: mocks.save,
+  sealStudioConnection: mocks.save,
   STUDIO_OWNER_EMAIL: 'carolina@moxsf.com',
   STUDIO_SCOPE: 'https://www.googleapis.com/auth/calendar.events',
   STUDIO_CALENDAR_ID: 'studio',

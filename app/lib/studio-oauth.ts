@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { env } from './env'
 import { requireStaff } from './session'
 import {
-  checkStudioStorage,
-  saveStudioConnection,
+  sealStudioConnection,
   STUDIO_OWNER_EMAIL,
   STUDIO_SCOPE,
   STUDIO_CALENDAR_ID,
@@ -68,14 +67,6 @@ export async function startStudioConsent(request: NextRequest) {
     return result('Invalid origin', 403)
   if (!env.TASKS_GOOGLE_CLIENT_ID || !env.TASKS_GOOGLE_CLIENT_SECRET)
     return result('Google OAuth client is not configured.', 503)
-  try {
-    await checkStudioStorage()
-  } catch (error) {
-    return result(
-      error instanceof Error ? error.message : 'Calendar storage unavailable',
-      503
-    )
-  }
   const pending = await pendingConsent()
   pending.state = `studio.${randomBytes(32).toString('base64url')}`
   pending.verifier = randomBytes(32).toString('base64url')
@@ -185,18 +176,24 @@ export async function finishStudioConsent(request: NextRequest) {
       return result(
         'Google Calendar API is unavailable or this account cannot access the studio calendar. Enable the Calendar API and check calendar sharing before reconnecting.'
       )
-    await saveStudioConnection({
+    const credential = await sealStudioConnection({
       email: STUDIO_OWNER_EMAIL,
       refreshToken: token.refresh_token,
     })
-    return NextResponse.redirect(
-      new URL('/portal/studio/connect?connected=1', env.NEXT_PUBLIC_BASE_URL),
-      303
-    )
+    return new NextResponse(credential, {
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition':
+          'attachment; filename="mox-studio-connection.txt"',
+        'Cache-Control': 'no-store',
+        'Referrer-Policy': 'no-referrer',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    })
   } catch {
     // Never log authorization codes, tokens, or credential-bearing responses.
     return result(
-      'Could not save the connection. Check calendar credential storage and reconnect.',
+      'Could not prepare the Google connection. Please reconnect.',
       503
     )
   }
