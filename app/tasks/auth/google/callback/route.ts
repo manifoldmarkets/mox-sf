@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { env } from '@/app/lib/env'
 import { createClaimerSession } from '@/app/lib/tasks-auth'
+import { finishStudioConsent } from '@/app/lib/studio-oauth'
 
 interface GoogleUser {
   email?: string
@@ -14,6 +15,10 @@ interface GoogleUser {
  * `mox-tasks` claimer session and returns to the originating /tasks page.
  */
 export async function GET(request: NextRequest) {
+  // Reuse the registered redirect URI; keep studio consent isolated from task login.
+  if (request.nextUrl.searchParams.get('state')?.startsWith('studio.')) {
+    return finishStudioConsent(request)
+  }
   const params = request.nextUrl.searchParams
   const code = params.get('code')
   const state = params.get('state')
