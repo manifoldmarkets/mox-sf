@@ -172,10 +172,44 @@ export async function finishStudioConsent(request: NextRequest) {
         cache: 'no-store',
       }
     )
-    if (!calendar.ok)
+    if (!calendar.ok) {
+      const failure = await calendar.json().catch(() => null)
+      // Only expose known error identifiers, never Google's raw response or tokens.
+      const reasons = [
+        ...(Array.isArray(failure?.error?.errors)
+          ? failure.error.errors.map((item: { reason?: string }) => item.reason)
+          : []),
+        ...(Array.isArray(failure?.error?.details)
+          ? failure.error.details.map(
+              (item: { reason?: string }) => item.reason
+            )
+          : []),
+      ]
+      if (
+        reasons.includes('accessNotConfigured') ||
+        reasons.includes('SERVICE_DISABLED')
+      ) {
+        const project = env.TASKS_GOOGLE_CLIENT_ID.match(/^\d+(?=-)/)?.[0]
+        const link =
+          'https://console.cloud.google.com/apis/library/calendar-json.googleapis.com' +
+          (project ? `?project=${project}` : '')
+        return result(
+          `Google Calendar API is disabled. Open ${link} and click Enable, then reconnect the studio calendar.`
+        )
+      }
+      if (calendar.status === 404 || reasons.includes('notFound'))
+        return result(
+          `Google cannot find the studio calendar for ${STUDIO_OWNER_EMAIL}. Share the studio calendar with that account with "Make changes to events" permission, then reconnect.`
+        )
+      if (calendar.status === 403)
+        return result(
+          `Google denied calendar access (403). Check that ${STUDIO_OWNER_EMAIL} has "Make changes to events" permission on the studio calendar and that your Google Workspace administrator allows Calendar API access.`
+        )
       return result(
-        'Google Calendar API is unavailable or this account cannot access the studio calendar. Enable the Calendar API and check calendar sharing before reconnecting.'
+        `Google Calendar access failed (HTTP ${calendar.status}). Please reconnect in a few minutes.`,
+        502
       )
+    }
     const credential = await sealStudioConnection({
       email: STUDIO_OWNER_EMAIL,
       refreshToken: token.refresh_token,

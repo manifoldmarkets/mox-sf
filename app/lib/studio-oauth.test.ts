@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 import { startStudioConsent, finishStudioConsent } from './studio-oauth'
 
@@ -51,6 +51,63 @@ const start = (origin = 'https://moxsf.com') =>
     method: 'POST',
     headers: { origin },
   })
+afterEach(() => vi.unstubAllGlobals())
+
+describe('calendar connection preflight', () => {
+  async function finish(status: number, body: unknown) {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(
+          Response.json({
+            access_token: 'private-access',
+            refresh_token: 'private-refresh',
+            scope: 'https://www.googleapis.com/auth/calendar.events',
+          })
+        )
+        .mockResolvedValueOnce(
+          Response.json({ email: 'carolina@moxsf.com', verified_email: true })
+        )
+        .mockResolvedValueOnce(Response.json(body, { status }))
+    )
+    return finishStudioConsent(
+      new NextRequest(
+        'https://moxsf.com/tasks/auth/google/callback?state=studio.valid&code=test'
+      )
+    )
+  }
+  it('gives an enable link when Google reports a disabled API', async () => {
+    const response = await finish(403, {
+      error: { details: [{ reason: 'SERVICE_DISABLED' }] },
+    })
+    expect(await response.text()).toContain(
+      'https://console.cloud.google.com/apis/library/calendar-json.googleapis.com'
+    )
+    expect(mocks.save).not.toHaveBeenCalled()
+  })
+  it('distinguishes missing calendar access from disabled API', async () => {
+    const response = await finish(404, {
+      error: { errors: [{ reason: 'notFound' }] },
+    })
+    expect(await response.text()).toContain('Make changes to events')
+    expect(mocks.save).not.toHaveBeenCalled()
+  })
+  it('does not expose unrecognized Google response contents', async () => {
+    const response = await finish(500, { error: { message: 'private-access' } })
+    expect(await response.text()).toBe(
+      'Google Calendar access failed (HTTP 500). Please reconnect in a few minutes.'
+    )
+  })
+  it('downloads a sealed credential only after successful preflight', async () => {
+    mocks.save.mockResolvedValue('sealed-credential')
+    const response = await finish(200, { items: [] })
+    expect(response.headers.get('content-disposition')).toContain(
+      'mox-studio-connection.txt'
+    )
+    expect(await response.text()).toBe('sealed-credential')
+  })
+})
 describe('studio consent authorization', () => {
   it('blocks nonstaff', async () => {
     mocks.staff.mockResolvedValue(null)
