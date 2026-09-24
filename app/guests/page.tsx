@@ -395,10 +395,10 @@ export default function GuestsPage() {
               name="Xander Balwit, Asimov Press"
               quote="Austin and his staff have gone to great lengths to make Mox incredibly accommodating. Not only is the space already equipped with useful things like utensils, printers, and AV, but the operational staff are communicative, flexible, and incredibly helpful.... I definitely hope to find occasions to host more events at Mox down the line, and would highly recommend it to anyone I know who is looking for a slightly more casual, but exceedingly well-managed venue."
             />
-            <TestimonialCard
+            {/* <TestimonialCard
               name="Sawyer Bernath, Tarbell Fellowship"
               quote="Mox is a spacious and welcoming coworking space, with kind, helpful staff. We would be happy to host an event there again."
-            />
+            /> */}
           </div>
         </section>
 
