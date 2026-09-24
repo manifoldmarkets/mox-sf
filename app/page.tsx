@@ -280,16 +280,19 @@ export default async function Component() {
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             <a
-              href="https://www.tarbellfellowship.org/"
+              href="https://manifund.org/acx-grants"
               target="_blank"
               rel="noopener noreferrer"
-              className="aspect-[3/1] bg-[#123c75] hover:bg-[#0f2f5c] transition-all duration-200 flex items-center justify-center overflow-hidden p-3"
+              className="aspect-[3/1] bg-[#0b1530] hover:bg-[#081025] transition-all duration-200 flex items-center justify-center overflow-hidden p-3 gap-3"
             >
               <img
-                src="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png"
-                alt="Tarbell logo"
-                className="h-full w-auto object-contain scale-250"
+                src="/logos/acx.jpg"
+                alt="ACX Grants logo"
+                className="h-full w-auto object-contain"
               />
+              <span className="text-2xl text-white uppercase font-sans tracking-wide">
+                ACX Grants
+              </span>
             </a>
 
             <a

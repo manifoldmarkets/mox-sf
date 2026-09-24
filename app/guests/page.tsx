@@ -178,10 +178,10 @@ export default function GuestsPage() {
               bgColor="bg-white"
             />
             <PartnerCard
-              name="Tarbell"
-              url="https://www.tarbellfellowship.org/"
-              logoUrl="https://static.wixstatic.com/media/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png/v1/fill/w_500,h_500,al_c/dbfe9b_2a27ec41f7b346089b2d5da7dea5a119~mv2.png"
-              bgColor="bg-[#123c75]"
+              name="ACX Grants"
+              url="https://manifund.org/acx-grants"
+              logoUrl="/logos/acx.jpg"
+              bgColor="bg-[#0b1530]"
             />
             <PartnerCard
               name="MIRI"
