@@ -7,7 +7,7 @@ import {
   type InviteEntry,
 } from './get-invite-list'
 
-export function JoinContent(props: {
+function JoinContent(props: {
   firstName?: string
   specialInvite?: string | null
   airtableRecordId?: string | null
