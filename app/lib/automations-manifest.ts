@@ -78,6 +78,15 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "summary": "Nightly: pulls Verkada door-access events and writes one Attendance record per person per day (powers the GEF weekly digest)."
   },
   {
+    "id": "cron/sync-discord-roles",
+    "filePath": "app/api/cron/sync-discord-roles/route.ts",
+    "routePath": "/api/cron/sync-discord-roles",
+    "type": "cron",
+    "cronSchedule": "*/5 * * * *",
+    "httpMethod": "GET",
+    "summary": "Syncs Airtable membership tiers and program roles to Discord every five minutes; retries missing members after joining"
+  },
+  {
     "id": "cron/tasks-digest",
     "filePath": "app/api/cron/tasks-digest/route.ts",
     "routePath": "/api/cron/tasks-digest",
@@ -149,7 +158,7 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/portal/api/bulk-sync-discord-roles",
     "type": "portal-action",
     "httpMethod": "POST",
-    "summary": "Staff-only bulk sync of all members' Discord roles to match their Airtable tiers"
+    "summary": "Staff-only bulk sync of Airtable membership tiers and program participant roles"
   },
   {
     "id": "portal/pause-subscription",
@@ -173,7 +182,7 @@ export const AUTOMATIONS: AutomationManifestEntry[] =
     "routePath": "/portal/api/sync-discord-role",
     "type": "portal-action",
     "httpMethod": "POST",
-    "summary": "Syncs a single member's Discord role to match their Airtable tier"
+    "summary": "Syncs a member's tier and program roles from their authorized Airtable record"
   },
   {
     "id": "portal/unlock-door",

@@ -41,6 +41,7 @@ interface PersonFields {
   Photo?: { url: string; filename: string }[]
   Tier?: string
   Status?: string
+  Program?: string[]
   'Work thing'?: string | null
   'Work thing URL'?: string | null
   'Fun thing'?: string | null
@@ -240,7 +241,12 @@ export async function POST(request: Request) {
     if (trimmedDiscord && isDiscordConfigured()) {
       const tier = data.fields.Tier || null
       const status = data.fields.Status || null
-      discordSyncResult = await syncDiscordRole(trimmedDiscord, tier, status)
+      discordSyncResult = await syncDiscordRole(
+        trimmedDiscord,
+        tier,
+        status,
+        data.fields.Program || []
+      )
     }
 
     return Response.json({
