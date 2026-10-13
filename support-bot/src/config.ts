@@ -213,7 +213,15 @@ export const EnvSchema = z.object({
   OPS_ALERT_USER_ID: z.string().optional(),
   DATABASE_PATH: z.string().default("./data/mox.db"),
   PHOTO_DIR: z.string().default("./data/photos"),
-  HEALTH_PORT: z.coerce.number().int().default(8080),
+  // Railway (and most hosts) hand the app a PORT; use it unless HEALTH_PORT is set explicitly
+  HEALTH_PORT: z.coerce.number().int().default(Number(process.env.PORT ?? 8080)),
+  /** One-time: download this SQLite file into DATABASE_PATH when it doesn't exist yet (moving hosts). */
+  SEED_DATABASE_URL: z.string().url().optional(),
+  /** Starting with no database is refused unless this is "true": an empty one restarts ticket numbering. */
+  ALLOW_FRESH_DATABASE: z
+    .string()
+    .default("false")
+    .transform((v) => ["true", "1", "yes"].includes(v.toLowerCase())),
   TZ: z.string().default("America/Los_Angeles"),
   LOG_LEVEL: z.string().default("info"),
   CONFIG_PATH: z.string().default("config.yaml"),

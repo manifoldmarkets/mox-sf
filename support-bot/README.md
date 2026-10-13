@@ -27,11 +27,13 @@ npm run register-commands   # /log and /mox, once per guild
 npm run dev                 # tsx watch
 ```
 
-Production: `npm run build && npm start`. The process needs a persistent volume for
-`DATABASE_PATH` and `PHOTO_DIR` (Railway/Fly). It refuses to start if:
+Production runs on Railway: see [`docs/DEPLOY.md`](docs/DEPLOY.md). Locally, `npm run build && npm start`.
+The process needs a persistent volume for `DATABASE_PATH` and `PHOTO_DIR`. It refuses to start if:
 
 - `config.yaml` or `.env` still contains a `<<PLACEHOLDER>>` (E30 — the key is named);
-- the live Airtable table is missing a field the bot writes (§3.3).
+- the live Airtable table is missing a field the bot writes (§3.3);
+- there's no database and neither `SEED_DATABASE_URL` nor `ALLOW_FRESH_DATABASE=true` is set, so ticket numbering
+  can never restart by accident.
 
 `/health` on `HEALTH_PORT` returns `200 {ok, uptime, queueDepth, open, triage}` — point an uptime
 monitor at it. Bot-offline is not detectable from inside the bot.
