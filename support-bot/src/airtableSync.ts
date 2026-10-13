@@ -24,6 +24,7 @@ export type SyncOp =
   | { op: "promote"; priority: "P0" | "P1" | "P2"; owner?: OwnerKey }
   | { op: "close_idea" }
   | { op: "decline_idea"; reason: string }
+  | { op: "idea_owner"; owner: OwnerKey }
   | { op: "note"; text: string };
 
 const PRIO_BY_NAME = Object.fromEntries(Object.entries(PRIORITY_NAME).map(([k, v]) => [v, k])) as Record<string, Priority>;
@@ -60,9 +61,11 @@ export function planSync(
   if (isIdea) {
     if (row.status === "Done") return [{ op: "close_idea" }];
     if (row.status === "Won't do") return [{ op: "decline_idea", reason: row.resolution ?? `Declined in Airtable by ${editor}` }];
+    // a work priority promotes it; an owner alone just says who's looking after the idea
     const p = workPrio(row.priority);
-    const o = ownerKey(row.owner);
-    if (p || o) return [{ op: "promote", priority: p ?? "P2", owner: o }];
+    if (p) return [{ op: "promote", priority: p, owner: ownerKey(row.owner) }];
+    const o = row.owner === OWNER_NAME.unassigned ? "unassigned" : ownerKey(row.owner);
+    if (o && o !== (t.owner_key ?? "unassigned")) return [{ op: "idea_owner", owner: o }];
     return [];
   }
 
@@ -152,6 +155,7 @@ export async function syncFromAirtable(app: App): Promise<{ applied: number }> {
           case "promote": await actions.promoteIdea(app, cur, { priority: op.priority, ownerKey: op.owner }, by); break;
           case "close_idea": await actions.closeIdea(app, cur, by); break;
           case "decline_idea": await actions.declineIdea(app, cur, op.reason, by); break;
+          case "idea_owner": await actions.setIdeaOwner(app, cur, op.owner, by); break;
           case "note": await actions.saveResolutionNote(app, cur, op.text); break;
         }
       }
