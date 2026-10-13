@@ -128,6 +128,10 @@ export interface AirtableRow {
   lastEditedBy: string | null;
 }
 
+/** A ticket whose Airtable row someone deleted. Its old record id is kept after the prefix for the audit trail. */
+export const REMOVED_PREFIX = "removed:";
+export const isRemovedInAirtable = (t: { mirror_record_id: string | null }) => !!t.mirror_record_id?.startsWith(REMOVED_PREFIX);
+
 export class AirtableError extends Error {
   constructor(
     public readonly status: number,
@@ -230,6 +234,7 @@ export class AirtableMirror {
   /** kind = question is never written to the board (§3.3). */
   private writable(t: Ticket): boolean {
     if (t.kind === "question") return false;
+    if (isRemovedInAirtable(t)) return false; // someone deleted the row on purpose: never recreate it
     // not_a_ticket rows are never created; an existing row (an undone chat idea) is updated so the board stays honest
     if (t.status === "not_a_ticket") return t.mirror_record_id !== null;
     return true;
@@ -302,10 +307,18 @@ export class AirtableMirror {
         const dupRecord = t.duplicate_of ? (this.db.getTicket(t.duplicate_of)?.mirror_record_id ?? null) : null;
         const fields = this.fields(t, { duplicateRecordId: dupRecord });
         if (t.mirror_record_id) {
-          await this.request(`${API}/${this.baseId}/${this.tableId}/${t.mirror_record_id}`, {
-            method: "PATCH",
-            body: JSON.stringify({ fields }),
-          });
+          try {
+            await this.request(`${API}/${this.baseId}/${this.tableId}/${t.mirror_record_id}`, {
+              method: "PATCH",
+              body: JSON.stringify({ fields }),
+            });
+          } catch (err) {
+            if (err instanceof AirtableError && (err.status === 404 || (err.status === 422 && /does not exist|ROW_DOES_NOT_EXIST|NOT_FOUND/i.test(err.message)))) {
+              log.info({ ticket: t.id }, "Airtable row was deleted; skipping the write (the sync will treat it as removed)");
+              return;
+            }
+            throw err;
+          }
           this.db.updateTicket(t.id, { mirror_written_at: new Date().toISOString() });
         } else {
           const rec = await this.request<{ id: string }>(`${API}/${this.baseId}/${this.tableId}`, {

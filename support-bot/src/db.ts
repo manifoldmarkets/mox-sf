@@ -383,6 +383,15 @@ export class Db {
     return !!this.sqlite.prepare(`SELECT 1 FROM mirror_queue WHERE ticket_id = ? AND op IN ('create','update') LIMIT 1`).get(ticketId);
   }
 
+  /** tickets that currently have a live Airtable row */
+  ticketsWithMirrorRecord(): Ticket[] {
+    return this.sqlite.prepare(`SELECT * FROM tickets WHERE mirror_record_id IS NOT NULL AND mirror_record_id NOT LIKE 'removed:%'`).all() as Ticket[];
+  }
+
+  dropMirrorQueue(ticketId: number): void {
+    this.sqlite.prepare(`DELETE FROM mirror_queue WHERE ticket_id = ?`).run(ticketId);
+  }
+
   getTicketByMirrorRecord(recordId: string): Ticket | undefined {
     return this.sqlite.prepare(`SELECT * FROM tickets WHERE mirror_record_id = ?`).get(recordId) as Ticket | undefined;
   }

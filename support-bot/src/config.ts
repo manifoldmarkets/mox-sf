@@ -146,6 +146,8 @@ export const ConfigSchema = z.object({
     table_id: z.string().regex(/^tbl[A-Za-z0-9]{14}$/, "must be an Airtable table id (tbl…)"),
     view_id: z.string().regex(/^viw[A-Za-z0-9]{14}$/).optional(),
     first_ticket_number: z.number().int().positive().default(100),
+    /** Safety valve: more rows than this vanishing in one sync looks like a broken read, not deletions. */
+    max_removals_per_sync: z.number().int().positive().default(15),
     /** Link to the board, for footers and links. */
     board_url: z.string().url().optional(),
   }),
