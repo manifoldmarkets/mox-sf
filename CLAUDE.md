@@ -6,6 +6,7 @@ This project uses Bun as its package manager. Use `bun install`
 - **`docs/api-endpoints.md`** - API route documentation
 - **`docs/discord-integration.md`** - Discord bot setup and integration
 - **`docs/deployment.md`** - Deployment process
+- **`support-bot/README.md`** - The Discord building-support bot (#report-an-issue). A separate Node service with its own npm tooling, not part of the Next.js app
 - **`docs/workflows/`** - Detailed workflow docs
 
 Please help keep these up to date.
