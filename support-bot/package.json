@@ -2,7 +2,7 @@
   "name": "mox-support-bot",
   "version": "0.1.0",
   "private": true,
-  "description": "Mox building support bot — Discord intake, Haiku triage, Notion mirror",
+  "description": "Mox building support bot \u2014 Discord intake, Haiku triage, Notion mirror",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -15,7 +15,8 @@
     "test": "vitest run",
     "eval": "tsx scripts/eval.ts",
     "register-commands": "tsx scripts/registerCommands.ts",
-    "check-config": "tsx scripts/checkConfig.ts"
+    "check-config": "tsx scripts/checkConfig.ts",
+    "export-seed": "tsx scripts/exportSeed.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",

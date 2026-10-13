@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import type { App } from "./app.js";
 import { ConfigError, loadChatIntakePrompt, loadConfig, loadDotEnv, loadEnv, loadPrompt, loadTicketQaPrompt } from "./config.js";
 import { Db } from "./db.js";
+import { ensureDatabase } from "./seed.js";
 import { log } from "./log.js";
 import { AirtableMirror } from "./airtable.js";
 import { OpsAlerts } from "./ops.js";
@@ -62,6 +63,16 @@ async function main(): Promise<void> {
   }
   process.env.TZ = env.TZ;
 
+  try {
+    const seeded = await ensureDatabase({ dbPath: env.DATABASE_PATH, seedUrl: env.SEED_DATABASE_URL, allowFresh: env.ALLOW_FRESH_DATABASE });
+    if (seeded !== "existing") log.warn({ seeded, path: env.DATABASE_PATH }, "database created");
+  } catch (err) {
+    if (err instanceof ConfigError) {
+      console.error(`\n✖ ${err.message}\n`);
+      process.exit(1);
+    }
+    throw err;
+  }
   const db = new Db(env.DATABASE_PATH, cfg.airtable.first_ticket_number);
   fs.mkdirSync(env.PHOTO_DIR, { recursive: true });
 
