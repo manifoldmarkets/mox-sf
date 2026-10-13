@@ -8,6 +8,7 @@ import { CLOSED_STATUSES, type Ticket } from "../db.js";
 import { fetchSendable } from "../discord.js";
 import { digestHeader, digestItemLine, digestLists } from "../render.js";
 import { ensureDigestSummaries } from "../digestSummary.js";
+import { syncFromAirtable } from "../airtableSync.js";
 import { startOfLocalDayIso } from "../util/time.js";
 
 export const DIGEST_REQUEST_KEY = "digest_request";
@@ -17,6 +18,7 @@ function dayLabel(tz: string): string {
 }
 
 export async function postIssueDigest(app: App): Promise<{ messages: number; open: number; closed: number; ideas: number }> {
+  await syncFromAirtable(app); // pick up anything changed in Airtable first, so the digest is current
   const tz = app.cfg.claudio_hours.tz;
   const since = startOfLocalDayIso(tz);
   const byId = new Map<number, Ticket>();

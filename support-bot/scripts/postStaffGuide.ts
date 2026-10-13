@@ -44,7 +44,7 @@ function buildText(botId: string): string {
     `• **Ask or instruct:** tag ${bot} on a ticket (its thread, its digest line, or "MOX-123") to ask about it, or tell it to reprioritize, reassign, close or won't-do it.`,
     "",
     "**Tracking**",
-    board ? `• **Airtable has every ticket:** ${board}. Each row links to its Discord thread or message. Change status from the card, not Airtable.` : "",
+    board ? `• **Airtable has every ticket:** ${board}. Change status, owner or priority there too: Discord catches up within a minute.` : "",
     "• The **pinned queue** in this channel shows what's open, and a **digest** posts here Mondays at 9am.",
     "• Fixed something in person? `/log what:<what> where:<where>` so it counts.",
   ]

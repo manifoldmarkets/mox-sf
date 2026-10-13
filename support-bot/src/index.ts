@@ -31,6 +31,7 @@ import { mirrorRetryJob } from "./jobs/mirrorRetry.js";
 import { archiveThreadsJob } from "./jobs/archiveThreads.js";
 import { weeklyDigestJob } from "./jobs/weeklyDigest.js";
 import { opsAlertsJob } from "./jobs/opsAlerts.js";
+import { syncFromAirtable } from "./airtableSync.js";
 
 function readVersion(): string {
   try {
@@ -142,6 +143,8 @@ async function main(): Promise<void> {
     cron.schedule("0 * * * *", () => void archiveThreadsJob(app).catch((e) => log.error({ e }, "archiveThreads job")));
     cron.schedule(cfg.digest.cron, () => void weeklyDigestJob(app).catch((e) => log.error({ e }, "weeklyDigest job")), { timezone: cfg.claudio_hours.tz });
     cron.schedule("*/5 * * * *", () => void opsAlertsJob(app).catch((e) => log.error({ e }, "opsAlerts job")));
+    // Airtable is a place people work tickets too: apply their edits every minute
+    cron.schedule("15 * * * * *", () => void syncFromAirtable(app));
 
     log.info({ user: ready.user.tag, guild: cfg.guild_id, version: app.version, ai: !!ai, airtable: mirror.enabled }, "Mox Support Bot online");
     await pinned.ensure().catch((e) => log.error({ e }, "pinned post"));

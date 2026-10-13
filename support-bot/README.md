@@ -45,6 +45,19 @@ and digest are unaffected. Every Airtable write is queued in SQLite instead of s
 alert fires. When the token is added, restart the bot: it checks the live schema, then drains the
 queue and creates every record that was waiting. Nothing is lost.
 
+## Airtable is two-way (2026-10-13)
+
+People can work tickets in Airtable too, including the **Building Tickets** interface (Queue board, By owner,
+Ideas, At a glance). Every minute, and right before any digest, the bot reads the table and applies changes to
+**Status, Owner, Priority, Kind or Resolution** through the same actions as a Discord click: the reporter is
+told, every card and digest line updates, and the change is attributed to whoever made it in Airtable.
+
+Echoes can't happen. A ticket with a bot write still queued is skipped, and a row counts as edited only if its
+**Last edited** time is after the bot last wrote it (`mirror_written_at`). Changes the bot can't act on, like an
+owner who no longer exists or a duplicate without a link, are ignored rather than guessed. Other fields
+(the reporter's words, Discord links) remain bot-owned and are rewritten on the next update. This supersedes
+spec §6.4.3, which kept Airtable write-only.
+
 ## The Airtable table
 
 Created 2026-09-28 in the Mox base. Fields the bot writes: `Name`, `Ticket ID`, `Kind`, `Status`,

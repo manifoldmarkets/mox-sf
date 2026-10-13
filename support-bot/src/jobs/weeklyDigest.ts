@@ -5,6 +5,7 @@ import { DIGEST_RECAP_SYSTEM, weeklyDigest, type DigestData } from "../render.js
 import { ageShort, isoDaysAgo } from "../util/time.js";
 import { ticketRef } from "../util/ids.js";
 import { ensureDigestSummaries } from "../digestSummary.js";
+import { syncFromAirtable } from "../airtableSync.js";
 
 function median(nums: number[]): number | null {
   if (!nums.length) return null;
@@ -20,6 +21,7 @@ function fmtMinutes(m: number): string {
 }
 
 export async function buildDigest(app: App): Promise<string> {
+  await syncFromAirtable(app); // Airtable edits first, so the digest reflects them
   const since = isoDaysAgo(7);
   const closed = app.db.listClosedSince(since);
   const created = app.db.listCreatedSince(since);

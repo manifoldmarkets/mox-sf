@@ -93,6 +93,7 @@ export interface Ticket {
   reporter_told_claim: string | null;
   source_message_url: string | null;
   digest_summary: string | null;
+  mirror_written_at: string | null;
 }
 
 export interface Surface {
@@ -144,7 +145,7 @@ const TICKET_COLUMNS = new Set<string>([
   "card_message_id", "mirror_record_id", "claimed_by", "closed_by", "resolution_note", "wont_do_reason",
   "duplicate_of", "reopen_count", "nudged_at", "escalated_at", "dupe_offer_of", "dupe_offered_at",
   "question_asked_at", "question_resolved", "minutes_spent", "closed_note_until", "redirect_miss",
-  "reporter_told_claim", "source_message_url", "digest_summary",
+  "reporter_told_claim", "source_message_url", "digest_summary", "mirror_written_at",
 ]);
 
 export type TicketPatch = Partial<Omit<Ticket, "id" | "created_at" | "updated_at">>;
@@ -375,6 +376,15 @@ export class Db {
   mirrorQueueOldestMinutes(): number {
     const row = this.sqlite.prepare(`SELECT MIN(created_at) AS oldest FROM mirror_queue`).get() as { oldest: string | null };
     return row.oldest ? (Date.now() - new Date(row.oldest).getTime()) / 60000 : 0;
+  }
+
+  /** a create/update for this ticket is still waiting to be written to Airtable */
+  hasPendingMirrorWrite(ticketId: number): boolean {
+    return !!this.sqlite.prepare(`SELECT 1 FROM mirror_queue WHERE ticket_id = ? AND op IN ('create','update') LIMIT 1`).get(ticketId);
+  }
+
+  getTicketByMirrorRecord(recordId: string): Ticket | undefined {
+    return this.sqlite.prepare(`SELECT * FROM tickets WHERE mirror_record_id = ?`).get(recordId) as Ticket | undefined;
   }
 
   mirrorQueueDepth(): number {

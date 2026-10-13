@@ -116,6 +116,18 @@ interface AirtableField {
   options?: { choices?: { name: string }[] };
 }
 
+export interface AirtableRow {
+  recordId: string;
+  status: string | null;
+  kind: string | null;
+  priority: string | null;
+  owner: string | null;
+  resolution: string | null;
+  claimedBy: string | null;
+  lastEdited: string | null;
+  lastEditedBy: string | null;
+}
+
 export class AirtableError extends Error {
   constructor(
     public readonly status: number,
@@ -294,12 +306,13 @@ export class AirtableMirror {
             method: "PATCH",
             body: JSON.stringify({ fields }),
           });
+          this.db.updateTicket(t.id, { mirror_written_at: new Date().toISOString() });
         } else {
           const rec = await this.request<{ id: string }>(`${API}/${this.baseId}/${this.tableId}`, {
             method: "POST",
             body: JSON.stringify({ fields }),
           });
-          this.db.updateTicket(t.id, { mirror_record_id: rec.id });
+          this.db.updateTicket(t.id, { mirror_record_id: rec.id, mirror_written_at: new Date().toISOString() });
         }
         return;
       }
@@ -344,6 +357,39 @@ export class AirtableMirror {
         return;
       }
     }
+  }
+
+  /** Every row's human-editable fields, for the Airtable -> bot sync. */
+  async listEditableRows(): Promise<AirtableRow[]> {
+    if (!this.token) return [];
+    const names = ["Status", "Kind", "Priority", "Owner", "Resolution", "Claimed by", "Last edited", "Last edited by"];
+    const rows: AirtableRow[] = [];
+    let offset: string | undefined;
+    do {
+      const qs = new URLSearchParams({ pageSize: "100" });
+      for (const n of names) qs.append("fields[]", n);
+      if (offset) qs.set("offset", offset);
+      const page = await this.request<{ records: { id: string; fields: Record<string, unknown> }[]; offset?: string }>(
+        `${API}/${this.baseId}/${this.tableId}?${qs.toString()}`,
+      );
+      for (const r of page.records) {
+        const f = r.fields;
+        const by = f["Last edited by"] as { name?: string; email?: string } | undefined;
+        rows.push({
+          recordId: r.id,
+          status: (f.Status as string) ?? null,
+          kind: (f.Kind as string) ?? null,
+          priority: (f.Priority as string) ?? null,
+          owner: (f.Owner as string) ?? null,
+          resolution: ((f.Resolution as string) ?? "").trim() || null,
+          claimedBy: ((f["Claimed by"] as string) ?? "").trim() || null,
+          lastEdited: (f["Last edited"] as string) ?? null,
+          lastEditedBy: by?.name ?? by?.email ?? null,
+        });
+      }
+      offset = page.offset;
+    } while (offset);
+    return rows;
   }
 
   static describeError(err: unknown): string {
