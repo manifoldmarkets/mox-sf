@@ -32,10 +32,18 @@ describe("Airtable edits become the same actions as Discord clicks", () => {
     expect(planSync(open, rowOf({ priority: "P0 Urgent", owner: "Robin" }), owners, "Jen")).toEqual([{ op: "set_priority", priority: "P0" }, { op: "reassign", owner: "robin" }]);
     expect(planSync(open, rowOf({ priority: "P3 Idea" }), owners, "Jen")).toEqual([{ op: "to_idea" }]);
   });
+  it("an owner on an idea keeps it an idea", () => {
+    expect(planSync(idea, ideaRow({ owner: "Robin" }), owners, "Jen")).toEqual([{ op: "idea_owner", owner: "robin" }]);
+    expect(planSync({ ...idea, owner_key: "robin" }, ideaRow({ owner: "Robin" }), owners, "Jen")).toEqual([]);
+    expect(planSync({ ...idea, owner_key: "robin" }, ideaRow({ owner: "Unassigned" }), owners, "Jen")).toEqual([{ op: "idea_owner", owner: "unassigned" }]);
+    expect(planSync(idea, ideaRow({ owner: "Whit" }), owners, "Jen")).toEqual([]);
+  });
+
   it("issue <-> idea", () => {
     expect(planSync(open, rowOf({ kind: "Idea" }), owners, "Jen")).toEqual([{ op: "to_idea" }]);
     expect(planSync(idea, ideaRow({ kind: "Issue", priority: "P1 Important", owner: "Carolina" }), owners, "Jen")).toEqual([{ op: "promote", priority: "P1", owner: "carolina" }]);
     expect(planSync(idea, ideaRow({ priority: "P2 No rush" }), owners, "Jen")).toEqual([{ op: "promote", priority: "P2", owner: undefined }]);
+    expect(planSync(idea, ideaRow({ priority: "P1 Important", owner: "Robin" }), owners, "Jen")).toEqual([{ op: "promote", priority: "P1", owner: "robin" }]);
     expect(planSync(idea, ideaRow({ status: "Done" }), owners, "Jen")).toEqual([{ op: "close_idea" }]);
     expect(planSync(idea, ideaRow({ status: "Won't do", resolution: "too pricey" }), owners, "Jen")).toEqual([{ op: "decline_idea", reason: "too pricey" }]);
   });

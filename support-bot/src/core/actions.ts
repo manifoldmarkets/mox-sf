@@ -211,7 +211,7 @@ export async function declineDuplicate(app: App, t: Ticket): Promise<void> {
 
 /**
  * Staff decided an idea is real work: give it a priority and an owner, open its private thread, post the
- * card and tell the reporter. `ownerKey` overrides routing; otherwise route() picks as for any issue.
+ * card and tell the reporter. `ownerKey` overrides routing, then the idea's own owner; otherwise route() picks as for any issue.
  */
 export async function promoteIdea(app: App, t: Ticket, opts: { priority: Exclude<Priority, "P3">; ownerKey?: OwnerKey }, by: Actor): Promise<Ticket> {
   if (t.status !== "logged") return t;
@@ -225,11 +225,13 @@ export async function promoteIdea(app: App, t: Ticket, opts: { priority: Exclude
     suggestedOwner: t.suggested_owner,
     confidence: t.triage_confidence,
   });
-  const owner = opts.ownerKey ?? r.ownerKey;
+  const ideaOwner = t.owner_key && t.owner_key !== "unassigned" ? t.owner_key : undefined; // someone already looking after it keeps it
+  const chosen = opts.ownerKey ?? ideaOwner;
+  const owner = chosen ?? r.ownerKey;
   app.db.recordEvent(t.id, "promote", by.id, "idea", { priority: opts.priority, owner });
   let next = app.db.updateTicket(t.id, { kind: "issue", category, priority: opts.priority, priority_source: "staff_override" });
   next = await openTicketThread(app, next, { pingReporter: true });
-  next = transition(app.db, next, "routed", { owner_key: owner, routed_by: opts.ownerKey ? null : r.routedBy }, by.id);
+  next = transition(app.db, next, "routed", { owner_key: owner, routed_by: chosen ? null : r.routedBy }, by.id);
   next = await postThreadCard(app, next);
   await deliver(app, next);
   const plan = deliveryPlan(app.cfg, owner, opts.priority);
@@ -301,6 +303,15 @@ export async function closeIdea(app: App, t: Ticket, by: Actor): Promise<void> {
 export async function declineIdea(app: App, t: Ticket, reason: string, by: Actor): Promise<void> {
   if (t.status !== "logged") return;
   const next = transition(app.db, t, "not_a_ticket", { wont_do_reason: reason, closed_by: by.name, closed_at: nowIso() }, by.id);
+  app.mirror.enqueueUpsert(next);
+  app.queue.schedule();
+}
+
+/** Who's looking after an idea. It stays an idea: no thread post, no ping. */
+export async function setIdeaOwner(app: App, t: Ticket, toKey: OwnerKey, by: Actor): Promise<void> {
+  if (t.status !== "logged" || toKey === (t.owner_key ?? "unassigned")) return;
+  app.db.recordEvent(t.id, "idea_owner", by.id, t.owner_key, toKey);
+  const next = app.db.updateTicket(t.id, { owner_key: toKey });
   app.mirror.enqueueUpsert(next);
   app.queue.schedule();
 }

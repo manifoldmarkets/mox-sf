@@ -52,6 +52,9 @@ Ideas, At a glance). Every minute, and right before any digest, the bot reads th
 **Status, Owner, Priority, Kind or Resolution** through the same actions as a Discord click: the reporter is
 told, every card and digest line updates, and the change is attributed to whoever made it in Airtable.
 
+On an idea, Done or Won't do closes it, and an Owner just says who's looking after it: it stays an idea, with no
+thread and no ping. A P0–P2 priority, or Kind → Issue, turns it into a work item (keeping that owner).
+
 Echoes can't happen. A ticket with a bot write still queued is skipped, and a row counts as edited only if its
 **Last edited** time is after the bot last wrote it (`mirror_written_at`). Changes the bot can't act on, like an
 owner who no longer exists or a duplicate without a link, are ignored rather than guessed. Other fields
