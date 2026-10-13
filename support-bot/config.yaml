@@ -195,7 +195,7 @@ airtable:
   base_id:  "appkHZ2UvU6SouT5y"
   table_id: "tblu7WNEE8R6YBZHH"   # Tickets
   view_id:  "viwRPKws8CuDcgLge"
-  board_url: "https://airtable.com/appkHZ2UvU6SouT5y/tblu7WNEE8R6YBZHH/viwRPKws8CuDcgLge"
+  board_url: "https://airtable.com/appkHZ2UvU6SouT5y/pagVjMYZRr3igzL70"   # Building Tickets interface, Queue board
   first_ticket_number: 100
 
 # ──────────────────────────────────────────────────────────────
