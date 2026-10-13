@@ -5,7 +5,7 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     include: ['**/*.test.ts', '**/*.test.tsx'],
-    exclude: ['node_modules', '.next'],
+    exclude: ['node_modules', '.next', 'support-bot/**'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
