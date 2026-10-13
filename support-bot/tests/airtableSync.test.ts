@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { planSync } from "../src/airtableSync.js";
+import { planRemovals, planSync } from "../src/airtableSync.js";
 
 const owners = ["jake", "carolina", "robin", "claudio", "contractors", "all_staff", "unassigned"];
 const open = { status: "routed" as const, kind: "issue" as const, priority: "P1" as const, owner_key: "jake" as const, resolution_note: null, wont_do_reason: null };
@@ -43,5 +43,17 @@ describe("Airtable edits become the same actions as Discord clicks", () => {
     expect(planSync(open, rowOf({ owner: "Whit" }), owners, "Jen")).toEqual([]); // not an owner any more
     expect(planSync(open, rowOf({ owner: "Unassigned" }), owners, "Jen")).toEqual([]);
     expect(planSync(open, rowOf({ status: "Duplicate" }), owners, "Jen")).toEqual([]); // needs a link to the original
+  });
+});
+
+describe("rows deleted in Airtable", () => {
+  const known = [{ id: 100, recordId: "recA" }, { id: 119, recordId: "recB" }, { id: 120, recordId: "recC" }];
+  it("tickets whose row is gone are removed", () => {
+    expect(planRemovals(known, new Set(["recC"]), 15)).toEqual([100, 119]);
+    expect(planRemovals(known, new Set(["recA", "recB", "recC"]), 15)).toEqual([]);
+  });
+  it("an empty read or a mass disappearance is treated as a broken read, not deletions", () => {
+    expect(planRemovals(known, new Set(), 15)).toBeNull();
+    expect(planRemovals(known, new Set(["recC"]), 1)).toBeNull();
   });
 });

@@ -89,6 +89,16 @@ export function planSync(
   return [];
 }
 
+/**
+ * Pure: which known tickets lost their Airtable row? Refuses (returns null) when the answer looks like a
+ * broken read rather than people deleting rows: an empty table, or more removals at once than `maxAtOnce`.
+ */
+export function planRemovals(known: { id: number; recordId: string }[], seenRecordIds: Set<string>, maxAtOnce: number): number[] | null {
+  if (seenRecordIds.size === 0 && known.length > 0) return null;
+  const gone = known.filter((k) => !seenRecordIds.has(k.recordId)).map((k) => k.id);
+  return gone.length > maxAtOnce ? null : gone;
+}
+
 let running = false;
 
 /** Pull every row once and apply people's edits. Safe to call any time; overlapping calls are skipped. */
@@ -98,6 +108,22 @@ export async function syncFromAirtable(app: App): Promise<{ applied: number }> {
   let applied = 0;
   try {
     const rows = await app.mirror.listEditableRows();
+
+    // Rows people deleted: close those tickets quietly (unless this looks like a broken read)
+    const known = app.db.ticketsWithMirrorRecord().map((t) => ({ id: t.id, recordId: t.mirror_record_id! }));
+    const gone = planRemovals(known, new Set(rows.map((r) => r.recordId)), app.cfg.airtable.max_removals_per_sync);
+    if (gone === null) {
+      await app.ops.send("airtable_mass_removal", `Airtable sync paused removals: ${known.length - rows.length} rows look deleted at once (or the table read came back empty). Nothing was closed. Check the Tickets table.`);
+    } else {
+      for (const id of gone) {
+        const t = app.db.getTicket(id);
+        if (!t) continue;
+        await actions.removeFromAirtable(app, t);
+        app.log.info({ ticket: id }, "row deleted in Airtable: ticket removed");
+        applied++;
+      }
+    }
+
     for (const row of rows) {
       const t = app.db.getTicketByMirrorRecord(row.recordId);
       if (!t) continue;

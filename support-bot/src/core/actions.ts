@@ -6,6 +6,8 @@ import type { App } from "../app.js";
 import type { Ticket } from "../db.js";
 import { deliver, postThreadCard, retireChannelCards } from "../cards.js";
 import { openTicketThread } from "./createTicket.js";
+import { REMOVED_PREFIX } from "../airtable.js";
+import { refreshSurfaces } from "../cards.js";
 import { ownerDisplay, type OwnerKey, type Priority } from "../config.js";
 import { dmUser, fetchMessage } from "../discord.js";
 import {
@@ -268,6 +270,23 @@ export async function moveToIdeas(app: App, t: Ticket, by: Actor): Promise<Ticke
   app.mirror.enqueueUpsert(next);
   app.queue.schedule();
   return next;
+}
+
+/**
+ * Someone deleted the ticket's Airtable row: "this shouldn't be a ticket". Close it everywhere, quietly:
+ * no message to the reporter, cards collapse, the thread is archived, and the row is never recreated.
+ */
+export async function removeFromAirtable(app: App, t: Ticket): Promise<void> {
+  const reason = "Removed in Airtable";
+  let next = t;
+  if (t.status === "routed" || t.status === "claimed") next = transition(app.db, t, "won't_do", { wont_do_reason: reason, closed_by: "Airtable" }, "airtable");
+  else if (t.status === "logged" || t.status === "new") next = transition(app.db, t, "not_a_ticket", { wont_do_reason: reason, closed_by: "Airtable", closed_at: nowIso() }, "airtable");
+  app.db.dropMirrorQueue(next.id);
+  next = app.db.updateTicket(next.id, { mirror_record_id: `${REMOVED_PREFIX}${t.mirror_record_id}` });
+  app.db.recordEvent(next.id, "airtable_removed", "airtable", t.status, next.status);
+  await refreshSurfaces(app, next.id); // collapsed lines; reporter is not messaged
+  if (next.thread_id) await archiveThread(app, next, true);
+  app.queue.schedule();
 }
 
 /** An idea that was just done (no work ticket needed). */
