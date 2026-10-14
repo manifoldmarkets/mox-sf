@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import MembershipPricingTable from '@/app/components/MembershipPricingTable'
 import {
   getAirtableData,
   getInviteByRecordId,
@@ -175,8 +176,8 @@ export function JoinContent(props: {
             <p className="text-gray-700">
               Reach out to{' '}
               <a href="mailto:robin@moxsf.com">robin@moxsf.com</a>! We have a
-              limited number of private offices available, starting at $4k/mo
-              for a 4-person office. And if you're a startup, we may be
+              limited number of private offices available, starting at $5k/mo
+              for a 4-person office ($4k/mo for mission-aligned teams). And if you're a startup, we may be
               interested in investing a small amount as well, to align our
               incentives!
             </p>
@@ -185,58 +186,11 @@ export function JoinContent(props: {
       </div>
 
       {/* Pricing Table */}
-      <div className="bg-white pt-12">
-        {firstName ? (
-          <>
-            <script
-              async
-              src="https://js.stripe.com/v3/pricing-table.js"
-            ></script>
-            {/* @ts-ignore */}
-            <stripe-pricing-table
-              pricing-table-id="prctbl_1SBTulRobJaZ7DVC19nKSvjs"
-              publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
-              {...(props.airtableRecordId
-                ? { 'client-reference-id': props.airtableRecordId }
-                : {})}
-            >
-              {/* @ts-ignore */}
-            </stripe-pricing-table>
-          </>
-        ) : (
-          <div className="max-w-4xl mx-auto px-6 pb-12 relative">
-            {/* <div className="absolute -top-8 left-6 bg-amber-100 text-gray-800 font-bold text-xs px-2 py-1 rounded">
-              Prices during beta
-            </div> */}
-            <div className="grid grid-cols-2 gap-8">
-              {[
-                { type: 'Core', price: '$380' },
-                { type: 'Resident', price: '$780' },
-              ].map((tier) => (
-                <div
-                  key={tier.type}
-                  className="text-center p-8 border border-gray-200"
-                >
-                  <h3 className="text-2xl font-display text-amber-900 mb-4">
-                    {tier.type}
-                  </h3>
-                  <p className="text-3xl font-bold text-gray-800 mb-2">
-                    {tier.price}
-                  </p>
-                  <p className="text-gray-600">per month</p>
-                </div>
-              ))}
-            </div>
-            <div className="text-center mt-12 cursor-pointer">
-              <a
-                href="https://moxsf.com/apply"
-                className="inline-block px-8 py-3 bg-amber-800 text-white font-semibold hover:bg-amber-900 transition-colors"
-              >
-                Apply for membership
-              </a>
-            </div>
-          </div>
-        )}
+      <div className="pt-4">
+        <MembershipPricingTable
+          mode={firstName ? 'checkout' : 'apply'}
+          clientReferenceId={props.airtableRecordId}
+        />
       </div>
 
       {/* Footer */}
