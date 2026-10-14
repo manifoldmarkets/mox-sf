@@ -241,6 +241,23 @@ Global Expert Fellowship interest-form submissions from `/gef`.
 
 ---
 
+### Operations Requests
+
+Tickets submitted through the Airtable form at `/request` (one request per
+submission). The portal's "tickets & requests" section lists a member's own
+requests, matched on `Your Email`. Referenced by table ID (`tbl77SjSdonCzvVMr`).
+
+| Field | Type | Description | Used by App |
+|-------|------|-------------|-------------|
+| `Name (first and last)` | singleLineText | Primary field; prefilled from the portal link | ✅ Portal (prefill) |
+| `Your Email` | email | Prefilled from the portal link | ✅ Portal (prefill, lookup) |
+| `Request Details` | richText | First line shown as the ticket summary | ✅ Portal |
+| `Request Category` | multipleSelects | Building Issues, Food & Drink, Events Setup or other A/V, Program-related, Security & Safety, Other | ✅ Portal |
+| `Status` | singleSelect | New, In progress, Done, Won't do (staff-only; blank shows as "new") | ✅ Portal |
+| `Request Location`, `Room`, `Location Details`, `Time sensitive?`, `Date Needed By`, ... | | Form fields for staff | |
+
+---
+
 ### Other Tables (not used by app)
 
 - **Investments** - Investment tracking

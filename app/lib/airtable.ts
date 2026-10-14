@@ -19,6 +19,8 @@ export const Tables = {
   CheckIns: 'Check-ins',
   GefApplications: 'GEF Applications',
   Roles: 'Roles',
+  // Filled by the moxsf.com/request Airtable form; shown in the portal.
+  OperationsRequests: 'tbl77SjSdonCzvVMr',
   // Public task board (app/tasks, served at tasks.moxsf.com). These live in
   // their own base (env.TASKS_AIRTABLE_BASE_ID), not the main Mox base.
   Tasks: 'Tasks',
@@ -45,6 +47,7 @@ function baseIdFor(table: TableName): string {
 export interface AirtableRecord<T = Record<string, unknown>> {
   id: string
   fields: T
+  createdTime?: string
 }
 
 /**
@@ -150,6 +153,7 @@ export async function getRecords<T = Record<string, unknown>>(
       records.push({
         id: record.id,
         fields: record.fields as T,
+        createdTime: record.createdTime,
       })
     }
 
