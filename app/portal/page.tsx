@@ -9,8 +9,10 @@ import AdminViewAsSelector from './AdminViewAsSelector'
 import MembershipStatus from './MembershipStatus'
 import MyDayPasses from './MyDayPasses'
 import SubscriptionInfo from './SubscriptionInfo'
+import MyRequests from './MyRequests'
 import { getUserProfile } from './profile'
 import { fetchUserDayPasses } from './dayPasses'
+import { fetchUserRequests, requestFormUrl } from './requests'
 
 // Disable caching - session data (view-as) must be fresh on every request
 export const dynamic = 'force-dynamic'
@@ -30,7 +32,12 @@ export default async function DashboardPage() {
 
   const effectiveUserId = session.viewingAsUserId || session.userId
   const profile = await getUserProfile(effectiveUserId)
-  const dayPasses = profile ? await fetchUserDayPasses(profile.email) : []
+  const [dayPasses, requests] = profile
+    ? await Promise.all([
+        fetchUserDayPasses(profile.email),
+        fetchUserRequests(profile.email),
+      ])
+    : [[], []]
 
   const activeMember = profile
     ? isActiveMember({ status: profile.status, tier: profile.tier })
@@ -134,6 +141,16 @@ export default async function DashboardPage() {
           <SubscriptionInfo key={effectiveUserId} stripeCustomerId={profile.stripeCustomerId} />
         </section>
       )}
+
+      <hr />
+
+      {/* Tickets & requests to the ops team */}
+      <section>
+        <MyRequests
+          requests={requests}
+          formUrl={requestFormUrl(profile.name, profile.email)}
+        />
+      </section>
 
       {/* Active members' day passes below membership info */}
       {activeMember && dayPasses.length > 0 && (
