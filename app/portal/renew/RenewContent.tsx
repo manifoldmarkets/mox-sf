@@ -1,5 +1,7 @@
 'use client'
 
+import MembershipPricingTable from '@/app/components/MembershipPricingTable'
+
 export default function RenewContent({
   firstName,
   email,
@@ -64,17 +66,7 @@ export default function RenewContent({
       </div>
 
       {/* Pricing Table */}
-      <div className="bg-white pt-12 pb-16">
-        <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-        {/* @ts-ignore */}
-        <stripe-pricing-table
-          pricing-table-id="prctbl_1SBTulRobJaZ7DVC19nKSvjs"
-          publishable-key="pk_live_51OwnuXRobJaZ7DVC4fdjfPGJOeJbVfXU5ILe4IZhkvuGhI86EimJfQKHMS1BCX3wuJTSXGnvToae5RmfswBPPM7b00D137jyzJ"
-          customer-email={email || undefined}
-        >
-          {/* @ts-ignore */}
-        </stripe-pricing-table>
-      </div>
+      <MembershipPricingTable mode="checkout" customerEmail={email} />
 
       {/* Footer */}
       <footer className="border-t border-gray-200 py-8">
