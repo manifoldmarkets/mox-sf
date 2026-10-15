@@ -82,6 +82,7 @@ function PassCard({
       </div>
       <p className="muted guest-pass-meta">
         {formatDay(pass.validDate, today)}
+        {pass.guestEmail && ` · ${pass.guestEmail}`}
         {used &&
           pass.firstUsedAt &&
           ` · arrived ${formatTime(pass.firstUsedAt)}`}
@@ -118,6 +119,7 @@ export default function GuestPasses({ canBuyPass }: { canBuyPass: boolean }) {
   const [data, setData] = useState<GuestPassData | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [guestName, setGuestName] = useState('')
+  const [guestEmail, setGuestEmail] = useState('')
   const [validDate, setValidDate] = useState<string>('')
   const [pickingDate, setPickingDate] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -143,8 +145,13 @@ export default function GuestPasses({ canBuyPass }: { canBuyPass: boolean }) {
     e.preventDefault()
     setFormError(null)
     const name = guestName.trim()
+    const email = guestEmail.trim()
     if (!name) {
       setFormError("enter your guest's name")
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setFormError('enter a valid email for your guest')
       return
     }
     setSubmitting(true)
@@ -154,6 +161,7 @@ export default function GuestPasses({ canBuyPass }: { canBuyPass: boolean }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           guestName: name,
+          guestEmail: email,
           validDate: pickingDate && validDate ? validDate : undefined,
         }),
       })
@@ -164,6 +172,7 @@ export default function GuestPasses({ canBuyPass }: { canBuyPass: boolean }) {
         return
       }
       setGuestName('')
+      setGuestEmail('')
       setPickingDate(false)
       setValidDate('')
       setJustCreated(body.pass?.id || null)
@@ -234,17 +243,31 @@ export default function GuestPasses({ canBuyPass }: { canBuyPass: boolean }) {
         <form onSubmit={createPass} noValidate>
           <div className="form-group">
             <label htmlFor="guest-pass-name">guest&apos;s name</label>
+            <input
+              id="guest-pass-name"
+              type="text"
+              value={guestName}
+              onChange={(e) => {
+                setGuestName(e.target.value)
+                if (formError) setFormError(null)
+              }}
+              placeholder="first last"
+              maxLength={80}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="guest-pass-email">guest&apos;s email</label>
             <div className="guest-pass-form-row">
               <input
-                id="guest-pass-name"
-                type="text"
-                value={guestName}
+                id="guest-pass-email"
+                type="email"
+                value={guestEmail}
                 onChange={(e) => {
-                  setGuestName(e.target.value)
+                  setGuestEmail(e.target.value)
                   if (formError) setFormError(null)
                 }}
-                placeholder="first last"
-                maxLength={80}
+                placeholder="guest@example.com"
+                maxLength={254}
               />
               <button type="submit" className="primary" disabled={submitting}>
                 {submitting ? 'creating...' : 'create pass'}

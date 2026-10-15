@@ -131,6 +131,7 @@ Guest day pass and week pass management.
 | `Issued By` | multipleRecordLinks | Member who bought or issued the pass | ✅ Portal, guest passes |
 | `Issued By Email` | lookup | Issuer's email (from Issued By); lets the app list a host's passes | ✅ Guest passes |
 | `Guest Name` | singleLineText | Guest Pass only: who the pass is for. No People record is created for the guest. | ✅ Guest passes |
+| `Guest Email` | email | Guest Pass only: the guest's email, so Mox can reach them if needed | ✅ Guest passes |
 | `Token` | singleLineText | Guest Pass only: 12-char token in the `/guest/<token>` unlock link | ✅ Guest passes |
 | `Valid Date` | date | Guest Pass only: the Pacific day the pass works (8am–11pm); counts against that week's allowance | ✅ Guest passes |
 | `Unlock Count` | number | Guest Pass only: door unlocks via the link (capped at 10) | ✅ Guest passes |

@@ -187,9 +187,9 @@ Weekly guest-pass allowance and the member's passes for this week onward.
 Issue a free guest pass (an unlock link) for a named guest.
 
 - **Auth:** User
-- **Body:** `{ "guestName": "Priya Natarajan", "validDate"?: "2026-10-14" }` (defaults to today, Pacific; up to 7 days out)
+- **Body:** `{ "guestName": "Priya Natarajan", "guestEmail": "priya@example.com", "validDate"?: "2026-10-14" }` (date defaults to today, Pacific; up to 7 days out)
 - **Response:** `{ "pass": { ...summary, "link": "https://moxsf.com/guest/<token>" }, "remaining": 1 }`
-- **Errors:** 400 missing name or bad date, 403 tier has no allowance, 409 `{ "code": "quota" }` when the week's allowance is used.
+- **Errors:** 400 missing name, invalid email, host's own email, or bad date; 403 tier has no allowance; 409 `{ "code": "quota" }` when the week's allowance is used.
 
 #### POST `/portal/api/guest-passes/revoke`
 Revoke a guest pass. Host or staff only.

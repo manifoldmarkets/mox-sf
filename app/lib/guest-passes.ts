@@ -116,6 +116,7 @@ export interface GuestPassSummary {
   id: string
   token: string
   guestName: string
+  guestEmail: string
   validDate: string
   state: GuestPassState
   unlockCount: number

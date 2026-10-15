@@ -1,5 +1,6 @@
 import { getSession } from '@/app/lib/session'
 import { env } from '@/app/lib/env'
+import { isValidEmail } from '@/app/lib/airtable-helpers'
 import {
   isIssuableDate,
   remainingThisWeek,
@@ -87,6 +88,10 @@ export async function POST(request: Request) {
     }
     const guestName =
       typeof body.guestName === 'string' ? body.guestName.trim() : ''
+    const guestEmail =
+      typeof body.guestEmail === 'string'
+        ? body.guestEmail.trim().toLowerCase()
+        : ''
     const validDate =
       typeof body.validDate === 'string' && body.validDate
         ? body.validDate
@@ -100,6 +105,21 @@ export async function POST(request: Request) {
     }
     if (guestName.length > 80) {
       return Response.json({ error: 'that name is too long' }, { status: 400 })
+    }
+    if (!isValidEmail(guestEmail)) {
+      return Response.json(
+        { error: 'enter a valid email for your guest' },
+        { status: 400 }
+      )
+    }
+    if (guestEmail === host.email.toLowerCase()) {
+      return Response.json(
+        {
+          error:
+            'this pass is for a guest. for yourself, use your member access.',
+        },
+        { status: 400 }
+      )
     }
     if (!isIssuableDate(validDate)) {
       return Response.json(
@@ -129,10 +149,11 @@ export async function POST(request: Request) {
     const pass = await createGuestPass({
       hostId: host.id,
       guestName,
+      guestEmail,
       validDate,
     })
     console.log(
-      `[guest-passes] ${host.email} issued pass ${pass.id} for "${guestName}" on ${validDate}`
+      `[guest-passes] ${host.email} issued pass ${pass.id} for "${guestName}" <${guestEmail}> on ${validDate}`
     )
     return Response.json({
       pass: { ...summarizeGuestPass(pass), link: guestLink(pass.token) },

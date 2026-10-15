@@ -23,6 +23,7 @@ export interface GuestPassFields {
   'Pass Type'?: string
   Status?: string
   'Guest Name'?: string
+  'Guest Email'?: string
   Token?: string
   'Valid Date'?: string
   'Unlock Count'?: number
@@ -35,6 +36,7 @@ export interface GuestPassRecord {
   id: string
   token: string
   guestName: string
+  guestEmail: string
   validDate: string
   status: string
   unlockCount: number
@@ -61,6 +63,7 @@ export function parseGuestPass(record: {
     id: record.id,
     token: f.Token || '',
     guestName: f['Guest Name'] || '',
+    guestEmail: f['Guest Email'] || '',
     validDate: f['Valid Date'] || '',
     status: f.Status || 'Unused',
     unlockCount: f['Unlock Count'] || 0,
@@ -77,6 +80,7 @@ export function summarizeGuestPass(
     id: pass.id,
     token: pass.token,
     guestName: pass.guestName,
+    guestEmail: pass.guestEmail,
     validDate: pass.validDate,
     state: guestPassState(pass, now),
     unlockCount: pass.unlockCount,
@@ -114,6 +118,7 @@ export async function listGuestPassesForHost(
 export async function createGuestPass(input: {
   hostId: string
   guestName: string
+  guestEmail: string
   validDate: string
 }): Promise<GuestPassRecord> {
   const token = generateGuestToken()
@@ -125,6 +130,7 @@ export async function createGuestPass(input: {
       'Pass Type': GUEST_PASS_TYPE,
       Status: 'Unused',
       'Guest Name': input.guestName,
+      'Guest Email': input.guestEmail,
       Token: token,
       'Valid Date': input.validDate,
       'Unlock Count': 0,

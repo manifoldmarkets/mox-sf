@@ -103,6 +103,7 @@ Reuse the existing **Day Passes** table rather than adding a new one.
 |---|---|---|
 | `Pass Type` | add option **Guest Pass** | Distinguishes free member-issued passes from paid ones. |
 | `Guest Name` | new, text | Who the pass is for. Required. We do **not** create a People record for the guest, so the People table stays clean. |
+| `Guest Email` | new, email | The guest's email, for contacting them if needed. Required. Not used to send the link. |
 | `Token` | new, text | 12-char random token for the unlock link. |
 | `Valid Date` | new, date | The day the pass works. Default today. The 8am–11pm window is derived in code. |
 | `Unlock Count` | new, number | Incremented on each unlock. |
@@ -180,7 +181,7 @@ Portal card:
 
 - Heading: **guest passes**
 - Intro: "bring a friend for the day." then "**2 of 4 left this week** · resets monday"
-- Field label: "guest's name"; button: "create pass"
+- Fields: "guest's name", "guest's email"; button: "create pass"
 - Helper: "valid today, 8am–11pm. click button to generate link."
 - Over quota: "you've used this week's 4 passes. more on monday." followed by
   "need one sooner? buy a day pass for your guest ($25)." and the existing
@@ -199,8 +200,10 @@ Guest page:
 - Expired: "This pass expired" / "It was valid on Oct 14." / "Check with
   Robin for a new one." (the host's first name, never Mox staff)
 
-Guest contact: **Decided:** name only. No email or phone is collected; the
-member copies the link and sends it themselves.
+Guest contact: **Decided (revised 2026-10-15):** name and email are both
+required, so Mox can reach a guest if needed. We still don't email the guest;
+the member copies the link and sends it themselves. No People record is
+created for the guest.
 
 ## Remaining decisions and proposed defaults
 
