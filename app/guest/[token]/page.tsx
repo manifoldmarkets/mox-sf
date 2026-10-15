@@ -195,8 +195,12 @@ export default function GuestPassPage() {
       <Shell>
         <div className="text-center pt-10">
           <h1 className="text-2xl font-bold mb-2">This pass expired</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 mb-1">
             It was valid on {validDate ? formatDate(validDate) : 'its date'}.
+          </p>
+          <p className="text-gray-600">
+            Check with {hostFirstName || 'the member who invited you'} for a new
+            one.
           </p>
         </div>
       </Shell>

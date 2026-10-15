@@ -196,7 +196,8 @@ Guest page:
 - "1680 Mission St, San Francisco. Tap below when you're at the front door."
 - Button: "Unlock front door"; footnote: "Sign in at the lobby when you arrive."
 - After tapping: "Door unlocked" / "Pull the door open. Welcome in."
-- Expired: "This pass expired" / "It was valid on Oct 14."
+- Expired: "This pass expired" / "It was valid on Oct 14." / "Check with
+  Robin for a new one." (the host's first name, never Mox staff)
 
 Guest contact: **Decided:** name only. No email or phone is collected; the
 member copies the link and sends it themselves.
