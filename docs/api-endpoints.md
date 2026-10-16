@@ -16,6 +16,13 @@ This document describes all API endpoints in the Mox SF application.
 
 ## Public APIs (`/api/`)
 
+### POST `/gef/api/submit`
+Submit the Global Expert Fellowship interest form.
+
+- **Auth:** None
+- **Details:** Saves the application to Airtable and emails `robin@moxsf.com` and `team@moxsf.com`, with the applicant as Reply-To. Copies `carolina@moxsf.com` through November 1, 2026, then automatically omits CC starting November 2 at midnight in America/Los_Angeles.
+- **Response:** `{ "success": true }`, or a validation/delivery error.
+
 ### GET `/api/events-cal`
 Generate iCalendar feed for calendar subscriptions.
 

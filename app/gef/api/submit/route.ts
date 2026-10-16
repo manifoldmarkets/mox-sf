@@ -2,7 +2,9 @@ import { isValidEmail } from '@/app/lib/airtable-helpers'
 import { createRecord, Tables } from '@/app/lib/airtable'
 import { sendEmail } from '@/app/lib/email'
 
-const RECIPIENT = 'carolina@moxsf.com'
+const RECIPIENTS = ['robin@moxsf.com', 'team@moxsf.com']
+// Keep Carolina copied through November 1 in San Francisco (PST by Nov 2).
+const CAROLINA_CC_END = Date.parse('2026-11-02T00:00:00-08:00')
 
 // Fields collected by the GEF interest form, in display order.
 const FIELDS: { key: string; label: string }[] = [
@@ -107,7 +109,8 @@ export async function POST(request: Request) {
   let sent = false
   try {
     sent = await sendEmail({
-      to: RECIPIENT,
+      to: RECIPIENTS,
+      ...(Date.now() < CAROLINA_CC_END ? { cc: 'carolina@moxsf.com' } : {}),
       from: 'Mox GEF <portal@account.moxsf.com>',
       replyTo: values.email,
       subject: `GEF interest: ${values.name}`,
