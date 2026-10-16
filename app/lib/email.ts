@@ -2,6 +2,7 @@ import { env } from './env'
 
 interface EmailOptions {
   to: string | string[]
+  cc?: string | string[]
   subject: string
   text: string
   from?: string
@@ -16,6 +17,7 @@ const DEFAULT_FROM = 'Member Portal <portal@account.moxsf.com>'
  */
 export async function sendEmail({
   to,
+  cc,
   subject,
   text,
   from = DEFAULT_FROM,
@@ -39,6 +41,7 @@ export async function sendEmail({
       body: JSON.stringify({
         from,
         to: Array.isArray(to) ? to : [to],
+        ...(cc ? { cc: Array.isArray(cc) ? cc : [cc] } : {}),
         subject,
         text,
         ...(html ? { html } : {}),
