@@ -19,7 +19,8 @@ export default function PortalNav() {
   const isPortalPage =
     pathname?.startsWith('/portal') ||
     pathname?.startsWith('/lobby') ||
-    pathname?.startsWith('/summerseason')
+    pathname?.startsWith('/summerseason') ||
+    pathname?.startsWith('/fallseason')
 
   useEffect(() => {
     if (isPortalPage) return
