@@ -204,7 +204,7 @@ export default function GuestProgramPage() {
             <PartnerCard
               name="GovAI"
               url="https://governance.ai"
-              logoUrl="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg"
+              logoUrl="/logos/govai.png"
               bgColor="bg-white"
             />
             <PartnerCard

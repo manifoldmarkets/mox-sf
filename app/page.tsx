@@ -437,9 +437,9 @@ export default async function Component() {
               className="aspect-[3/1] bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-all duration-200 flex items-center justify-center p-3 gap-2 border border-gray-200 dark:border-gray-600"
             >
               <img
-                src="https://pbs.twimg.com/profile_images/1496090136051953665/EUXvM3eS_400x400.jpg"
+                src="/logos/govai.png"
                 alt="GovAI logo"
-                className="h-full w-auto object-contain dark:invert dark:mix-blend-plus-lighter mix-blend-multiply object-contain scale-150"
+                className="h-full w-auto object-contain dark:invert"
               />
               <span className="text-2xl text-gray-900 dark:text-white uppercase font-sans tracking-wide">
                 GovAI
