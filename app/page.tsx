@@ -344,7 +344,7 @@ export default async function Component() {
               className="aspect-[3/1] bg-[#2c97cc] hover:bg-[#2383b3] transition-all duration-200 flex items-center justify-center p-3 gap-2"
             >
               <img
-                src="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png"
+                src="/logos/aiimpacts.png"
                 alt="AI Impacts logo"
                 className="h-full w-auto object-contain"
               />
@@ -376,7 +376,7 @@ export default async function Component() {
               className="aspect-[3/1] bg-[#eaf5f4] hover:bg-[#d5e8e6] transition-all duration-200 flex items-center justify-center p-3 gap-2"
             >
               <img
-                src="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
+                src="/logos/epoch.jpg"
                 alt="Epoch logo"
                 className="h-full w-auto object-contain"
               />

@@ -234,7 +234,7 @@ export default function GuestsPage() {
             <PartnerCard
               name="AI Impacts"
               url="https://aiimpacts.org/"
-              logoUrl="https://pbs.twimg.com/profile_images/601605260252024833/aeNPn9YV_400x400.png"
+              logoUrl="/logos/aiimpacts.png"
               bgColor="bg-[#2c97cc]"
             />
             <PartnerCard
@@ -246,7 +246,7 @@ export default function GuestsPage() {
             <PartnerCard
               name="Epoch"
               url="https://epoch.ai/"
-              logoUrl="https://pbs.twimg.com/profile_images/1866142753127616512/DYcE9bN1_400x400.jpg"
+              logoUrl="/logos/epoch.jpg"
               bgColor="bg-[#eaf5f4]"
             />
             <PartnerCard
